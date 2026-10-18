@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,14 +30,14 @@
 #include "PartReader.hpp"
 #include "Reader.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 class FileProvider : public PartReaderResourceProvider {
 private:
-  oatpp::String m_filename;
+  avena::String m_filename;
 public:
 
-  FileProvider(const oatpp::String& filename);
+  FileProvider(const avena::String& filename);
 
   std::shared_ptr<data::resource::Resource> getResource(const std::shared_ptr<Part>& part) override;
 
@@ -49,18 +51,18 @@ public:
  * Reader will save part to a specified file.
  * @param filename - name of the file.
  * @param maxDataSize - max size of the received data. put `-1` for no-limit.
- * @return - `std::shared_ptr` to &id:oatpp::web::mime::multipart::PartReader;.
+ * @return - `std::shared_ptr` to &id:avena::web::mime::multipart::PartReader;.
  */
-std::shared_ptr<PartReader> createFilePartReader(const oatpp::String& filename, v_io_size maxDataSize = -1);
+std::shared_ptr<PartReader> createFilePartReader(const avena::String& filename, v_io_size maxDataSize = -1);
 
 /**
  * Create async file part reader. <br>
  * Reader will save part to a specified file.
  * @param filename - name of the file.
  * @param maxDataSize - max size of the received data. put `-1` for no-limit.
- * @return - `std::shared_ptr` to &id:oatpp::web::mime::multipart::AsyncPartReader;.
+ * @return - `std::shared_ptr` to &id:avena::web::mime::multipart::AsyncPartReader;.
  */
-std::shared_ptr<AsyncPartReader> createAsyncFilePartReader(const oatpp::String& filename, v_io_size maxDataSize = -1);
+std::shared_ptr<AsyncPartReader> createAsyncFilePartReader(const avena::String& filename, v_io_size maxDataSize = -1);
 
 }}}}
 

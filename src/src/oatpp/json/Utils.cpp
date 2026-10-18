@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 #include "oatpp/encoding/Unicode.hpp"
 #include "oatpp/encoding/Hex.hpp"
 
-namespace oatpp { namespace json{
+namespace avena { namespace json{
 
 v_buff_size Utils::calcEscapedStringSize(const char* data, v_buff_size size, v_buff_size& safeSize, v_uint32 flags) {
   v_buff_size result = 0;
@@ -71,7 +73,7 @@ v_buff_size Utils::calcEscapedStringSize(const char* data, v_buff_size size, v_b
       }
 
     } else {
-      v_buff_size charSize = oatpp::encoding::Unicode::getUtf8CharSequenceLength(a);
+      v_buff_size charSize = avena::encoding::Unicode::getUtf8CharSequenceLength(a);
       if(charSize != 0) {
         if(i + charSize > size) {
           safeSize = i;
@@ -191,7 +193,7 @@ v_buff_size Utils::calcUnescapedStringSize(const char* data, v_buff_size size, v
 
 v_buff_size Utils::escapeUtf8CharSize(const char* sequence) {
   v_buff_size length;
-  v_int32 code = oatpp::encoding::Unicode::encodeUtf8Char(sequence, length);
+  v_int32 code = avena::encoding::Unicode::encodeUtf8Char(sequence, length);
   if(code < 0x00010000) {
     return 6;
   } else if(code < 0x00200000) {
@@ -203,33 +205,33 @@ v_buff_size Utils::escapeUtf8CharSize(const char* sequence) {
   
 v_buff_size Utils::escapeUtf8Char(const char* sequence, p_char8 buffer){
   v_buff_size length;
-  v_int32 code = oatpp::encoding::Unicode::encodeUtf8Char(sequence, length);
+  v_int32 code = avena::encoding::Unicode::encodeUtf8Char(sequence, length);
   if(code < 0x00010000) {
     buffer[0] = '\\';
     buffer[1] = 'u';
-    oatpp::encoding::Hex::writeUInt16(v_uint16(code), &buffer[2]);
+    avena::encoding::Hex::writeUInt16(v_uint16(code), &buffer[2]);
     return 6;
   } else if(code < 0x00200000) {
     v_int16 high;
     v_int16 low;
-    oatpp::encoding::Unicode::codeToUtf16SurrogatePair(code, high, low);
+    avena::encoding::Unicode::codeToUtf16SurrogatePair(code, high, low);
     buffer[0] = '\\';
     buffer[1] = 'u';
-    oatpp::encoding::Hex::writeUInt16(static_cast<v_uint16>(high), &buffer[2]);
+    avena::encoding::Hex::writeUInt16(static_cast<v_uint16>(high), &buffer[2]);
     buffer[6] = '\\';
     buffer[7] = 'u';
-    oatpp::encoding::Hex::writeUInt16(static_cast<v_uint16>(low), &buffer[8]);
+    avena::encoding::Hex::writeUInt16(static_cast<v_uint16>(low), &buffer[8]);
     return 12;
   } else {
     buffer[0] = '\\';
     buffer[1] = 'u';
     buffer[2] = '+';
-    oatpp::encoding::Hex::writeUInt32(static_cast<v_uint32>(code), &buffer[2]);
+    avena::encoding::Hex::writeUInt32(static_cast<v_uint32>(code), &buffer[2]);
     return 11;
   }
 }
 
-oatpp::String Utils::escapeString(const char* data, v_buff_size size, v_uint32 flags) {
+avena::String Utils::escapeString(const char* data, v_buff_size size, v_uint32 flags) {
   v_buff_size safeSize;
   v_buff_size escapedSize = calcEscapedStringSize(data, size, safeSize, flags);
   if(escapedSize == size) {
@@ -256,7 +258,7 @@ oatpp::String Utils::escapeString(const char* data, v_buff_size size, v_uint32 f
           default:
             resultData[pos] = '\\';
             resultData[pos + 1] = 'u';
-            oatpp::encoding::Hex::writeUInt16(a, &resultData[pos + 2]);
+            avena::encoding::Hex::writeUInt16(a, &resultData[pos + 2]);
             pos += 6;
             break;
 
@@ -292,7 +294,7 @@ oatpp::String Utils::escapeString(const char* data, v_buff_size size, v_uint32 f
         i++;
       }
       else {
-        v_buff_size charSize = oatpp::encoding::Unicode::getUtf8CharSequenceLength(a);
+        v_buff_size charSize = avena::encoding::Unicode::getUtf8CharSequenceLength(a);
         if (charSize != 0) {
           if (!(flags & FLAG_ESCAPE_UTF8CHAR)) {
             std::memcpy(reinterpret_cast<void*>(&resultData[pos]), reinterpret_cast<void*>(const_cast<char*>(&data[i])), static_cast<size_t>(charSize));
@@ -379,7 +381,7 @@ void Utils::unescapeStringToBuffer(const char* data, v_buff_size size, p_char8 r
   
 }
   
-oatpp::String Utils::unescapeString(const char* data, v_buff_size size, v_int64& errorCode, v_buff_size& errorPosition) {
+avena::String Utils::unescapeString(const char* data, v_buff_size size, v_int64& errorCode, v_buff_size& errorPosition) {
   
   v_buff_size unescapedSize = calcUnescapedStringSize(data, size, errorCode, errorPosition);
   if(errorCode != 0){
@@ -433,16 +435,16 @@ const char* Utils::preparseString(ParsingCaret& caret, v_buff_size& size){
       }
     }
     caret.setPosition(caret.getDataSize());
-    caret.setError("[oatpp::json::Utils::preparseString()]: Error. '\"' - expected", ERROR_CODE_PARSER_QUOTE_EXPECTED);
+    caret.setError("[avena::json::Utils::preparseString()]: Error. '\"' - expected", ERROR_CODE_PARSER_QUOTE_EXPECTED);
   } else {
-    caret.setError("[oatpp::json::Utils::preparseString()]: Error. '\"' - expected", ERROR_CODE_PARSER_QUOTE_EXPECTED);
+    caret.setError("[avena::json::Utils::preparseString()]: Error. '\"' - expected", ERROR_CODE_PARSER_QUOTE_EXPECTED);
   }
   
   return nullptr;
   
 }
   
-oatpp::String Utils::parseString(ParsingCaret& caret) {
+avena::String Utils::parseString(ParsingCaret& caret) {
   
   v_buff_size size;
   const char* data = preparseString(caret, size);
@@ -455,7 +457,7 @@ oatpp::String Utils::parseString(ParsingCaret& caret) {
     v_buff_size errorPosition;
     auto result = unescapeString(data, size, errorCode, errorPosition);
     if(errorCode != 0){
-      caret.setError("[oatpp::json::Utils::parseString()]: Error. Call to unescapeString() failed", errorCode);
+      caret.setError("[avena::json::Utils::parseString()]: Error. Call to unescapeString() failed", errorCode);
       caret.setPosition(pos + errorPosition);
     } else {
       caret.setPosition(pos + size + 1);
@@ -482,7 +484,7 @@ std::string Utils::parseStringToStdString(ParsingCaret& caret){
     v_buff_size errorPosition;
     const std::string& result = unescapeStringToStdString(data, size, errorCode, errorPosition);
     if(errorCode != 0){
-      caret.setError("[oatpp::json::Utils::parseStringToStdString()]: Error. Call to unescapeStringToStdString() failed", errorCode);
+      caret.setError("[avena::json::Utils::parseStringToStdString()]: Error. Call to unescapeStringToStdString() failed", errorCode);
       caret.setPosition(pos + errorPosition);
     } else {
       caret.setPosition(pos + size + 1);

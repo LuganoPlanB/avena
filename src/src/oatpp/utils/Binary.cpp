@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Binary.hpp"
 
-namespace oatpp { namespace utils {
+namespace avena { namespace utils {
 
 v_int64 Binary::nextP2(v_int64 v) {
   v--;

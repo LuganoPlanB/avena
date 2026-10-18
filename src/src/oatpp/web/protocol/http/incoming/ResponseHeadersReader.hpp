@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/web/protocol/http/Http.hpp"
 #include "oatpp/async/Coroutine.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 /**
  * Helper class to read http headers of incoming response from stream.
@@ -36,9 +38,9 @@ namespace oatpp { namespace web { namespace protocol { namespace http { namespac
 class ResponseHeadersReader {
 public:
   /**
-   * Convenience typedef for &id:oatpp::async::Action;.
+   * Convenience typedef for &id:avena::async::Action;.
    */
-  typedef oatpp::async::Action Action;
+  typedef avena::async::Action Action;
 private:
   static constexpr v_uint32 SECTION_END = ('\r' << 24) | ('\n' << 16) | ('\r' << 8) | ('\n');
 public:
@@ -48,12 +50,12 @@ public:
    */
   struct Result {
     /**
-     * &id:oatpp::web::protocol::http::ResponseStartingLine;.
+     * &id:avena::web::protocol::http::ResponseStartingLine;.
      */
     http::ResponseStartingLine startingLine;
 
     /**
-     * &id:oatpp::web::protocol::http::Headers;.
+     * &id:avena::web::protocol::http::Headers;.
      */
     http::Headers headers;
 
@@ -78,40 +80,40 @@ private:
 private:
 
   v_io_size readHeadersSectionIterative(ReadHeadersIteration& iteration,
-                                              const std::shared_ptr<oatpp::data::stream::IOStream>& connection,
+                                              const std::shared_ptr<avena::data::stream::IOStream>& connection,
                                               data::stream::ConsistentOutputStream* bufferStream,
                                               Result& result,
                                               async::Action& action);
 
 private:
-  oatpp::data::share::MemoryLabel m_buffer;
+  avena::data::share::MemoryLabel m_buffer;
   v_buff_size m_maxHeadersSize;
 public:
 
   /**
    * Constructor.
-   * @param buffer - buffer to use to read data from stream. &id:oatpp::data::share::MemoryLabel;.
+   * @param buffer - buffer to use to read data from stream. &id:avena::data::share::MemoryLabel;.
    * @param maxHeadersSize
    */
-  ResponseHeadersReader(const oatpp::data::share::MemoryLabel& buffer, v_buff_size maxHeadersSize)
+  ResponseHeadersReader(const avena::data::share::MemoryLabel& buffer, v_buff_size maxHeadersSize)
     : m_buffer(buffer)
     , m_maxHeadersSize(maxHeadersSize)
   {}
 
   /**
    * Read and parse http headers from stream.
-   * @param connection - `std::shared_ptr` to &id:oatpp::data::stream::IOStream;.
-   * @param error - out parameter &id:oatpp::web::protocol::ProtocolError::Info;.
+   * @param connection - `std::shared_ptr` to &id:avena::data::stream::IOStream;.
+   * @param error - out parameter &id:avena::web::protocol::ProtocolError::Info;.
    * @return - &l:ResponseHeadersReader::Result;.
    */
-  Result readHeaders(const std::shared_ptr<oatpp::data::stream::IOStream>& connection, http::HttpError::Info& error);
+  Result readHeaders(const std::shared_ptr<avena::data::stream::IOStream>& connection, http::HttpError::Info& error);
 
   /**
    * Read and parse http headers from stream in asynchronous manner.
-   * @param connection - `std::shared_ptr` to &id:oatpp::data::stream::IOStream;.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @param connection - `std::shared_ptr` to &id:avena::data::stream::IOStream;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
-  oatpp::async::CoroutineStarterForResult<const Result&> readHeadersAsync(const std::shared_ptr<oatpp::data::stream::IOStream>& connection);
+  avena::async::CoroutineStarterForResult<const Result&> readHeadersAsync(const std::shared_ptr<avena::data::stream::IOStream>& connection);
   
 };
   

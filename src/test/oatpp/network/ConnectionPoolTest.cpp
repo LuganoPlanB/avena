@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,17 +30,17 @@
 #include "oatpp/async/Executor.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace test { namespace network {
+namespace avena { namespace test { namespace network {
 
 namespace {
 
-typedef oatpp::provider::Pool<
-  oatpp::network::ConnectionProvider,
-  oatpp::data::stream::IOStream,
-  oatpp::network::ConnectionAcquisitionProxy
+typedef avena::provider::Pool<
+  avena::network::ConnectionProvider,
+  avena::data::stream::IOStream,
+  avena::network::ConnectionAcquisitionProxy
 > ConnectionPool;
 
-class StubStream : public oatpp::data::stream::IOStream, public oatpp::base::Countable {
+class StubStream : public avena::data::stream::IOStream, public avena::base::Countable {
 public:
 
   v_io_size write(const void *buff, v_buff_size count, async::Action& actions) override {
@@ -49,38 +51,38 @@ public:
     throw std::runtime_error("It's a stub!");
   }
 
-  void setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) override {
+  void setOutputStreamIOMode(avena::data::stream::IOMode ioMode) override {
     throw std::runtime_error("It's a stub!");
   }
 
-  oatpp::data::stream::IOMode getOutputStreamIOMode() override {
+  avena::data::stream::IOMode getOutputStreamIOMode() override {
     throw std::runtime_error("It's a stub!");
   }
 
-  oatpp::data::stream::Context& getOutputStreamContext() override {
+  avena::data::stream::Context& getOutputStreamContext() override {
     throw std::runtime_error("It's a stub!");
   }
 
-  void setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) override {
+  void setInputStreamIOMode(avena::data::stream::IOMode ioMode) override {
     throw std::runtime_error("It's a stub!");
   }
 
-  oatpp::data::stream::IOMode getInputStreamIOMode() override {
+  avena::data::stream::IOMode getInputStreamIOMode() override {
     throw std::runtime_error("It's a stub!");
   }
 
-  oatpp::data::stream::Context& getInputStreamContext() override {
+  avena::data::stream::Context& getInputStreamContext() override {
     throw std::runtime_error("It's a stub!");
   }
 
 };
 
-class StubStreamProvider : public oatpp::network::ConnectionProvider {
+class StubStreamProvider : public avena::network::ConnectionProvider {
 private:
 
-  class Invalidator : public oatpp::provider::Invalidator<oatpp::data::stream::IOStream> {
+  class Invalidator : public avena::provider::Invalidator<avena::data::stream::IOStream> {
   public:
-    void invalidate(const std::shared_ptr<oatpp::data::stream::IOStream>& connection) override {
+    void invalidate(const std::shared_ptr<avena::data::stream::IOStream>& connection) override {
       (void)connection;
       // DO Nothing.
     }
@@ -96,17 +98,17 @@ public:
 
   std::atomic<v_int64> counter;
 
-  oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream> get() override {
+  avena::provider::ResourceHandle<avena::data::stream::IOStream> get() override {
     ++ counter;
-    return oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream>(
+    return avena::provider::ResourceHandle<avena::data::stream::IOStream>(
       std::make_shared<StubStream>(),
       m_invalidator
     );
   }
 
-  oatpp::async::CoroutineStarterForResult<const oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream>&> getAsync() override {
+  avena::async::CoroutineStarterForResult<const avena::provider::ResourceHandle<avena::data::stream::IOStream>&> getAsync() override {
 
-    class ConnectionCoroutine : public oatpp::async::CoroutineWithResult<ConnectionCoroutine, const oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream>&> {
+    class ConnectionCoroutine : public avena::async::CoroutineWithResult<ConnectionCoroutine, const avena::provider::ResourceHandle<avena::data::stream::IOStream>&> {
     private:
       std::shared_ptr<Invalidator> m_invalidator;
     public:
@@ -116,7 +118,7 @@ public:
       {}
 
       Action act() override {
-        return _return(oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream>(
+        return _return(avena::provider::ResourceHandle<avena::data::stream::IOStream>(
           std::make_shared<StubStream>(),
           m_invalidator
         ));
@@ -135,10 +137,10 @@ public:
 
 };
 
-class ClientCoroutine : public oatpp::async::Coroutine<ClientCoroutine> {
+class ClientCoroutine : public avena::async::Coroutine<ClientCoroutine> {
 private:
   std::shared_ptr<ConnectionPool> m_pool;
-  oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream> m_connection;
+  avena::provider::ResourceHandle<avena::data::stream::IOStream> m_connection;
   v_int32 m_repeats;
   bool m_invalidate;
 public:
@@ -153,7 +155,7 @@ public:
     return m_pool->getAsync().callbackTo(&ClientCoroutine::onConnection);
   }
 
-  Action onConnection(const oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream>& connection) {
+  Action onConnection(const avena::provider::ResourceHandle<avena::data::stream::IOStream>& connection) {
     m_connection = connection;
     return yieldTo(&ClientCoroutine::useConnection);
   }
@@ -183,7 +185,7 @@ void clientMethod(std::shared_ptr<ConnectionPool> pool, bool invalidate) {
 
 void ConnectionPoolTest::onRun() {
 
-  oatpp::async::Executor executor(1, 1, 1);
+  avena::async::Executor executor(1, 1, 1);
 
   auto connectionProvider = std::make_shared<StubStreamProvider>();
   auto pool = ConnectionPool::createShared(connectionProvider, 10 /* maxConnections */, std::chrono::seconds(10) /* maxConnectionTTL */);

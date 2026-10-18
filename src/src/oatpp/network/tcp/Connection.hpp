@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,50 +29,50 @@
 
 #include "oatpp/data/stream/Stream.hpp"
 
-namespace oatpp { namespace network { namespace tcp {
+namespace avena { namespace network { namespace tcp {
 
 /**
- * TCP Connection implementation. Extends &id:oatpp::base::Countable; and &id:oatpp::data::stream::IOStream;.
+ * TCP Connection implementation. Extends &id:avena::base::Countable; and &id:avena::data::stream::IOStream;.
  */
-class Connection : public oatpp::base::Countable, public oatpp::data::stream::IOStream {
+class Connection : public avena::base::Countable, public avena::data::stream::IOStream {
 private:
-  static oatpp::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
+  static avena::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
 private:
   v_io_handle m_handle;
   data::stream::IOMode m_mode;
 private:
-  void setStreamIOMode(oatpp::data::stream::IOMode ioMode);
+  void setStreamIOMode(avena::data::stream::IOMode ioMode);
 public:
   /**
    * Constructor.
-   * @param handle - file descriptor (socket handle). See &id:oatpp::v_io_handle;.
+   * @param handle - file descriptor (socket handle). See &id:avena::v_io_handle;.
    */
   Connection(v_io_handle handle);
 public:
 
   /**
-   * Virtual Destructor (See &id:oatpp::base::Countable;).
+   * Virtual Destructor (See &id:avena::base::Countable;).
    * Close socket handle.
    */
   ~Connection() override;
 
   /**
-   * Implementation of &id:oatpp::data::stream::IOStream::write;.
+   * Implementation of &id:avena::data::stream::IOStream::write;.
    * @param buff - buffer containing data to write.
    * @param count - bytes count you want to write.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
-   * @return - actual amount of bytes written. See &id:oatpp::v_io_size;.
+   * @return - actual amount of bytes written. See &id:avena::v_io_size;.
    */
   v_io_size write(const void *buff, v_buff_size count, async::Action& action) override;
 
   /**
-   * Implementation of &id:oatpp::data::stream::IOStream::read;.
+   * Implementation of &id:avena::data::stream::IOStream::read;.
    * @param buff - buffer to read data to.
    * @param count - buffer size.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
-   * @return - actual amount of bytes read. See &id:oatpp::v_io_size;.
+   * @return - actual amount of bytes read. See &id:avena::v_io_size;.
    */
   v_io_size read(void *buff, v_buff_size count, async::Action& action) override;
 
@@ -78,37 +80,37 @@ public:
    * Set OutputStream I/O mode.
    * @param ioMode
    */
-  void setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+  void setOutputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
   /**
    * Set OutputStream I/O mode.
    * @return
    */
-  oatpp::data::stream::IOMode getOutputStreamIOMode() override;
+  avena::data::stream::IOMode getOutputStreamIOMode() override;
 
   /**
    * Get output stream context.
-   * @return - &id:oatpp::data::stream::Context;.
+   * @return - &id:avena::data::stream::Context;.
    */
-  oatpp::data::stream::Context& getOutputStreamContext() override;
+  avena::data::stream::Context& getOutputStreamContext() override;
 
   /**
    * Set InputStream I/O mode.
    * @param ioMode
    */
-  void setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+  void setInputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
   /**
    * Get InputStream I/O mode.
    * @return
    */
-  oatpp::data::stream::IOMode getInputStreamIOMode() override;
+  avena::data::stream::IOMode getInputStreamIOMode() override;
 
   /**
    * Get input stream context. <br>
-   * @return - &id:oatpp::data::stream::Context;.
+   * @return - &id:avena::data::stream::Context;.
    */
-  oatpp::data::stream::Context& getInputStreamContext() override;
+  avena::data::stream::Context& getInputStreamContext() override;
 
   /**
    * Close socket handle.
@@ -117,7 +119,7 @@ public:
 
   /**
    * Get socket handle.
-   * @return - socket handle. &id:oatpp::v_io_handle;.
+   * @return - socket handle. &id:avena::v_io_handle;.
    */
   v_io_handle getHandle(){
     return m_handle;

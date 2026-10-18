@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "HttpRouter.hpp"
 
-namespace oatpp { namespace web { namespace server {
+namespace avena { namespace web { namespace server {
 
 std::shared_ptr<HttpRouter> HttpRouter::createShared() {
   return std::make_shared<HttpRouter>();

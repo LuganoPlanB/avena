@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "ConnectionProvider.hpp"
 #include <mutex>
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 /**
  * ConnectionProviderSwitch can be used to hot-change connection providers.
@@ -61,15 +63,15 @@ public:
 
   /**
    * Get new connection.
-   * @return &id:oatpp::data::stream::IOStream;.
+   * @return &id:avena::data::stream::IOStream;.
    */
   provider::ResourceHandle<data::stream::IOStream> get() override;
 
   /**
    * Get new connection.
-   * @return &id:oatpp::data::stream::IOStream;.
+   * @return &id:avena::data::stream::IOStream;.
    */
-  oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override;
+  avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override;
 
   /**
    * Stop current provider.

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,16 +35,16 @@
 
 #include <sstream>
 
-namespace oatpp { namespace test { namespace web { namespace app {
+namespace avena { namespace test { namespace web { namespace app {
 
-namespace multipart = oatpp::web::mime::multipart;
+namespace multipart = avena::web::mime::multipart;
 
-class ControllerWithInterceptorsAsync : public oatpp::web::server::api::ApiController {
+class ControllerWithInterceptorsAsync : public avena::web::server::api::ApiController {
 private:
   static constexpr const char* TAG = "test::web::app::ControllerWithInterceptorsAsync";
 public:
   ControllerWithInterceptorsAsync(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 public:
 
@@ -75,7 +77,7 @@ public:
   }
   ENDPOINT_INTERCEPTOR_ASYNC(Interceptor, inter3) {
 
-    class IterceptorCoroutine : public oatpp::async::CoroutineWithResult<IterceptorCoroutine, const std::shared_ptr<OutgoingResponse>&> {
+    class IterceptorCoroutine : public avena::async::CoroutineWithResult<IterceptorCoroutine, const std::shared_ptr<OutgoingResponse>&> {
     private:
       ControllerWithInterceptorsAsync* m_this;
       Handler<ControllerWithInterceptorsAsync>::MethodAsync m_intercepted;
@@ -90,12 +92,12 @@ public:
         , m_request(request)
       {}
 
-      oatpp::async::Action act() override {
+      avena::async::Action act() override {
         m_request->putHeader("header-in-inter3", "inter3");
         return (m_this->*m_intercepted)(m_request).callbackTo(&IterceptorCoroutine::onResponse);
       }
 
-      oatpp::async::Action onResponse(const std::shared_ptr<OutgoingResponse>& response) {
+      avena::async::Action onResponse(const std::shared_ptr<OutgoingResponse>& response) {
         response->putHeader("header-out-inter3", "inter3");
         return this->_return(response);
       }
@@ -107,7 +109,7 @@ public:
   }
   ENDPOINT_INTERCEPTOR_ASYNC(Interceptor, asserter) {
 
-    class IterceptorCoroutine : public oatpp::async::CoroutineWithResult<IterceptorCoroutine, const std::shared_ptr<OutgoingResponse>&> {
+    class IterceptorCoroutine : public avena::async::CoroutineWithResult<IterceptorCoroutine, const std::shared_ptr<OutgoingResponse>&> {
     private:
       ControllerWithInterceptorsAsync* m_this;
       Handler<ControllerWithInterceptorsAsync>::MethodAsync m_intercepted;
@@ -122,11 +124,11 @@ public:
         , m_request(request)
       {}
 
-      oatpp::async::Action act() override {
+      avena::async::Action act() override {
         return (m_this->*m_intercepted)(m_request).callbackTo(&IterceptorCoroutine::onResponse);
       }
 
-      oatpp::async::Action onResponse(const std::shared_ptr<OutgoingResponse>& response) {
+      avena::async::Action onResponse(const std::shared_ptr<OutgoingResponse>& response) {
         OATPP_ASSERT(response->getHeader("header-out-inter3") == "inter3")
         return this->_return(response);
       }

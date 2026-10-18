@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -38,7 +40,7 @@
  * *For details see:*
  * <ul>
  *   <li>[ApiController component](https://oatpp.io/docs/components/api-controller/)</li>
- *   <li>&id:oatpp::web::server::api::ApiController;</li>
+ *   <li>&id:avena::web::server::api::ApiController;</li>
  * </ul>
  */
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Frame.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 void Frame::packHeaderBits(v_uint16& bits, const Header& frameHeader, v_uint8& messageLengthScenario) {
   

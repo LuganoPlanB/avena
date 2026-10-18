@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,12 +29,12 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
   
-class DTOMapperPerfTest : public oatpp::test::UnitTest {
+class DTOMapperPerfTest : public avena::test::UnitTest {
 public:
   
-  DTOMapperPerfTest():UnitTest("TEST[oatpp::json::DTOMapperPerfTest]"){}
+  DTOMapperPerfTest():UnitTest("TEST[avena::json::DTOMapperPerfTest]"){}
   void onRun() override;
   
 };

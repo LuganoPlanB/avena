@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,9 +29,9 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp::web::mime {
+namespace avena::web::mime {
 
-class ContentMappersTest : public oatpp::test::UnitTest{
+class ContentMappersTest : public avena::test::UnitTest{
 public:
 
   ContentMappersTest() : UnitTest("TEST[web::mime::ContentMappersTest]"){}

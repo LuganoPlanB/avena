@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 //
 // Created by Leonid  on 2019-03-25.
 //
@@ -7,9 +9,9 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp { namespace test { namespace websocket {
+namespace avena { namespace test { namespace websocket {
 
-class FullAsyncTest : public oatpp::test::UnitTest {
+class FullAsyncTest : public avena::test::UnitTest {
 public:
 
   FullAsyncTest() : UnitTest("TEST[FullAsyncTest]") {}

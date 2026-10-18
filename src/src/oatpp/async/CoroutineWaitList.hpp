@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,10 +33,10 @@
 #include <unordered_set>
 #include <mutex>
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 /**
- * List of &id:oatpp::async::Coroutine; waiting to be notified.
+ * List of &id:avena::async::Coroutine; waiting to be notified.
  */
 class CoroutineWaitList {
   friend Processor;

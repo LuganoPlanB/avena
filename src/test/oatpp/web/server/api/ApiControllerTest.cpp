@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,14 +29,14 @@
 #include "oatpp/web/server/api/ApiController.hpp"
 #include "oatpp/macro/codegen.hpp"
 
-namespace oatpp { namespace test { namespace web { namespace server { namespace api {
+namespace avena { namespace test { namespace web { namespace server { namespace api {
 
 namespace {
 
-class Controller : public oatpp::web::server::api::ApiController {
+class Controller : public avena::web::server::api::ApiController {
 public:
   Controller(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 public:
 
@@ -91,10 +93,10 @@ public:
 
 void ApiControllerTest::onRun() {
 
-  typedef oatpp::web::protocol::http::Status Status;
+  typedef avena::web::protocol::http::Status Status;
 
   Controller controller(nullptr);
-  oatpp::data::stream::BufferOutputStream headersOutBuffer;
+  avena::data::stream::BufferOutputStream headersOutBuffer;
 
   {
     auto endpoint = controller.Z__ENDPOINT_root;
@@ -103,18 +105,18 @@ void ApiControllerTest::onRun() {
 
     auto r200 = endpoint->info()->responses[Status::CODE_200];
     OATPP_ASSERT(r200.contentType == "text/plain")
-    OATPP_ASSERT(r200.schema == oatpp::String::Class::getType())
+    OATPP_ASSERT(r200.schema == avena::String::Class::getType())
     OATPP_ASSERT(r200.description == "test1-success")
 
     auto r404 = endpoint->info()->responses[Status::CODE_404];
     OATPP_ASSERT(r404.contentType == "text/plain")
     OATPP_ASSERT(r404.description == "Not Found")
-    OATPP_ASSERT(r404.schema == oatpp::String::Class::getType())
+    OATPP_ASSERT(r404.schema == avena::String::Class::getType())
 
     auto response = controller.root();
     OATPP_ASSERT(response->getStatus().code == 200)
 
-    oatpp::data::stream::BufferOutputStream stream;
+    avena::data::stream::BufferOutputStream stream;
     response->send(&stream, &headersOutBuffer, nullptr);
 
     OATPP_LOGd(TAG, "response:\n---\n{}\n---\n", stream.toString())
@@ -141,7 +143,7 @@ void ApiControllerTest::onRun() {
     auto response = controller.pathParams("p1", "p2");
     OATPP_ASSERT(response->getStatus().code == 200)
 
-    oatpp::data::stream::BufferOutputStream stream;
+    avena::data::stream::BufferOutputStream stream;
     response->send(&stream, &headersOutBuffer, nullptr);
 
     OATPP_LOGd(TAG, "response:\n---\n{}\n---\n", stream.toString())
@@ -162,7 +164,7 @@ void ApiControllerTest::onRun() {
     auto response = controller.queryParams("p1", "p2");
     OATPP_ASSERT(response->getStatus().code == 200)
 
-    oatpp::data::stream::BufferOutputStream stream;
+    avena::data::stream::BufferOutputStream stream;
     response->send(&stream, &headersOutBuffer, nullptr);
 
     OATPP_LOGd(TAG, "response:\n---\n{}\n---\n", stream.toString())
@@ -183,7 +185,7 @@ void ApiControllerTest::onRun() {
     OATPP_ASSERT(response->getStatus().code == 204)
     OATPP_ASSERT(!response->getBody())
 
-    oatpp::data::stream::BufferOutputStream stream;
+    avena::data::stream::BufferOutputStream stream;
     response->send(&stream, &headersOutBuffer, nullptr);
 
     OATPP_LOGd(TAG, "response:\n---\n{}\n---\n", stream.toString())

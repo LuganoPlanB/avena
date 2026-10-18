@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 
 #include "oatpp/async/Processor.hpp"
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 void IOEventWorker::initEventQueue() {
   throw std::runtime_error("[IOEventWorker for Target OS is NOT IMPLEMENTED! Use IOWorker instead.]");

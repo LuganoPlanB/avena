@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,9 +35,9 @@
   #include <arpa/inet.h>
 #endif
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
-WebSocket::WebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, const Config& config)
+WebSocket::WebSocket(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, const Config& config)
   : m_config(config)
   , m_connection(connection)
   , m_listener(nullptr)
@@ -43,7 +45,7 @@ WebSocket::WebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStrea
   , m_listening(false)
 {}
 
-WebSocket::WebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, bool maskOutgoingMessages)
+WebSocket::WebSocket(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, bool maskOutgoingMessages)
   : m_connection(connection)
   , m_listener(nullptr)
   , m_lastOpcode(-1)
@@ -73,7 +75,7 @@ void WebSocket::readFrameHeader(Frame::Header& frameHeader) const {
   v_uint16 bb;
   auto res = m_connection.object->readExactSizeDataSimple(&bb, 2);
   if(res != 2) {
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::readFrameHeader()]: Error reading frame header");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::readFrameHeader()]: Error reading frame header");
   }
   
   v_uint8 messageLen1;
@@ -85,14 +87,14 @@ void WebSocket::readFrameHeader(Frame::Header& frameHeader) const {
     v_uint16 messageLen2;
     res = m_connection.object->readExactSizeDataSimple(&messageLen2, 2);
     if(res != 2) {
-      throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::readFrameHeader()]: Error reading frame header. Reading payload length scenario 2.");
+      throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::readFrameHeader()]: Error reading frame header. Reading payload length scenario 2.");
     }
     frameHeader.payloadLength = ntohs(messageLen2);
   } else if(messageLen1 == 127) {
     v_uint32 messageLen3[2];
     res = m_connection.object->readExactSizeDataSimple(&messageLen3, 8);
     if(res != 8) {
-      throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::readFrameHeader()]: Error reading frame header. Reading payload length scenario 3.");
+      throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::readFrameHeader()]: Error reading frame header. Reading payload length scenario 3.");
     }
     frameHeader.payloadLength = (((v_uint64) ntohl(messageLen3[0])) << 32) | ntohl(messageLen3[1]);
   }
@@ -100,7 +102,7 @@ void WebSocket::readFrameHeader(Frame::Header& frameHeader) const {
   if(frameHeader.hasMask) {
     res = m_connection.object->readExactSizeDataSimple(frameHeader.mask, 4);
     if(res != 4) {
-      throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::readFrameHeader()]: Error reading frame header. Reading mask.");
+      throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::readFrameHeader()]: Error reading frame header. Reading mask.");
     }
   }
   
@@ -116,14 +118,14 @@ void WebSocket::writeFrameHeader(const Frame::Header& frameHeader) const {
   
   auto res = m_connection.object->writeExactSizeDataSimple(&bb, 2);
   if(res != 2) {
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::writeFrameHeader()]: Error writing frame header");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::writeFrameHeader()]: Error writing frame header");
   }
   
   if(messageLengthScenario == 2) {
     v_uint16 messageLen2 = htons(frameHeader.payloadLength);
     res = m_connection.object->writeExactSizeDataSimple(&messageLen2, 2);
     if(res != 2) {
-      throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::writeFrameHeader()]: Error writing frame header. Writing payload length scenario 2.");
+      throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::writeFrameHeader()]: Error writing frame header. Writing payload length scenario 2.");
     }
   } else if(messageLengthScenario == 3) {
     v_uint32 messageLen3[2];
@@ -131,14 +133,14 @@ void WebSocket::writeFrameHeader(const Frame::Header& frameHeader) const {
     messageLen3[1] = htonl(frameHeader.payloadLength & 0xFFFFFFFF);
     res = m_connection.object->writeExactSizeDataSimple(&messageLen3, 8);
     if(res != 8) {
-      throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::writeFrameHeader()]: Error writing frame header. Writing payload length scenario 3.");
+      throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::writeFrameHeader()]: Error writing frame header. Writing payload length scenario 3.");
     }
   }
   
   if(frameHeader.hasMask) {
     res = m_connection.object->writeExactSizeDataSimple(frameHeader.mask, 4);
     if(res != 4) {
-      throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::writeFrameHeader()]: Error writing frame header. Writing mask.");
+      throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::writeFrameHeader()]: Error writing frame header. Writing mask.");
     }
   }
   
@@ -147,15 +149,15 @@ void WebSocket::writeFrameHeader(const Frame::Header& frameHeader) const {
 void WebSocket::readPayload(const Frame::Header& frameHeader, data::stream::BufferOutputStream* shortMessageStream) const {
   
   if(shortMessageStream && frameHeader.payloadLength > 125) {
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::readPayload()]: Invalid payloadLength. See RFC-6455, section-5.5.");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::readPayload()]: Invalid payloadLength. See RFC-6455, section-5.5.");
   }
   
   std::unique_ptr<v_char8[]> buffer(new v_char8[m_config.readBufferSize]);
-  oatpp::v_io_size progress = 0;
+  avena::v_io_size progress = 0;
   
   while (progress < frameHeader.payloadLength) {
     
-    oatpp::v_io_size desiredSize = m_config.readBufferSize;
+    avena::v_io_size desiredSize = m_config.readBufferSize;
     if(desiredSize > frameHeader.payloadLength - progress) {
       desiredSize = frameHeader.payloadLength - progress;
     }
@@ -185,10 +187,10 @@ void WebSocket::readPayload(const Frame::Header& frameHeader, data::stream::Buff
       
     } else { // if res == 0 then probably stream handles read() error incorrectly. trow.
       
-      if(res == oatpp::IOError::RETRY_READ || res == oatpp::IOError::RETRY_WRITE) {
+      if(res == avena::IOError::RETRY_READ || res == avena::IOError::RETRY_WRITE) {
         continue;
       }
-      throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::readPayload()]: Invalid connection state.");
+      throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::readPayload()]: Invalid connection state.");
       
     }
   }
@@ -205,7 +207,7 @@ void WebSocket::handleFrame(const Frame::Header& frameHeader) {
   switch (frameHeader.opcode) {
     case Frame::OPCODE_CONTINUATION:
       if(m_lastOpcode < 0) {
-        throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::handleFrame()]: Invalid communication state.");
+        throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::handleFrame()]: Invalid communication state.");
       }
       readPayload(frameHeader, nullptr);
       break;
@@ -214,7 +216,7 @@ void WebSocket::handleFrame(const Frame::Header& frameHeader) {
       if(checkForContinuation(frameHeader)) {
         readPayload(frameHeader, nullptr);
       } else {
-        throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::handleFrame()]: Invalid communication state. OPCODE_CONTINUATION expected");
+        throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::handleFrame()]: Invalid communication state. OPCODE_CONTINUATION expected");
       }
       break;
       
@@ -222,17 +224,17 @@ void WebSocket::handleFrame(const Frame::Header& frameHeader) {
       if(checkForContinuation(frameHeader)) {
         readPayload(frameHeader, nullptr);
       } else {
-        throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::handleFrame()]: Invalid communication state. OPCODE_CONTINUATION expected");
+        throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::handleFrame()]: Invalid communication state. OPCODE_CONTINUATION expected");
       }
       break;
       
     case Frame::OPCODE_CLOSE:
       {
-        oatpp::data::stream::BufferOutputStream messageStream;
+        avena::data::stream::BufferOutputStream messageStream;
         readPayload(frameHeader, &messageStream);
         if(m_listener) {
           v_uint16 code = 0;
-          oatpp::String message;
+          avena::String message;
           if(messageStream.getCurrentPosition() >= 2) {
             code = ntohs(*((p_uint16) messageStream.getData()));
             message = messageStream.getSubstring(2, messageStream.getCurrentPosition() - 2);
@@ -247,7 +249,7 @@ void WebSocket::handleFrame(const Frame::Header& frameHeader) {
       
     case Frame::OPCODE_PING:
       {
-        oatpp::data::stream::BufferOutputStream messageStream;
+        avena::data::stream::BufferOutputStream messageStream;
         readPayload(frameHeader, &messageStream);
         if(m_listener) {
           m_listener->onPing(*this, messageStream.toString());
@@ -257,7 +259,7 @@ void WebSocket::handleFrame(const Frame::Header& frameHeader) {
       
     case Frame::OPCODE_PONG:
       {
-        oatpp::data::stream::BufferOutputStream messageStream;
+        avena::data::stream::BufferOutputStream messageStream;
         readPayload(frameHeader, &messageStream);
         if(m_listener) {
           m_listener->onPong(*this, messageStream.toString());
@@ -266,7 +268,7 @@ void WebSocket::handleFrame(const Frame::Header& frameHeader) {
       break;
       
     default:
-      throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::handleFrame()]: Unknown frame");
+      throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::handleFrame()]: Unknown frame");
       break;
   }
   
@@ -288,9 +290,9 @@ void WebSocket::listen() {
       handleFrame(frameHeader);
     } while(frameHeader.opcode != Frame::OPCODE_CLOSE && m_listening);
   } catch(const std::runtime_error& error) {
-    OATPP_LOGd("[oatpp::web::protocol::websocket::WebSocket::listen()]", "Unhandled error occurred. Message='{}'", error.what());
+    OATPP_LOGd("[avena::web::protocol::websocket::WebSocket::listen()]", "Unhandled error occurred. Message='{}'", error.what());
   } catch(...) {
-    OATPP_LOGd("[oatpp::web::protocol::websocket::WebSocket::listen()]", "Unhandled error occurred");
+    OATPP_LOGd("[avena::web::protocol::websocket::WebSocket::listen()]", "Unhandled error occurred");
   }
   
 }
@@ -315,11 +317,11 @@ void WebSocket::sendFrameHeader(Frame::Header& frameHeader, bool fin, v_uint8 op
   writeFrameHeader(frameHeader);
 }
   
-bool WebSocket::sendOneFrame(bool fin, v_uint8 opcode, const oatpp::String& message) const {
+bool WebSocket::sendOneFrame(bool fin, v_uint8 opcode, const avena::String& message) const {
   Frame::Header frameHeader;
   if(message && message->size() > 0) {
     sendFrameHeader(frameHeader, fin, opcode, message->size());
-    oatpp::v_io_size res;
+    avena::v_io_size res;
     if(frameHeader.hasMask) {
 		std::unique_ptr<v_char8[]> encoded(new v_char8[message->size()]);
       for(v_int32 i = 0; i < message->size(); i ++) {
@@ -338,11 +340,11 @@ bool WebSocket::sendOneFrame(bool fin, v_uint8 opcode, const oatpp::String& mess
   return true;
 }
   
-void WebSocket::sendClose(v_uint16 code, const oatpp::String& message) const {
+void WebSocket::sendClose(v_uint16 code, const avena::String& message) const {
   
   code = htons(code);
   
-  oatpp::data::stream::BufferOutputStream buffer;
+  avena::data::stream::BufferOutputStream buffer;
   buffer.writeSimple(&code, 2);
   if(message) {
     buffer.writeSimple(message->data(), message->size());
@@ -350,7 +352,7 @@ void WebSocket::sendClose(v_uint16 code, const oatpp::String& message) const {
   
   if(!sendOneFrame(true, Frame::OPCODE_CLOSE, buffer.toString())) {
     stopListening();
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::sendClose(...)]: Unknown error while writing to socket.");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::sendClose(...)]: Unknown error while writing to socket.");
   }
   
 }
@@ -358,35 +360,35 @@ void WebSocket::sendClose(v_uint16 code, const oatpp::String& message) const {
 void WebSocket::sendClose() const {
   if(!sendOneFrame(true, Frame::OPCODE_CLOSE, nullptr)) {
     stopListening();
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::sendClose()]: Unknown error while writing to socket.");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::sendClose()]: Unknown error while writing to socket.");
   }
 }
   
-void WebSocket::sendPing(const oatpp::String& message) const {
+void WebSocket::sendPing(const avena::String& message) const {
   if(!sendOneFrame(true, Frame::OPCODE_PING, message)) {
     stopListening();
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::sendPing()]: Unknown error while writing to socket.");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::sendPing()]: Unknown error while writing to socket.");
   }
 }
 
-void WebSocket::sendPong(const oatpp::String& message) const {
+void WebSocket::sendPong(const avena::String& message) const {
   if(!sendOneFrame(true, Frame::OPCODE_PONG, message)) {
     stopListening();
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::sendPong()]: Unknown error while writing to socket.");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::sendPong()]: Unknown error while writing to socket.");
   }
 }
 
-void WebSocket::sendOneFrameText(const oatpp::String& message) const {
+void WebSocket::sendOneFrameText(const avena::String& message) const {
   if(!sendOneFrame(true, Frame::OPCODE_TEXT, message)) {
     stopListening();
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::sendOneFrameText()]: Unknown error while writing to socket.");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::sendOneFrameText()]: Unknown error while writing to socket.");
   }
 }
 
-void WebSocket::sendOneFrameBinary(const oatpp::String& message) const {
+void WebSocket::sendOneFrameBinary(const avena::String& message) const {
   if(!sendOneFrame(true, Frame::OPCODE_BINARY, message)) {
     stopListening();
-    throw std::runtime_error("[oatpp::web::protocol::websocket::WebSocket::sendOneFrameBinary()]: Unknown error while writing to socket.");
+    throw std::runtime_error("[avena::web::protocol::websocket::WebSocket::sendOneFrameBinary()]: Unknown error while writing to socket.");
   }
 }
   

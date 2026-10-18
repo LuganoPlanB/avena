@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -45,16 +47,16 @@
 #include "oatpp/macro/codegen.hpp"
 #include "oatpp/macro/component.hpp"
 
-namespace oatpp { namespace test { namespace web { namespace app {
+namespace avena { namespace test { namespace web { namespace app {
 
-namespace multipart = oatpp::web::mime::multipart;
+namespace multipart = avena::web::mime::multipart;
 
-class ControllerAsync : public oatpp::web::server::api::ApiController {
+class ControllerAsync : public avena::web::server::api::ApiController {
 private:
   static constexpr const char* TAG = "test::web::app::ControllerAsync";
 public:
   ControllerAsync(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 public:
   
@@ -142,15 +144,15 @@ public:
 
     ENDPOINT_ASYNC_INIT(Chunked)
 
-    class ReadCallback : public oatpp::data::stream::ReadCallback {
+    class ReadCallback : public avena::data::stream::ReadCallback {
     private:
-      oatpp::String m_text;
+      avena::String m_text;
       v_int32 m_counter;
       v_int32 m_iterations;
       data::buffer::InlineWriteData m_inlineData;
     public:
 
-      ReadCallback(const oatpp::String& text, v_int32 iterations)
+      ReadCallback(const avena::String& text, v_int32 iterations)
         : m_text(text)
         , m_counter(0)
         , m_iterations(iterations)
@@ -190,10 +192,10 @@ public:
     };
 
     Action act() override {
-      oatpp::String text = request->getPathVariable("text-value");
-      auto numIterations = oatpp::utils::Conversion::strToInt32(request->getPathVariable("num-iterations")->c_str());
+      avena::String text = request->getPathVariable("text-value");
+      auto numIterations = avena::utils::Conversion::strToInt32(request->getPathVariable("num-iterations")->c_str());
 
-      auto body = std::make_shared<oatpp::web::protocol::http::outgoing::StreamingBody>
+      auto body = std::make_shared<avena::web::protocol::http::outgoing::StreamingBody>
         (std::make_shared<ReadCallback>(text, numIterations));
 
       return _return(OutgoingResponse::createShared(Status::CODE_200, body));
@@ -206,16 +208,16 @@ public:
     ENDPOINT_ASYNC_INIT(MultipartTest)
 
     v_int32 m_chunkSize;
-    std::shared_ptr<oatpp::web::mime::multipart::PartList> m_multipart;
+    std::shared_ptr<avena::web::mime::multipart::PartList> m_multipart;
 
     Action act() override {
 
-      m_chunkSize = oatpp::utils::Conversion::strToInt32(request->getPathVariable("chunk-size")->c_str());
+      m_chunkSize = avena::utils::Conversion::strToInt32(request->getPathVariable("chunk-size")->c_str());
 
-      m_multipart = std::make_shared<oatpp::web::mime::multipart::PartList>(request->getHeaders());
-      auto multipartReader = std::make_shared<oatpp::web::mime::multipart::AsyncReader>(m_multipart);
+      m_multipart = std::make_shared<avena::web::mime::multipart::PartList>(request->getHeaders());
+      auto multipartReader = std::make_shared<avena::web::mime::multipart::AsyncReader>(m_multipart);
 
-      multipartReader->setDefaultPartReader(oatpp::web::mime::multipart::createAsyncInMemoryPartReader(10));
+      multipartReader->setDefaultPartReader(avena::web::mime::multipart::createAsyncInMemoryPartReader(10));
 
       return request->transferBodyAsync(multipartReader).next(yieldTo(&MultipartTest::respond));
 
@@ -223,7 +225,7 @@ public:
 
     Action respond() {
 
-      auto responseBody = std::make_shared<oatpp::web::protocol::http::outgoing::MultipartBody>(m_multipart);
+      auto responseBody = std::make_shared<avena::web::protocol::http::outgoing::MultipartBody>(m_multipart);
       return _return(OutgoingResponse::createShared(Status::CODE_200, responseBody));
 
     }
@@ -288,16 +290,16 @@ public:
   };
 
 
-  class MPStream : public oatpp::web::mime::multipart::Multipart {
+  class MPStream : public avena::web::mime::multipart::Multipart {
   public:
-    typedef oatpp::web::mime::multipart::Part Part;
+    typedef avena::web::mime::multipart::Part Part;
   private:
     v_uint32 counter = 0;
     bool m_wait = false;
   public:
 
     MPStream()
-      : oatpp::web::mime::multipart::Multipart(generateRandomBoundary())
+      : avena::web::mime::multipart::Multipart(generateRandomBoundary())
     {}
 
     std::shared_ptr<Part> readNextPart(async::Action& action) override {
@@ -308,7 +310,7 @@ public:
 
       if(m_wait) {
         m_wait = false;
-        action = async::Action::createWaitRepeatAction(1000 * 1000 + oatpp::Environment::getMicroTickCount());
+        action = async::Action::createWaitRepeatAction(1000 * 1000 + avena::Environment::getMicroTickCount());
         return nullptr;
       }
 
@@ -317,14 +319,14 @@ public:
       auto part = std::make_shared<Part>();
       part->putHeader(Header::CONTENT_TYPE, "text/html");
 
-      oatpp::String frameData;
+      avena::String frameData;
 
 //      if(counter % 2 == 0) {
 //        frameData = "<html><body>0</body></html>";
 //      } else {
 //        frameData = "<html><body>1</body></html>";
 //      }
-//      part->setDataInfo(std::make_shared<oatpp::data::stream::BufferInputStream>(frameData));
+//      part->setDataInfo(std::make_shared<avena::data::stream::BufferInputStream>(frameData));
 
       if(counter % 2 == 0) {
         part->setPayload(std::make_shared<data::resource::File>("/Users/leonid/Documents/test/frame1.jpg"));
@@ -352,7 +354,7 @@ public:
 
     Action act() override {
       auto multipart = std::make_shared<MPStream>();
-      auto body = std::make_shared<oatpp::web::protocol::http::outgoing::MultipartBody>(
+      auto body = std::make_shared<avena::web::protocol::http::outgoing::MultipartBody>(
         multipart,
         "multipart/x-mixed-replace",
         true /* flush parts */

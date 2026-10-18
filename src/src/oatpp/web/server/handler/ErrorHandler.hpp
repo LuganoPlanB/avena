@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/web/protocol/http/outgoing/Response.hpp"
 #include "oatpp/web/protocol/http/Http.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace handler {
+namespace avena { namespace web { namespace server { namespace handler {
 
 /**
  * Error Handler.
@@ -38,7 +40,7 @@ class ErrorHandler {
 public:
   /**
    * Convenience typedef for Headers. <br>
-   * See &id:oatpp::web::protocol::http::Headers;
+   * See &id:avena::web::protocol::http::Headers;
    */
   typedef web::protocol::http::Headers Headers;
 public:
@@ -50,7 +52,7 @@ public:
   /**
    * Implement this method!
    * @param exceptionPtr - `std::exception_ptr`.
-   * @return - std::shared_ptr to &id:oatpp::web::protocol::http::outgoing::Response;.
+   * @return - std::shared_ptr to &id:avena::web::protocol::http::outgoing::Response;.
    */
   virtual std::shared_ptr<protocol::http::outgoing::Response> handleError(const std::exception_ptr& exceptionPtr) = 0;
 
@@ -59,14 +61,14 @@ public:
 /**
  * Default Error Handler.
  */
-class DefaultErrorHandler : public oatpp::base::Countable, public ErrorHandler {
+class DefaultErrorHandler : public avena::base::Countable, public ErrorHandler {
 public:
 
   struct HttpServerErrorStacktrace {
     std::shared_ptr<protocol::http::incoming::Request> request;
     protocol::http::Status status;
     Headers headers;
-    std::list<oatpp::String> stack;
+    std::list<avena::String> stack;
   };
 
 private:

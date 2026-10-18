@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace openssl {
+namespace avena { namespace openssl {
 
 /**
  * Config.
@@ -61,8 +63,8 @@ public:
    * @param privateKeyFile
    * @return
    */
-  static std::shared_ptr<Config> createDefaultServerConfigShared(const oatpp::String& certChainFile,
-                                                                 const oatpp::String& privateKeyFile);
+  static std::shared_ptr<Config> createDefaultServerConfigShared(const avena::String& certChainFile,
+                                                                 const avena::String& privateKeyFile);
 
   /**
    * Create default shared `Config` for client.
@@ -77,7 +79,7 @@ public:
 
   /**
    * Add context configurer.
-   * @param contextConfigurer - &id:oatpp::openssl::configurer::ContextConfigurer;.
+   * @param contextConfigurer - &id:avena::openssl::configurer::ContextConfigurer;.
    */
   void addContextConfigurer(const std::shared_ptr<configurer::ContextConfigurer>& contextConfigurer);
 

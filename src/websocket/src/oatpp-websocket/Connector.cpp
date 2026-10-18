@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,18 +29,18 @@
 #include "./Handshaker.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
-Connector::Connector(const std::shared_ptr<oatpp::network::ClientConnectionProvider>& connectionProvider)
+Connector::Connector(const std::shared_ptr<avena::network::ClientConnectionProvider>& connectionProvider)
   : m_connectionProvider(connectionProvider)
   , m_requestExecutor(connectionProvider)
 {}
 
-provider::ResourceHandle<Connector::Connection> Connector::connect(const oatpp::String& path, const Headers& headers) {
+provider::ResourceHandle<Connector::Connection> Connector::connect(const avena::String& path, const Headers& headers) {
 
   auto connection = m_connectionProvider->get();
   if(!connection) {
-    throw std::runtime_error("[oatpp::web::client::Connector::connectAndHandshake()]: Can't connect. Call to ConnectionProvider::get() failed.");
+    throw std::runtime_error("[avena::web::client::Connector::connectAndHandshake()]: Can't connect. Call to ConnectionProvider::get() failed.");
   }
 
   auto connectionProxy = std::make_shared<web::client::HttpRequestExecutor::ConnectionProxy>(connection);
@@ -58,32 +60,32 @@ provider::ResourceHandle<Connector::Connection> Connector::connect(const oatpp::
   if(res == Handshaker::STATUS_OK) {
     return connection;
   } else if(res == Handshaker::STATUS_SERVER_ERROR) {
-    OATPP_LOGd("[oatpp::web::client::Connector::connectAndHandshake()]", "Server response code={}", response->getStatusCode());
-    throw std::runtime_error("[oatpp::web::client::Connector::connectAndHandshake()]: Server responded with invalid code");
+    OATPP_LOGd("[avena::web::client::Connector::connectAndHandshake()]", "Server response code={}", response->getStatusCode());
+    throw std::runtime_error("[avena::web::client::Connector::connectAndHandshake()]: Server responded with invalid code");
   } else if(res == Handshaker::STATUS_SERVER_WRONG_KEY) {
-    throw std::runtime_error("[oatpp::web::client::Connector::connectAndHandshake()]: Server wrong handshake key");
+    throw std::runtime_error("[avena::web::client::Connector::connectAndHandshake()]: Server wrong handshake key");
   } else if(res == Handshaker::STATUS_UNKNOWN_PROTOCOL_SUGGESTED) {
-    throw std::runtime_error("[oatpp::web::client::Connector::connectAndHandshake()]: Server response contains unexpected headers");
+    throw std::runtime_error("[avena::web::client::Connector::connectAndHandshake()]: Server response contains unexpected headers");
   } else {
-    throw std::runtime_error("[oatpp::web::client::Connector::connectAndHandshake()]: Unknown error");
+    throw std::runtime_error("[avena::web::client::Connector::connectAndHandshake()]: Unknown error");
   }
   
 }
 
-oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<Connector::Connection>&> Connector::connectAsync(const oatpp::String& path, const Headers& headers) {
+avena::async::CoroutineStarterForResult<const provider::ResourceHandle<Connector::Connection>&> Connector::connectAsync(const avena::String& path, const Headers& headers) {
   
-  class ConnectCoroutine : public oatpp::async::CoroutineWithResult<ConnectCoroutine, const provider::ResourceHandle<Connection>&> {
+  class ConnectCoroutine : public avena::async::CoroutineWithResult<ConnectCoroutine, const provider::ResourceHandle<Connection>&> {
   private:
-    std::shared_ptr<oatpp::network::ClientConnectionProvider> m_connectionProvider;
-    oatpp::web::client::HttpRequestExecutor m_requestExecutor;
-    oatpp::String m_path;
+    std::shared_ptr<avena::network::ClientConnectionProvider> m_connectionProvider;
+    avena::web::client::HttpRequestExecutor m_requestExecutor;
+    avena::String m_path;
     provider::ResourceHandle<Connection> m_connection;
     Handshaker::Headers m_handshakeHeaders;
   public:
     
-    ConnectCoroutine(const std::shared_ptr<oatpp::network::ClientConnectionProvider>& connectionProvider,
-                     const oatpp::web::client::HttpRequestExecutor& requestExecutor,
-                     const oatpp::String path,
+    ConnectCoroutine(const std::shared_ptr<avena::network::ClientConnectionProvider>& connectionProvider,
+                     const avena::web::client::HttpRequestExecutor& requestExecutor,
+                     const avena::String path,
                      const Headers& headers)
       : m_connectionProvider(connectionProvider)
       , m_requestExecutor(requestExecutor)
@@ -112,18 +114,18 @@ oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<Connector
       
     }
     
-    Action onServerResponse(const std::shared_ptr<oatpp::web::protocol::http::incoming::Response>& response) {
+    Action onServerResponse(const std::shared_ptr<avena::web::protocol::http::incoming::Response>& response) {
       auto res = Handshaker::clientsideConfirmHandshake(m_handshakeHeaders, response);
       if(res == Handshaker::STATUS_OK) {
         return _return(m_connection);
       } else if(res == Handshaker::STATUS_SERVER_ERROR) {
-        throw std::runtime_error("[oatpp::web::client::Connector::connectAsync(){ConnectCoroutine}]: Server responded with invalid code");
+        throw std::runtime_error("[avena::web::client::Connector::connectAsync(){ConnectCoroutine}]: Server responded with invalid code");
       } else if(res == Handshaker::STATUS_SERVER_WRONG_KEY) {
-        throw std::runtime_error("[oatpp::web::client::Connector::connectAsync(){ConnectCoroutine}]: Server wrong handshake key");
+        throw std::runtime_error("[avena::web::client::Connector::connectAsync(){ConnectCoroutine}]: Server wrong handshake key");
       } else if(res == Handshaker::STATUS_UNKNOWN_PROTOCOL_SUGGESTED) {
-        throw std::runtime_error("[oatpp::web::client::Connector::connectAsync(){ConnectCoroutine}]: Server response contains unexpected headers");
+        throw std::runtime_error("[avena::web::client::Connector::connectAsync(){ConnectCoroutine}]: Server response contains unexpected headers");
       } else {
-        throw std::runtime_error("[oatpp::web::client::Connector::connectAsync(){ConnectCoroutine}]: Unknown error");
+        throw std::runtime_error("[avena::web::client::Connector::connectAsync(){ConnectCoroutine}]: Unknown error");
       }
     }
     

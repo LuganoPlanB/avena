@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,11 +30,11 @@
 #include "oatpp/Types.hpp"
 #include "oatpp/macro/codegen.hpp"
 
-namespace oatpp { namespace test { namespace openssl { namespace app {
+namespace avena { namespace test { namespace openssl { namespace app {
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class TestDto : public oatpp::DTO {
+class TestDto : public avena::DTO {
   
   DTO_INIT(TestDto, DTO)
   

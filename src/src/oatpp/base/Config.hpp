@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 #define oatpp_base_Config_hpp
 
 /**
- * If NOT DISABLED, counting of all object of class oatpp::base::Countable is enabled
+ * If NOT DISABLED, counting of all object of class avena::base::Countable is enabled
  * for debug purposes and detection of memory leaks.
  * Disable object counting for Release builds using '-D OATPP_DISABLE_ENV_OBJECT_COUNTERS' flag for better performance
  */
@@ -39,12 +41,12 @@
 
 /**
  * Define this to disable memory-pool allocations.
- * This will make oatpp::base::memory::MemoryPool, method obtain and free call new and delete directly
+ * This will make avena::base::memory::MemoryPool, method obtain and free call new and delete directly
  */
 //#define OATPP_DISABLE_POOL_ALLOCATIONS
 
 /**
- * Predefined value for function oatpp::concurrency::Thread::getHardwareConcurrency();
+ * Predefined value for function avena::concurrency::Thread::getHardwareConcurrency();
  */
 //#define OATPP_THREAD_HARDWARE_CONCURRENCY 4
 

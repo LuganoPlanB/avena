@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,14 +30,14 @@
 #include "oatpp/web/protocol/http/incoming/SimpleBodyDecoder.hpp"
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace web { namespace server {
+namespace avena { namespace web { namespace server {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Components
 
 HttpProcessor::Components::Components(const std::shared_ptr<HttpRouter>& pRouter,
                                       const std::shared_ptr<protocol::http::encoding::ProviderCollection>& pContentEncodingProviders,
-                                      const std::shared_ptr<const oatpp::web::protocol::http::incoming::BodyDecoder>& pBodyDecoder,
+                                      const std::shared_ptr<const avena::web::protocol::http::incoming::BodyDecoder>& pBodyDecoder,
                                       const std::shared_ptr<handler::ErrorHandler>& pErrorHandler,
                                       const RequestInterceptors& pRequestInterceptors,
                                       const ResponseInterceptors& pResponseInterceptors,
@@ -52,7 +54,7 @@ HttpProcessor::Components::Components(const std::shared_ptr<HttpRouter>& pRouter
 HttpProcessor::Components::Components(const std::shared_ptr<HttpRouter>& pRouter)
   : Components(pRouter,
                nullptr,
-               std::make_shared<oatpp::web::protocol::http::incoming::SimpleBodyDecoder>(),
+               std::make_shared<avena::web::protocol::http::incoming::SimpleBodyDecoder>(),
                std::make_shared<handler::DefaultErrorHandler>(),
                {},
                {},
@@ -62,7 +64,7 @@ HttpProcessor::Components::Components(const std::shared_ptr<HttpRouter>& pRouter
 HttpProcessor::Components::Components(const std::shared_ptr<HttpRouter>& pRouter, const std::shared_ptr<Config>& pConfig)
   : Components(pRouter,
                nullptr,
-               std::make_shared<oatpp::web::protocol::http::incoming::SimpleBodyDecoder>(),
+               std::make_shared<avena::web::protocol::http::incoming::SimpleBodyDecoder>(),
                std::make_shared<handler::DefaultErrorHandler>(),
                {},
                {},
@@ -73,7 +75,7 @@ HttpProcessor::Components::Components(const std::shared_ptr<HttpRouter>& pRouter
 // Other
 
 HttpProcessor::ProcessingResources::ProcessingResources(const std::shared_ptr<Components>& pComponents,
-                                                        const provider::ResourceHandle<oatpp::data::stream::IOStream>& pConnection)
+                                                        const provider::ResourceHandle<avena::data::stream::IOStream>& pConnection)
   : components(pComponents)
   , connection(pConnection)
   , headersInBuffer(components->config->headersInBufferInitial)
@@ -108,7 +110,7 @@ HttpProcessor::processNextRequest(ProcessingResources& resources,
         ss << "No mapping for HTTP-method: '" << request->getStartingLine().method.toString()
            << "', URL: '" << request->getStartingLine().path.toString() << "'";
 
-        throw oatpp::web::protocol::http::HttpError(protocol::http::Status::CODE_404, ss.toString());
+        throw avena::web::protocol::http::HttpError(protocol::http::Status::CODE_404, ss.toString());
       }
 
       request->setPathVariables(route.getMatchMap());
@@ -128,7 +130,7 @@ HttpProcessor::processNextRequest(ProcessingResources& resources,
 
 HttpProcessor::ConnectionState HttpProcessor::processNextRequest(ProcessingResources& resources) {
 
-  oatpp::web::protocol::http::HttpError::Info error;
+  avena::web::protocol::http::HttpError::Info error;
   auto headersReadResult = resources.headersReader.readHeaders(resources.inStream.get(), error);
 
   if(error.ioStatus <= 0) {
@@ -206,7 +208,7 @@ HttpProcessor::ConnectionState HttpProcessor::processNextRequest(ProcessingResou
       handler->handleConnection(resources.connection, response->getConnectionUpgradeParameters());
       connectionState = ConnectionState::DELEGATED;
     } else {
-      OATPP_LOGw("[oatpp::web::server::HttpProcessor::processNextRequest()]", "Warning. ConnectionUpgradeHandler not set!")
+      OATPP_LOGw("[avena::web::server::HttpProcessor::processNextRequest()]", "Warning. ConnectionUpgradeHandler not set!")
       connectionState = ConnectionState::CLOSING;
     }
   }
@@ -219,7 +221,7 @@ HttpProcessor::ConnectionState HttpProcessor::processNextRequest(ProcessingResou
 // Task
 
 HttpProcessor::Task::Task(const std::shared_ptr<Components>& components,
-                          const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection,
+                          const provider::ResourceHandle<avena::data::stream::IOStream>& connection,
                           TaskProcessingListener* taskListener)
   : m_components(components)
   , m_connection(connection)
@@ -276,13 +278,13 @@ void HttpProcessor::Task::run(){
 // HttpProcessor::Coroutine
 
 HttpProcessor::Coroutine::Coroutine(const std::shared_ptr<Components>& components,
-                                    const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection,
+                                    const provider::ResourceHandle<avena::data::stream::IOStream>& connection,
                                     TaskProcessingListener* taskListener)
   : m_components(components)
   , m_connection(connection)
   , m_headersInBuffer(components->config->headersInBufferInitial)
   , m_headersReader(&m_headersInBuffer, components->config->headersReaderChunkSize, components->config->headersReaderMaxSize)
-  , m_headersOutBuffer(std::make_shared<oatpp::data::stream::BufferOutputStream>(components->config->headersOutBufferInitial))
+  , m_headersOutBuffer(std::make_shared<avena::data::stream::BufferOutputStream>(components->config->headersOutBufferInitial))
   , m_inStream(data::stream::InputStreamBufferedProxy::createShared(m_connection.object, std::make_shared<std::string>(data::buffer::IOBuffer::BUFFER_SIZE, 0)))
   , m_connectionState(ConnectionState::ALIVE)
   , m_taskListener(taskListener)
@@ -304,7 +306,7 @@ HttpProcessor::Coroutine::Action HttpProcessor::Coroutine::parseHeaders() {
   return m_headersReader.readHeadersAsync(m_inStream).callbackTo(&HttpProcessor::Coroutine::onHeadersParsed);
 }
 
-oatpp::async::Action HttpProcessor::Coroutine::onHeadersParsed(const RequestHeadersReader::Result& headersReadResult) {
+avena::async::Action HttpProcessor::Coroutine::onHeadersParsed(const RequestHeadersReader::Result& headersReadResult) {
 
   m_currentRequest = protocol::http::incoming::Request::createShared(m_connection.object,
                                                                      headersReadResult.startingLine,
@@ -326,7 +328,7 @@ oatpp::async::Action HttpProcessor::Coroutine::onHeadersParsed(const RequestHead
     data::stream::BufferOutputStream ss;
     ss << "No mapping for HTTP-method: '" << headersReadResult.startingLine.method.toString()
        << "', URL: '" << headersReadResult.startingLine.path.toString() << "'";
-    throw oatpp::web::protocol::http::HttpError(protocol::http::Status::CODE_404, ss.toString());
+    throw avena::web::protocol::http::HttpError(protocol::http::Status::CODE_404, ss.toString());
 //    auto eptr = std::make_exception_ptr(error);
 //    m_currentResponse = m_components->errorHandler->handleError(eptr);
 //    m_connectionState = ConnectionState::CLOSING;
@@ -355,7 +357,7 @@ HttpProcessor::Coroutine::Action HttpProcessor::Coroutine::onResponseFormed() {
     for (auto &interceptor: m_components->responseInterceptors) {
       m_currentResponse = interceptor->intercept(m_currentRequest, m_currentResponse);
       if (!m_currentResponse) {
-        throw oatpp::web::protocol::http::HttpError(protocol::http::Status::CODE_500,
+        throw avena::web::protocol::http::HttpError(protocol::http::Status::CODE_500,
                                                     "Response Interceptor returned an Invalid Response - 'null'");
         //auto eptr = std::make_exception_ptr(error);
         //m_currentResponse = m_components->errorHandler->handleError(eptr);
@@ -364,7 +366,7 @@ HttpProcessor::Coroutine::Action HttpProcessor::Coroutine::onResponseFormed() {
   }
 
   m_currentResponse->putHeaderIfNotExists(protocol::http::Header::SERVER, protocol::http::Header::Value::SERVER);
-  oatpp::web::protocol::http::utils::CommunicationUtils::considerConnectionState(m_currentRequest, m_currentResponse, m_connectionState);
+  avena::web::protocol::http::utils::CommunicationUtils::considerConnectionState(m_currentRequest, m_currentResponse, m_connectionState);
 
   switch(m_connectionState) {
 
@@ -404,7 +406,7 @@ HttpProcessor::Coroutine::Action HttpProcessor::Coroutine::onRequestDone() {
         handler->handleConnection(m_connection, m_currentResponse->getConnectionUpgradeParameters());
         m_connectionState = ConnectionState::DELEGATED;
       } else {
-        OATPP_LOGw("[oatpp::web::server::HttpProcessor::Coroutine::onResponseFormed()]", "Warning. ConnectionUpgradeHandler not set!")
+        OATPP_LOGw("[avena::web::server::HttpProcessor::Coroutine::onResponseFormed()]", "Warning. ConnectionUpgradeHandler not set!")
         m_connectionState = ConnectionState::CLOSING;
       }
       break;
@@ -425,15 +427,15 @@ HttpProcessor::Coroutine::Action HttpProcessor::Coroutine::handleError(Error* er
 
   if(error) {
 
-    if(error->is<oatpp::AsyncIOError>()) {
-      auto aioe = static_cast<oatpp::AsyncIOError*>(error);
-      if(aioe->getCode() == oatpp::IOError::BROKEN_PIPE) {
+    if(error->is<avena::AsyncIOError>()) {
+      auto aioe = static_cast<avena::AsyncIOError*>(error);
+      if(aioe->getCode() == avena::IOError::BROKEN_PIPE) {
         return aioe; // do not report BROKEN_PIPE error
       }
     }
 
 //    if(m_currentResponse) {
-//      //OATPP_LOGe("[oatpp::web::server::HttpProcessor::Coroutine::handleError()]", "Unhandled error. '{}'. Dropping connection", error->what())
+//      //OATPP_LOGe("[avena::web::server::HttpProcessor::Coroutine::handleError()]", "Unhandled error. '{}'. Dropping connection", error->what())
 //      return error;
 //    }
 
@@ -459,7 +461,7 @@ HttpProcessor::Coroutine::Action HttpProcessor::Coroutine::handleError(Error* er
 
     return new async::Error(ePtr);
 
-//    oatpp::web::protocol::http::HttpError httpError(protocol::http::Status::CODE_500, error->what());
+//    avena::web::protocol::http::HttpError httpError(protocol::http::Status::CODE_500, error->what());
 //    auto eptr = std::make_exception_ptr(httpError);
 //    m_currentResponse = m_components->errorHandler->handleError(eptr);
 //    return yieldTo(&HttpProcessor::Coroutine::onResponseFormed);

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,13 +26,13 @@
 
 #include "InMemoryData.hpp"
 
-namespace oatpp { namespace data { namespace resource {
+namespace avena { namespace data { namespace resource {
 
 InMemoryData::OutputDataHandle::~OutputDataHandle() {
   dataHandle->data = data + stream->toString();
 }
 
-InMemoryData::InMemoryData(const oatpp::String& data)
+InMemoryData::InMemoryData(const avena::String& data)
   : m_handle(std::make_shared<DataHandle>(data))
 {}
 
@@ -60,7 +62,7 @@ std::shared_ptr<data::stream::InputStream> InMemoryData::openInputStream() {
   return std::make_shared<data::stream::BufferInputStream>(m_handle->data, m_handle);
 }
 
-oatpp::String InMemoryData::getInMemoryData() {
+avena::String InMemoryData::getInMemoryData() {
   if(m_handle && m_handle->data) {
     return m_handle->data;
   }
@@ -74,7 +76,7 @@ v_int64 InMemoryData::getKnownSize() {
   return 0;
 }
 
-oatpp::String InMemoryData::getLocation() {
+avena::String InMemoryData::getLocation() {
   return nullptr;
 }
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,11 +33,11 @@
 #include <openssl/crypto.h>
 #include <openssl/err.h>
 
-namespace oatpp { namespace openssl { namespace client {
+namespace avena { namespace openssl { namespace client {
 
 void ConnectionProvider::ConnectionInvalidator::invalidate(const std::shared_ptr<data::stream::IOStream> &connection){
 
-  auto c = std::static_pointer_cast<oatpp::openssl::Connection>(connection);
+  auto c = std::static_pointer_cast<avena::openssl::Connection>(connection);
 
   /********************************************
    * WARNING!!!
@@ -54,7 +56,7 @@ void ConnectionProvider::ConnectionInvalidator::invalidate(const std::shared_ptr
 }
 
 ConnectionProvider::ConnectionProvider(const std::shared_ptr<Config>& config,
-                                       const std::shared_ptr<oatpp::network::ClientConnectionProvider>& streamProvider)
+                                       const std::shared_ptr<avena::network::ClientConnectionProvider>& streamProvider)
   : m_connectionInvalidator(std::make_shared<ConnectionInvalidator>())
   , m_config(config)
   , m_streamProvider(streamProvider)
@@ -82,7 +84,7 @@ void ConnectionProvider::initSSLClient() {
 
   m_ctx = SSL_CTX_new(method);
   if (!m_ctx) {
-    throw std::runtime_error("[oatpp::openssl::client::ConnectionProvider::initSSLClient()]. Error. Can't create context.");
+    throw std::runtime_error("[avena::openssl::client::ConnectionProvider::initSSLClient()]. Error. Can't create context.");
   }
 
   m_config->configureContext(m_ctx);
@@ -90,7 +92,7 @@ void ConnectionProvider::initSSLClient() {
 }
 
 std::shared_ptr<ConnectionProvider> ConnectionProvider::createShared(const std::shared_ptr<Config>& config,
-                                                                     const std::shared_ptr<oatpp::network::ClientConnectionProvider>& streamProvider) {
+                                                                     const std::shared_ptr<avena::network::ClientConnectionProvider>& streamProvider) {
   return std::shared_ptr<ConnectionProvider>(new ConnectionProvider(config, streamProvider));
 }
 
@@ -105,8 +107,8 @@ std::shared_ptr<ConnectionProvider> ConnectionProvider::createShared(const std::
 
 provider::ResourceHandle<data::stream::IOStream> ConnectionProvider::get(){
 
-  oatpp::String host;
-  auto hostName = m_streamProvider->getProperty(oatpp::network::ConnectionProvider::PROPERTY_HOST);
+  avena::String host;
+  auto hostName = m_streamProvider->getProperty(avena::network::ConnectionProvider::PROPERTY_HOST);
   if(hostName) {
     host = hostName.toString();
   }
@@ -114,13 +116,13 @@ provider::ResourceHandle<data::stream::IOStream> ConnectionProvider::get(){
   auto transportStream = m_streamProvider->get();
 
   if(!transportStream) {
-    throw std::runtime_error("[oatpp::openssl::client::ConnectionProvider::get()]: Error. Can't connect.");
+    throw std::runtime_error("[avena::openssl::client::ConnectionProvider::get()]: Error. Can't connect.");
   }
 
   auto ssl = SSL_new(m_ctx);
   if(ssl == nullptr) {
       std::string openssl_err_msg = ERR_error_string(ERR_get_error(), nullptr);
-      throw std::runtime_error("[oatpp::openssl::client::ConnectionProvider::get()]: Error. Could not instantiate ssl object." + openssl_err_msg);
+      throw std::runtime_error("[avena::openssl::client::ConnectionProvider::get()]: Error. Could not instantiate ssl object." + openssl_err_msg);
   }
   SSL_set_mode(ssl, SSL_MODE_ENABLE_PARTIAL_WRITE);
   SSL_set_connect_state(ssl);
@@ -138,15 +140,15 @@ provider::ResourceHandle<data::stream::IOStream> ConnectionProvider::get(){
 
 }
 
-oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> ConnectionProvider::getAsync() {
+avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> ConnectionProvider::getAsync() {
 
 
-  class ConnectCoroutine : public oatpp::async::CoroutineWithResult<ConnectCoroutine, const provider::ResourceHandle<data::stream::IOStream>&> {
+  class ConnectCoroutine : public avena::async::CoroutineWithResult<ConnectCoroutine, const provider::ResourceHandle<data::stream::IOStream>&> {
   private:
     std::shared_ptr<ConnectionInvalidator> m_connectionInvalidator;
     SSL_CTX* m_ctx;
     std::shared_ptr<Config> m_config;
-    std::shared_ptr<oatpp::network::ClientConnectionProvider> m_streamProvider;
+    std::shared_ptr<avena::network::ClientConnectionProvider> m_streamProvider;
   private:
     provider::ResourceHandle<data::stream::IOStream> m_stream;
     std::shared_ptr<Connection> m_connection;
@@ -175,8 +177,8 @@ oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::str
 
     Action secureConnection() {
 
-      oatpp::String host;
-      auto hostName = m_streamProvider->getProperty(oatpp::network::ConnectionProvider::PROPERTY_HOST);
+      avena::String host;
+      auto hostName = m_streamProvider->getProperty(avena::network::ConnectionProvider::PROPERTY_HOST);
       if(hostName) {
         host = hostName.toString();
       }
@@ -189,8 +191,8 @@ oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::str
 
       m_connection = std::make_shared<Connection>(ssl, m_stream);
 
-      m_connection->setOutputStreamIOMode(oatpp::data::stream::IOMode::ASYNCHRONOUS);
-      m_connection->setInputStreamIOMode(oatpp::data::stream::IOMode::ASYNCHRONOUS);
+      m_connection->setOutputStreamIOMode(avena::data::stream::IOMode::ASYNCHRONOUS);
+      m_connection->setInputStreamIOMode(avena::data::stream::IOMode::ASYNCHRONOUS);
 
       return m_connection->initContextsAsync().next(yieldTo(&ConnectCoroutine::onSuccess));
 

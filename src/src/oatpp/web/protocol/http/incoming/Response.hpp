@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,17 +31,17 @@
 #include "oatpp/web/protocol/http/incoming/BodyDecoder.hpp"
 #include "oatpp/data/Bundle.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 /**
  * Class http::incoming::Response AKA IncomingResponse represents server's incoming response
  */
-class Response : public oatpp::base::Countable {
+class Response : public avena::base::Countable {
 private:
   v_int32 m_statusCode;
-  oatpp::String m_statusDescription;
+  avena::String m_statusDescription;
   http::Headers m_headers;
-  std::shared_ptr<oatpp::data::stream::InputStream> m_bodyStream;
+  std::shared_ptr<avena::data::stream::InputStream> m_bodyStream;
   
   /*
    * Response should be preconfigured with default BodyDecoder.
@@ -48,7 +50,7 @@ private:
    */
   std::shared_ptr<const http::incoming::BodyDecoder> m_bodyDecoder;
   
-  std::shared_ptr<oatpp::data::stream::IOStream> m_connection;
+  std::shared_ptr<avena::data::stream::IOStream> m_connection;
 
   data::Bundle m_bundle;
   
@@ -57,14 +59,14 @@ public:
    * Constructor.
    * @param statusCode - http status code.
    * @param statusDescription - http status description.
-   * @param headers - &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - &id:oatpp::data::stream::InputStream;.
-   * @param bodyDecoder - &id:oatpp::web::protocol::http::incoming::BodyDecoder;.
+   * @param headers - &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - &id:avena::data::stream::InputStream;.
+   * @param bodyDecoder - &id:avena::web::protocol::http::incoming::BodyDecoder;.
    */
   Response(v_int32 statusCode,
-           const oatpp::String& statusDescription,
+           const avena::String& statusDescription,
            const http::Headers& headers,
-           const std::shared_ptr<oatpp::data::stream::InputStream>& bodyStream,
+           const std::shared_ptr<avena::data::stream::InputStream>& bodyStream,
            const std::shared_ptr<const http::incoming::BodyDecoder>& bodyDecoder);
 public:
 
@@ -72,15 +74,15 @@ public:
    * Create shared Response.
    * @param statusCode - http status code.
    * @param statusDescription - http status description.
-   * @param headers - &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - &id:oatpp::data::stream::InputStream;.
-   * @param bodyDecoder - &id:oatpp::web::protocol::http::incoming::BodyDecoder;.
+   * @param headers - &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - &id:avena::data::stream::InputStream;.
+   * @param bodyDecoder - &id:avena::web::protocol::http::incoming::BodyDecoder;.
    * @return - `std::shared_ptr` to Response.
    */
   static std::shared_ptr<Response> createShared(v_int32 statusCode,
-                                                const oatpp::String& statusDescription,
+                                                const avena::String& statusDescription,
                                                 const http::Headers& headers,
-                                                const std::shared_ptr<oatpp::data::stream::InputStream>& bodyStream,
+                                                const std::shared_ptr<avena::data::stream::InputStream>& bodyStream,
                                                 const std::shared_ptr<const http::incoming::BodyDecoder>& bodyDecoder);
 
   /**
@@ -93,73 +95,73 @@ public:
    * Get http status description.
    * @return - http status description.
    */
-  oatpp::String getStatusDescription() const;
+  avena::String getStatusDescription() const;
 
   /**
-   * Get response http headers as &id:oatpp::web::protocol::http::Headers;.
-   * @return - response http headers as &id:oatpp::web::protocol::http::Headers;.
+   * Get response http headers as &id:avena::web::protocol::http::Headers;.
+   * @return - response http headers as &id:avena::web::protocol::http::Headers;.
    */
   const http::Headers& getHeaders() const;
 
   /**
    * Add http header.
-   * @param key - &id:oatpp::String;.
-   * @param value - &id:oatpp::String;.
+   * @param key - &id:avena::String;.
+   * @param value - &id:avena::String;.
    */
-  void putHeader(const oatpp::String& key, const oatpp::String& value);
+  void putHeader(const avena::String& key, const avena::String& value);
 
   /**
    * Add http header if not already exists.
-   * @param key - &id:oatpp::String;.
-   * @param value - &id:oatpp::String;.
+   * @param key - &id:avena::String;.
+   * @param value - &id:avena::String;.
    * @return - `true` if header was added.
    */
-  bool putHeaderIfNotExists(const oatpp::String& key, const oatpp::String& value);
+  bool putHeaderIfNotExists(const avena::String& key, const avena::String& value);
 
   /**
    * Replaces or adds header.
-   * @param key - &id:oatpp::String;.
-   * @param value - &id:oatpp::String;.
+   * @param key - &id:avena::String;.
+   * @param value - &id:avena::String;.
    * @return - `true` if header was replaces, `false` if header was added.
    */
-  bool putOrReplaceHeader(const oatpp::String& key, const oatpp::String& value);
+  bool putOrReplaceHeader(const avena::String& key, const avena::String& value);
 
   /**
    * Replaces or adds header.
-   * @param key - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @param value - &id:oatpp::data::share::StringKeyLabel;.
+   * @param key - &id:avena::data::share::StringKeyLabelCI;.
+   * @param value - &id:avena::data::share::StringKeyLabel;.
    * @return - `true` if header was replaces, `false` if header was added.
    */
-  bool putOrReplaceHeader_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value);
+  bool putOrReplaceHeader_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value);
 
   /**
    * Add http header.
-   * @param key - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @param value - &id:oatpp::data::share::StringKeyLabel;.
+   * @param key - &id:avena::data::share::StringKeyLabelCI;.
+   * @param value - &id:avena::data::share::StringKeyLabel;.
    */
-  void putHeader_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value);
+  void putHeader_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value);
 
   /**
    * Add http header if not already exists.
-   * @param key - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @param value - &id:oatpp::data::share::StringKeyLabel;.
+   * @param key - &id:avena::data::share::StringKeyLabelCI;.
+   * @param value - &id:avena::data::share::StringKeyLabel;.
    * @return - `true` if header was added.
    */
-  bool putHeaderIfNotExists_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value);
+  bool putHeaderIfNotExists_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value);
 
   /**
    * Get header value
-   * @param headerName - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @return - &id:oatpp::String;.
+   * @param headerName - &id:avena::data::share::StringKeyLabelCI;.
+   * @return - &id:avena::String;.
    */
-  oatpp::String getHeader(const oatpp::data::share::StringKeyLabelCI& headerName) const;
+  avena::String getHeader(const avena::data::share::StringKeyLabelCI& headerName) const;
 
   /**
    * Put data to bundle.
    * @param key
    * @param polymorph
    */
-  void putBundleData(const oatpp::String& key, const oatpp::Void& polymorph);
+  void putBundleData(const avena::String& key, const avena::Void& polymorph);
 
   /**
    * Get data from bundle by key.
@@ -168,7 +170,7 @@ public:
    * @return
    */
   template<typename WrapperType>
-  WrapperType getBundleData(const oatpp::String& key) const {
+  WrapperType getBundleData(const avena::String& key) const {
     return m_bundle.template get<WrapperType>(key);
   }
 
@@ -180,40 +182,40 @@ public:
 
   /**
    * Get raw body stream.
-   * @return - raw body stream as &id:oatpp::data::stream::InputStream;.
+   * @return - raw body stream as &id:avena::data::stream::InputStream;.
    */
   std::shared_ptr<data::stream::InputStream> getBodyStream() const;
 
   /**
    * Get body decoder configured for this response.
-   * @return - &id:oatpp::web::protocol::http::incoming::BodyDecoder;.
+   * @return - &id:avena::web::protocol::http::incoming::BodyDecoder;.
    */
   std::shared_ptr<const http::incoming::BodyDecoder> getBodyDecoder() const;
 
   /**
    * Transfer body. <br>
    * Read body chunk by chunk and pass chunks to the `writeCallback`.
-   * @param writeCallback - &id:oatpp::data::stream::WriteCallback;.
+   * @param writeCallback - &id:avena::data::stream::WriteCallback;.
    */
   void transferBody(const base::ObjectHandle<data::stream::WriteCallback>& writeCallback) const;
 
   /**
    * Decode and transfer body to toStream.
    * Use case example - stream huge body directly to file using relatively small buffer.
-   * @param toStream - pointer to &id:oatpp::data::stream::OutputStream;.
+   * @param toStream - pointer to &id:avena::data::stream::OutputStream;.
    */
   void transferBodyToStream(const base::ObjectHandle<data::stream::OutputStream>& toStream) const;
 
   /**
-   * Decode and read body to &id:oatpp::String;.
-   * @return - &id:oatpp::String;.
+   * Decode and read body to &id:avena::String;.
+   * @return - &id:avena::String;.
    */
-  oatpp::String readBodyToString() const;
+  avena::String readBodyToString() const;
 
   /**
    * Read body stream, decode, and deserialize it as DTO Object (see [Data Transfer Object (DTO)](https://oatpp.io/docs/components/dto/)).
    * @tparam Wrapper - ObjectWrapper type.
-   * @param objectMapper - `std::shared_ptr` to &id:oatpp::data::mapping::ObjectMapper;.
+   * @param objectMapper - `std::shared_ptr` to &id:avena::data::mapping::ObjectMapper;.
    * @return - deserialized DTO object.
    */
   template<class Wrapper>
@@ -226,35 +228,35 @@ public:
   /**
    * Transfer body in Asynchronous manner. <br>
    * Read body chunk by chunk and pass chunks to the `writeCallback`.
-   * @param writeCallback - `std::shared_ptr` to &id:oatpp::data::stream::WriteCallback;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param writeCallback - `std::shared_ptr` to &id:avena::data::stream::WriteCallback;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   async::CoroutineStarter transferBodyAsync(const std::shared_ptr<data::stream::WriteCallback>& writeCallback) const;
 
 
   /**
    * Same as &l:Response::readBodyToDto (); but Async.
-   * @param toStream - `std::shared_ptr` to &id:oatpp::data::stream::OutputStream;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param toStream - `std::shared_ptr` to &id:avena::data::stream::OutputStream;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  oatpp::async::CoroutineStarter transferBodyToStreamAsync(const std::shared_ptr<data::stream::OutputStream>& toStream) const;
+  avena::async::CoroutineStarter transferBodyToStreamAsync(const std::shared_ptr<data::stream::OutputStream>& toStream) const;
 
   /**
    * Same as &l:Response::readBodyToString (); but Async.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
-  oatpp::async::CoroutineStarterForResult<const oatpp::String&> readBodyToStringAsync() const {
+  avena::async::CoroutineStarterForResult<const avena::String&> readBodyToStringAsync() const {
     return m_bodyDecoder->decodeToStringAsync(m_headers, m_bodyStream, m_connection);
   }
 
   /**
    * Same as &l:Response::readBodyToDto (); but Async.
    * @tparam Wrapper - ObjectWrapper type.
-   * @param objectMapper - `std::shared_ptr` to &id:oatpp::data::mapping::ObjectMapper;.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @param objectMapper - `std::shared_ptr` to &id:avena::data::mapping::ObjectMapper;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
   template<class Wrapper>
-  oatpp::async::CoroutineStarterForResult<const Wrapper&>
+  avena::async::CoroutineStarterForResult<const Wrapper&>
   readBodyToDtoAsync(const std::shared_ptr<data::mapping::ObjectMapper>& objectMapper) const {
     return m_bodyDecoder->decodeToDtoAsync<Wrapper>(m_headers, m_bodyStream, m_connection, objectMapper);
   }

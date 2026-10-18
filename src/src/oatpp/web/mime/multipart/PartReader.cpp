@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,9 +27,9 @@
 #include "PartReader.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
-const char* const StreamPartReader::TAG_NAME = "[oatpp::web::mime::multipart::StreamPartReader::TAG]";
+const char* const StreamPartReader::TAG_NAME = "[avena::web::mime::multipart::StreamPartReader::TAG]";
 
 StreamPartReader::StreamPartReader(const std::shared_ptr<PartReaderResourceProvider>& resourceProvider,
                                    v_io_size maxDataSize)
@@ -38,13 +40,13 @@ StreamPartReader::StreamPartReader(const std::shared_ptr<PartReaderResourceProvi
 void StreamPartReader::onNewPart(const std::shared_ptr<Part>& part) {
 
   if(!m_resourceProvider) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::StreamPartReader::onNewPart()]: Error. Stream provider is nullptr.");
+    throw std::runtime_error("[avena::web::mime::multipart::StreamPartReader::onNewPart()]: Error. Stream provider is nullptr.");
   }
 
   auto tag = part->getTagObject();
 
   if(tag) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::StreamPartReader::onNewPart()]: Error. "
+    throw std::runtime_error("[avena::web::mime::multipart::StreamPartReader::onNewPart()]: Error. "
                              "Part tag object is not nullptr. Seems like this part is already being processed by another part reader.");
   }
 
@@ -55,17 +57,17 @@ void StreamPartReader::onNewPart(const std::shared_ptr<Part>& part) {
 
 }
 
-void StreamPartReader::onPartData(const std::shared_ptr<Part>& part, const char* data, oatpp::v_io_size size) {
+void StreamPartReader::onPartData(const std::shared_ptr<Part>& part, const char* data, avena::v_io_size size) {
 
   auto tag = part->getTagObject();
   if(!tag) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::StreamPartReader::onPartData()]: Error. "
+    throw std::runtime_error("[avena::web::mime::multipart::StreamPartReader::onPartData()]: Error. "
                              "Part tag object is nullptr.");
 
   }
 
   if(part->getTagName() != TAG_NAME) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::StreamPartReader::onPartData()]: Error. "
+    throw std::runtime_error("[avena::web::mime::multipart::StreamPartReader::onPartData()]: Error. "
                              "Wrong tag name. Seems like this part is already being processed by another part reader.");
 
   }
@@ -74,13 +76,13 @@ void StreamPartReader::onPartData(const std::shared_ptr<Part>& part, const char*
 
   if(size > 0) {
     if(m_maxDataSize > 0 && tagObject->size + size > m_maxDataSize) {
-      OATPP_LOGe("[oatpp::web::mime::multipart::StreamPartReader::onPartData()]", "Error. Part size exceeds specified maxDataSize={}", m_maxDataSize)
-      throw std::runtime_error("[oatpp::web::mime::multipart::StreamPartReader::onPartData()]: Error. Part size exceeds specified maxDataSize");
+      OATPP_LOGe("[avena::web::mime::multipart::StreamPartReader::onPartData()]", "Error. Part size exceeds specified maxDataSize={}", m_maxDataSize)
+      throw std::runtime_error("[avena::web::mime::multipart::StreamPartReader::onPartData()]: Error. Part size exceeds specified maxDataSize");
     }
     auto res = tagObject->outputStream->writeExactSizeDataSimple(data, size);
     if(res != size) {
-      OATPP_LOGe("[oatpp::web::mime::multipart::StreamPartReader::onPartData()]", "Error. Failed to stream all data. Streamed {}/{}", res, size)
-      throw std::runtime_error("[oatpp::web::mime::multipart::StreamPartReader::onPartData()]: Error. Failed to stream all data.");
+      OATPP_LOGe("[avena::web::mime::multipart::StreamPartReader::onPartData()]", "Error. Failed to stream all data. Streamed {}/{}", res, size)
+      throw std::runtime_error("[avena::web::mime::multipart::StreamPartReader::onPartData()]: Error. Failed to stream all data.");
     }
     tagObject->size += res;
   } else {
@@ -91,7 +93,7 @@ void StreamPartReader::onPartData(const std::shared_ptr<Part>& part, const char*
 }
 
 
-const char* const AsyncStreamPartReader::TAG_NAME = "[oatpp::web::mime::multipart::AsyncStreamPartReader::TAG]";
+const char* const AsyncStreamPartReader::TAG_NAME = "[avena::web::mime::multipart::AsyncStreamPartReader::TAG]";
 
 AsyncStreamPartReader::AsyncStreamPartReader(const std::shared_ptr<PartReaderResourceProvider>& resourceProvider,
                                              v_io_size maxDataSize)
@@ -117,13 +119,13 @@ async::CoroutineStarter AsyncStreamPartReader::onNewPartAsync(const std::shared_
     Action act() override {
 
       if(!m_resourceProvider) {
-        throw std::runtime_error("[oatpp::web::mime::multipart::AsyncStreamPartReader::onNewPartAsync(){OnNewPartCoroutine}]: Error. Stream provider is nullptr.");
+        throw std::runtime_error("[avena::web::mime::multipart::AsyncStreamPartReader::onNewPartAsync(){OnNewPartCoroutine}]: Error. Stream provider is nullptr.");
       }
 
       auto tag = m_part->getTagObject();
 
       if(tag) {
-        throw std::runtime_error("[oatpp::web::mime::multipart::AsyncStreamPartReader::onNewPartAsync(){OnNewPartCoroutine}]: Error. "
+        throw std::runtime_error("[avena::web::mime::multipart::AsyncStreamPartReader::onNewPartAsync(){OnNewPartCoroutine}]: Error. "
                                  "Part tag object is not nullptr. Seems like this part is already being processed by another part reader.");
       }
 
@@ -145,17 +147,17 @@ async::CoroutineStarter AsyncStreamPartReader::onNewPartAsync(const std::shared_
 
 }
 
-async::CoroutineStarter AsyncStreamPartReader::onPartDataAsync(const std::shared_ptr<Part>& part, const char* data, oatpp::v_io_size size) {
+async::CoroutineStarter AsyncStreamPartReader::onPartDataAsync(const std::shared_ptr<Part>& part, const char* data, avena::v_io_size size) {
 
   auto tag = part->getTagObject();
   if(!tag) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::AsyncStreamPartReader::onPartDataAsync()]: Error. "
+    throw std::runtime_error("[avena::web::mime::multipart::AsyncStreamPartReader::onPartDataAsync()]: Error. "
                              "Part tag object is nullptr.");
 
   }
 
   if(part->getTagName() != TAG_NAME) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::AsyncStreamPartReader::onPartDataAsync()]: Error. "
+    throw std::runtime_error("[avena::web::mime::multipart::AsyncStreamPartReader::onPartDataAsync()]: Error. "
                              "Wrong tag name. Seems like this part is already being processed by another part reader.");
 
   }
@@ -164,8 +166,8 @@ async::CoroutineStarter AsyncStreamPartReader::onPartDataAsync(const std::shared
 
   if(size > 0) {
     if(m_maxDataSize > 0 && tagObject->size + size > m_maxDataSize) {
-      OATPP_LOGe("[oatpp::web::mime::multipart::AsyncStreamPartReader::onPartDataAsync()]", "Error. Part size exceeds specified maxDataSize={}", m_maxDataSize)
-      throw std::runtime_error("[oatpp::web::mime::multipart::AsyncStreamPartReader::onPartDataAsync()]: Error. Part size exceeds specified maxDataSize");
+      OATPP_LOGe("[avena::web::mime::multipart::AsyncStreamPartReader::onPartDataAsync()]", "Error. Part size exceeds specified maxDataSize={}", m_maxDataSize)
+      throw std::runtime_error("[avena::web::mime::multipart::AsyncStreamPartReader::onPartDataAsync()]: Error. Part size exceeds specified maxDataSize");
     }
     return tagObject->outputStream->writeExactSizeDataAsync(data, size);
   } else {

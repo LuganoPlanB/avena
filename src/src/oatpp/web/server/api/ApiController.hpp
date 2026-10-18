@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -42,133 +44,133 @@
 #include <list>
 #include <unordered_map>
 
-namespace oatpp { namespace web { namespace server { namespace api {
+namespace avena { namespace web { namespace server { namespace api {
 
 /**
  * Class responsible for implementation and management of endpoints.<br>
  * For details see [ApiController](https://oatpp.io/docs/components/api-controller/).
  */
-class ApiController : public oatpp::base::Countable {
+class ApiController : public avena::base::Countable {
 protected:
   typedef ApiController __ControllerType;
 public:
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::outgoing::ResponseFactory;.
+   * Convenience typedef for &id:avena::web::protocol::http::outgoing::ResponseFactory;.
    */
-  typedef oatpp::web::protocol::http::outgoing::ResponseFactory ResponseFactory;
+  typedef avena::web::protocol::http::outgoing::ResponseFactory ResponseFactory;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::incoming::Request;.
+   * Convenience typedef for &id:avena::web::protocol::http::incoming::Request;.
    */
-  typedef oatpp::web::protocol::http::incoming::Request IncomingRequest;
+  typedef avena::web::protocol::http::incoming::Request IncomingRequest;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::outgoing::Request;.
+   * Convenience typedef for &id:avena::web::protocol::http::outgoing::Request;.
    */
-  typedef oatpp::web::protocol::http::outgoing::Request OutgoingRequest;
+  typedef avena::web::protocol::http::outgoing::Request OutgoingRequest;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::incoming::Response;.
+   * Convenience typedef for &id:avena::web::protocol::http::incoming::Response;.
    */
-  typedef oatpp::web::protocol::http::incoming::Response IncomingResponse;
+  typedef avena::web::protocol::http::incoming::Response IncomingResponse;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::outgoing::Response;.
+   * Convenience typedef for &id:avena::web::protocol::http::outgoing::Response;.
    */
-  typedef oatpp::web::protocol::http::outgoing::Response OutgoingResponse;
+  typedef avena::web::protocol::http::outgoing::Response OutgoingResponse;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::Status;.
+   * Convenience typedef for &id:avena::web::protocol::http::Status;.
    */
-  typedef oatpp::web::protocol::http::Status Status;
+  typedef avena::web::protocol::http::Status Status;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::Header;.
+   * Convenience typedef for &id:avena::web::protocol::http::Header;.
    */
-  typedef oatpp::web::protocol::http::Header Header;
+  typedef avena::web::protocol::http::Header Header;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::QueryParams;.
+   * Convenience typedef for &id:avena::web::protocol::http::QueryParams;.
    */
-  typedef oatpp::web::protocol::http::QueryParams QueryParams;
+  typedef avena::web::protocol::http::QueryParams QueryParams;
 
   /**
-   * Convenience typedef for &id:oatpp::web::server::HttpRequestHandler;.
+   * Convenience typedef for &id:avena::web::server::HttpRequestHandler;.
    */
-  typedef oatpp::web::server::HttpRequestHandler RequestHandler;
+  typedef avena::web::server::HttpRequestHandler RequestHandler;
 
   /**
-   * Convenience typedef for &id:oatpp::web::server::handler::AuthorizationHandler;.
+   * Convenience typedef for &id:avena::web::server::handler::AuthorizationHandler;.
    */
-  typedef oatpp::web::server::handler::AuthorizationHandler AuthorizationHandler;
+  typedef avena::web::server::handler::AuthorizationHandler AuthorizationHandler;
   
 public:
 
   /**
-   * Convenience typedef for &id:oatpp::data::mapping::ObjectMapper;.
+   * Convenience typedef for &id:avena::data::mapping::ObjectMapper;.
    */
-  typedef oatpp::data::mapping::ObjectMapper ObjectMapper;
+  typedef avena::data::mapping::ObjectMapper ObjectMapper;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::String;.
+   * Convenience typedef for &id:avena::data::type::String;.
    */
-  typedef oatpp::String String;
+  typedef avena::String String;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::Int8;.
+   * Convenience typedef for &id:avena::data::type::Int8;.
    */
-  typedef oatpp::Int8 Int8;
+  typedef avena::Int8 Int8;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::UInt8;.
+   * Convenience typedef for &id:avena::data::type::UInt8;.
    */
-  typedef oatpp::UInt8 UInt8;
+  typedef avena::UInt8 UInt8;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::Int16;.
+   * Convenience typedef for &id:avena::data::type::Int16;.
    */
-  typedef oatpp::Int16 Int16;
+  typedef avena::Int16 Int16;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::UInt16;.
+   * Convenience typedef for &id:avena::data::type::UInt16;.
    */
-  typedef oatpp::UInt16 UInt16;
+  typedef avena::UInt16 UInt16;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::Int32;.
+   * Convenience typedef for &id:avena::data::type::Int32;.
    */
-  typedef oatpp::Int32 Int32;
+  typedef avena::Int32 Int32;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::UInt32;.
+   * Convenience typedef for &id:avena::data::type::UInt32;.
    */
-  typedef oatpp::UInt32 UInt32;
+  typedef avena::UInt32 UInt32;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::Int64;.
+   * Convenience typedef for &id:avena::data::type::Int64;.
    */
-  typedef oatpp::Int64 Int64;
+  typedef avena::Int64 Int64;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::UInt64;.
+   * Convenience typedef for &id:avena::data::type::UInt64;.
    */
-  typedef oatpp::UInt64 UInt64;
+  typedef avena::UInt64 UInt64;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::Float32;.
+   * Convenience typedef for &id:avena::data::type::Float32;.
    */
-  typedef oatpp::Float32 Float32;
+  typedef avena::Float32 Float32;
 
   /**
    * Convenience typedef for &id:atpp::data::type::Float64;.
    */
-  typedef oatpp::Float64 Float64;
+  typedef avena::Float64 Float64;
 
   /**
-   * Convenience typedef for &id:oatpp::data::type::Boolean;.
+   * Convenience typedef for &id:avena::data::type::Boolean;.
    */
-  typedef oatpp::Boolean Boolean;
+  typedef avena::Boolean Boolean;
 
   /*
    * Convenience typedef for std::function<std::shared_ptr<Endpoint::Info>()>.
@@ -176,16 +178,16 @@ public:
   typedef std::function<std::shared_ptr<Endpoint::Info>()> EndpointInfoBuilder;
 
   template <class T>
-  using Object = oatpp::Object<T>;
+  using Object = avena::Object<T>;
 
   template <class T>
-  using List = oatpp::List<T>;
+  using List = avena::List<T>;
 
   template <class Value>
-  using Fields = oatpp::Fields<Value>;
+  using Fields = avena::Fields<Value>;
 
   template <class T>
-  using Enum = oatpp::data::type::Enum<T>;
+  using Enum = avena::data::type::Enum<T>;
 
 protected:
   
@@ -193,7 +195,7 @@ protected:
    * Endpoint Coroutine base class
    */
   template<class CoroutineT, class ControllerT>
-  class HandlerCoroutine : public oatpp::async::CoroutineWithResult<CoroutineT, const std::shared_ptr<OutgoingResponse>&> {
+  class HandlerCoroutine : public avena::async::CoroutineWithResult<CoroutineT, const std::shared_ptr<OutgoingResponse>&> {
   public:
     
     HandlerCoroutine(ControllerT* pController, const std::shared_ptr<IncomingRequest>& pRequest)
@@ -213,12 +215,12 @@ protected:
   class Handler : public RequestHandler {
   public:
     typedef std::shared_ptr<OutgoingResponse> (T::*Method)(const std::shared_ptr<IncomingRequest>&);
-    typedef oatpp::async::CoroutineStarterForResult<const std::shared_ptr<OutgoingResponse>&>
+    typedef avena::async::CoroutineStarterForResult<const std::shared_ptr<OutgoingResponse>&>
             (T::*MethodAsync)(const std::shared_ptr<IncomingRequest>&);
 
   private:
 
-    class ErrorHandlingCoroutine : public oatpp::async::CoroutineWithResult<ErrorHandlingCoroutine, const std::shared_ptr<OutgoingResponse>&> {
+    class ErrorHandlingCoroutine : public avena::async::CoroutineWithResult<ErrorHandlingCoroutine, const std::shared_ptr<OutgoingResponse>&> {
     private:
       Handler* m_handler;
       std::shared_ptr<IncomingRequest> m_request;
@@ -307,7 +309,7 @@ protected:
       
     }
     
-    oatpp::async::CoroutineStarterForResult<const std::shared_ptr<OutgoingResponse>&>
+    avena::async::CoroutineStarterForResult<const std::shared_ptr<OutgoingResponse>&>
     handleAsync(const std::shared_ptr<protocol::http::incoming::Request>& request) override {
 
       if(m_methodAsync == nullptr) {
@@ -381,17 +383,17 @@ protected:
   std::shared_ptr<mime::ContentMappers> m_contentMappers;
   std::unordered_map<std::string, std::shared_ptr<Endpoint::Info>> m_endpointInfo;
   std::unordered_map<std::string, std::shared_ptr<RequestHandler>> m_endpointHandlers;
-  const oatpp::String m_routerPrefix;
+  const avena::String m_routerPrefix;
 public:
 
-  ApiController(const std::shared_ptr<mime::ContentMappers>& contentMappers, const oatpp::String &routerPrefix = nullptr)
+  ApiController(const std::shared_ptr<mime::ContentMappers>& contentMappers, const avena::String &routerPrefix = nullptr)
     : m_contentMappers(contentMappers)
     , m_routerPrefix(routerPrefix)
   {
 
   }
 
-  ApiController(const std::shared_ptr<oatpp::data::mapping::ObjectMapper>& defaultObjectMapper, const oatpp::String &routerPrefix = nullptr)
+  ApiController(const std::shared_ptr<avena::data::mapping::ObjectMapper>& defaultObjectMapper, const avena::String &routerPrefix = nullptr)
     : m_contentMappers(std::make_shared<mime::ContentMappers>())
     , m_routerPrefix(routerPrefix)
   {
@@ -455,33 +457,33 @@ public:
   // Helper methods
   
   std::shared_ptr<OutgoingResponse> createResponse(const Status& status,
-                                                   const oatpp::String& str) const;
+                                                   const avena::String& str) const;
   
   std::shared_ptr<OutgoingResponse> createResponse(const Status& status) const;
 
   std::shared_ptr<OutgoingResponse> createDtoResponse(const Status& status,
-                                                      const oatpp::Void& dto,
-                                                      const std::shared_ptr<oatpp::data::mapping::ObjectMapper>& objectMapper) const;
+                                                      const avena::Void& dto,
+                                                      const std::shared_ptr<avena::data::mapping::ObjectMapper>& objectMapper) const;
   
   std::shared_ptr<OutgoingResponse> createDtoResponse(const Status& status,
-                                                      const oatpp::Void& dto) const;
+                                                      const avena::Void& dto) const;
 
   std::shared_ptr<ApiController::OutgoingResponse> createDtoResponse(const Status& status,
-                                                                     const oatpp::Void& dto,
-                                                                     const std::vector<oatpp::String>& acceptableContentTypes) const;
+                                                                     const avena::Void& dto,
+                                                                     const std::vector<avena::String>& acceptableContentTypes) const;
 
 public:
 
   template<typename T>
   struct TypeInterpretation {
 
-    static T fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+    static T fromString(const avena::String& typeName, const avena::String& text, bool& success) {
       (void) text;
       success = false;
-      OATPP_LOGe("[oatpp::web::server::api::ApiController::TypeInterpretation::fromString()]",
-                 "Error. No conversion from '{}' to '{}' is defined.", "oatpp::String", typeName)
-      throw std::runtime_error("[oatpp::web::server::api::ApiController::TypeInterpretation::fromString()]: Error. "
-                               "No conversion from 'oatpp::String' to '" + *typeName + "' is defined. "
+      OATPP_LOGe("[avena::web::server::api::ApiController::TypeInterpretation::fromString()]",
+                 "Error. No conversion from '{}' to '{}' is defined.", "avena::String", typeName)
+      throw std::runtime_error("[avena::web::server::api::ApiController::TypeInterpretation::fromString()]: Error. "
+                               "No conversion from 'avena::String' to '" + *typeName + "' is defined. "
                                "Please define type conversion.");
     }
 
@@ -490,8 +492,8 @@ public:
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::String> {
-  static oatpp::String fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::String> {
+  static avena::String fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     success = true;
     return text;
@@ -499,8 +501,8 @@ struct ApiController::TypeInterpretation <oatpp::String> {
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::Int8> {
-  static oatpp::Int8 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::Int8> {
+  static avena::Int8 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     //TODO: check the range and perhaps throw an exception if the variable doesn't fit
     return static_cast<Int8::UnderlyingType>(utils::Conversion::strToInt32(text, success));
@@ -508,8 +510,8 @@ struct ApiController::TypeInterpretation <oatpp::Int8> {
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::UInt8> {
-  static oatpp::UInt8 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::UInt8> {
+  static avena::UInt8 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     //TODO: check the range and perhaps throw an exception if the variable doesn't fit
     return static_cast<UInt8::UnderlyingType>(utils::Conversion::strToUInt32(text, success));
@@ -517,8 +519,8 @@ struct ApiController::TypeInterpretation <oatpp::UInt8> {
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::Int16> {
-  static oatpp::Int16 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::Int16> {
+  static avena::Int16 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     //TODO: check the range and perhaps throw an exception if the variable doesn't fit
     return static_cast<Int16::UnderlyingType>(utils::Conversion::strToInt32(text, success));
@@ -526,8 +528,8 @@ struct ApiController::TypeInterpretation <oatpp::Int16> {
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::UInt16> {
-  static oatpp::UInt16 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::UInt16> {
+  static avena::UInt16 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     //TODO: check the range and perhaps throw an exception if the variable doesn't fit
     return static_cast<UInt16::UnderlyingType>(utils::Conversion::strToUInt32(text, success));
@@ -535,56 +537,56 @@ struct ApiController::TypeInterpretation <oatpp::UInt16> {
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::Int32> {
-  static oatpp::Int32 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::Int32> {
+  static avena::Int32 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     return utils::Conversion::strToInt32(text, success);
   }
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::UInt32> {
-  static oatpp::UInt32 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::UInt32> {
+  static avena::UInt32 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     return utils::Conversion::strToUInt32(text, success);
   }
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::Int64> {
-  static oatpp::Int64 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::Int64> {
+  static avena::Int64 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     return utils::Conversion::strToInt64(text, success);
   }
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::UInt64> {
-  static oatpp::UInt64 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::UInt64> {
+  static avena::UInt64 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     return utils::Conversion::strToUInt64(text, success);
   }
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::Float32> {
-  static oatpp::Float32 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::Float32> {
+  static avena::Float32 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     return utils::Conversion::strToFloat32(text, success);
   }
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::Float64> {
-  static oatpp::Float64 fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::Float64> {
+  static avena::Float64 fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     return utils::Conversion::strToFloat64(text, success);
   }
 };
 
 template<>
-struct ApiController::TypeInterpretation <oatpp::Boolean> {
-  static oatpp::Boolean fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+struct ApiController::TypeInterpretation <avena::Boolean> {
+  static avena::Boolean fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     (void) typeName;
     return utils::Conversion::strToBool(text, success);
   }
@@ -596,7 +598,7 @@ struct ApiController::TypeInterpretation <data::type::EnumObjectWrapper<T, I>> {
   typedef data::type::EnumObjectWrapper<T, I> EnumOW;
   typedef typename I::UnderlyingTypeObjectWrapper UTOW;
 
-  static EnumOW fromString(const oatpp::String& typeName, const oatpp::String& text, bool& success) {
+  static EnumOW fromString(const avena::String& typeName, const avena::String& text, bool& success) {
     const auto& parsedValue = ApiController::TypeInterpretation<UTOW>::fromString(typeName, text, success);
     if(success) {
       data::type::EnumInterpreterError error = data::type::EnumInterpreterError::OK;

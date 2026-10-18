@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -34,7 +36,7 @@
 #include "oatpp/utils/parser/Caret.hpp"
 #include "oatpp/utils/parser/ParsingError.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 /**
  * Error stack
@@ -44,13 +46,13 @@ struct ErrorStack {
   /**
    * stack
    */
-  std::list<oatpp::String> stack;
+  std::list<avena::String> stack;
 
   /**
    * Push error
    * @param error
    */
-  void push(const oatpp::String& error);
+  void push(const avena::String& error);
 
   /**
    * Push all errors from other error stack.
@@ -62,7 +64,7 @@ struct ErrorStack {
    * Stacktrace as string.
    * @return
    */
-  oatpp::String stacktrace() const;
+  avena::String stacktrace() const;
 
   /**
    * Check if error stack is empty.
@@ -94,13 +96,13 @@ public:
 
   /**
    * Get error stack
-   * @return - See &id:oatpp::data::mapping::ErrorStack;.
+   * @return - See &id:avena::data::mapping::ErrorStack;.
    */
   const ErrorStack& errorStack() const;
 
   /**
    * Get error stack
-   * @return - See &id:oatpp::data::mapping::ErrorStack;.
+   * @return - See &id:avena::data::mapping::ErrorStack;.
    */
   ErrorStack& errorStack();
 
@@ -121,7 +123,7 @@ public:
     /**
      * Constructor
      */
-    Info(const oatpp::String& pMimeType, const oatpp::String& pMimeSubtype)
+    Info(const avena::String& pMimeType, const avena::String& pMimeSubtype)
       : httpContentType(pMimeType + "/" + pMimeSubtype)
       , mimeType(pMimeType)
       , mimeSubtype(pMimeSubtype)
@@ -130,17 +132,17 @@ public:
     /**
      * Value for Content-Type http header when DTO is serialized via specified ObjectMapper.
      */
-    const oatpp::String httpContentType;
+    const avena::String httpContentType;
 
     /**
      * Mime type
      */
-    const oatpp::String mimeType;
+    const avena::String mimeType;
 
     /**
      * Mime subtype
      */
-    const oatpp::String mimeSubtype;
+    const avena::String mimeSubtype;
 
   };
 private:
@@ -161,41 +163,41 @@ public:
 
   /**
    * Serialize object to stream. Implement this method.
-   * @param stream - &id:oatpp::data::stream::ConsistentOutputStream; to serialize object to.
-   * @param errorStack - See &id:oatpp::data::mapping::ErrorStack;.
+   * @param stream - &id:avena::data::stream::ConsistentOutputStream; to serialize object to.
+   * @param errorStack - See &id:avena::data::mapping::ErrorStack;.
    * @param variant - Object to serialize.
    */
-  virtual void write(data::stream::ConsistentOutputStream* stream, const oatpp::Void& variant, ErrorStack& errorStack) const = 0;
+  virtual void write(data::stream::ConsistentOutputStream* stream, const avena::Void& variant, ErrorStack& errorStack) const = 0;
 
   /**
    * Deserialize object. Implement this method.
-   * @param caret - &id:oatpp::utils::parser::Caret; over serialized buffer.
-   * @param type - pointer to object type. See &id:oatpp::data::type::Type;.
-   * @param errorStack - See &id:oatpp::data::mapping::ErrorStack;.
-   * @return - deserialized object wrapped in &id:oatpp::Void;.
+   * @param caret - &id:avena::utils::parser::Caret; over serialized buffer.
+   * @param type - pointer to object type. See &id:avena::data::type::Type;.
+   * @param errorStack - See &id:avena::data::mapping::ErrorStack;.
+   * @return - deserialized object wrapped in &id:avena::Void;.
    */
-  virtual oatpp::Void read(oatpp::utils::parser::Caret& caret, const oatpp::Type* type, ErrorStack& errorStack) const = 0;
+  virtual avena::Void read(avena::utils::parser::Caret& caret, const avena::Type* type, ErrorStack& errorStack) const = 0;
 
   /**
    * Serialize object to String.
    * @param variant - Object to serialize.
-   * @return - serialized object as &id:oatpp::String;.
-   * @throws - &id:oatpp::data::mapping::MappingError;
+   * @return - serialized object as &id:avena::String;.
+   * @throws - &id:avena::data::mapping::MappingError;
    * @throws - depends on implementation.
    */
-  oatpp::String writeToString(const oatpp::Void& variant) const;
+  avena::String writeToString(const avena::Void& variant) const;
 
   /**
    * Deserialize object.
    * If nullptr is returned - check caret.getError()
    * @tparam Wrapper - ObjectWrapper type.
-   * @param caret - &id:oatpp::utils::parser::Caret; over serialized buffer.
+   * @param caret - &id:avena::utils::parser::Caret; over serialized buffer.
    * @return - deserialized Object.
-   * @throws - &id:oatpp::data::mapping::MappingError;
+   * @throws - &id:avena::data::mapping::MappingError;
    * @throws - depends on implementation.
    */
   template<class Wrapper>
-  Wrapper readFromCaret(oatpp::utils::parser::Caret& caret) const {
+  Wrapper readFromCaret(avena::utils::parser::Caret& caret) const {
     auto type = Wrapper::Class::getType();
     ErrorStack errorStack;
     const auto& result = read(caret, type, errorStack).template cast<Wrapper>();
@@ -210,13 +212,13 @@ public:
    * @tparam Wrapper - ObjectWrapper type.
    * @param str - serialized data.
    * @return - deserialized Object.
-   * @throws - &id:oatpp::data::mapping::MappingError;
+   * @throws - &id:avena::data::mapping::MappingError;
    * @throws - depends on implementation.
    */
   template<class Wrapper>
-  Wrapper readFromString(const oatpp::String& str) const {
+  Wrapper readFromString(const avena::String& str) const {
     auto type = Wrapper::Class::getType();
-    oatpp::utils::parser::Caret caret(str);
+    avena::utils::parser::Caret caret(str);
     ErrorStack errorStack;
     const auto& result = read(caret, type, errorStack).template cast<Wrapper>();
     if(!errorStack.empty()) {

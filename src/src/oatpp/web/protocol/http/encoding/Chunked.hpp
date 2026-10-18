@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,14 +30,14 @@
 #include "EncoderProvider.hpp"
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace encoding {
+namespace avena { namespace web { namespace protocol { namespace http { namespace encoding {
 
 /**
- * Chunked-encoding buffer processor. &id:oatpp::data::buffer::Processor;.
+ * Chunked-encoding buffer processor. &id:avena::data::buffer::Processor;.
  */
 class EncoderChunked : public data::buffer::Processor {
 private:
-  oatpp::String m_chunkHeader;
+  avena::String m_chunkHeader;
   bool m_writeChunkHeader = true;
   bool m_firstChunk = true;
   bool m_finished = false;
@@ -61,7 +63,7 @@ public:
 };
 
 /**
- * Chunked-decoding buffer processor. &id:oatpp::data::buffer::Processor;.
+ * Chunked-decoding buffer processor. &id:avena::data::buffer::Processor;.
  */
 class DecoderChunked : public data::buffer::Processor {
 public:
@@ -109,11 +111,11 @@ public:
    * Get encoding name.
    * @return
    */
-  oatpp::String getEncodingName() override;
+  avena::String getEncodingName() override;
 
   /**
-   * Get &id:oatpp::data::buffer::Processor; for chunked encoding.
-   * @return - &id:oatpp::data::buffer::Processor;
+   * Get &id:avena::data::buffer::Processor; for chunked encoding.
+   * @return - &id:avena::data::buffer::Processor;
    */
   std::shared_ptr<data::buffer::Processor> getProcessor() override;
 
@@ -129,11 +131,11 @@ public:
    * Get encoding name.
    * @return
    */
-  oatpp::String getEncodingName() override;
+  avena::String getEncodingName() override;
 
   /**
-   * Get &id:oatpp::data::buffer::Processor; for chunked decoding.
-   * @return - &id:oatpp::data::buffer::Processor;
+   * Get &id:avena::data::buffer::Processor; for chunked decoding.
+   * @return - &id:avena::data::buffer::Processor;
    */
   std::shared_ptr<data::buffer::Processor> getProcessor() override;
 

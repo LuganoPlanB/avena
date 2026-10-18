@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "ProviderCollection.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace encoding {
+namespace avena { namespace web { namespace protocol { namespace http { namespace encoding {
 
 void ProviderCollection::add(const std::shared_ptr<EncoderProvider>& provider) {
   m_providers[provider->getEncodingName()] = provider;

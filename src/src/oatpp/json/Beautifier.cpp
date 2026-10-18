@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,9 +28,9 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
-Beautifier::Beautifier(ConsistentOutputStream* outputStream, const oatpp::String& indent, const oatpp::String& newLine)
+Beautifier::Beautifier(ConsistentOutputStream* outputStream, const avena::String& indent, const avena::String& newLine)
   : m_outputStream(outputStream)
   , m_indent(indent)
   , m_newLine(newLine)
@@ -49,7 +51,7 @@ v_io_size Beautifier::write(const void *data, v_buff_size count, async::Action& 
 
   (void) action;
 
-  oatpp::data::stream::BufferOutputStream buffer(count);
+  avena::data::stream::BufferOutputStream buffer(count);
 
   for(v_buff_size i = 0; i < count; i ++) {
 

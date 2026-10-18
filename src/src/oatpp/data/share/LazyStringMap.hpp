@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,18 +32,18 @@
 
 #include <unordered_map>
 
-namespace oatpp { namespace data { namespace share {
+namespace avena { namespace data { namespace share {
 
 /**
  * Lazy String Map keeps keys, and values as memory label.
  * Once value is requested by user, the new memory block is allocated and value is copied to be stored permanently.
- * @tparam Key - one of: &id:oatpp::data::share::MemoryLabel;, &id:oatpp::data::share::StringKeyLabel;, &id:oatpp::data::share::StringKeyLabelCI;,
- * &id:oatpp::data::share::StringKeyLabelCI;.
+ * @tparam Key - one of: &id:avena::data::share::MemoryLabel;, &id:avena::data::share::StringKeyLabel;, &id:avena::data::share::StringKeyLabelCI;,
+ * &id:avena::data::share::StringKeyLabelCI;.
  */
 template<typename Key, typename MapType>
 class LazyStringMapTemplate {
 public:
-  typedef oatpp::data::type::String String;
+  typedef avena::data::type::String String;
 private:
   mutable concurrency::SpinLock m_lock;
   mutable bool m_fullyInitialized;
@@ -220,7 +222,7 @@ public:
   }
 
   /**
-   * Get value as &id:oatpp::String;.
+   * Get value as &id:avena::String;.
    * @param key
    * @return
    */
@@ -241,7 +243,7 @@ public:
 
   /**
    * Get value as a memory label.
-   * @tparam T - one of: &id:oatpp::data::share::MemoryLabel;, &id:oatpp::data::share::StringKeyLabel;, &id:oatpp::data::share::StringKeyLabelCI;.
+   * @tparam T - one of: &id:avena::data::share::MemoryLabel;, &id:avena::data::share::StringKeyLabel;, &id:avena::data::share::StringKeyLabelCI;.
    * @param key
    * @return
    */
@@ -264,8 +266,8 @@ public:
 
   /**
    * Get value as a memory label without allocating memory for value.
-   * @tparam T - one of: &id:oatpp::data::share::MemoryLabel;, &id:oatpp::data::share::StringKeyLabel;, &id:oatpp::data::share::StringKeyLabelCI;,
-   * * &id:oatpp::data::share::StringKeyLabelCI;.
+   * @tparam T - one of: &id:avena::data::share::MemoryLabel;, &id:avena::data::share::StringKeyLabel;, &id:avena::data::share::StringKeyLabelCI;,
+   * * &id:avena::data::share::StringKeyLabelCI;.
    * @param key
    * @return
    */

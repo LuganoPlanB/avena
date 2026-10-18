@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,19 +26,19 @@
 
 #include "Random.hpp"
 
-namespace oatpp { namespace utils {
+namespace avena { namespace utils {
 
 #ifndef OATPP_COMPAT_BUILD_NO_THREAD_LOCAL
   thread_local std::mt19937 Random::RANDOM_GENERATOR(std::random_device{}());
 #else
   std::mt19937 Random::RANDOM_GENERATOR (std::random_device{}());
-  oatpp::concurrency::SpinLock Random::RANDOM_LOCK;
+  avena::concurrency::SpinLock Random::RANDOM_LOCK;
 #endif
 
 void Random::randomBytes(p_char8 buffer, v_buff_size bufferSize) {
 
 #if defined(OATPP_COMPAT_BUILD_NO_THREAD_LOCAL)
-  std::lock_guard<oatpp::concurrency::SpinLock> randomLock(RANDOM_LOCK);
+  std::lock_guard<avena::concurrency::SpinLock> randomLock(RANDOM_LOCK);
 #endif
 
   std::uniform_int_distribution<size_t> distribution(0, 255);

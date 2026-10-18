@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/utils/Conversion.hpp"
 #include "oatpp/utils/Binary.hpp"
 
-namespace oatpp { namespace data { namespace stream {
+namespace avena { namespace data { namespace stream {
 
 void BufferStreamTest::onRun() {
 
@@ -42,15 +44,15 @@ void BufferStreamTest::onRun() {
 
     stream.setCurrentPosition(0);
     stream << 101;
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::int32ToStr(101))
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::int32ToStr(101))
 
     stream.setCurrentPosition(0);
     stream << static_cast<v_float32>(101.5);
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::float32ToStr(101.5f))
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::float32ToStr(101.5f))
 
     stream.setCurrentPosition(0);
     stream << static_cast<v_float64>(101.5f);
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::float64ToStr(101.5))
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::float64ToStr(101.5))
 
     stream.setCurrentPosition(0);
     stream << true;
@@ -61,39 +63,39 @@ void BufferStreamTest::onRun() {
     OATPP_ASSERT(stream.toString() == "false")
 
     stream.setCurrentPosition(0);
-    stream << oatpp::String("oat++");
+    stream << avena::String("oat++");
     OATPP_ASSERT(stream.toString() == "oat++")
 
     stream.setCurrentPosition(0);
-    stream << oatpp::Int8(8);
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::int32ToStr(8))
+    stream << avena::Int8(8);
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::int32ToStr(8))
 
     stream.setCurrentPosition(0);
-    stream << oatpp::Int16(16);
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::int32ToStr(16))
+    stream << avena::Int16(16);
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::int32ToStr(16))
 
     stream.setCurrentPosition(0);
-    stream << oatpp::Int32(32);
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::int32ToStr(32))
+    stream << avena::Int32(32);
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::int32ToStr(32))
 
     stream.setCurrentPosition(0);
-    stream << oatpp::Int64(64);
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::int32ToStr(64))
+    stream << avena::Int64(64);
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::int32ToStr(64))
 
     stream.setCurrentPosition(0);
-    stream << oatpp::Float32(0.32f);
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::float32ToStr(0.32f))
+    stream << avena::Float32(0.32f);
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::float32ToStr(0.32f))
 
     stream.setCurrentPosition(0);
-    stream << oatpp::Float64(0.64);
-    OATPP_ASSERT(stream.toString() == oatpp::utils::Conversion::float64ToStr(0.64))
+    stream << avena::Float64(0.64);
+    OATPP_ASSERT(stream.toString() == avena::utils::Conversion::float64ToStr(0.64))
 
     stream.setCurrentPosition(0);
-    stream << oatpp::Boolean(true);
+    stream << avena::Boolean(true);
     OATPP_ASSERT(stream.toString() == "true")
 
     stream.setCurrentPosition(0);
-    stream << oatpp::Boolean(false);
+    stream << avena::Boolean(false);
     OATPP_ASSERT(stream.toString() == "false")
 
   }
@@ -113,15 +115,15 @@ void BufferStreamTest::onRun() {
 
     v_buff_size substringSize = 10;
     for(v_buff_size i = 0; i < static_cast<v_buff_size>(wholeText->size()) - substringSize; i ++) {
-      OATPP_ASSERT(oatpp::String(&wholeText->data()[i], substringSize) == stream.getSubstring(i, substringSize))
+      OATPP_ASSERT(avena::String(&wholeText->data()[i], substringSize) == stream.getSubstring(i, substringSize))
     }
 
   }
 
   {
 
-    oatpp::String sample = "0123456789";
-    oatpp::String text = "";
+    avena::String sample = "0123456789";
+    avena::String text = "";
 
     for(v_int32 i = 0; i < 1024; i++ ) {
       text = text + sample;
@@ -138,7 +140,7 @@ void BufferStreamTest::onRun() {
 
     OATPP_ASSERT(text == stream.toString())
 
-    OATPP_ASSERT(stream.getCapacity() == oatpp::utils::Binary::nextP2(1024 * (10)))
+    OATPP_ASSERT(stream.getCapacity() == avena::utils::Binary::nextP2(1024 * (10)))
 
   }
 

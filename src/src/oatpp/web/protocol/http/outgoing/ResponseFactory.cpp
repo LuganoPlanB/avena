@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "./BufferBody.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 std::shared_ptr<Response>
 ResponseFactory::createResponse(const Status& status) {
@@ -34,13 +36,13 @@ ResponseFactory::createResponse(const Status& status) {
 }
 
 std::shared_ptr<Response>
-ResponseFactory::createResponse(const Status& status, const oatpp::String& text) {
+ResponseFactory::createResponse(const Status& status, const avena::String& text) {
   return Response::createShared(status, BufferBody::createShared(text));
 }
 
 std::shared_ptr<Response>
 ResponseFactory::createResponse(const Status& status,
-                                const oatpp::Void& dto,
+                                const avena::Void& dto,
                                 const std::shared_ptr<data::mapping::ObjectMapper>& objectMapper) {
   return Response::createShared(status, BufferBody::createShared(
     objectMapper->writeToString(dto),

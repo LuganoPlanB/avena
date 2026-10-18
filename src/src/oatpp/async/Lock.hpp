@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "./CoroutineWaitList.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 /**
  * Lock (mutex) for coroutines/threads synchronization. <br>
@@ -50,7 +52,7 @@ public:
 
   /**
    * Wait until lock is unlocked, and repeat.
-   * @return - &id:oatpp::async::Action;.
+   * @return - &id:avena::async::Action;.
    */
   Action waitAsync();
 
@@ -79,9 +81,9 @@ public:
 class LockGuard {
 public:
   /**
-   * Convenince typedef for &id:oatpp::async::CoroutineStarter;.
+   * Convenince typedef for &id:avena::async::CoroutineStarter;.
    */
-  typedef oatpp::async::CoroutineStarter CoroutineStarter;
+  typedef avena::async::CoroutineStarter CoroutineStarter;
 private:
   bool m_ownsLock;
   Lock* m_lock;
@@ -114,7 +116,7 @@ public:
 
   /**
    * Lock the lock.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   CoroutineStarter lockAsync();
 
@@ -122,16 +124,16 @@ public:
    * Lock and guard the lock. <br>
    * Same as `setLockObject(lock) + lockAsync();`.
    * @param lock - lock to lock and guard.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   CoroutineStarter lockAsync(Lock* lock);
 
   /**
    * Lock the lock. (Async-inline usage. Should be called from a separate method of coroutine).
    * @param nextAction - action to take after lock is locked.
-   * @return - &id:oatpp::async::Action;.
+   * @return - &id:avena::async::Action;.
    */
-  Action lockAsyncInline(oatpp::async::Action&& nextAction);
+  Action lockAsyncInline(avena::async::Action&& nextAction);
 
   /**
    * Check if owns lock.
@@ -149,10 +151,10 @@ public:
 /**
  * Synchronize coroutine execution by lock.
  * @param lock - &l:Lock; for synchronization.
- * @param starter - Coroutine to execute in synchronized manner. &id:oatpp::async::CoroutineStarter;.
- * @return - starter of synchronization coroutine (wrapper coroutine). &id:oatpp::async::CoroutineStarter;.
+ * @param starter - Coroutine to execute in synchronized manner. &id:avena::async::CoroutineStarter;.
+ * @return - starter of synchronization coroutine (wrapper coroutine). &id:avena::async::CoroutineStarter;.
  */
-CoroutineStarter synchronize(oatpp::async::Lock *lock, CoroutineStarter&& starter);
+CoroutineStarter synchronize(avena::async::Lock *lock, CoroutineStarter&& starter);
 
 }}
 

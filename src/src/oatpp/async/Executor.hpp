@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -35,11 +37,11 @@
 #include <mutex>
 #include <condition_variable>
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 /**
  * Asynchronous Executor.<br>
- * Executes coroutines in multiple &id:oatpp::async::Processor;
+ * Executes coroutines in multiple &id:avena::async::Processor;
  * allocating one thread per processor.
  */
 class Executor {
@@ -47,7 +49,7 @@ private:
   
   class SubmissionProcessor : public worker::Worker {
   private:
-    oatpp::async::Processor m_processor;
+    avena::async::Processor m_processor;
   private:
     std::atomic<bool> m_isRunning;
   private:
@@ -65,7 +67,7 @@ private:
       m_processor.execute<CoroutineType, Args...>(params...);
     }
 
-    oatpp::async::Processor& getProcessor();
+    avena::async::Processor& getProcessor();
 
     void pushTasks(utils::FastQueue<CoroutineHandle>& tasks) override GPP_ATTRIBUTE(noreturn);
 

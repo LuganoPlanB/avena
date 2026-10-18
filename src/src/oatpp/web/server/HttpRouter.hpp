@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,22 +33,22 @@
 #include "oatpp/web/server/api/Endpoint.hpp"
 #include "oatpp/web/url/mapping/Router.hpp"
 
-namespace oatpp { namespace web { namespace server {
+namespace avena { namespace web { namespace server {
 
 /**
  * HttpRouter is responsible for routing http requests by method and path-pattern.
  */
 template<typename RouterEndpoint>
-class HttpRouterTemplate : public oatpp::base::Countable {
+class HttpRouterTemplate : public avena::base::Countable {
 private:
   /**
-   * Convenience typedef for &id:oatpp::data::share::StringKeyLabel;.
+   * Convenience typedef for &id:avena::data::share::StringKeyLabel;.
    */
   typedef data::share::StringKeyLabel StringKeyLabel;
 public:
 
   /**
-   * &id:oatpp::web::url::mapping::Router;
+   * &id:avena::web::url::mapping::Router;
    */
   typedef web::url::mapping::Router<RouterEndpoint> BranchRouter;
 
@@ -88,15 +90,15 @@ public:
    * @param pathPattern - url path pattern. ex.: `"/path/to/resource/with/{param1}/{param2}"`.
    * @param endpoint - router endpoint.
    */
-  void route(const oatpp::String& method, const oatpp::String& pathPattern, const RouterEndpoint& endpoint) {
+  void route(const avena::String& method, const avena::String& pathPattern, const RouterEndpoint& endpoint) {
     getBranch(method)->route(pathPattern, endpoint);
   }
 
   /**
-   * Resolve http method and path to &id:oatpp::web::url::mapping::Router::Route;
+   * Resolve http method and path to &id:avena::web::url::mapping::Router::Route;
    * @param method - http method like ["GET", "POST", etc.].
    * @param url - url path. "Path" part of url only.
-   * @return - &id:oatpp::web::url::mapping::Router::Route;.
+   * @return - &id:avena::web::url::mapping::Router::Route;.
    */
   typename BranchRouter::Route getRoute(const StringKeyLabel& method, const StringKeyLabel& path){
     auto it = m_branchMap.find(method);

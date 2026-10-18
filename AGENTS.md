@@ -13,7 +13,9 @@ OpenSSL. Read README.md and PROVENANCE.md before changing the build or imports.
   Do not rewrite untouched upstream files solely to claim copyright.
 - Use the root CMake entry point. Keep builds out of source. Never commit
   generated files, local credentials, build trees or install prefixes.
-- Preserve the existing `oatpp` C++ namespaces and ABI. The public packaging
+- Use the `avena` C++ namespace throughout the library, codegen and tests.
+  The namespace migration deliberately breaks the upstream C++ ABI; do not add
+  an `oatpp` compatibility namespace or alias. The public packaging
   interface is `libavena`, `<avena/...>` and `avena::avena`; never reinstall
   legacy `liboat*` archives, versioned include roots or oatpp CMake packages.
 - Core sources are under `src/`, TLS under `src/openssl/`, and WebSocket under

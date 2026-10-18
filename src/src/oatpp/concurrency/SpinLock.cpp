@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include <thread>
 
-namespace oatpp { namespace concurrency {
+namespace avena { namespace concurrency {
 
 SpinLock::SpinLock()
   : m_atom(false)

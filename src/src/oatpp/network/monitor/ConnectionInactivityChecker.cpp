@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "ConnectionInactivityChecker.hpp"
 
-namespace oatpp { namespace network { namespace monitor {
+namespace avena { namespace network { namespace monitor {
 
 ConnectionInactivityChecker::ConnectionInactivityChecker(const std::chrono::duration<v_int64, std::micro>& lastReadTimeout,
                                                          const std::chrono::duration<v_int64, std::micro>& lastWriteTimeout)
@@ -32,12 +34,12 @@ ConnectionInactivityChecker::ConnectionInactivityChecker(const std::chrono::dura
   , m_lastWriteTimeout(lastWriteTimeout)
 {}
 
-std::vector<oatpp::String> ConnectionInactivityChecker::getMetricsList() {
+std::vector<avena::String> ConnectionInactivityChecker::getMetricsList() {
   return {};
 }
 
-std::shared_ptr<StatCollector> ConnectionInactivityChecker::createStatCollector(const oatpp::String& metricName) {
-  throw std::runtime_error("[oatpp::network::monitor::ConnectionInactivityChecker::createStatCollector()]: "
+std::shared_ptr<StatCollector> ConnectionInactivityChecker::createStatCollector(const avena::String& metricName) {
+  throw std::runtime_error("[avena::network::monitor::ConnectionInactivityChecker::createStatCollector()]: "
                            "Error. ConnectionInactivityChecker doesn't use any stat collectors.");
 }
 

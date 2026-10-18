@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,12 +34,12 @@
 
 #include <openssl/ssl.h>
 
-namespace oatpp { namespace openssl {
+namespace avena { namespace openssl {
 
 /**
- * TLS Connection implementation. Extends &id:oatpp::base::Countable; and &id:oatpp::data::stream::IOStream;.
+ * TLS Connection implementation. Extends &id:avena::base::Countable; and &id:avena::data::stream::IOStream;.
  */
-class Connection : public oatpp::base::Countable, public oatpp::data::stream::IOStream {
+class Connection : public avena::base::Countable, public avena::data::stream::IOStream {
 private:
 
   static int createBio(BIO*);
@@ -50,7 +52,7 @@ private:
 
 private:
 
-  class ConnectionContext : public oatpp::data::stream::Context {
+  class ConnectionContext : public avena::data::stream::Context {
   private:
     Connection* m_connection;
     data::stream::StreamType m_streamType;
@@ -87,7 +89,7 @@ public:
   /**
    * Constructor.
    * @param ssl - pointer to OpenSSL ssl object;.
-   * @param stream - underlying transport stream. &id:oatpp::data::stream::IOStream;.
+   * @param stream - underlying transport stream. &id:avena::data::stream::IOStream;.
    */
   Connection(SSL* ssl, const provider::ResourceHandle<data::stream::IOStream>& stream);
 
@@ -100,7 +102,7 @@ public:
    * Write operation callback.
    * @param data - pointer to data.
    * @param count - size of the data in bytes.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes written. 0 - to indicate end-of-file.
    */
@@ -110,47 +112,47 @@ public:
    * Read operation callback.
    * @param buffer - pointer to buffer.
    * @param count - size of the buffer in bytes.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes written to buffer. 0 - to indicate end-of-file.
    */
-  oatpp::v_io_size read(void *buff, v_buff_size count, async::Action& action) override;
+  avena::v_io_size read(void *buff, v_buff_size count, async::Action& action) override;
 
   /**
    * Set OutputStream I/O mode.
    * @param ioMode
    */
-  void setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+  void setOutputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
   /**
    * Set OutputStream I/O mode.
    * @return
    */
-  oatpp::data::stream::IOMode getOutputStreamIOMode() override;
+  avena::data::stream::IOMode getOutputStreamIOMode() override;
 
   /**
    * Get output stream context.
-   * @return - &id:oatpp::data::stream::Context;.
+   * @return - &id:avena::data::stream::Context;.
    */
-  oatpp::data::stream::Context& getOutputStreamContext() override;
+  avena::data::stream::Context& getOutputStreamContext() override;
 
   /**
    * Set InputStream I/O mode.
    * @param ioMode
    */
-  void setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+  void setInputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
   /**
    * Get InputStream I/O mode.
    * @return
    */
-  oatpp::data::stream::IOMode getInputStreamIOMode() override;
+  avena::data::stream::IOMode getInputStreamIOMode() override;
 
   /**
    * Get input stream context. <br>
-   * @return - &id:oatpp::data::stream::Context;.
+   * @return - &id:avena::data::stream::Context;.
    */
-  oatpp::data::stream::Context& getInputStreamContext() override;
+  avena::data::stream::Context& getInputStreamContext() override;
 
   /**
    * Get the underlying transport stream.

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "ObjectMapper.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 ObjectMapper::ObjectMapper(const SerializerConfig& serializerConfig, const DeserializerConfig& deserializerConfig)
   : data::mapping::ObjectMapper(getMapperInfo())
@@ -43,10 +45,10 @@ void ObjectMapper::writeTree(data::stream::ConsistentOutputStream* stream, const
   }
 }
 
-void ObjectMapper::write(data::stream::ConsistentOutputStream* stream, const oatpp::Void& variant, data::mapping::ErrorStack& errorStack) const {
+void ObjectMapper::write(data::stream::ConsistentOutputStream* stream, const avena::Void& variant, data::mapping::ErrorStack& errorStack) const {
 
   /* if variant is Tree - we can serialize it right away */
-  if(variant.getValueType() == oatpp::Tree::Class::getType()) {
+  if(variant.getValueType() == avena::Tree::Class::getType()) {
     auto tree = static_cast<const data::mapping::Tree*>(variant.get());
     writeTree(stream, *tree, errorStack);
     return;
@@ -68,7 +70,7 @@ void ObjectMapper::write(data::stream::ConsistentOutputStream* stream, const oat
 
 }
 
-oatpp::Void ObjectMapper::read(utils::parser::Caret& caret, const data::type::Type* type, data::mapping::ErrorStack& errorStack) const {
+avena::Void ObjectMapper::read(utils::parser::Caret& caret, const data::type::Type* type, data::mapping::ErrorStack& errorStack) const {
 
   data::mapping::Tree tree;
 
@@ -86,7 +88,7 @@ oatpp::Void ObjectMapper::read(utils::parser::Caret& caret, const data::type::Ty
 
   /* if expected type is Tree (root element is Tree) - then we can just move deserialized tree */
   if(type == data::type::Tree::Class::getType()) {
-    return oatpp::Tree(std::move(tree));
+    return avena::Tree(std::move(tree));
   }
 
   {

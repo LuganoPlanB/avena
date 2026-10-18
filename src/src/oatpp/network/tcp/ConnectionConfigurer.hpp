@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
 *
 * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/IODefinitions.hpp"
 
-namespace oatpp { namespace network { namespace tcp {
+namespace avena { namespace network { namespace tcp {
 
 /**
  * Connection configurer
@@ -43,7 +45,7 @@ public:
    * Configure connection options.
    * @param connection
    */
-  virtual void configure(oatpp::v_io_handle handle) = 0;
+  virtual void configure(avena::v_io_handle handle) = 0;
 };
 
 }}}

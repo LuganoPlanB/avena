@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 #include "./Tree.hpp"
 #include "oatpp/data/mapping/Tree.hpp"
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 namespace __class {
 
@@ -132,7 +134,7 @@ mapping::Tree* Tree::operator->() {
 
 mapping::Tree* Tree::operator->() const {
   if(!m_ptr) {
-    throw std::runtime_error("[oatpp::data::type::Tree::operator ->()]: null-pointer exception");
+    throw std::runtime_error("[avena::data::type::Tree::operator ->()]: null-pointer exception");
   }
   return m_ptr.get();
 }
@@ -146,7 +148,7 @@ mapping::Tree& Tree::operator*() {
 
 const mapping::Tree& Tree::operator*() const {
   if(!m_ptr) {
-    throw std::runtime_error("[oatpp::data::type::Tree::operator *()]: null-pointer exception");
+    throw std::runtime_error("[avena::data::type::Tree::operator *()]: null-pointer exception");
   }
   return *m_ptr;
 }
@@ -160,7 +162,7 @@ mapping::Tree& Tree::operator [] (const String& key) {
 
 const mapping::Tree& Tree::operator [] (const String& key) const {
   if(!m_ptr) {
-    throw std::runtime_error("[oatpp::data::type::Tree::operator []]: null-pointer exception");
+    throw std::runtime_error("[avena::data::type::Tree::operator []]: null-pointer exception");
   }
   return (*m_ptr)[key];
 }
@@ -174,7 +176,7 @@ mapping::Tree& Tree::operator [] (v_uint64 index) {
 
 const mapping::Tree& Tree::operator [] (v_uint64 index) const {
   if(!m_ptr) {
-    throw std::runtime_error("[oatpp::data::type::Tree::operator []]: null-pointer exception");
+    throw std::runtime_error("[avena::data::type::Tree::operator []]: null-pointer exception");
   }
   return (*m_ptr)[index];
 }

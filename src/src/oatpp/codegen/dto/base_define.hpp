@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,29 +28,29 @@
 // Defaults
 
 /**
- * Codegen macro to be used in classes extending &id:oatpp::data::type::Object; to generate required fields/methods/constructors for DTO object.
+ * Codegen macro to be used in classes extending &id:avena::data::type::Object; to generate required fields/methods/constructors for DTO object.
  * @param TYPE_NAME - name of the DTO class.
- * @param TYPE_EXTEND - name of the parent DTO class. If DTO extends &id:oatpp::data::type::Object; TYPE_EXETENDS should be `Object`.
+ * @param TYPE_EXTEND - name of the parent DTO class. If DTO extends &id:avena::data::type::Object; TYPE_EXETENDS should be `Object`.
  */
 #define DTO_INIT(TYPE_NAME, TYPE_EXTEND) \
   template<class __Z__T__PARAM> \
-  friend class oatpp::data::type::__class::Object; \
+  friend class avena::data::type::__class::Object; \
 public: \
   typedef TYPE_NAME Z__CLASS; \
   typedef TYPE_EXTEND Z__CLASS_EXTENDED; \
-  typedef oatpp::data::type::DTOWrapper<Z__CLASS> Wrapper; \
+  typedef avena::data::type::DTOWrapper<Z__CLASS> Wrapper; \
 private: \
 \
-  static const oatpp::Type* getParentType() { \
-    return oatpp::Object<Z__CLASS_EXTENDED>::Class::getType(); \
+  static const avena::Type* getParentType() { \
+    return avena::Object<Z__CLASS_EXTENDED>::Class::getType(); \
   } \
 \
   static const char* Z__CLASS_TYPE_NAME() { \
     return #TYPE_NAME; \
   } \
 \
-  static oatpp::data::type::BaseObject::Properties* Z__CLASS_GET_FIELDS_MAP(){ \
-    static oatpp::data::type::BaseObject::Properties map = oatpp::data::type::BaseObject::Properties(); \
+  static avena::data::type::BaseObject::Properties* Z__CLASS_GET_FIELDS_MAP(){ \
+    static avena::data::type::BaseObject::Properties map = avena::data::type::BaseObject::Properties(); \
     return &map; \
   } \
 \
@@ -70,9 +72,9 @@ static v_int64 Z__PROPERTY_OFFSET_##NAME() { \
   return reinterpret_cast<v_int64>(ptr) - reinterpret_cast<v_int64>(buffer); \
 } \
 \
-static oatpp::data::type::BaseObject::Property* Z__PROPERTY_SINGLETON_##NAME() { \
-  static std::unique_ptr<oatpp::data::type::BaseObject::Property> property( \
-      new oatpp::data::type::BaseObject::Property(Z__PROPERTY_OFFSET_##NAME(), \
+static avena::data::type::BaseObject::Property* Z__PROPERTY_SINGLETON_##NAME() { \
+  static std::unique_ptr<avena::data::type::BaseObject::Property> property( \
+      new avena::data::type::BaseObject::Property(Z__PROPERTY_OFFSET_##NAME(), \
                                                   #NAME, \
                                                   #NAME, \
                                                   TYPE::Class::getType())); \
@@ -102,9 +104,9 @@ static v_int64 Z__PROPERTY_OFFSET_##NAME() { \
   return reinterpret_cast<v_int64>(ptr) - reinterpret_cast<v_int64>(buffer); \
 } \
 \
-static oatpp::data::type::BaseObject::Property* Z__PROPERTY_SINGLETON_##NAME() { \
-  static std::unique_ptr<oatpp::data::type::BaseObject::Property> property( \
-      new oatpp::data::type::BaseObject::Property(Z__PROPERTY_OFFSET_##NAME(), \
+static avena::data::type::BaseObject::Property* Z__PROPERTY_SINGLETON_##NAME() { \
+  static std::unique_ptr<avena::data::type::BaseObject::Property> property( \
+      new avena::data::type::BaseObject::Property(Z__PROPERTY_OFFSET_##NAME(), \
                                                   QUALIFIER, \
                                                   #NAME, \
                                                   TYPE::Class::getType())); \
@@ -144,14 +146,14 @@ static bool Z__PROPERTY_INIT_##NAME(int, ...) { \
   return true; \
 } \
 \
-static void Z__PROPERTY_ADD_INFO_##NAME(oatpp::data::type::BaseObject::Property::Info* info)
+static void Z__PROPERTY_ADD_INFO_##NAME(avena::data::type::BaseObject::Property::Info* info)
 
 
 #define DTO_FIELD_TYPE_SELECTOR(NAME) \
 \
-class Z__PROPERTY_TYPE_SELECTOR_##NAME : public oatpp::BaseObject::Property::FieldTypeSelector<Z__CLASS> { \
+class Z__PROPERTY_TYPE_SELECTOR_##NAME : public avena::BaseObject::Property::FieldTypeSelector<Z__CLASS> { \
 public: \
-  const oatpp::Type* selectFieldType(Z__CLASS* self) override { \
+  const avena::Type* selectFieldType(Z__CLASS* self) override { \
     return self->Z__PROPERTY_TYPE_SELECTOR_METHOD_##NAME(); \
   } \
 }; \
@@ -162,7 +164,7 @@ static bool Z__PROPERTY_INIT_##NAME(int, int) { \
   return true; \
 } \
 \
-const oatpp::Type* Z__PROPERTY_TYPE_SELECTOR_METHOD_##NAME()
+const avena::Type* Z__PROPERTY_TYPE_SELECTOR_METHOD_##NAME()
 
 // FOR EACH
 

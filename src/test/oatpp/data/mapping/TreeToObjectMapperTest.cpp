@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 
 #include <iostream>
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 namespace {
 
@@ -43,7 +45,7 @@ ENUM(TestEnum, v_int32,
      VALUE(VALUE_2, 2, "value-2")
 )
 
-class TestDto1 : public oatpp::DTO {
+class TestDto1 : public avena::DTO {
 
   DTO_INIT(TestDto1, DTO)
 
@@ -61,8 +63,8 @@ class TestDto1 : public oatpp::DTO {
   DTO_FIELD(Int64, i64, "i64-q");
   DTO_FIELD(UInt64, ui64, "ui64-q");
 
-  DTO_FIELD(Vector<oatpp::Object<TestDto1>>, vector, "vector-q");
-  DTO_FIELD(UnorderedFields<oatpp::Object<TestDto1>>, map, "map-q");
+  DTO_FIELD(Vector<avena::Object<TestDto1>>, vector, "vector-q");
+  DTO_FIELD(UnorderedFields<avena::Object<TestDto1>>, map, "map-q");
   DTO_FIELD(Fields<String>, pairs, "pairs-q");
 
 };
@@ -121,7 +123,7 @@ void TreeToObjectMapperTest::onRun() {
     state.config = &config;
     state.tree = &tree;
 
-    const auto& polymorph = mapper.map(state,oatpp::Object<TestDto1>::Class::getType());
+    const auto& polymorph = mapper.map(state,avena::Object<TestDto1>::Class::getType());
 
     if(state.errorStack.empty()) {
       auto json = jsonMapper.writeToString(polymorph);
@@ -131,7 +133,7 @@ void TreeToObjectMapperTest::onRun() {
       std::cout << *err << std::endl;
     }
 
-    auto obj = polymorph.cast<oatpp::Object<TestDto1>>();
+    auto obj = polymorph.cast<avena::Object<TestDto1>>();
 
     OATPP_ASSERT(obj->str == "Hello World!")
     OATPP_ASSERT(obj->i8 == -8)
@@ -198,7 +200,7 @@ void TreeToObjectMapperTest::onRun() {
     state.config = &config;
     state.tree = &tree;
 
-    const auto& polymorph = mapper.map(state,oatpp::Object<TestDto1>::Class::getType());
+    const auto& polymorph = mapper.map(state,avena::Object<TestDto1>::Class::getType());
 
     if(state.errorStack.empty()) {
       auto json = jsonMapper.writeToString(polymorph);
@@ -208,7 +210,7 @@ void TreeToObjectMapperTest::onRun() {
       std::cout << *err << std::endl;
     }
 
-    auto obj = polymorph.cast<oatpp::Object<TestDto1>>();
+    auto obj = polymorph.cast<avena::Object<TestDto1>>();
 
     OATPP_ASSERT(obj->str == "Hello World!")
     OATPP_ASSERT(obj->i8 == -8)
@@ -249,15 +251,15 @@ void TreeToObjectMapperTest::onRun() {
 
     tree = "value-2";
 
-    auto polymorph = mapper.map(state, oatpp::Enum<TestEnum>::Class::getType());
+    auto polymorph = mapper.map(state, avena::Enum<TestEnum>::Class::getType());
 
     if(!state.errorStack.empty()) {
       auto err = state.errorStack.stacktrace();
       std::cout << *err << std::endl;
     }
 
-    OATPP_ASSERT(polymorph.getValueType() == oatpp::Enum<TestEnum>::Class::getType())
-    OATPP_ASSERT(polymorph.cast<oatpp::Enum<TestEnum>>() == TestEnum::VALUE_2)
+    OATPP_ASSERT(polymorph.getValueType() == avena::Enum<TestEnum>::Class::getType())
+    OATPP_ASSERT(polymorph.cast<avena::Enum<TestEnum>>() == TestEnum::VALUE_2)
   }
 
   {
@@ -272,15 +274,15 @@ void TreeToObjectMapperTest::onRun() {
 
     tree = "VALUE_2";
 
-    auto polymorph = mapper.map(state, oatpp::Enum<TestEnum>::Class::getType());
+    auto polymorph = mapper.map(state, avena::Enum<TestEnum>::Class::getType());
 
     if(!state.errorStack.empty()) {
       auto err = state.errorStack.stacktrace();
       std::cout << *err << std::endl;
     }
 
-    OATPP_ASSERT(polymorph.getValueType() == oatpp::Enum<TestEnum>::Class::getType())
-    OATPP_ASSERT(polymorph.cast<oatpp::Enum<TestEnum>>() == TestEnum::VALUE_2)
+    OATPP_ASSERT(polymorph.getValueType() == avena::Enum<TestEnum>::Class::getType())
+    OATPP_ASSERT(polymorph.cast<avena::Enum<TestEnum>>() == TestEnum::VALUE_2)
   }
 
 }

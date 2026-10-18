@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,9 +28,9 @@
 
 #include "oatpp/data/resource/File.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
-FileProvider::FileProvider(const oatpp::String& filename)
+FileProvider::FileProvider(const avena::String& filename)
   : m_filename(filename)
 {}
 
@@ -48,13 +50,13 @@ async::CoroutineStarter FileProvider::getResourceAsync(const std::shared_ptr<Par
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
 
-std::shared_ptr<PartReader> createFilePartReader(const oatpp::String& filename, v_io_size maxDataSize) {
+std::shared_ptr<PartReader> createFilePartReader(const avena::String& filename, v_io_size maxDataSize) {
   auto provider = std::make_shared<FileProvider>(filename);
   auto reader = std::make_shared<StreamPartReader>(provider, maxDataSize);
   return reader;
 }
 
-std::shared_ptr<AsyncPartReader> createAsyncFilePartReader(const oatpp::String& filename, v_io_size maxDataSize) {
+std::shared_ptr<AsyncPartReader> createAsyncFilePartReader(const avena::String& filename, v_io_size maxDataSize) {
   auto provider = std::make_shared<FileProvider>(filename);
   auto reader = std::make_shared<AsyncStreamPartReader>(provider, maxDataSize);
   return reader;

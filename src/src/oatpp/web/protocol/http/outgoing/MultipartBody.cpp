@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,12 +28,12 @@
 #include "oatpp/data/stream/BufferStream.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 v_io_size MultipartBody::readBody(void *buffer, v_buff_size count, async::Action& action) {
   const auto& stream = m_iterator.getPartInputStream();
   if(!stream) {
-    OATPP_LOGw("[oatpp::web::protocol::http::outgoing::MultipartBody::MultipartReadCallback::readBody()]", "Warning. Part has no input stream.")
+    OATPP_LOGw("[avena::web::protocol::http::outgoing::MultipartBody::MultipartReadCallback::readBody()]", "Warning. Part has no input stream.")
     return 0;
   }
   return stream->read(buffer, count, action);
@@ -42,7 +44,7 @@ v_io_size MultipartBody::incPart(async::Action& action) {
   if(action.isNone()) {
     return 0;
   }
-  return oatpp::IOError::RETRY_READ;
+  return avena::IOError::RETRY_READ;
 }
 
 v_io_size MultipartBody::read(void *buffer, v_buff_size count, async::Action& action) {
@@ -82,7 +84,7 @@ v_io_size MultipartBody::read(void *buffer, v_buff_size count, async::Action& ac
         break;
 
       default:
-        OATPP_LOGe("[oatpp::web::protocol::http::outgoing::MultipartBody::MultipartReadCallback::read()]", "Error. Invalid state {}", m_state)
+        OATPP_LOGe("[avena::web::protocol::http::outgoing::MultipartBody::MultipartReadCallback::read()]", "Error. Invalid state {}", m_state)
         return 0;
 
     }
@@ -108,7 +110,7 @@ v_io_size MultipartBody::read(void *buffer, v_buff_size count, async::Action& ac
       }
 
     } else if(action.isNone()) {
-      OATPP_LOGe("[oatpp::web::protocol::http::outgoing::MultipartBody::MultipartReadCallback::read()]", "Error. Invalid read result {}. State={}", res, m_state)
+      OATPP_LOGe("[avena::web::protocol::http::outgoing::MultipartBody::MultipartReadCallback::read()]", "Error. Invalid read result {}. State={}", res, m_state)
       return 0;
     }
 
@@ -125,7 +127,7 @@ v_io_size MultipartBody::readBoundary(const std::shared_ptr<Multipart>& multipar
 {
   if (!readStream.getDataMemoryHandle()) {
 
-    oatpp::String boundary;
+    avena::String boundary;
 
     if (iterator.finished()) {
       boundary = "\r\n--" + multipart->getBoundary() + "--\r\n";
@@ -157,7 +159,7 @@ v_io_size MultipartBody::readHeaders(const std::shared_ptr<Multipart>& multipart
 
   if (!readStream.getDataMemoryHandle()) {
 
-    oatpp::data::stream::BufferOutputStream stream;
+    avena::data::stream::BufferOutputStream stream;
     const auto& part = iterator.get();
     http::Utils::writeHeaders(part->getHeaders(), &stream);
     stream.writeSimple("\r\n", 2);
@@ -174,7 +176,7 @@ v_io_size MultipartBody::readHeaders(const std::shared_ptr<Multipart>& multipart
   return res;
 }
 
-MultipartBody::MultipartBody(const std::shared_ptr<Multipart>& multipart, const oatpp::String& contentType, bool flushParts)
+MultipartBody::MultipartBody(const std::shared_ptr<Multipart>& multipart, const avena::String& contentType, bool flushParts)
   : m_multipart(multipart)
   , m_contentType(contentType)
   , m_iterator(multipart)
@@ -184,7 +186,7 @@ MultipartBody::MultipartBody(const std::shared_ptr<Multipart>& multipart, const 
 {}
 
 void MultipartBody::declareHeaders(Headers& headers) {
-  headers.put_LockFree(oatpp::web::protocol::http::Header::CONTENT_TYPE, m_contentType + "; boundary=" + m_multipart->getBoundary());
+  headers.put_LockFree(avena::web::protocol::http::Header::CONTENT_TYPE, m_contentType + "; boundary=" + m_multipart->getBoundary());
 }
 
 p_char8 MultipartBody::getKnownData() {

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 #include "oatpp/data/mapping/Tree.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 /**
  * Json Serializer.
@@ -44,7 +46,7 @@ public:
   /**
    * Serializer config.
    */
-  class Config : public oatpp::base::Countable {
+  class Config : public avena::base::Countable {
   public:
 
     /**
@@ -61,12 +63,12 @@ public:
     /**
      * Beautifier Indent.
      */
-    oatpp::String beautifierIndent = "  ";
+    avena::String beautifierIndent = "  ";
 
     /**
      * Beautifier new line.
      */
-    oatpp::String beautifierNewLine = "\n";
+    avena::String beautifierNewLine = "\n";
 
     /**
      * Escape flags.
@@ -90,7 +92,7 @@ public:
 private:
 
   
-  static void serializeString(oatpp::data::stream::ConsistentOutputStream* stream,
+  static void serializeString(avena::data::stream::ConsistentOutputStream* stream,
                               const char* data,
                               v_buff_size size,
                               v_uint32 escapeFlags);

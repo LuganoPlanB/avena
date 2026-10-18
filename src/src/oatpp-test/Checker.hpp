@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/Environment.hpp"
 
-namespace oatpp { namespace test {
+namespace avena { namespace test {
 
 /**
  * Helper class to check performance of code block.
@@ -60,7 +62,7 @@ public:
 
 /**
  * Helper class to check block of code on memory leaks.
- * Checks &id:oatpp::base::Countable; objects, and objects allocated on memory pools.
+ * Checks &id:avena::base::Countable; objects, and objects allocated on memory pools.
  */
 class ThreadLocalObjectsChecker {
 private:

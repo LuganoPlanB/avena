@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,10 +30,10 @@
 #include "oatpp/data/buffer/Processor.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace encoding {
+namespace avena { namespace web { namespace protocol { namespace http { namespace encoding {
 
 /**
- * TestProvider of encoding or decoding &id:oatpp::data::buffer::Processor;.
+ * TestProvider of encoding or decoding &id:avena::data::buffer::Processor;.
  */
 class EncoderProvider {
 public:
@@ -45,11 +47,11 @@ public:
    * Get name of the encoding. This name is used in HTTP headers.
    * @return - name of the encoding. Ex.: "gzip" or "deflate" or "chunked".
    */
-  virtual oatpp::String getEncodingName() = 0;
+  virtual avena::String getEncodingName() = 0;
 
   /**
-   * Get &id:oatpp::data::buffer::Processor; for decoding/encoding.
-   * @return - &id:oatpp::data::buffer::Processor;
+   * Get &id:avena::data::buffer::Processor; for decoding/encoding.
+   * @return - &id:avena::data::buffer::Processor;
    */
   virtual std::shared_ptr<data::buffer::Processor> getProcessor() = 0;
 

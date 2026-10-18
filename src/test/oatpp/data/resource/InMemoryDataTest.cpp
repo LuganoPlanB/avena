@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,12 +28,12 @@
 
 #include "oatpp/data/resource/InMemoryData.hpp"
 
-namespace oatpp { namespace data { namespace resource {
+namespace avena { namespace data { namespace resource {
 
 void InMemoryDataTest::onRun() {
 
   {
-    oatpp::data::resource::InMemoryData data;
+    avena::data::resource::InMemoryData data;
 
     OATPP_ASSERT(data.getKnownSize() == 0)
     OATPP_ASSERT(data.getInMemoryData() == nullptr)
@@ -39,8 +41,8 @@ void InMemoryDataTest::onRun() {
   }
 
   {
-    oatpp::String testData = "Hello World";
-    oatpp::data::resource::InMemoryData data;
+    avena::String testData = "Hello World";
+    avena::data::resource::InMemoryData data;
 
     {
       auto s = data.openOutputStream();
@@ -53,9 +55,9 @@ void InMemoryDataTest::onRun() {
   }
 
   {
-    oatpp::String testData1 = "Hello";
-    oatpp::String testData2 = "World";
-    oatpp::data::resource::InMemoryData data("data=");
+    avena::String testData1 = "Hello";
+    avena::String testData2 = "World";
+    avena::data::resource::InMemoryData data("data=");
 
     {
       auto s1 = data.openOutputStream();
@@ -72,8 +74,8 @@ void InMemoryDataTest::onRun() {
   }
 
   {
-    oatpp::String testData = "Hello";
-    oatpp::data::resource::InMemoryData data("data=");
+    avena::String testData = "Hello";
+    avena::data::resource::InMemoryData data("data=");
 
     auto is = data.openInputStream();
 
@@ -82,9 +84,9 @@ void InMemoryDataTest::onRun() {
       s1->writeExactSizeDataSimple(testData->data(), static_cast<v_buff_size>(testData->size()));
     }
 
-    oatpp::data::stream::BufferOutputStream s;
+    avena::data::stream::BufferOutputStream s;
     char buffer[100];
-    oatpp::data::stream::transfer(is, &s, 0, buffer, 100);
+    avena::data::stream::transfer(is, &s, 0, buffer, 100);
 
     OATPP_ASSERT(s.toString() == "data=")
 

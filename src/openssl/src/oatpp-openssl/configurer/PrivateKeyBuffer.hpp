@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,11 +31,11 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
 /**
  * Context configurer for private key file.
- * @extends &id:oatpp::openssl::configurer::ContextConfigurer;.
+ * @extends &id:avena::openssl::configurer::ContextConfigurer;.
  */
 class PrivateKeyBuffer : public ContextConfigurer {
 private:
@@ -46,7 +48,7 @@ public:
    * @param privateKeyBufferLength
    */
   PrivateKeyBuffer(const void *privateKeyBuffer, int privateKeyBufferLength);
-  PrivateKeyBuffer(const oatpp::String& privateKeyBuffer);
+  PrivateKeyBuffer(const avena::String& privateKeyBuffer);
 
   void configure(SSL_CTX* ctx) override;
 

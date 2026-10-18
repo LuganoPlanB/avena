@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace network { namespace tcp { namespace server {
+namespace avena { namespace network { namespace tcp { namespace server {
 
 /**
  * Simple provider of TCP connections.
@@ -52,7 +54,7 @@ public:
   /**
    * Connection with extra data - ex.: peer address.
    */
-  class ExtendedConnection : public oatpp::network::tcp::Connection {
+  class ExtendedConnection : public avena::network::tcp::Connection {
   public:
 
     static const char* const PROPERTY_PEER_ADDRESS;
@@ -65,22 +67,22 @@ public:
 
     /**
      * Constructor.
-     * @param handle - &id:oatpp::v_io_handle;.
-     * @param properties - &id:oatpp::data::stream::Context::Properties;.
+     * @param handle - &id:avena::v_io_handle;.
+     * @param properties - &id:avena::data::stream::Context::Properties;.
      */
     ExtendedConnection(v_io_handle handle, data::stream::Context::Properties&& properties);
 
     /**
      * Get output stream context.
-     * @return - &id:oatpp::data::stream::Context;.
+     * @return - &id:avena::data::stream::Context;.
      */
-    oatpp::data::stream::Context& getOutputStreamContext() override;
+    avena::data::stream::Context& getOutputStreamContext() override;
 
     /**
      * Get input stream context. <br>
-     * @return - &id:oatpp::data::stream::Context;.
+     * @return - &id:avena::data::stream::Context;.
      */
-    oatpp::data::stream::Context& getInputStreamContext() override;
+    avena::data::stream::Context& getInputStreamContext() override;
 
   };
 
@@ -88,22 +90,22 @@ private:
   std::shared_ptr<ConnectionInvalidator> m_invalidator;
   network::Address m_address;
   std::atomic<bool> m_closed;
-  oatpp::v_io_handle m_serverHandle;
+  avena::v_io_handle m_serverHandle;
   bool m_useExtendedConnections;
   std::shared_ptr<ConnectionConfigurer> m_connectionConfigurer;
 private:
-  oatpp::v_io_handle instantiateServer();
+  avena::v_io_handle instantiateServer();
 private:
-  void prepareConnectionHandle(oatpp::v_io_handle handle);
+  void prepareConnectionHandle(avena::v_io_handle handle);
   provider::ResourceHandle<data::stream::IOStream> getDefaultConnection();
   provider::ResourceHandle<data::stream::IOStream> getExtendedConnection();
 public:
 
   /**
    * Constructor.
-   * @param address - &id:oatpp::network::Address;.
+   * @param address - &id:avena::network::Address;.
    * @param useExtendedConnections - set `true` to use &l:ConnectionProvider::ExtendedConnection;.
-   * `false` to use &id:oatpp::network::tcp::Connection;.
+   * `false` to use &id:avena::network::tcp::Connection;.
    */
   ConnectionProvider(const network::Address& address, bool useExtendedConnections = false);
 
@@ -111,9 +113,9 @@ public:
 
   /**
    * Create shared ConnectionProvider.
-   * @param address - &id:oatpp::network::Address;.
+   * @param address - &id:avena::network::Address;.
    * @param useExtendedConnections - set `true` to use &l:ConnectionProvider::ExtendedConnection;.
-   * `false` to use &id:oatpp::network::tcp::Connection;.
+   * `false` to use &id:avena::network::tcp::Connection;.
    * @return - `std::shared_ptr` to ConnectionProvider.
    */
   static std::shared_ptr<ConnectionProvider> createShared(const network::Address& address, bool useExtendedConnections = false){
@@ -138,7 +140,7 @@ public:
 
   /**
    * Get incoming connection.
-   * @return &id:oatpp::data::stream::IOStream;.
+   * @return &id:avena::data::stream::IOStream;.
    */
   provider::ResourceHandle<data::stream::IOStream> get() override;
 
@@ -150,7 +152,7 @@ public:
    * <br>
    * *It may be implemented later*
    */
-  oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override {
+  avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override {
     /*
      *  No need to implement this.
      *  For Asynchronous IO in oatpp it is considered to be a good practice
@@ -159,11 +161,11 @@ public:
      *
      *  It may be implemented later
      */
-    throw std::runtime_error("[oatpp::network::tcp::server::ConnectionProvider::getAsync()]: Error. Not implemented.");
+    throw std::runtime_error("[avena::network::tcp::server::ConnectionProvider::getAsync()]: Error. Not implemented.");
   }
 
   /**
-   * Get address - &id:oatpp::network::Address;.
+   * Get address - &id:avena::network::Address;.
    * @return
    */
   const network::Address& getAddress() const {

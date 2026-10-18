@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "StreamingBody.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 StreamingBody::StreamingBody(const std::shared_ptr<data::stream::ReadCallback>& readCallback)
   : m_readCallback(readCallback)

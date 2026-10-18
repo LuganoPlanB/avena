@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,13 +30,13 @@
 #include "oatpp/Types.hpp"
 #include "oatpp/macro/codegen.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 namespace {
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class TestDto : public oatpp::DTO {
+class TestDto : public avena::DTO {
 
   DTO_INIT(TestDto, DTO)
 
@@ -76,8 +78,8 @@ class TestDto : public oatpp::DTO {
 
 void TypeResolverTest::onRun() {
 
-  oatpp::data::mapping::TypeResolver::Cache cache;
-  oatpp::data::mapping::TypeResolver tr;
+  avena::data::mapping::TypeResolver::Cache cache;
+  avena::data::mapping::TypeResolver tr;
 
   auto dto1 = TestDto::createShared();
 
@@ -107,31 +109,31 @@ void TypeResolverTest::onRun() {
   dto1->f_fields = {{"hello", "world"}};
   dto1->f_unordered_fields = {{"hello", "world"}};
 
-  dto1->f_any = oatpp::String("hey ANY!");
+  dto1->f_any = avena::String("hey ANY!");
 
   dto1->f_dto = TestDto::createShared();
 
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_str"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_str"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::String::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::String::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_str"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::String::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::String::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_str.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_str"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_str"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::String::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::String::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_str"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::String::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::String::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_str.get())
 
   }
@@ -142,48 +144,48 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_int8"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_int8"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Int8::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Int8::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_int8"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Int8::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Int8::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_int8.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_int8"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_int8"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Int8::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Int8::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_int8"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Int8::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Int8::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_int8.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_uint8"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_uint8"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::UInt8::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::UInt8::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_uint8"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::UInt8::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::UInt8::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_uint8.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_uint8"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_uint8"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::UInt8::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::UInt8::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_uint8"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::UInt8::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::UInt8::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_uint8.get())
 
   }
@@ -193,48 +195,48 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_int16"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_int16"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Int16::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Int16::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_int16"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Int16::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Int16::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_int16.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_int16"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_int16"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Int16::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Int16::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_int16"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Int16::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Int16::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_int16.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_uint16"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_uint16"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::UInt16::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::UInt16::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_uint16"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::UInt16::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::UInt16::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_uint16.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_uint16"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_uint16"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::UInt16::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::UInt16::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_uint16"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::UInt16::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::UInt16::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_uint16.get())
 
   }
@@ -244,48 +246,48 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_int32"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_int32"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Int32::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Int32::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_int32"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Int32::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Int32::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_int32.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_int32"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_int32"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Int32::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Int32::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_int32"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Int32::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Int32::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_int32.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_uint32"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_uint32"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::UInt32::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::UInt32::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_uint32"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::UInt32::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::UInt32::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_uint32.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_uint32"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_uint32"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::UInt32::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::UInt32::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_uint32"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::UInt32::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::UInt32::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_uint32.get())
 
   }
@@ -295,48 +297,48 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_int64"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_int64"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Int64::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Int64::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_int64"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Int64::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Int64::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_int64.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_int64"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_int64"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Int64::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Int64::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_int64"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Int64::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Int64::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_int64.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_uint64"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_uint64"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::UInt64::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::UInt64::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_uint64"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::UInt64::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::UInt64::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_uint64.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_uint64"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_uint64"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::UInt64::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::UInt64::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_uint64"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::UInt64::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::UInt64::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_uint64.get())
 
   }
@@ -348,24 +350,24 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_float32"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_float32"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Float32::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Float32::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_float32"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Float32::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Float32::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_float32.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_float32"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_float32"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Float32::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Float32::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_float32"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Float32::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Float32::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_float32.get())
 
   }
@@ -375,24 +377,24 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_float64"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_float64"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Float64::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Float64::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_float64"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Float64::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Float64::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_float64.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_float64"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_float64"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Float64::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Float64::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_float64"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Float64::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Float64::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_float64.get())
 
   }
@@ -402,24 +404,24 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_bool"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_bool"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Boolean::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Boolean::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_bool"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Boolean::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Boolean::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_bool.get())
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_bool"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_bool"}, cache);
     OATPP_ASSERT(type != nullptr)
-    OATPP_ASSERT(type->classId.id == oatpp::Boolean::Class::CLASS_ID.id)
+    OATPP_ASSERT(type->classId.id == avena::Boolean::Class::CLASS_ID.id)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_bool"}, cache);
-    OATPP_ASSERT(val.getValueType()->classId.id == oatpp::Boolean::Class::CLASS_ID.id)
+    OATPP_ASSERT(val.getValueType()->classId.id == avena::Boolean::Class::CLASS_ID.id)
     OATPP_ASSERT(val.get() == dto1->f_dto->f_bool.get())
 
   }
@@ -429,7 +431,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_vector"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_vector"}, cache);
     OATPP_ASSERT(type == dto1->f_vector.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_vector"}, cache);
@@ -440,7 +442,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_vector"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_vector"}, cache);
     OATPP_ASSERT(type == dto1->f_dto->f_vector.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_vector"}, cache);
@@ -454,7 +456,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_list"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_list"}, cache);
     OATPP_ASSERT(type == dto1->f_list.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_list"}, cache);
@@ -465,7 +467,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_list"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_list"}, cache);
     OATPP_ASSERT(type == dto1->f_dto->f_list.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_list"}, cache);
@@ -479,7 +481,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_set"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_set"}, cache);
     OATPP_ASSERT(type == dto1->f_set.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_set"}, cache);
@@ -490,7 +492,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_set"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_set"}, cache);
     OATPP_ASSERT(type == dto1->f_dto->f_set.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_set"}, cache);
@@ -504,7 +506,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_fields"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_fields"}, cache);
     OATPP_ASSERT(type == dto1->f_fields.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_fields"}, cache);
@@ -515,7 +517,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_fields"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_fields"}, cache);
     OATPP_ASSERT(type == dto1->f_dto->f_fields.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_fields"}, cache);
@@ -529,7 +531,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_unordered_fields"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_unordered_fields"}, cache);
     OATPP_ASSERT(type == dto1->f_unordered_fields.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_unordered_fields"}, cache);
@@ -540,7 +542,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_unordered_fields"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_unordered_fields"}, cache);
     OATPP_ASSERT(type == dto1->f_dto->f_unordered_fields.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_unordered_fields"}, cache);
@@ -554,7 +556,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_any"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_any"}, cache);
     OATPP_ASSERT(type == dto1->f_any.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_any"}, cache);
@@ -565,7 +567,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_any"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_any"}, cache);
     OATPP_ASSERT(type == dto1->f_dto->f_any.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_any"}, cache);
@@ -579,7 +581,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto"}, cache);
     OATPP_ASSERT(type == dto1->f_dto.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto"}, cache);
@@ -590,7 +592,7 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_dto"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_dto"}, cache);
     OATPP_ASSERT(type == dto1->f_dto->f_dto.getValueType())
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_dto"}, cache);
@@ -604,22 +606,22 @@ void TypeResolverTest::onRun() {
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_non_existing"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_non_existing"}, cache);
     OATPP_ASSERT(type == nullptr)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_non_existing"}, cache);
-    OATPP_ASSERT(val.getValueType() == oatpp::Void::Class::getType())
+    OATPP_ASSERT(val.getValueType() == avena::Void::Class::getType())
     OATPP_ASSERT(val == nullptr)
 
   }
 
   {
 
-    auto type = tr.resolveObjectPropertyType(oatpp::Object<TestDto>::Class::getType(), {"f_dto", "f_non_existing"}, cache);
+    auto type = tr.resolveObjectPropertyType(avena::Object<TestDto>::Class::getType(), {"f_dto", "f_non_existing"}, cache);
     OATPP_ASSERT(type == nullptr)
 
     auto val = tr.resolveObjectPropertyValue(dto1, {"f_dto", "f_non_existing"}, cache);
-    OATPP_ASSERT(val.getValueType() == oatpp::Void::Class::getType())
+    OATPP_ASSERT(val.getValueType() == avena::Void::Class::getType())
     OATPP_ASSERT(val == nullptr)
 
   }

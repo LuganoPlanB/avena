@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -57,7 +59,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 class IOEventWorkerForeman; // FWD
 
@@ -76,10 +78,10 @@ private:
   Action::IOEventType m_specialization;
   std::atomic<bool> m_running;
   utils::FastQueue<CoroutineHandle> m_backlog;
-  oatpp::concurrency::SpinLock m_backlogLock;
+  avena::concurrency::SpinLock m_backlogLock;
 private:
-  oatpp::v_io_handle m_eventQueueHandle;
-  oatpp::v_io_handle m_wakeupTrigger;
+  avena::v_io_handle m_eventQueueHandle;
+  avena::v_io_handle m_wakeupTrigger;
   std::unique_ptr<v_char8[]> m_inEvents;
   v_int32 m_inEventsCount;
   v_int32 m_inEventsCapacity;
@@ -108,7 +110,7 @@ public:
 
   /**
    * Push list of tasks to worker.
-   * @param tasks - &id:oatpp::async::utils::FastQueue; of &id:oatpp::async::CoroutineHandle;.
+   * @param tasks - &id:avena::async::utils::FastQueue; of &id:avena::async::CoroutineHandle;.
    */
   void pushTasks(utils::FastQueue<CoroutineHandle>& tasks) override;
 
@@ -162,7 +164,7 @@ public:
 
   /**
    * Push list of tasks to worker.
-   * @param tasks - &id:oatpp::async::utils::FastQueue; of &id:oatpp::async::CoroutineHandle;.
+   * @param tasks - &id:avena::async::utils::FastQueue; of &id:avena::async::CoroutineHandle;.
    */
   void pushTasks(utils::FastQueue<CoroutineHandle>& tasks) override;
 

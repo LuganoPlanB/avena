@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,12 +33,12 @@
 #include "oatpp/macro/codegen.hpp"
 #include "oatpp/data/type/Type.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace handler {
+namespace avena { namespace web { namespace server { namespace handler {
 
 /**
  * The AuthorizationObject superclass, all AuthorizationObjects have to extend this class.
  */
-class AuthorizationObject : public oatpp::base::Countable {
+class AuthorizationObject : public avena::base::Countable {
 protected:
   AuthorizationObject() = default;
 };
@@ -49,28 +51,28 @@ public:
   /**
    * Convenience typedef for &l:AuthorizationObject;.
    */
-  typedef oatpp::web::server::handler::AuthorizationObject AuthorizationObject;
+  typedef avena::web::server::handler::AuthorizationObject AuthorizationObject;
 
   /**
-   * Convenience typedef for &id:oatpp::data::stream::BufferOutputStream;.
+   * Convenience typedef for &id:avena::data::stream::BufferOutputStream;.
    */
-  typedef oatpp::data::stream::BufferOutputStream BufferOutputStream;
+  typedef avena::data::stream::BufferOutputStream BufferOutputStream;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::Headers;.
+   * Convenience typedef for &id:avena::web::protocol::http::Headers;.
    */
-  typedef oatpp::web::protocol::http::Headers Headers;
+  typedef avena::web::protocol::http::Headers Headers;
 private:
-  oatpp::String m_scheme;
-  oatpp::String m_realm;
+  avena::String m_scheme;
+  avena::String m_realm;
 public:
 
   /**
    * Constructor.
-   * @param scheme - authorization type scheme. &id:oatpp::String;.
-   * @param realm - realm. &id:oatpp::String;.
+   * @param scheme - authorization type scheme. &id:avena::String;.
+   * @param realm - realm. &id:avena::String;.
    */
-  AuthorizationHandler(const oatpp::String& scheme, const oatpp::String& realm);
+  AuthorizationHandler(const avena::String& scheme, const avena::String& realm);
 
   /**
    * Default virtual destructor.
@@ -79,21 +81,21 @@ public:
 
   /**
    * Implement this method! Return nullptr if authorization should be denied.
-   * @param header - `Authorization` header. &id:oatpp::String;.
-   * @return - `std::shared_ptr` to &id:oatpp::web::server::handler::AuthorizationObject;.
+   * @param header - `Authorization` header. &id:avena::String;.
+   * @return - `std::shared_ptr` to &id:avena::web::server::handler::AuthorizationObject;.
    */
-  virtual std::shared_ptr<AuthorizationObject> handleAuthorization(const oatpp::String& authorizationHeader) = 0;
+  virtual std::shared_ptr<AuthorizationObject> handleAuthorization(const avena::String& authorizationHeader) = 0;
 
   /**
    * Render WWW-Authenicate header value. <br>
    * Custom Authorization handlers may override this method in order to provide additional information.
-   * @param stream - &id:oatpp::data::stream::BufferOutputStream;.
+   * @param stream - &id:avena::data::stream::BufferOutputStream;.
    */
   virtual void renderAuthenticateHeaderValue(BufferOutputStream& stream);
 
   /**
    * Add authorization error headers to the headers map. <br>
-   * @param headers - &id:oatpp::web::protocol::http::Headers;.
+   * @param headers - &id:avena::web::protocol::http::Headers;.
    */
   virtual void addErrorResponseHeaders(Headers& headers);
 
@@ -101,13 +103,13 @@ public:
    * Get authorization scheme.
    * @return
    */
-  oatpp::String getScheme();
+  avena::String getScheme();
 
   /**
    * Get authorization realm.
    * @return
    */
-  oatpp::String getRealm();
+  avena::String getRealm();
 
 };
 
@@ -118,14 +120,14 @@ class DefaultBasicAuthorizationObject : public AuthorizationObject {
 public:
 
   /**
-   * User-Id. &id:oatpp::String;.
+   * User-Id. &id:avena::String;.
    */
-  oatpp::String userId;
+  avena::String userId;
 
   /**
-   * Password. &id:oatpp::String;.
+   * Password. &id:avena::String;.
    */
-  oatpp::String password;
+  avena::String password;
 
 };
 
@@ -141,22 +143,22 @@ public:
    * Constructor.
    * @param realm
    */
-  BasicAuthorizationHandler(const oatpp::String& realm = "API");
+  BasicAuthorizationHandler(const avena::String& realm = "API");
 
   /**
    * Implementation of &l:AuthorizationHandler::handleAuthorization ();
-   * @param header - &id:oatpp::String;.
-   * @return - std::shared_ptr to &id:oatpp::web::server::handler::AuthorizationObject;.
+   * @param header - &id:avena::String;.
+   * @return - std::shared_ptr to &id:avena::web::server::handler::AuthorizationObject;.
    */
-  std::shared_ptr<AuthorizationObject> handleAuthorization(const oatpp::String &header) override;
+  std::shared_ptr<AuthorizationObject> handleAuthorization(const avena::String &header) override;
 
   /**
    * Implement this method! Do the actual authorization here. When not implemented returns &l:DefaultBasicAuthorizationObject;.
-   * @param userId - user id. &id:oatpp::String;.
-   * @param password - password. &id:oatpp::String;.
+   * @param userId - user id. &id:avena::String;.
+   * @param password - password. &id:avena::String;.
    * @return - `std::shared_ptr` to &l:AuthorizationObject;. `nullptr` - for "Unauthorized".
    */
-  virtual std::shared_ptr<AuthorizationObject> authorize(const oatpp::String& userId, const oatpp::String& password);
+  virtual std::shared_ptr<AuthorizationObject> authorize(const avena::String& userId, const avena::String& password);
 
 };
 
@@ -167,9 +169,9 @@ class DefaultBearerAuthorizationObject : public AuthorizationObject {
 public:
 
   /**
-   * Token. &id:oatpp::String;.
+   * Token. &id:avena::String;.
    */
-  oatpp::String token;
+  avena::String token;
 
 };
 
@@ -185,21 +187,21 @@ public:
    * Constructor.
    * @param realm
    */
-  BearerAuthorizationHandler(const oatpp::String& realm = "API");
+  BearerAuthorizationHandler(const avena::String& realm = "API");
 
   /**
    * Implementation of &l:AuthorizationHandler::handleAuthorization ();
-   * @param header - &id:oatpp::String;.
-   * @return - std::shared_ptr to &id:oatpp::web::server::handler::AuthorizationObject;.
+   * @param header - &id:avena::String;.
+   * @return - std::shared_ptr to &id:avena::web::server::handler::AuthorizationObject;.
    */
-  std::shared_ptr<AuthorizationObject> handleAuthorization(const oatpp::String &header) override;
+  std::shared_ptr<AuthorizationObject> handleAuthorization(const avena::String &header) override;
 
   /**
    * Implement this method! Do the actual authorization here. When not implemented returns &l:DefaultBearerAuthorizationObject;.
    * @param token - access token.
    * @return - `std::shared_ptr` to &l:AuthorizationObject;. `nullptr` - for "Unauthorized".
    */
-  virtual std::shared_ptr<AuthorizationObject> authorize(const oatpp::String& token);
+  virtual std::shared_ptr<AuthorizationObject> authorize(const avena::String& token);
 
 };
 

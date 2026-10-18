@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,20 +29,20 @@
 
 #include "oatpp/web/server/handler/AuthorizationHandler.hpp"
 
-namespace oatpp { namespace test { namespace web { namespace server { namespace handler {
+namespace avena { namespace test { namespace web { namespace server { namespace handler {
 
 namespace {
 
-class MyBasicAuthorizationObject : public oatpp::web::server::handler::AuthorizationObject {
+class MyBasicAuthorizationObject : public avena::web::server::handler::AuthorizationObject {
 public:
-  oatpp::String userId;
-  oatpp::String password;
+  avena::String userId;
+  avena::String password;
 };
 
-class MyBasicAuthorizationHandler : public oatpp::web::server::handler::BasicAuthorizationHandler {
+class MyBasicAuthorizationHandler : public avena::web::server::handler::BasicAuthorizationHandler {
 public:
 
-  std::shared_ptr<AuthorizationObject> authorize(const oatpp::String& userId, const oatpp::String& password) override {
+  std::shared_ptr<AuthorizationObject> authorize(const avena::String& userId, const avena::String& password) override {
     auto authObject = std::make_shared<MyBasicAuthorizationObject>();
     authObject->userId = userId;
     authObject->password = password;
@@ -53,9 +55,9 @@ public:
 
 void AuthorizationHandlerTest::onRun() {
 
-  oatpp::String user = "foo";
-  oatpp::String password = "bar";
-  oatpp::String header = "Basic Zm9vOmJhcg==";
+  avena::String user = "foo";
+  avena::String password = "bar";
+  avena::String header = "Basic Zm9vOmJhcg==";
 
   {
     MyBasicAuthorizationHandler basicAuthHandler;
@@ -66,8 +68,8 @@ void AuthorizationHandlerTest::onRun() {
   }
 
   {
-    oatpp::web::server::handler::BasicAuthorizationHandler defaultBasicAuthHandler;
-    auto auth = std::static_pointer_cast<oatpp::web::server::handler::DefaultBasicAuthorizationObject>(defaultBasicAuthHandler.handleAuthorization(header));
+    avena::web::server::handler::BasicAuthorizationHandler defaultBasicAuthHandler;
+    auto auth = std::static_pointer_cast<avena::web::server::handler::DefaultBasicAuthorizationObject>(defaultBasicAuthHandler.handleAuthorization(header));
     OATPP_LOGv(TAG, "header=\"{}\" -> user=\"{}\" password=\"{}\"", header, auth->userId, auth->password)
     OATPP_ASSERT(auth->userId == "foo")
     OATPP_ASSERT(auth->password == "bar")

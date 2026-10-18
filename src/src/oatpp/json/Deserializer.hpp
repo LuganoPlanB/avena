@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -35,7 +37,7 @@
 
 #include <vector>
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 /**
  * Json Deserializer.
@@ -47,7 +49,7 @@ public:
   /**
    * Deserializer config.
    */
-  class Config : public oatpp::base::Countable {
+  class Config : public avena::base::Countable {
   public:
 
   };

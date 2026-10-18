@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Tree::Attributes
@@ -108,7 +110,7 @@ const type::String& Tree::Attributes::operator [] (const type::String& key) cons
       return it->second;
     }
   }
-  throw std::runtime_error("[oatpp::data::mapping::Tree::Attributes::operator []]: const operator[] can't add items.");
+  throw std::runtime_error("[avena::data::mapping::Tree::Attributes::operator []]: const operator[] can't add items.");
 }
 
 std::pair<type::String, std::reference_wrapper<type::String>> Tree::Attributes::operator [] (v_uint64 index) {
@@ -116,7 +118,7 @@ std::pair<type::String, std::reference_wrapper<type::String>> Tree::Attributes::
     auto &item = m_attributes->order.at(index);
     return {item.first.lock(), *item.second};
   }
-  throw std::runtime_error("[oatpp::data::mapping::Tree::Attributes::operator []]: const operator[] can't get item - empty attributes.");
+  throw std::runtime_error("[avena::data::mapping::Tree::Attributes::operator []]: const operator[] can't get item - empty attributes.");
 }
 
 std::pair<type::String, std::reference_wrapper<const type::String>> Tree::Attributes::operator [] (v_uint64 index) const {
@@ -124,7 +126,7 @@ std::pair<type::String, std::reference_wrapper<const type::String>> Tree::Attrib
     auto &item = m_attributes->order.at(index);
     return {item.first.lock(), *item.second};
   }
-  throw std::runtime_error("[oatpp::data::mapping::Tree::Attributes::operator []]: const operator[] can't get item - empty attributes.");
+  throw std::runtime_error("[avena::data::mapping::Tree::Attributes::operator []]: const operator[] can't get item - empty attributes.");
 }
 
 type::String Tree::Attributes::get(const type::String& key) const {
@@ -307,7 +309,7 @@ void Tree::setCopy(const Tree& other) {
     case Type::STRING: {
       auto otherData = reinterpret_cast<type::String *>(other.m_data);
       if(otherData == nullptr) {
-        throw std::runtime_error("[oatpp::data::mapping::Tree::setCopy()]: other.data is null, other.type is 'STRING'");
+        throw std::runtime_error("[avena::data::mapping::Tree::setCopy()]: other.data is null, other.type is 'STRING'");
       }
       auto ptr = new type::String(*otherData);
       m_data = reinterpret_cast<LARGEST_TYPE>(ptr);
@@ -316,7 +318,7 @@ void Tree::setCopy(const Tree& other) {
     case Type::VECTOR: {
       auto otherData = reinterpret_cast<std::vector<Tree> *>(other.m_data);
       if(otherData == nullptr) {
-        throw std::runtime_error("[oatpp::data::mapping::Tree::setCopy()]: other.data is null, other.type is 'VECTOR'");
+        throw std::runtime_error("[avena::data::mapping::Tree::setCopy()]: other.data is null, other.type is 'VECTOR'");
       }
       auto ptr = new std::vector<Tree>(*otherData);
       m_data = reinterpret_cast<LARGEST_TYPE>(ptr);
@@ -325,7 +327,7 @@ void Tree::setCopy(const Tree& other) {
     case Type::MAP: {
       auto otherData = reinterpret_cast<TreeMap *>(other.m_data);
       if(otherData == nullptr) {
-        throw std::runtime_error("[oatpp::data::mapping::Tree::setCopy()]: other.data is null, other.type is 'MAP'");
+        throw std::runtime_error("[avena::data::mapping::Tree::setCopy()]: other.data is null, other.type is 'MAP'");
       }
       auto ptr = new TreeMap(*otherData);
       m_data = reinterpret_cast<LARGEST_TYPE>(ptr);
@@ -334,7 +336,7 @@ void Tree::setCopy(const Tree& other) {
     case Type::PAIRS: {
       auto otherData = reinterpret_cast<std::vector<std::pair<type::String, Tree>> *>(other.m_data);
       if(otherData == nullptr) {
-        throw std::runtime_error("[oatpp::data::mapping::Tree::setCopy()]: other.data is null, other.type is 'PAIRS'");
+        throw std::runtime_error("[avena::data::mapping::Tree::setCopy()]: other.data is null, other.type is 'PAIRS'");
       }
       auto ptr = new std::vector<std::pair<type::String, Tree>>(*otherData);
       m_data = reinterpret_cast<LARGEST_TYPE>(ptr);
@@ -606,7 +608,7 @@ bool Tree::isPairs() const {
 
 v_int64 Tree::getInteger() const {
   if(m_type != Type::INTEGER) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getInteger()]: NOT an arbitrary INTEGER.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getInteger()]: NOT an arbitrary INTEGER.");
   }
   v_int64 result;
   std::memcpy (&result, &m_data, sizeof(v_float64));
@@ -615,7 +617,7 @@ v_int64 Tree::getInteger() const {
 
 v_float64 Tree::getFloat() const {
   if(m_type != Type::FLOAT) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getFloat()]: NOT an arbitrary FLOAT.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getFloat()]: NOT an arbitrary FLOAT.");
   }
   v_float64 result;
   std::memcpy (&result, &m_data, sizeof(v_float64));
@@ -624,7 +626,7 @@ v_float64 Tree::getFloat() const {
 
 const type::String& Tree::getString() const {
   if(m_type != Type::STRING) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getString()]: NOT a STRING.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getString()]: NOT a STRING.");
   }
   auto data = reinterpret_cast<const type::String*>(m_data);
   return *data;
@@ -632,7 +634,7 @@ const type::String& Tree::getString() const {
 
 const std::vector<Tree>& Tree::getVector() const {
   if(m_type != Type::VECTOR) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getVector()]: NOT a VECTOR.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getVector()]: NOT a VECTOR.");
   }
   auto data = reinterpret_cast<const std::vector<Tree>*>(m_data);
   return *data;
@@ -640,7 +642,7 @@ const std::vector<Tree>& Tree::getVector() const {
 
 const TreeMap& Tree::getMap() const {
   if(m_type != Type::MAP) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getMap()]: NOT a MAP.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getMap()]: NOT a MAP.");
   }
   auto data = reinterpret_cast<const TreeMap*>(m_data);
   return *data;
@@ -648,7 +650,7 @@ const TreeMap& Tree::getMap() const {
 
 const std::vector<std::pair<type::String, Tree>>& Tree::getPairs() const {
   if(m_type != Type::PAIRS) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getPairs()]: NOT a PAIRS.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getPairs()]: NOT a PAIRS.");
   }
   auto data = reinterpret_cast<const std::vector<std::pair<type::String, Tree>>*>(m_data);
   return *data;
@@ -659,7 +661,7 @@ std::vector<Tree>& Tree::getVector() {
     setVector({});
   }
   if(m_type != Type::VECTOR) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getVector()]: NOT a VECTOR.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getVector()]: NOT a VECTOR.");
   }
   auto data = reinterpret_cast<std::vector<Tree>*>(m_data);
   return *data;
@@ -670,7 +672,7 @@ TreeMap& Tree::getMap() {
     setMap({});
   }
   if(m_type != Type::MAP) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getMap()]: NOT a MAP.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getMap()]: NOT a MAP.");
   }
   auto data = reinterpret_cast<TreeMap*>(m_data);
   return *data;
@@ -681,7 +683,7 @@ std::vector<std::pair<type::String, Tree>>& Tree::getPairs() {
     setPairs({});
   }
   if(m_type != Type::PAIRS) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::getMap()]: NOT a PAIRS.");
+    throw std::runtime_error("[avena::data::mapping::Tree::getMap()]: NOT a PAIRS.");
   }
   auto data = reinterpret_cast<std::vector<std::pair<type::String, Tree>>*>(m_data);
   return *data;
@@ -958,7 +960,7 @@ Tree& TreeMap::operator [] (const type::String& key) {
 const Tree& TreeMap::operator [] (const type::String& key) const {
   auto it = m_map.find(key);
   if(it == m_map.end()) {
-    throw std::runtime_error("[oatpp::data::mapping::Tree::TreeMap::operator[]]: const operator[] can't add items.");
+    throw std::runtime_error("[avena::data::mapping::Tree::TreeMap::operator[]]: const operator[] can't add items.");
   }
   return it->second;
 }
@@ -1002,13 +1004,13 @@ TreeChildrenOperator::TreeChildrenOperator(const Tree& tree)
     m_type = PAIRS;
     m_pairs = std::addressof(tree.getPairs());
   } else {
-    throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::TreeChildrenOperator()]: Node type is NOT suppoerted");
+    throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::TreeChildrenOperator()]: Node type is NOT suppoerted");
   }
 }
 
 std::pair<type::String, Tree*> TreeChildrenOperator::getPair(v_uint64 index) {
   if(m_const) {
-    throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::getPair()]: Can't operate on CONST tree node");
+    throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::getPair()]: Can't operate on CONST tree node");
   }
   switch (m_type) {
     case VECTOR: break;
@@ -1023,7 +1025,7 @@ std::pair<type::String, Tree*> TreeChildrenOperator::getPair(v_uint64 index) {
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::getPair()]: Node type doesn't support pairs");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::getPair()]: Node type doesn't support pairs");
 }
 
 std::pair<type::String, const Tree*> TreeChildrenOperator::getPair(v_uint64 index) const {
@@ -1040,12 +1042,12 @@ std::pair<type::String, const Tree*> TreeChildrenOperator::getPair(v_uint64 inde
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::getPair()]: Node type doesn't support pairs");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::getPair()]: Node type doesn't support pairs");
 }
 
 Tree* TreeChildrenOperator::getItem(v_uint64 index) {
   if(m_const) {
-    throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::getItem()]: Can't operate on CONST tree node");
+    throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::getItem()]: Can't operate on CONST tree node");
   }
   switch (m_type) {
     case VECTOR: return std::addressof(const_cast<std::vector<Tree>*>(m_vector)->at(index));
@@ -1054,7 +1056,7 @@ Tree* TreeChildrenOperator::getItem(v_uint64 index) {
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::getItem()]: Invalid iterator type");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::getItem()]: Invalid iterator type");
 }
 
 const Tree* TreeChildrenOperator::getItem(v_uint64 index) const {
@@ -1065,12 +1067,12 @@ const Tree* TreeChildrenOperator::getItem(v_uint64 index) const {
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::getItem()]: Invalid operator type");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::getItem()]: Invalid operator type");
 }
 
 Tree* TreeChildrenOperator::putPair(const type::String& key, const Tree& tree) {
   if(m_const) {
-    throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::putPair()]: Can't operate on CONST tree node");
+    throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::putPair()]: Can't operate on CONST tree node");
   }
   switch (m_type) {
     case VECTOR: break;
@@ -1088,12 +1090,12 @@ Tree* TreeChildrenOperator::putPair(const type::String& key, const Tree& tree) {
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::putPair()]: Node type doesn't support pairs");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::putPair()]: Node type doesn't support pairs");
 }
 
 Tree* TreeChildrenOperator::putPair(const type::String& key, Tree&& tree) {
   if(m_const) {
-    throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::putPair()]: Can't operate on CONST tree node");
+    throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::putPair()]: Can't operate on CONST tree node");
   }
   switch (m_type) {
     case VECTOR: break;
@@ -1111,12 +1113,12 @@ Tree* TreeChildrenOperator::putPair(const type::String& key, Tree&& tree) {
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::putPair()]: Node type doesn't support pairs");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::putPair()]: Node type doesn't support pairs");
 }
 
 Tree* TreeChildrenOperator::putItem(const Tree& tree) {
   if(m_const) {
-    throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::putItem()]: Can't operate on CONST tree node");
+    throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::putItem()]: Can't operate on CONST tree node");
   }
   switch (m_type) {
     case VECTOR: {
@@ -1129,12 +1131,12 @@ Tree* TreeChildrenOperator::putItem(const Tree& tree) {
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::putItem()]: Invalid iterator type");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::putItem()]: Invalid iterator type");
 }
 
 Tree* TreeChildrenOperator::putItem(Tree&& tree) {
   if(m_const) {
-    throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::putItem()]: Can't operate on CONST tree node");
+    throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::putItem()]: Can't operate on CONST tree node");
   }
   switch (m_type) {
     case VECTOR: {
@@ -1147,7 +1149,7 @@ Tree* TreeChildrenOperator::putItem(Tree&& tree) {
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::putItem()]: Invalid iterator type");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::putItem()]: Invalid iterator type");
 }
 
 v_uint64 TreeChildrenOperator::size() const {
@@ -1158,7 +1160,7 @@ v_uint64 TreeChildrenOperator::size() const {
     default:
       break;
   }
-  throw std::runtime_error("[oatpp::data::mapping::TreeChildrenOperator::size()]: Invalid operator type");
+  throw std::runtime_error("[avena::data::mapping::TreeChildrenOperator::size()]: Invalid operator type");
 }
 
 }}}

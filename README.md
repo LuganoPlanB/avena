@@ -6,8 +6,9 @@ avena is Plan-B Foundation's fork of the oatpp C++ web framework, combining
 the core, WebSocket and OpenSSL libraries in one repository and one CMake build.
 It starts from Conspire's vendored 1.4.0 API snapshots; see [PROVENANCE.md](PROVENANCE.md).
 The core lives under `src/`, TLS under `src/openssl/`, and WebSocket under
-`src/websocket/`. The public library is `avena`; C++ namespaces remain `oatpp`
-to preserve the existing ABI.
+`src/websocket/`. The public library and C++ namespace are `avena`. This
+deliberately breaks the old `oatpp` C++ ABI; update namespace references to
+`avena::` and rebuild consumers.
 
 ## Build and test
 
@@ -63,6 +64,11 @@ lib/libavena.a                all static library code
 lib/cmake/avena/               avenaConfig.cmake and avenaTargets.cmake
 share/avena/                   licenses, notices and build information
 ```
+
+The corresponding C++ names are `avena::Environment`,
+`avena::websocket::Handshaker` and `avena::openssl::Config`. DTO/codegen macros
+retain their existing names (for example `OATPP_CODEGEN_BEGIN`) and generate
+`avena::` references.
 
 Pass the installation prefix in `CMAKE_PREFIX_PATH`. The same target is
 available when embedding avena with `add_subdirectory` (set BUILD_TESTING=OFF

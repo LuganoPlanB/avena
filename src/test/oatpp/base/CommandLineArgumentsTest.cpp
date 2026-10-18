@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 
 #include <cstring>
 
-namespace oatpp { namespace base {
+namespace avena { namespace base {
   
 void CommandLineArgumentsTest::onRun() {
   
@@ -36,7 +38,7 @@ void CommandLineArgumentsTest::onRun() {
   int argc = 6;
   const char * argv[] = {"-k", "-c", "100", "-n", "500000", "http://127.0.0.1:8000/"};
   
-  oatpp::base::CommandLineArguments args(argc, argv);
+  avena::base::CommandLineArguments args(argc, argv);
   
   OATPP_ASSERT(args.getArgumentIndex("-k") == 0)
   OATPP_ASSERT(args.getArgumentIndex("-c") == 1)

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
   #include <arpa/inet.h>
 #endif
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
   
 v_buff_size Unicode::getUtf8CharSequenceLength(v_char8 firstByte) {
   

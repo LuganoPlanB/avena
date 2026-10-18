@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,17 +35,17 @@
 
 #include <thread>
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 namespace {
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class Dto0 : public oatpp::DTO {
+class Dto0 : public avena::DTO {
   DTO_INIT(Dto0, DTO)
 };
 
-class DtoA : public oatpp::DTO {
+class DtoA : public avena::DTO {
 
   DTO_INIT(DtoA, DTO)
 
@@ -96,7 +98,7 @@ class DtoD : public DtoA {
 
 };
 
-class DtoTypeA : public oatpp::DTO {
+class DtoTypeA : public avena::DTO {
 
   DTO_INIT(DtoTypeA, DTO)
 
@@ -104,7 +106,7 @@ class DtoTypeA : public oatpp::DTO {
 
 };
 
-class DtoTypeB : public oatpp::DTO {
+class DtoTypeB : public avena::DTO {
 
   DTO_INIT(DtoTypeB, DTO)
 
@@ -112,7 +114,7 @@ class DtoTypeB : public oatpp::DTO {
 
 };
 
-class PolymorphicDto1 : public oatpp::DTO {
+class PolymorphicDto1 : public avena::DTO {
 
   DTO_INIT(PolymorphicDto1, DTO)
 
@@ -127,7 +129,7 @@ class PolymorphicDto1 : public oatpp::DTO {
 
 };
 
-class PolymorphicDto2 : public oatpp::DTO {
+class PolymorphicDto2 : public avena::DTO {
 
   DTO_INIT(PolymorphicDto2, DTO)
 
@@ -146,7 +148,7 @@ class PolymorphicDto2 : public oatpp::DTO {
 
 };
 
-class PolymorphicDto3 : public oatpp::DTO {
+class PolymorphicDto3 : public avena::DTO {
 
   DTO_INIT(PolymorphicDto3, DTO)
 
@@ -187,7 +189,7 @@ void runDtoInitializationsInThreads() {
 void ObjectTest::onRun() {
 
   {
-    oatpp::test::PerformanceChecker timer("DTO - Initializations.");
+    avena::test::PerformanceChecker timer("DTO - Initializations.");
     runDtoInitializationsInThreads();
   }
 
@@ -200,7 +202,7 @@ void ObjectTest::onRun() {
     OATPP_LOGi(TAG, "Test Meta 1...")
 
     auto type = Object<DtoA>::Class::getType();
-    auto dispatcher = static_cast<const oatpp::data::type::__class::AbstractObject::PolymorphicDispatcher*>(type->polymorphicDispatcher);
+    auto dispatcher = static_cast<const avena::data::type::__class::AbstractObject::PolymorphicDispatcher*>(type->polymorphicDispatcher);
     const auto& propsMap = dispatcher->getProperties()->getMap();
 
     OATPP_ASSERT(propsMap.size() == 1)
@@ -217,7 +219,7 @@ void ObjectTest::onRun() {
     OATPP_LOGi(TAG, "Test Meta 2...")
 
     auto type = Object<DtoB>::Class::getType();
-    auto dispatcher = static_cast<const oatpp::data::type::__class::AbstractObject::PolymorphicDispatcher*>(type->polymorphicDispatcher);
+    auto dispatcher = static_cast<const avena::data::type::__class::AbstractObject::PolymorphicDispatcher*>(type->polymorphicDispatcher);
     const auto& propsMap = dispatcher->getProperties()->getMap();
 
     OATPP_ASSERT(propsMap.size() == 2)
@@ -242,7 +244,7 @@ void ObjectTest::onRun() {
     Object<DtoA> a;
     OATPP_ASSERT(!a)
     OATPP_ASSERT(a == nullptr)
-    OATPP_ASSERT(a.getValueType()->classId.id == oatpp::data::type::__class::AbstractObject::CLASS_ID.id)
+    OATPP_ASSERT(a.getValueType()->classId.id == avena::data::type::__class::AbstractObject::CLASS_ID.id)
     OATPP_LOGi(TAG, "OK")
   }
 
@@ -261,7 +263,7 @@ void ObjectTest::onRun() {
     OATPP_ASSERT(a != b)
     OATPP_ASSERT(b != a)
     auto ohc = a->hashCode();
-    auto whc = std::hash<oatpp::Object<DtoA>>{}(a);
+    auto whc = std::hash<avena::Object<DtoA>>{}(a);
     OATPP_ASSERT(ohc == whc)
     OATPP_LOGi(TAG, "OK")
   }
@@ -366,7 +368,7 @@ void ObjectTest::onRun() {
     a->id = "1";
     e->id = "1";
 
-    oatpp::UnorderedSet<oatpp::Object<DtoB>> set = {a, b, c, d, e};
+    avena::UnorderedSet<avena::Object<DtoB>> set = {a, b, c, d, e};
 
     OATPP_ASSERT(set->size() == 2)
     OATPP_ASSERT(set[a] == true)
@@ -380,7 +382,7 @@ void ObjectTest::onRun() {
   {
     OATPP_LOGi(TAG, "Test 9...")
     auto dto = DtoD::createShared();
-    OATPP_ASSERT(dto->a.getValueType() == oatpp::Int32::Class::getType())
+    OATPP_ASSERT(dto->a.getValueType() == avena::Int32::Class::getType())
     OATPP_ASSERT(dto->a)
     OATPP_ASSERT(dto->a == 64)
     OATPP_LOGi(TAG, "OK")
@@ -388,20 +390,20 @@ void ObjectTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test 10...")
-    OATPP_ASSERT(oatpp::Object<DtoA>::Class::getType()->extends(oatpp::Object<oatpp::DTO>::Class::getType()))
-    OATPP_ASSERT(oatpp::Object<DtoA>::Class::getType()->extends(oatpp::Object<DtoA>::Class::getType()))
-    OATPP_ASSERT(oatpp::Object<DtoB>::Class::getType()->extends(oatpp::Object<DtoA>::Class::getType()))
-    OATPP_ASSERT(oatpp::Object<DtoB>::Class::getType()->extends(oatpp::Object<oatpp::DTO>::Class::getType()))
-    OATPP_ASSERT(oatpp::Object<DtoC>::Class::getType()->extends(oatpp::Object<DtoA>::Class::getType()))
-    OATPP_ASSERT(oatpp::Object<DtoD>::Class::getType()->extends(oatpp::Object<DtoA>::Class::getType()))
-    OATPP_ASSERT(!oatpp::Object<DtoC>::Class::getType()->extends(oatpp::Object<DtoB>::Class::getType()))
+    OATPP_ASSERT(avena::Object<DtoA>::Class::getType()->extends(avena::Object<avena::DTO>::Class::getType()))
+    OATPP_ASSERT(avena::Object<DtoA>::Class::getType()->extends(avena::Object<DtoA>::Class::getType()))
+    OATPP_ASSERT(avena::Object<DtoB>::Class::getType()->extends(avena::Object<DtoA>::Class::getType()))
+    OATPP_ASSERT(avena::Object<DtoB>::Class::getType()->extends(avena::Object<avena::DTO>::Class::getType()))
+    OATPP_ASSERT(avena::Object<DtoC>::Class::getType()->extends(avena::Object<DtoA>::Class::getType()))
+    OATPP_ASSERT(avena::Object<DtoD>::Class::getType()->extends(avena::Object<DtoA>::Class::getType()))
+    OATPP_ASSERT(!avena::Object<DtoC>::Class::getType()->extends(avena::Object<DtoB>::Class::getType()))
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Test 11...")
 
-    auto map = oatpp::Object<PolymorphicDto1>::getPropertiesMap();
+    auto map = avena::Object<PolymorphicDto1>::getPropertiesMap();
     auto p = map["polymorph"];
 
     OATPP_ASSERT(p->info.description == "")
@@ -413,7 +415,7 @@ void ObjectTest::onRun() {
   {
     OATPP_LOGi(TAG, "Test 12...")
 
-    auto map = oatpp::Object<PolymorphicDto2>::getPropertiesMap();
+    auto map = avena::Object<PolymorphicDto2>::getPropertiesMap();
     auto p = map["polymorph"];
 
     OATPP_ASSERT(p->info.description == "description")
@@ -425,15 +427,15 @@ void ObjectTest::onRun() {
   {
     OATPP_LOGi(TAG, "Test 13...")
 
-    auto dto = oatpp::Object<PolymorphicDto2>::createShared();
+    auto dto = avena::Object<PolymorphicDto2>::createShared();
     OATPP_ASSERT(dto->type == nullptr)
-    OATPP_ASSERT(dto->type.getValueType() == oatpp::String::Class::getType())
+    OATPP_ASSERT(dto->type.getValueType() == avena::String::Class::getType())
     OATPP_ASSERT(dto["type"] == nullptr)
-    OATPP_ASSERT(dto["type"].getValueType() == oatpp::String::Class::getType())
+    OATPP_ASSERT(dto["type"].getValueType() == avena::String::Class::getType())
 
-    dto["type"] = oatpp::String("hello");
+    dto["type"] = avena::String("hello");
     OATPP_ASSERT(dto->type == "hello")
-    OATPP_ASSERT(dto->type.getValueType() == oatpp::String::Class::getType())
+    OATPP_ASSERT(dto->type.getValueType() == avena::String::Class::getType())
 
     OATPP_LOGi(TAG, "OK")
   }
@@ -441,11 +443,11 @@ void ObjectTest::onRun() {
   {
     OATPP_LOGi(TAG, "Test 14...")
 
-    auto dto = oatpp::Object<PolymorphicDto2>::createShared();
+    auto dto = avena::Object<PolymorphicDto2>::createShared();
     bool thrown = false;
 
     try{
-      dto["type"] = oatpp::Int32(32);
+      dto["type"] = avena::Int32(32);
     } catch(std::runtime_error const& e) {
       OATPP_LOGd(TAG, "error='{}'", e.what())
       thrown = true;
@@ -459,7 +461,7 @@ void ObjectTest::onRun() {
   {
     OATPP_LOGi(TAG, "Test 15...")
 
-    auto dto = oatpp::Object<PolymorphicDto2>::createShared();
+    auto dto = avena::Object<PolymorphicDto2>::createShared();
     bool thrown = false;
 
     try{
@@ -477,19 +479,19 @@ void ObjectTest::onRun() {
   {
     OATPP_LOGi(TAG, "Test 16...")
 
-    oatpp::json::ObjectMapper mapper;
+    avena::json::ObjectMapper mapper;
 
     auto dto = PolymorphicDto1::createShared();
 
     dto->type = "A";
     dto->polymorph = DtoTypeA::createShared();
 
-    OATPP_ASSERT(dto->polymorph.getValueType() == oatpp::Any::Class::getType())
+    OATPP_ASSERT(dto->polymorph.getValueType() == avena::Any::Class::getType())
 
     auto json = mapper.writeToString(dto);
     OATPP_LOGd(TAG, "json0='{}'", json)
 
-    auto dtoClone = mapper.readFromString<oatpp::Object<PolymorphicDto1>>(json);
+    auto dtoClone = mapper.readFromString<avena::Object<PolymorphicDto1>>(json);
 
     auto jsonClone = mapper.writeToString(dtoClone);
     OATPP_LOGd(TAG, "json1='{}'", jsonClone)
@@ -497,9 +499,9 @@ void ObjectTest::onRun() {
     OATPP_ASSERT(json == jsonClone)
 
     OATPP_ASSERT(dtoClone->polymorph)
-    OATPP_ASSERT(dtoClone->polymorph.getValueType() == oatpp::Any::Class::getType())
+    OATPP_ASSERT(dtoClone->polymorph.getValueType() == avena::Any::Class::getType())
 
-    auto polymorphClone = dtoClone->polymorph.retrieve<oatpp::Object<DtoTypeA>>();
+    auto polymorphClone = dtoClone->polymorph.retrieve<avena::Object<DtoTypeA>>();
 
     OATPP_ASSERT(polymorphClone->fieldA == "type-A")
 
@@ -509,19 +511,19 @@ void ObjectTest::onRun() {
   {
     OATPP_LOGi(TAG, "Test 17...")
 
-    oatpp::json::ObjectMapper mapper;
+    avena::json::ObjectMapper mapper;
 
     auto dto = PolymorphicDto3::createShared();
 
     dto->type = "str";
-    dto->polymorph = oatpp::String("Hello World!");
+    dto->polymorph = avena::String("Hello World!");
 
-    OATPP_ASSERT(dto->polymorph.getValueType() == oatpp::Any::Class::getType())
+    OATPP_ASSERT(dto->polymorph.getValueType() == avena::Any::Class::getType())
 
     auto json = mapper.writeToString(dto);
     OATPP_LOGd(TAG, "json0='{}'", json)
 
-    auto dtoClone = mapper.readFromString<oatpp::Object<PolymorphicDto3>>(json);
+    auto dtoClone = mapper.readFromString<avena::Object<PolymorphicDto3>>(json);
 
     auto jsonClone = mapper.writeToString(dtoClone);
     OATPP_LOGd(TAG, "json1='{}'", jsonClone)
@@ -529,9 +531,9 @@ void ObjectTest::onRun() {
     OATPP_ASSERT(json == jsonClone)
 
     OATPP_ASSERT(dtoClone->polymorph)
-    OATPP_ASSERT(dtoClone->polymorph.getValueType() == oatpp::Any::Class::getType())
+    OATPP_ASSERT(dtoClone->polymorph.getValueType() == avena::Any::Class::getType())
 
-    auto polymorphClone = dtoClone->polymorph.retrieve<oatpp::String>();
+    auto polymorphClone = dtoClone->polymorph.retrieve<avena::String>();
 
     OATPP_ASSERT(polymorphClone == "Hello World!")
 
@@ -541,19 +543,19 @@ void ObjectTest::onRun() {
   {
     OATPP_LOGi(TAG, "Test 18...")
 
-    oatpp::json::ObjectMapper mapper;
+    avena::json::ObjectMapper mapper;
 
     auto dto = PolymorphicDto3::createShared();
 
     dto->type = "str";
     dto->polymorph = nullptr;
 
-    OATPP_ASSERT(dto->polymorph.getValueType() == oatpp::Any::Class::getType())
+    OATPP_ASSERT(dto->polymorph.getValueType() == avena::Any::Class::getType())
 
     auto json = mapper.writeToString(dto);
     OATPP_LOGd(TAG, "json0='{}'", json)
 
-    auto dtoClone = mapper.readFromString<oatpp::Object<PolymorphicDto3>>(json);
+    auto dtoClone = mapper.readFromString<avena::Object<PolymorphicDto3>>(json);
 
     auto jsonClone = mapper.writeToString(dtoClone);
     OATPP_LOGd(TAG, "json1='{}'", jsonClone)
@@ -561,13 +563,13 @@ void ObjectTest::onRun() {
     OATPP_ASSERT(json == jsonClone)
 
     OATPP_ASSERT(dtoClone->polymorph == nullptr)
-    OATPP_ASSERT(dtoClone->polymorph.getValueType() == oatpp::Any::Class::getType())
-    OATPP_ASSERT(dtoClone->polymorph.getStoredType() == oatpp::String::Class::getType())
+    OATPP_ASSERT(dtoClone->polymorph.getValueType() == avena::Any::Class::getType())
+    OATPP_ASSERT(dtoClone->polymorph.getStoredType() == avena::String::Class::getType())
 
-    auto polymorphClone = dtoClone->polymorph.retrieve<oatpp::String>();
+    auto polymorphClone = dtoClone->polymorph.retrieve<avena::String>();
 
     OATPP_ASSERT(polymorphClone == nullptr)
-    OATPP_ASSERT(polymorphClone.getValueType() == oatpp::String::Class::getType())
+    OATPP_ASSERT(polymorphClone.getValueType() == avena::String::Class::getType())
 
     OATPP_LOGi(TAG, "OK")
   }

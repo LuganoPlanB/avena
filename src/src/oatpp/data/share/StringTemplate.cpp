@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,22 +28,22 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace data { namespace share {
+namespace avena { namespace data { namespace share {
 
-StringTemplate::VectorValueProvider::VectorValueProvider(const std::vector<oatpp::String> *params)
+StringTemplate::VectorValueProvider::VectorValueProvider(const std::vector<avena::String> *params)
   : m_params(params)
 {}
 
-oatpp::String StringTemplate::VectorValueProvider::getValue(const Variable& variable, v_uint32 index) {
+avena::String StringTemplate::VectorValueProvider::getValue(const Variable& variable, v_uint32 index) {
   (void) variable;
   return m_params->at(index);
 }
 
-StringTemplate::MapValueProvider::MapValueProvider(const std::unordered_map<oatpp::String, oatpp::String> *params)
+StringTemplate::MapValueProvider::MapValueProvider(const std::unordered_map<avena::String, avena::String> *params)
   : m_params(params)
 {}
 
-oatpp::String StringTemplate::MapValueProvider::getValue(const Variable& variable, v_uint32 index) {
+avena::String StringTemplate::MapValueProvider::getValue(const Variable& variable, v_uint32 index) {
   (void) index;
   auto it = m_params->find(variable.name);
   if(it != m_params->end()) {
@@ -50,17 +52,17 @@ oatpp::String StringTemplate::MapValueProvider::getValue(const Variable& variabl
   return nullptr;
 }
 
-StringTemplate::SingleValueProvider::SingleValueProvider(const oatpp::String& value)
+StringTemplate::SingleValueProvider::SingleValueProvider(const avena::String& value)
   : m_value(value)
 {}
 
-oatpp::String StringTemplate::SingleValueProvider::getValue(const Variable& variable, v_uint32 index) {
+avena::String StringTemplate::SingleValueProvider::getValue(const Variable& variable, v_uint32 index) {
   (void) variable;
   (void) index;
   return m_value;
 }
 
-StringTemplate::StringTemplate(const oatpp::String& text, std::vector<Variable>&& variables)
+StringTemplate::StringTemplate(const avena::String& text, std::vector<Variable>&& variables)
   : m_text(text)
   , m_variables(variables)
 {
@@ -69,15 +71,15 @@ StringTemplate::StringTemplate(const oatpp::String& text, std::vector<Variable>&
     const auto& var = m_variables[i];
 
     if(var.posStart < prevPos) {
-      throw std::runtime_error("[oatpp::data::share::StringTemplate::StringTemplate()]: Error. The template variable positions can't intersect.");
+      throw std::runtime_error("[avena::data::share::StringTemplate::StringTemplate()]: Error. The template variable positions can't intersect.");
     }
 
     if(var.posEnd < var.posStart) {
-      throw std::runtime_error("[oatpp::data::share::StringTemplate::StringTemplate()]: Error. The template variable can't have a negative size.");
+      throw std::runtime_error("[avena::data::share::StringTemplate::StringTemplate()]: Error. The template variable can't have a negative size.");
     }
 
     if(static_cast<size_t>(var.posEnd) >= m_text->size()) {
-      throw std::runtime_error("[oatpp::data::share::StringTemplate::StringTemplate()]: Error. The template variable can't out-bound the template text.");
+      throw std::runtime_error("[avena::data::share::StringTemplate::StringTemplate()]: Error. The template variable can't out-bound the template text.");
     }
   }
 }
@@ -91,7 +93,7 @@ void StringTemplate::format(stream::ConsistentOutputStream* stream, ValueProvide
     const auto& value = valueProvider->getValue(var, i);
 
     if(!value) {
-      throw std::runtime_error("[oatpp::data::share::StringTemplate::format()]: "
+      throw std::runtime_error("[avena::data::share::StringTemplate::format()]: "
                                "Error. No value provided for the parameter name=" + *var.name);
     }
 
@@ -111,40 +113,40 @@ void StringTemplate::format(stream::ConsistentOutputStream* stream, ValueProvide
 
 }
 
-void StringTemplate::format(stream::ConsistentOutputStream* stream, const std::vector<oatpp::String>& params) const {
+void StringTemplate::format(stream::ConsistentOutputStream* stream, const std::vector<avena::String>& params) const {
   VectorValueProvider vp(&params);
   format(stream, &vp);
 }
 
-void StringTemplate::format(stream::ConsistentOutputStream* stream, const std::unordered_map<oatpp::String, oatpp::String>& params) const {
+void StringTemplate::format(stream::ConsistentOutputStream* stream, const std::unordered_map<avena::String, avena::String>& params) const {
   MapValueProvider vp(&params);
   format(stream, &vp);
 }
 
-void StringTemplate::format(stream::ConsistentOutputStream* stream, const oatpp::String& singleValue) const {
+void StringTemplate::format(stream::ConsistentOutputStream* stream, const avena::String& singleValue) const {
   SingleValueProvider vp(singleValue);
   format(stream, &vp);
 }
 
-oatpp::String StringTemplate::format(ValueProvider* valueProvider) const {
+avena::String StringTemplate::format(ValueProvider* valueProvider) const {
   stream::BufferOutputStream stream;
   format(&stream, valueProvider);
   return stream.toString();
 }
 
-oatpp::String StringTemplate::format(const std::vector<oatpp::String>& params) const {
+avena::String StringTemplate::format(const std::vector<avena::String>& params) const {
   stream::BufferOutputStream stream;
   format(&stream, params);
   return stream.toString();
 }
 
-oatpp::String StringTemplate::format(const std::unordered_map<oatpp::String, oatpp::String>& params) const {
+avena::String StringTemplate::format(const std::unordered_map<avena::String, avena::String>& params) const {
   stream::BufferOutputStream stream;
   format(&stream, params);
   return stream.toString();
 }
 
-oatpp::String StringTemplate::format(const oatpp::String& singleValue) const {
+avena::String StringTemplate::format(const avena::String& singleValue) const {
   stream::BufferOutputStream stream;
   format(&stream, singleValue);
   return stream.toString();

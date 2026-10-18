@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -38,12 +40,12 @@
 #include <set>
 #include <vector>
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 /**
  * Asynchronous Processor.<br>
  * Responsible for processing and managing multiple Coroutines.
- * Do not use bare processor to run coroutines. Use &id:oatpp::async::Executor; instead;.
+ * Do not use bare processor to run coroutines. Use &id:avena::async::Executor; instead;.
  */
 class Processor {
     friend class CoroutineWaitList;
@@ -110,7 +112,7 @@ private:
 
 private:
 
-  oatpp::concurrency::SpinLock m_taskLock;
+  avena::concurrency::SpinLock m_taskLock;
   std::condition_variable_any m_taskCondition;
   std::list<std::shared_ptr<TaskSubmission>> m_taskList;
   utils::FastQueue<CoroutineHandle> m_pushList;
@@ -144,19 +146,19 @@ public:
 
   /**
    * Add dedicated co-worker to processor.
-   * @param worker - &id:oatpp::async::worker::Worker;.
+   * @param worker - &id:avena::async::worker::Worker;.
    */
   void addWorker(const std::shared_ptr<worker::Worker>& worker);
 
   /**
    * Push one Coroutine back to processor.
-   * @param coroutine - &id:oatpp::async::CoroutineHandle; previously popped-out(rescheduled to coworker) from this processor.
+   * @param coroutine - &id:avena::async::CoroutineHandle; previously popped-out(rescheduled to coworker) from this processor.
    */
   void pushOneTask(CoroutineHandle* coroutine);
 
   /**
    * Push list of Coroutines back to processor.
-   * @param tasks - &id:oatpp::async::utils::FastQueue; of &id:oatpp::async::CoroutineHandle; previously popped-out(rescheduled to coworker) from this processor.
+   * @param tasks - &id:avena::async::utils::FastQueue; of &id:avena::async::CoroutineHandle; previously popped-out(rescheduled to coworker) from this processor.
    */
   void pushTasks(utils::FastQueue<CoroutineHandle>& tasks);
 
@@ -171,7 +173,7 @@ public:
     auto submission = std::make_shared<SubmissionTemplate<CoroutineType, Args...>>(params...);
     ++ m_tasksCounter;
     {
-      std::lock_guard<oatpp::concurrency::SpinLock> lock(m_taskLock);
+      std::lock_guard<avena::concurrency::SpinLock> lock(m_taskLock);
       m_taskList.push_back(submission);
     }
     m_taskCondition.notify_one();

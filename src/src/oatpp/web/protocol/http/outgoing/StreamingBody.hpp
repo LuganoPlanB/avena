@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "./Body.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 /**
  * Abstract body for streaming data.
@@ -47,7 +49,7 @@ public:
    * Proxy method to readCallback::read().
    * @param buffer - pointer to buffer.
    * @param count - size of the buffer in bytes.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes written to buffer. 0 - to indicate end-of-file.
    */
@@ -55,7 +57,7 @@ public:
 
   /**
    * Override this method to declare additional headers.
-   * @param headers - &id:oatpp::web::protocol::http::Headers;.
+   * @param headers - &id:avena::web::protocol::http::Headers;.
    */
   void declareHeaders(Headers& headers) override;
 

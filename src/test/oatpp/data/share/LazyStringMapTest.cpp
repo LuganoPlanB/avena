@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 #include "oatpp/data/share/LazyStringMap.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace share {
+namespace avena { namespace data { namespace share {
 
 void LazyStringMapTest::onRun() {
 
@@ -40,14 +42,14 @@ void LazyStringMapTest::onRun() {
     map.put("key1", StringKeyLabel(nullptr, text, 5));
     map.put("key2", StringKeyLabel(nullptr, text + 6, 6));
 
-    oatpp::String s1 = map.get("key1");
-    oatpp::String s2 = map.get("key2");
+    avena::String s1 = map.get("key1");
+    avena::String s2 = map.get("key2");
 
     OATPP_ASSERT(s1 == "Hello")
     OATPP_ASSERT(s2 == "World!")
 
-    oatpp::String s12 = map.get("key1");
-    oatpp::String s22 = map.get("key2");
+    avena::String s12 = map.get("key1");
+    avena::String s22 = map.get("key2");
 
     OATPP_ASSERT(s1.get() == s12.get())
     OATPP_ASSERT(s2.get() == s22.get())
@@ -91,8 +93,8 @@ void LazyStringMapTest::onRun() {
     OATPP_ASSERT(s1 == "Hello")
     OATPP_ASSERT(s2 == "World!")
 
-    oatpp::String s12 = map.get("key1");
-    oatpp::String s22 = map.get("key2");
+    avena::String s12 = map.get("key1");
+    avena::String s22 = map.get("key2");
 
     OATPP_ASSERT(s1.getMemoryHandle().get() == s12.get())
     OATPP_ASSERT(s2.getMemoryHandle().get() == s22.get())

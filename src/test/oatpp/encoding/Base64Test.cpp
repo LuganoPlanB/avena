@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,25 +29,25 @@
 #include "oatpp/encoding/Base64.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace test { namespace encoding {
+namespace avena { namespace test { namespace encoding {
   
 void Base64Test::onRun() {
 
-  oatpp::String message = "oat++ web framework";
-  oatpp::String messageEncoded = "b2F0Kysgd2ViIGZyYW1ld29yaw==";
+  avena::String message = "oat++ web framework";
+  avena::String messageEncoded = "b2F0Kysgd2ViIGZyYW1ld29yaw==";
   
   {
-    oatpp::String encoded = oatpp::encoding::Base64::encode(message);
+    avena::String encoded = avena::encoding::Base64::encode(message);
     OATPP_LOGv(TAG, "encoded='{}'", encoded->c_str())
     OATPP_ASSERT(encoded == messageEncoded)
-    oatpp::String decoded = oatpp::encoding::Base64::decode(encoded);
+    avena::String decoded = avena::encoding::Base64::decode(encoded);
     OATPP_ASSERT(message == decoded)
   }
   
   {
-    oatpp::String encoded = oatpp::encoding::Base64::encode(message, oatpp::encoding::Base64::ALPHABET_BASE64_URL_SAFE);
+    avena::String encoded = avena::encoding::Base64::encode(message, avena::encoding::Base64::ALPHABET_BASE64_URL_SAFE);
     OATPP_LOGv(TAG, "encoded='{}'", encoded->c_str())
-    oatpp::String decoded = oatpp::encoding::Base64::decode(encoded, oatpp::encoding::Base64::ALPHABET_BASE64_URL_SAFE_AUXILIARY_CHARS);
+    avena::String decoded = avena::encoding::Base64::decode(encoded, avena::encoding::Base64::ALPHABET_BASE64_URL_SAFE_AUXILIARY_CHARS);
     OATPP_ASSERT(message == decoded)
   }
 

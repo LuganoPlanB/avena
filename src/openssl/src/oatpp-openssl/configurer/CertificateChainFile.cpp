@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,15 +26,15 @@
 
 #include "CertificateChainFile.hpp"
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
-CertificateChainFile::CertificateChainFile(const oatpp::String &filename)
+CertificateChainFile::CertificateChainFile(const avena::String &filename)
   : m_filename(filename)
 {}
 
 void CertificateChainFile::configure(SSL_CTX *ctx) {
   if (SSL_CTX_use_certificate_chain_file(ctx, m_filename->c_str()) <= 0) {
-    throw std::runtime_error("[oatpp::openssl::configurer::CertificateChainFile::configure()]: Error. "
+    throw std::runtime_error("[avena::openssl::configurer::CertificateChainFile::configure()]: Error. "
                              "Call to 'SSL_CTX_use_certificate_chain_file' failed.");
   }
 }

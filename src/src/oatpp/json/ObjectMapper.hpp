@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,14 +34,14 @@
 #include "oatpp/data/mapping/TreeToObjectMapper.hpp"
 #include "oatpp/data/mapping/ObjectMapper.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 /**
  * Json ObjectMapper. Serialized/Deserializes oatpp DTO objects to/from JSON.
  * See [Data Transfer Object(DTO) component](https://oatpp.io/docs/components/dto/). <br>
- * Extends &id:oatpp::base::Countable;, &id:oatpp::data::mapping::ObjectMapper;.
+ * Extends &id:avena::base::Countable;, &id:avena::data::mapping::ObjectMapper;.
  */
-class ObjectMapper : public oatpp::base::Countable, public oatpp::data::mapping::ObjectMapper {
+class ObjectMapper : public avena::base::Countable, public avena::data::mapping::ObjectMapper {
 private:
   static Info getMapperInfo() {
     return Info("application", "json");
@@ -73,9 +75,9 @@ public:
 
   ObjectMapper(const SerializerConfig& serializerConfig = {}, const DeserializerConfig& deserializerConfig = {});
 
-  void write(data::stream::ConsistentOutputStream* stream, const oatpp::Void& variant, data::mapping::ErrorStack& errorStack) const override;
+  void write(data::stream::ConsistentOutputStream* stream, const avena::Void& variant, data::mapping::ErrorStack& errorStack) const override;
 
-  oatpp::Void read(oatpp::utils::parser::Caret& caret, const oatpp::Type* type, data::mapping::ErrorStack& errorStack) const override;
+  avena::Void read(avena::utils::parser::Caret& caret, const avena::Type* type, data::mapping::ErrorStack& errorStack) const override;
 
   const data::mapping::ObjectToTreeMapper& objectToTreeMapper() const;
   const data::mapping::TreeToObjectMapper& treeToObjectMapper() const;

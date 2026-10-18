@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,20 +31,20 @@
 #include "oatpp/web/protocol/http/Http.hpp"
 #include "oatpp/data/Bundle.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 /**
  * Class http::outgoing::Request AKA OutgoingRequest represents client's outgoing request to server.
  */
-class Request : public oatpp::base::Countable {
+class Request : public avena::base::Countable {
 public:
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::Headers;.
+   * Convenience typedef for &id:avena::web::protocol::http::Headers;.
    */
   typedef protocol::http::Headers Headers;
 private:
-  oatpp::data::share::StringKeyLabel m_method;
-  oatpp::data::share::StringKeyLabel m_path;
+  avena::data::share::StringKeyLabel m_method;
+  avena::data::share::StringKeyLabel m_path;
   Headers m_headers;
   std::shared_ptr<Body> m_body;
   data::Bundle m_bundle;
@@ -50,13 +52,13 @@ public:
 
   /**
    * Constructor.
-   * @param method - http method. &id:oatpp::data::share::StringKeyLabel;.
-   * @param path - path to resource. &id:oatpp::data::share::StringKeyLabel;.
+   * @param method - http method. &id:avena::data::share::StringKeyLabel;.
+   * @param path - path to resource. &id:avena::data::share::StringKeyLabel;.
    * @param headers - &l:Request::Headers;.
-   * @param body - `std::shared_ptr` to &id:oatpp::web::protocol::http::outgoing::Body;.
+   * @param body - `std::shared_ptr` to &id:avena::web::protocol::http::outgoing::Body;.
    */
-  Request(const oatpp::data::share::StringKeyLabel& method,
-          const oatpp::data::share::StringKeyLabel& path,
+  Request(const avena::data::share::StringKeyLabel& method,
+          const avena::data::share::StringKeyLabel& path,
           const Headers& headers,
           const std::shared_ptr<Body>& body);
   
@@ -64,28 +66,28 @@ public:
 
   /**
    * Create shared Request.
-   * @param method - http method. &id:oatpp::data::share::StringKeyLabel;.
-   * @param path - path to resource. &id:oatpp::data::share::StringKeyLabel;.
+   * @param method - http method. &id:avena::data::share::StringKeyLabel;.
+   * @param path - path to resource. &id:avena::data::share::StringKeyLabel;.
    * @param headers - &l:Request::Headers;.
-   * @param body - `std::shared_ptr` to &id:oatpp::web::protocol::http::outgoing::Body;.
+   * @param body - `std::shared_ptr` to &id:avena::web::protocol::http::outgoing::Body;.
    * @return - `std::shared_ptr` to Request.
    */
-  static std::shared_ptr<Request> createShared(const oatpp::data::share::StringKeyLabel& method,
-                                               const oatpp::data::share::StringKeyLabel& path,
+  static std::shared_ptr<Request> createShared(const avena::data::share::StringKeyLabel& method,
+                                               const avena::data::share::StringKeyLabel& path,
                                                const Headers& headers,
                                                const std::shared_ptr<Body>& body);
 
   /**
    * Get http method.
-   * @return - http method. &id:oatpp::data::share::StringKeyLabel;.
+   * @return - http method. &id:avena::data::share::StringKeyLabel;.
    */
-  const oatpp::data::share::StringKeyLabel& getMethod() const;
+  const avena::data::share::StringKeyLabel& getMethod() const;
 
   /**
    * Get path to resource.
-   * @return - path to resource. &id:oatpp::data::share::StringKeyLabel;.
+   * @return - path to resource. &id:avena::data::share::StringKeyLabel;.
    */
-  const oatpp::data::share::StringKeyLabel& getPath() const;
+  const avena::data::share::StringKeyLabel& getPath() const;
 
   /**
    * Get headers map.
@@ -95,63 +97,63 @@ public:
 
   /**
    * Add http header.
-   * @param key - &id:oatpp::String;.
-   * @param value - &id:oatpp::String;.
+   * @param key - &id:avena::String;.
+   * @param value - &id:avena::String;.
    */
-  void putHeader(const oatpp::String& key, const oatpp::String& value);
+  void putHeader(const avena::String& key, const avena::String& value);
 
   /**
    * Add http header if not already exists.
-   * @param key - &id:oatpp::String;.
-   * @param value - &id:oatpp::String;.
+   * @param key - &id:avena::String;.
+   * @param value - &id:avena::String;.
    * @return - `true` if header was added.
    */
-  bool putHeaderIfNotExists(const oatpp::String& key, const oatpp::String& value);
+  bool putHeaderIfNotExists(const avena::String& key, const avena::String& value);
 
   /**
    * Replaces or adds header.
-   * @param key - &id:oatpp::String;.
-   * @param value - &id:oatpp::String;.
+   * @param key - &id:avena::String;.
+   * @param value - &id:avena::String;.
    * @return - `true` if header was replaces, `false` if header was added.
    */
-  bool putOrReplaceHeader(const oatpp::String& key, const oatpp::String& value);
+  bool putOrReplaceHeader(const avena::String& key, const avena::String& value);
 
   /**
    * Replaces or adds header.
-   * @param key - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @param value - &id:oatpp::data::share::StringKeyLabel;.
+   * @param key - &id:avena::data::share::StringKeyLabelCI;.
+   * @param value - &id:avena::data::share::StringKeyLabel;.
    * @return - `true` if header was replaces, `false` if header was added.
    */
-  bool putOrReplaceHeader_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value);
+  bool putOrReplaceHeader_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value);
 
   /**
    * Add http header.
-   * @param key - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @param value - &id:oatpp::data::share::StringKeyLabel;.
+   * @param key - &id:avena::data::share::StringKeyLabelCI;.
+   * @param value - &id:avena::data::share::StringKeyLabel;.
    */
-  void putHeader_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value);
+  void putHeader_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value);
 
   /**
    * Add http header if not already exists.
-   * @param key - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @param value - &id:oatpp::data::share::StringKeyLabel;.
+   * @param key - &id:avena::data::share::StringKeyLabelCI;.
+   * @param value - &id:avena::data::share::StringKeyLabel;.
    * @return - `true` if header was added.
    */
-  bool putHeaderIfNotExists_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value);
+  bool putHeaderIfNotExists_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value);
 
   /**
    * Get header value
-   * @param headerName - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @return - &id:oatpp::String;.
+   * @param headerName - &id:avena::data::share::StringKeyLabelCI;.
+   * @return - &id:avena::String;.
    */
-  oatpp::String getHeader(const oatpp::data::share::StringKeyLabelCI& headerName) const;
+  avena::String getHeader(const avena::data::share::StringKeyLabelCI& headerName) const;
 
   /**
    * Put data to bundle.
    * @param key
    * @param polymorph
    */
-  void putBundleData(const oatpp::String& key, const oatpp::Void& polymorph);
+  void putBundleData(const avena::String& key, const avena::Void& polymorph);
 
   /**
    * Get data from bundle by key.
@@ -160,7 +162,7 @@ public:
    * @return
    */
   template<typename WrapperType>
-  WrapperType getBundleData(const oatpp::String& key) const {
+  WrapperType getBundleData(const avena::String& key) const {
     return m_bundle.template get<WrapperType>(key);
   }
 
@@ -172,23 +174,23 @@ public:
 
   /**
    * Get http body.
-   * @return - &id:oatpp::web::protocol::http::outgoing::Body;.
+   * @return - &id:avena::web::protocol::http::outgoing::Body;.
    */
   std::shared_ptr<Body> getBody();
 
   /**
    * Write request to stream.
-   * @param stream - &id:oatpp::data::stream::OutputStream;.
+   * @param stream - &id:avena::data::stream::OutputStream;.
    */
   void send(data::stream::OutputStream* stream);
 
   /**
    * Write request to stream in asynchronous manner.
    * @param _this
-   * @param stream - &id:oatpp::data::stream::OutputStream;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param stream - &id:avena::data::stream::OutputStream;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  static oatpp::async::CoroutineStarter sendAsync(std::shared_ptr<Request> _this,
+  static avena::async::CoroutineStarter sendAsync(std::shared_ptr<Request> _this,
                                                   const std::shared_ptr<data::stream::OutputStream>& stream);
   
 };

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,23 +32,23 @@
 #include "oatpp/data/share/MemoryLabel.hpp"
 #include "oatpp/async/Coroutine.hpp"
 
-namespace oatpp { namespace data{ namespace stream {
+namespace avena { namespace data{ namespace stream {
   
-class OutputStreamBufferedProxy : public oatpp::base::Countable, public OutputStream {
+class OutputStreamBufferedProxy : public avena::base::Countable, public OutputStream {
 private:
   std::shared_ptr<OutputStream> m_outputStream;
-  oatpp::data::share::MemoryLabel m_memoryLabel;
+  avena::data::share::MemoryLabel m_memoryLabel;
   buffer::FIFOBuffer m_buffer;
 public:
   OutputStreamBufferedProxy(const std::shared_ptr<OutputStream>& outputStream,
-                            const oatpp::data::share::MemoryLabel& memoryLabel)
+                            const avena::data::share::MemoryLabel& memoryLabel)
     : m_outputStream(outputStream)
     , m_memoryLabel(memoryLabel)
     , m_buffer(const_cast<void *>(memoryLabel.getData()), memoryLabel.getSize())
   {}
 public:
   
-  static std::shared_ptr<OutputStreamBufferedProxy> createShared(const std::shared_ptr<OutputStream>& outputStream, const oatpp::data::share::MemoryLabel& memoryLabel) {
+  static std::shared_ptr<OutputStreamBufferedProxy> createShared(const std::shared_ptr<OutputStream>& outputStream, const avena::data::share::MemoryLabel& memoryLabel) {
     return std::make_shared<OutputStreamBufferedProxy>(outputStream, memoryLabel);
   }
   
@@ -56,13 +58,13 @@ public:
    * Set OutputStream I/O mode.
    * @param ioMode
    */
-  void setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+  void setOutputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
   /**
    * Set OutputStream I/O mode.
    * @return
    */
-  oatpp::data::stream::IOMode getOutputStreamIOMode() override;
+  avena::data::stream::IOMode getOutputStreamIOMode() override;
 
   /**
    * Get context of the underlying stream.
@@ -71,7 +73,7 @@ public:
   Context& getOutputStreamContext() override;
 
   v_io_size flush();
-  oatpp::async::CoroutineStarter flushAsync();
+  avena::async::CoroutineStarter flushAsync();
 
   void setBufferPosition(v_io_size readPosition, v_io_size writePosition, bool canRead) {
     m_buffer.setBufferPosition(readPosition, writePosition, canRead);
@@ -79,14 +81,14 @@ public:
   
 };
   
-class InputStreamBufferedProxy : public oatpp::base::Countable, public BufferedInputStream {
+class InputStreamBufferedProxy : public avena::base::Countable, public BufferedInputStream {
 protected:
   std::shared_ptr<InputStream> m_inputStream;
-  oatpp::data::share::MemoryLabel m_memoryLabel;
+  avena::data::share::MemoryLabel m_memoryLabel;
   buffer::FIFOBuffer m_buffer;
 public:
   InputStreamBufferedProxy(const std::shared_ptr<InputStream>& inputStream,
-                           const oatpp::data::share::MemoryLabel& memoryLabel,
+                           const avena::data::share::MemoryLabel& memoryLabel,
                            v_io_size bufferReadPosition,
                            v_io_size bufferWritePosition,
                            bool bufferCanRead)
@@ -97,13 +99,13 @@ public:
 public:
   
   static std::shared_ptr<InputStreamBufferedProxy> createShared(const std::shared_ptr<InputStream>& inputStream,
-                                                                const oatpp::data::share::MemoryLabel& memoryLabel)
+                                                                const avena::data::share::MemoryLabel& memoryLabel)
   {
     return std::make_shared<InputStreamBufferedProxy>(inputStream, memoryLabel, 0, 0, false);
   }
   
   static std::shared_ptr<InputStreamBufferedProxy> createShared(const std::shared_ptr<InputStream>& inputStream,
-                                                                const oatpp::data::share::MemoryLabel& memoryLabel,
+                                                                const avena::data::share::MemoryLabel& memoryLabel,
                                                                 v_io_size bufferReadPosition,
                                                                 v_io_size bufferWritePosition,
                                                                 bool bufferCanRead)
@@ -123,13 +125,13 @@ public:
    * Set InputStream I/O mode.
    * @param ioMode
    */
-  void setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+  void setInputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
   /**
    * Get InputStream I/O mode.
    * @return
    */
-  oatpp::data::stream::IOMode getInputStreamIOMode() override;
+  avena::data::stream::IOMode getInputStreamIOMode() override;
 
   /**
    * Get context of the underlying stream.

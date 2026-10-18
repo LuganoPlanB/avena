@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -36,12 +38,12 @@
 #include <chrono>
 #include <fcntl.h>
 
-namespace oatpp { namespace network { namespace tcp {
+namespace avena { namespace network { namespace tcp {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Connection
 
-oatpp::data::stream::DefaultInitializedContext Connection::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
+avena::data::stream::DefaultInitializedContext Connection::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
 
 Connection::Connection(v_io_handle handle)
   : m_handle(handle)
@@ -59,7 +61,7 @@ Connection::Connection(v_io_handle handle)
   auto flags = fcntl(m_handle, F_GETFL);
 
   if (flags < 0) {
-    throw std::runtime_error("[oatpp::network::tcp::Connection::Connection()]: Error. Can't get socket flags.");
+    throw std::runtime_error("[avena::network::tcp::Connection::Connection()]: Error. Can't get socket flags.");
   }
 
   if((flags & O_NONBLOCK) > 0) {
@@ -93,7 +95,7 @@ v_io_size Connection::write(const void *buff, v_buff_size count, async::Action& 
 
     if(e == WSAEWOULDBLOCK){
       if(m_mode == data::stream::ASYNCHRONOUS) {
-        action = oatpp::async::Action::createIOWaitAction(m_handle, oatpp::async::Action::IOEventType::IO_EVENT_WRITE);
+        action = avena::async::Action::createIOWaitAction(m_handle, avena::async::Action::IOEventType::IO_EVENT_WRITE);
       }
       return IOError::RETRY_WRITE; // For async io. In case socket is non-blocking
     } else if(e == WSAEINTR) {
@@ -125,7 +127,7 @@ v_io_size Connection::write(const void *buff, v_buff_size count, async::Action& 
 
     if(retry){
       if(m_mode == data::stream::ASYNCHRONOUS) {
-        action = oatpp::async::Action::createIOWaitAction(m_handle, oatpp::async::Action::IOEventType::IO_EVENT_WRITE);
+        action = avena::async::Action::createIOWaitAction(m_handle, avena::async::Action::IOEventType::IO_EVENT_WRITE);
       }
       return IOError::RETRY_WRITE; // For async io. In case socket is non-blocking
     }
@@ -168,7 +170,7 @@ v_io_size Connection::read(void *buff, v_buff_size count, async::Action& action)
 
     if(e == WSAEWOULDBLOCK){
       if(m_mode == data::stream::ASYNCHRONOUS) {
-        action = oatpp::async::Action::createIOWaitAction(m_handle, oatpp::async::Action::IOEventType::IO_EVENT_READ);
+        action = avena::async::Action::createIOWaitAction(m_handle, avena::async::Action::IOEventType::IO_EVENT_READ);
       }
       return IOError::RETRY_READ; // For async io. In case socket is non-blocking
     } else if(e == WSAEINTR) {
@@ -195,7 +197,7 @@ v_io_size Connection::read(void *buff, v_buff_size count, async::Action& action)
 
     if(retry){
       if(m_mode == data::stream::ASYNCHRONOUS) {
-        action = oatpp::async::Action::createIOWaitAction(m_handle, oatpp::async::Action::IOEventType::IO_EVENT_READ);
+        action = avena::async::Action::createIOWaitAction(m_handle, avena::async::Action::IOEventType::IO_EVENT_READ);
       }
       return IOError::RETRY_READ; // For async io. In case socket is non-blocking
     }
@@ -222,7 +224,7 @@ v_io_size Connection::read(void *buff, v_buff_size count, async::Action& action)
 #endif
 
 #if defined(WIN32) || defined(_WIN32)
-void Connection::setStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Connection::setStreamIOMode(avena::data::stream::IOMode ioMode) {
 
   u_long flags;
 
@@ -230,14 +232,14 @@ void Connection::setStreamIOMode(oatpp::data::stream::IOMode ioMode) {
     case data::stream::BLOCKING:
       flags = 0;
       if(NO_ERROR != ioctlsocket(m_handle, FIONBIO, &flags)) {
-          throw std::runtime_error("[oatpp::network::tcp::Connection::setStreamIOMode()]: Error. Can't set stream I/O mode to IOMode::BLOCKING.");
+          throw std::runtime_error("[avena::network::tcp::Connection::setStreamIOMode()]: Error. Can't set stream I/O mode to IOMode::BLOCKING.");
       }
       m_mode = data::stream::BLOCKING;
       break;
     case data::stream::ASYNCHRONOUS:
       flags = 1;
       if(NO_ERROR != ioctlsocket(m_handle, FIONBIO, &flags)) {
-          throw std::runtime_error("[oatpp::network::tcp::Connection::setStreamIOMode()]: Error. Can't set stream I/O mode to IOMode::ASYNCHRONOUS.");
+          throw std::runtime_error("[avena::network::tcp::Connection::setStreamIOMode()]: Error. Can't set stream I/O mode to IOMode::ASYNCHRONOUS.");
       }
       m_mode = data::stream::ASYNCHRONOUS;
       break;
@@ -247,27 +249,27 @@ void Connection::setStreamIOMode(oatpp::data::stream::IOMode ioMode) {
 
 }
 #else
-void Connection::setStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Connection::setStreamIOMode(avena::data::stream::IOMode ioMode) {
 
   auto flags = fcntl(m_handle, F_GETFL);
   if (flags < 0) {
-    throw std::runtime_error("[oatpp::network::tcp::Connection::setStreamIOMode()]: Error. Can't get socket flags.");
+    throw std::runtime_error("[avena::network::tcp::Connection::setStreamIOMode()]: Error. Can't get socket flags.");
   }
 
   switch(ioMode) {
 
-    case oatpp::data::stream::IOMode::BLOCKING:
+    case avena::data::stream::IOMode::BLOCKING:
       flags = flags & (~O_NONBLOCK);
       if (fcntl(m_handle, F_SETFL, flags) < 0) {
-        throw std::runtime_error("[oatpp::network::tcp::Connection::setStreamIOMode()]: Error. Can't set stream I/O mode to IOMode::BLOCKING.");
+        throw std::runtime_error("[avena::network::tcp::Connection::setStreamIOMode()]: Error. Can't set stream I/O mode to IOMode::BLOCKING.");
       }
       m_mode = data::stream::BLOCKING;
       break;
 
-    case oatpp::data::stream::IOMode::ASYNCHRONOUS:
+    case avena::data::stream::IOMode::ASYNCHRONOUS:
       flags = (flags | O_NONBLOCK);
       if (fcntl(m_handle, F_SETFL, flags) < 0) {
-        throw std::runtime_error("[oatpp::network::tcp::Connection::setStreamIOMode()]: Error. Can't set stream I/O mode to IOMode::ASYNCHRONOUS.");
+        throw std::runtime_error("[avena::network::tcp::Connection::setStreamIOMode()]: Error. Can't set stream I/O mode to IOMode::ASYNCHRONOUS.");
       }
       m_mode = data::stream::ASYNCHRONOUS;
       break;
@@ -279,27 +281,27 @@ void Connection::setStreamIOMode(oatpp::data::stream::IOMode ioMode) {
 }
 #endif
 
-void Connection::setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Connection::setOutputStreamIOMode(avena::data::stream::IOMode ioMode) {
   setStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode Connection::getOutputStreamIOMode() {
+avena::data::stream::IOMode Connection::getOutputStreamIOMode() {
   return m_mode;
 }
 
-oatpp::data::stream::Context& Connection::getOutputStreamContext() {
+avena::data::stream::Context& Connection::getOutputStreamContext() {
   return DEFAULT_CONTEXT;
 }
 
-void Connection::setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Connection::setInputStreamIOMode(avena::data::stream::IOMode ioMode) {
   setStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode Connection::getInputStreamIOMode() {
+avena::data::stream::IOMode Connection::getInputStreamIOMode() {
   return m_mode;
 }
 
-oatpp::data::stream::Context& Connection::getInputStreamContext() {
+avena::data::stream::Context& Connection::getInputStreamContext() {
   return DEFAULT_CONTEXT;
 }
 

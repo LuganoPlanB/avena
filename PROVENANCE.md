@@ -34,10 +34,14 @@ the OpenSSL error queue before TLS operations, as required by
 `tests/tls-error-queue.cpp` reproduces incorrect read/write failure classification
 with an injected unrelated error. The async TLS test also retains a separate
 failure flag so subsequent successes cannot erase an error and stall the test.
-The C++ namespaces and ABI remain unchanged. The subsequent avena packaging
-migration renames installed headers to `<avena/...>`, merges the core,
+The subsequent avena packaging migration renames installed headers to
+`<avena/...>`, merges the core,
 extensions and TLS archives into `libavena.a`, and exports only the
 `avena::avena` CMake target. Public headers are generated from the original
 sources with include paths rewritten and both upstream and Plan-B notices.
+The C++ namespace migration then renames definitions, qualified references,
+codegen and test helpers from `oatpp` to `avena`. It intentionally breaks the
+upstream C++ ABI and adds no compatibility namespace alias. Original copyright
+and license notices are preserved; modified sources carry Plan-B's 2026 notice.
 The upstream component CMake files and READMEs are retained as implementation
 history; only the root build defines the supported installation layout.

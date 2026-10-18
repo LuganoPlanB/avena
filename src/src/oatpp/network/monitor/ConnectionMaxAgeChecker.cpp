@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,18 +26,18 @@
 
 #include "ConnectionMaxAgeChecker.hpp"
 
-namespace oatpp { namespace network { namespace monitor {
+namespace avena { namespace network { namespace monitor {
 
 ConnectionMaxAgeChecker::ConnectionMaxAgeChecker(const std::chrono::duration<v_int64, std::micro>& maxAge)
   : m_maxAge(maxAge)
 {}
 
-std::vector<oatpp::String> ConnectionMaxAgeChecker::getMetricsList() {
+std::vector<avena::String> ConnectionMaxAgeChecker::getMetricsList() {
   return {};
 }
 
-std::shared_ptr<StatCollector> ConnectionMaxAgeChecker::createStatCollector(const oatpp::String& metricName) {
-  throw std::runtime_error("[oatpp::network::monitor::ConnectionMaxAgeChecker::createStatCollector()]: "
+std::shared_ptr<StatCollector> ConnectionMaxAgeChecker::createStatCollector(const avena::String& metricName) {
+  throw std::runtime_error("[avena::network::monitor::ConnectionMaxAgeChecker::createStatCollector()]: "
                            "Error. ConnectionMaxAgeChecker doesn't use any stat collectors.");
 }
 

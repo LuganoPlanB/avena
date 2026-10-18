@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,27 +30,27 @@
 #include "Part.hpp"
 #include <list>
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 /**
  * Typedef for headers map. Headers map key is case-insensitive.
- * For more info see &id:oatpp::data::share::LazyStringMap;.
+ * For more info see &id:avena::data::share::LazyStringMap;.
  */
-typedef oatpp::data::share::LazyStringMultimap<oatpp::data::share::StringKeyLabelCI> Headers;
+typedef avena::data::share::LazyStringMultimap<avena::data::share::StringKeyLabelCI> Headers;
 
 /**
  * Abstract Multipart.
  */
 class Multipart {
 private:
-  oatpp::String m_boundary;
+  avena::String m_boundary;
 public:
 
   /**
    * Constructor.
    * @param boundary - multipart boundary value.
    */
-  Multipart(const oatpp::String& boundary);
+  Multipart(const avena::String& boundary);
 
   /**
    * Default virtual Destructor.
@@ -59,7 +61,7 @@ public:
    * Get multipart boundary value.
    * @return - multipart boundary value.
    */
-  oatpp::String getBoundary();
+  avena::String getBoundary();
 
   /**
    * Read part-by-part from Multipart.
@@ -92,16 +94,16 @@ public:
   /**
    * Generate random boundary for Multipart object. Base64 encoded.
    * @param boundarySize - size in bytes of random vector.
-   * @return - &id:oatpp::String;.
+   * @return - &id:avena::String;.
    */
-  static oatpp::String generateRandomBoundary(v_int32 boundarySize = 15);
+  static avena::String generateRandomBoundary(v_int32 boundarySize = 15);
 
   /**
    * Parse boundary value from headers
    * @param headers
    * @return
    */
-  static oatpp::String parseBoundaryFromHeaders(const Headers& requestHeaders);
+  static avena::String parseBoundaryFromHeaders(const Headers& requestHeaders);
 
 };
 

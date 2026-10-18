@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 
 #include "oatpp/IODefinitions.hpp"
 
-namespace oatpp { namespace data{ namespace stream {
+namespace avena { namespace data{ namespace stream {
 
 /**
  * Stream Type.
@@ -58,9 +60,9 @@ enum StreamType : v_int32 {
 class Context {
 public:
   /**
-   * Convenience typedef for &id:oatpp::data::share::LazyStringMap;.
+   * Convenience typedef for &id:avena::data::share::LazyStringMap;.
    */
-  typedef oatpp::data::share::LazyStringMap<oatpp::data::share::StringKeyLabel> Properties;
+  typedef avena::data::share::LazyStringMap<avena::data::share::StringKeyLabel> Properties;
 private:
   Properties m_properties;
 protected:
@@ -94,7 +96,7 @@ public:
 
   /**
    * Initialize stream context in an async manner.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   virtual async::CoroutineStarter initAsync() = 0;
 
@@ -129,7 +131,7 @@ public:
 /**
  * The default implementation for context with no initialization.
  */
-class DefaultInitializedContext : public oatpp::data::stream::Context {
+class DefaultInitializedContext : public avena::data::stream::Context {
 private:
   StreamType m_streamType;
 public:
@@ -156,7 +158,7 @@ public:
   /**
    * Initialize stream context in an async manner.
    * *This particular implementation does nothing.*
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   async::CoroutineStarter initAsync() override;
 
@@ -206,7 +208,7 @@ public:
    * Write operation callback.
    * @param data - pointer to data.
    * @param count - size of the data in bytes.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes written. 0 - to indicate end-of-file.
    */
@@ -227,7 +229,7 @@ public:
   /**
    * Same as `write((p_char8)data, std::strlen(data));`.
    * @param data - data to write.
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;.
+   * @return - actual number of bytes written. &id:avena::v_io_size;.
    */
   v_io_size writeSimple(const char* data){
     return writeSimple(data, static_cast<v_buff_size>(std::strlen(data)));
@@ -236,16 +238,16 @@ public:
   /**
    * Same as `write(str->getData(), str->getSize());`
    * @param str - data to write.
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;.
+   * @return - actual number of bytes written. &id:avena::v_io_size;.
    */
-  v_io_size writeSimple(const oatpp::String& str){
+  v_io_size writeSimple(const avena::String& str){
     return writeSimple(str->data(), static_cast<v_buff_size>(str->size()));
   }
 
   /**
    * Same as `write(&c, 1);`.
    * @param c - one char to write.
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;.
+   * @return - actual number of bytes written. &id:avena::v_io_size;.
    */
   v_io_size writeCharSimple(v_char8 c){
     return writeSimple(&c, 1);
@@ -299,7 +301,7 @@ public:
    * Read operation callback.
    * @param buffer - pointer to buffer.
    * @param count - size of the buffer in bytes.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes written to buffer. 0 - to indicate end-of-file.
    */
@@ -370,7 +372,7 @@ class BufferedInputStream : public InputStream {
 
   /**
    * Amount of bytes currently available to read from buffer.
-   * @return &id:oatpp::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
   virtual v_io_size availableToRead() const = 0;
 
@@ -409,83 +411,83 @@ public:
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_int8 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_uint8 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_int16 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_uint16 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_int32 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_uint32 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_int64 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_uint64 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_float32 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(v_float64 value);
 
   /**
    * Convert value to string and write to stream.
    * @param value
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;. <br>
+   * @return - actual number of bytes written. &id:avena::v_io_size;. <br>
    */
   v_io_size writeAsString(bool value);
 
 };
 
-ConsistentOutputStream& operator << (ConsistentOutputStream& s, const oatpp::String& str);
+ConsistentOutputStream& operator << (ConsistentOutputStream& s, const avena::String& str);
 ConsistentOutputStream& operator << (ConsistentOutputStream& s, const Int8& value);
 ConsistentOutputStream& operator << (ConsistentOutputStream& s, const UInt8& value);
 ConsistentOutputStream& operator << (ConsistentOutputStream& s, const Int16& value);
@@ -509,13 +511,13 @@ ConsistentOutputStream& operator << (ConsistentOutputStream& s, T value) {
 /**
  * Error of Asynchronous stream transfer.
  */
-class AsyncTransferError : public oatpp::async::Error {
+class AsyncTransferError : public avena::async::Error {
 public:
   /**
    * Constructor.
    * @param what
    */
-  AsyncTransferError(const char* what) : oatpp::async::Error(what) {}
+  AsyncTransferError(const char* what) : avena::async::Error(what) {}
 };
 
 /**
@@ -552,9 +554,9 @@ v_io_size transfer(const base::ObjectHandle<ReadCallback>& readCallback,
  * @param readCallback - &l:ReadCallback;.
  * @param writeCallback - &l:WriteCallback;.
  * @param transferSize - how much data should be read from the `readCallback`. `0` - to read until error.
- * @param buffer - &id:oatpp::data::buffer::IOBuffer; used to do the transfer by chunks.
+ * @param buffer - &id:avena::data::buffer::IOBuffer; used to do the transfer by chunks.
  * @param processor - data processing to be applied during the transfer.
- * @return - &id:oatpp::async::CoroutineStarter;.
+ * @return - &id:avena::async::CoroutineStarter;.
  */
 async::CoroutineStarter transferAsync(const base::ObjectHandle<ReadCallback>& readCallback,
                                       const base::ObjectHandle<WriteCallback>& writeCallback,

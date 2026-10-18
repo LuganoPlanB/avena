@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,190 +30,190 @@
 #include "oatpp/data/type/Object.hpp"
 #include "oatpp/data/mapping/Tree.hpp"
 
-namespace oatpp {
+namespace avena {
 
   /**
-   * &id:oatpp::data::type::Type;.
+   * &id:avena::data::type::Type;.
    */
-  typedef oatpp::data::type::Type Type;
+  typedef avena::data::type::Type Type;
 
   /**
-   * &id:oatpp::data::type::ClassId;.
+   * &id:avena::data::type::ClassId;.
    */
-  typedef oatpp::data::type::ClassId ClassId;
+  typedef avena::data::type::ClassId ClassId;
 
   /**
    * ObjectWrapper.
    */
-  template <class T, class Clazz = oatpp::data::type::__class::Void>
-  using ObjectWrapper = oatpp::data::type::ObjectWrapper<T, Clazz>;
+  template <class T, class Clazz = avena::data::type::__class::Void>
+  using ObjectWrapper = avena::data::type::ObjectWrapper<T, Clazz>;
 
   /**
-   * Mapping enabled &id:oatpp::data::mapping::Tree;
+   * Mapping enabled &id:avena::data::mapping::Tree;
    * `mapping::Tree` and `type::Tree` are inter-mappable;
    */
-  typedef oatpp::data::type::Tree Tree;
+  typedef avena::data::type::Tree Tree;
 
   /**
    * ObjectWrapper over the `void*`.
    */
-  typedef oatpp::data::type::Void Void;
+  typedef avena::data::type::Void Void;
 
   /**
    * `Any` - container for mapping-enabled types.
-   * &id:oatpp::data::type::Any;
+   * &id:avena::data::type::Any;
    */
-  typedef oatpp::data::type::Any Any;
+  typedef avena::data::type::Any Any;
 
   /**
-   * Mapping-Enabled String type. &id:oatpp::data::type::String; <br>
-   * For `oatpp::String` methods see `std::string`
+   * Mapping-Enabled String type. &id:avena::data::type::String; <br>
+   * For `avena::String` methods see `std::string`
    */
-  typedef oatpp::data::type::String String;
+  typedef avena::data::type::String String;
 
   /**
-   * Mapping-Enabled 8-bits int. Can hold nullptr value. &id:oatpp::data::type::Int8;
+   * Mapping-Enabled 8-bits int. Can hold nullptr value. &id:avena::data::type::Int8;
    */
-  typedef oatpp::data::type::Int8 Int8;
+  typedef avena::data::type::Int8 Int8;
 
   /**
-   * Mapping-Enabled 8-bits unsigned int. Can hold nullptr value. &id:oatpp::data::type::UInt8;
+   * Mapping-Enabled 8-bits unsigned int. Can hold nullptr value. &id:avena::data::type::UInt8;
    */
-  typedef oatpp::data::type::UInt8 UInt8;
+  typedef avena::data::type::UInt8 UInt8;
 
   /**
-   * Mapping-Enabled 16-bits int. Can hold nullptr value. &id:oatpp::data::type::Int16;
+   * Mapping-Enabled 16-bits int. Can hold nullptr value. &id:avena::data::type::Int16;
    */
-  typedef oatpp::data::type::Int16 Int16;
+  typedef avena::data::type::Int16 Int16;
 
   /**
-   * Mapping-Enabled 16-bits unsigned int. Can hold nullptr value. &id:oatpp::data::type::UInt16;
+   * Mapping-Enabled 16-bits unsigned int. Can hold nullptr value. &id:avena::data::type::UInt16;
    */
-  typedef oatpp::data::type::UInt16 UInt16;
+  typedef avena::data::type::UInt16 UInt16;
 
   /**
-   * Mapping-Enabled 32-bits int. Can hold nullptr value. &id:oatpp::data::type::Int32;
+   * Mapping-Enabled 32-bits int. Can hold nullptr value. &id:avena::data::type::Int32;
    */
-  typedef oatpp::data::type::Int32 Int32;
+  typedef avena::data::type::Int32 Int32;
 
   /**
-   * Mapping-Enabled 32-bits unsigned int. Can hold nullptr value. &id:oatpp::data::type::UInt32;
+   * Mapping-Enabled 32-bits unsigned int. Can hold nullptr value. &id:avena::data::type::UInt32;
    */
-  typedef oatpp::data::type::UInt32 UInt32;
+  typedef avena::data::type::UInt32 UInt32;
 
   /**
-   * Mapping-Enabled 64-bits int. Can hold nullptr value. &id:oatpp::data::type::Int64;
+   * Mapping-Enabled 64-bits int. Can hold nullptr value. &id:avena::data::type::Int64;
    */
-  typedef oatpp::data::type::Int64 Int64;
+  typedef avena::data::type::Int64 Int64;
 
   /**
-   * Mapping-Enabled 64-bits unsigned int. Can hold nullptr value. &id:oatpp::data::type::UInt64;
+   * Mapping-Enabled 64-bits unsigned int. Can hold nullptr value. &id:avena::data::type::UInt64;
    */
-  typedef oatpp::data::type::UInt64 UInt64;
+  typedef avena::data::type::UInt64 UInt64;
 
   /**
-   * Mapping-Enabled 32-bits float. Can hold nullptr value. &id:oatpp::data::type::Float32;
+   * Mapping-Enabled 32-bits float. Can hold nullptr value. &id:avena::data::type::Float32;
    */
-  typedef oatpp::data::type::Float32 Float32;
+  typedef avena::data::type::Float32 Float32;
 
   /**
-   * Mapping-Enabled 64-bits float (double). Can hold nullptr value. &id:oatpp::data::type::Float64;
+   * Mapping-Enabled 64-bits float (double). Can hold nullptr value. &id:avena::data::type::Float64;
    */
-  typedef oatpp::data::type::Float64 Float64;
+  typedef avena::data::type::Float64 Float64;
 
   /**
-   * Mapping-Enabled Boolean. Can hold nullptr value. &id:oatpp::data::type::Boolean;
+   * Mapping-Enabled Boolean. Can hold nullptr value. &id:avena::data::type::Boolean;
    */
-  typedef oatpp::data::type::Boolean Boolean;
+  typedef avena::data::type::Boolean Boolean;
 
   /**
-   * Base class for all Object-like Mapping-enabled structures. &id:oatpp::data::type::BaseObject;
+   * Base class for all Object-like Mapping-enabled structures. &id:avena::data::type::BaseObject;
    */
-  typedef oatpp::data::type::BaseObject BaseObject;
+  typedef avena::data::type::BaseObject BaseObject;
 
   /**
-   * Base class for all DTO objects. &id:oatpp::data::type::DTO;
+   * Base class for all DTO objects. &id:avena::data::type::DTO;
    */
-  typedef oatpp::data::type::DTO DTO;
+  typedef avena::data::type::DTO DTO;
 
   /**
-   * Mapping-Enabled DTO Object. &id:oatpp::data::type::DTOWrapper;
+   * Mapping-Enabled DTO Object. &id:avena::data::type::DTOWrapper;
    */
   template <class T>
-  using Object = oatpp::data::type::DTOWrapper<T>;
+  using Object = avena::data::type::DTOWrapper<T>;
 
   /**
-   * Mapping-Enabled Enum. &id:oatpp::data::type::Enum;
+   * Mapping-Enabled Enum. &id:avena::data::type::Enum;
    */
   template <class T>
-  using Enum = oatpp::data::type::Enum<T>;
+  using Enum = avena::data::type::Enum<T>;
 
   /**
-   * Mapping-Enabled Vector. &id:oatpp::data::type::Vector;
+   * Mapping-Enabled Vector. &id:avena::data::type::Vector;
    */
   template <class T>
-  using Vector = oatpp::data::type::Vector<T>;
+  using Vector = avena::data::type::Vector<T>;
 
   /**
    * Abstract Vector.
    */
-  typedef oatpp::data::type::AbstractVector AbstractVector;
+  typedef avena::data::type::AbstractVector AbstractVector;
 
   /**
-   * Mapping-Enabled List. &id:oatpp::data::type::List;
+   * Mapping-Enabled List. &id:avena::data::type::List;
    */
   template <class T>
-  using List = oatpp::data::type::List<T>;
+  using List = avena::data::type::List<T>;
 
   /**
    * Abstract List.
    */
-  typedef oatpp::data::type::AbstractList AbstractList;
+  typedef avena::data::type::AbstractList AbstractList;
 
   /**
-   * Mapping-Enabled UnorderedSet. &id:oatpp::data::type::UnorderedSet;
+   * Mapping-Enabled UnorderedSet. &id:avena::data::type::UnorderedSet;
    */
   template <class T>
-  using UnorderedSet = oatpp::data::type::UnorderedSet<T>;
+  using UnorderedSet = avena::data::type::UnorderedSet<T>;
 
   /**
    * Abstract UnorderedSet.
    */
-  typedef oatpp::data::type::AbstractUnorderedSet AbstractUnorderedSet;
+  typedef avena::data::type::AbstractUnorderedSet AbstractUnorderedSet;
 
   /**
-   * Mapping-Enabled PairList<Key, Value>. &id:oatpp::data::type::PairList;
+   * Mapping-Enabled PairList<Key, Value>. &id:avena::data::type::PairList;
    */
   template <class Key, class Value>
-  using PairList = oatpp::data::type::PairList<Key, Value>;
+  using PairList = avena::data::type::PairList<Key, Value>;
 
   /**
-   * Mapping-Enabled PairList<String, Value>. &id:oatpp::data::type::PairList;
+   * Mapping-Enabled PairList<String, Value>. &id:avena::data::type::PairList;
    */
   template <class Value>
-  using Fields = oatpp::PairList<String, Value>;
+  using Fields = avena::PairList<String, Value>;
 
   /**
    * Abstract Fields
    */
-  typedef Fields<oatpp::Void> AbstractFields;
+  typedef Fields<avena::Void> AbstractFields;
 
   /**
-   * Mapping-Enabled UnorderedMap<Key, Value>. &id:oatpp::data::type::UnorderedMap;.
+   * Mapping-Enabled UnorderedMap<Key, Value>. &id:avena::data::type::UnorderedMap;.
    */
   template <class Key, class Value>
-  using UnorderedMap = oatpp::data::type::UnorderedMap<Key, Value>;
+  using UnorderedMap = avena::data::type::UnorderedMap<Key, Value>;
 
   /**
-   * Mapping-Enabled UnorderedMap<String, Value>. &id:oatpp::data::type::UnorderedMap;.
+   * Mapping-Enabled UnorderedMap<String, Value>. &id:avena::data::type::UnorderedMap;.
    */
   template <class Value>
-  using UnorderedFields = oatpp::UnorderedMap<String, Value>;
+  using UnorderedFields = avena::UnorderedMap<String, Value>;
 
   /**
    * Abstract UnorderedFields
    */
-  typedef UnorderedFields<oatpp::Void> AbstractUnorderedFields;
+  typedef UnorderedFields<avena::Void> AbstractUnorderedFields;
   
 }
 

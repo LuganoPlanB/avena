@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/data/type/Object.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 class TreeMap;
 
@@ -175,7 +177,7 @@ public:
 
     }
 
-    throw std::runtime_error("[oatpp::data::mapping::Tree::operator T ()]: Value is NOT a Primitive type.");
+    throw std::runtime_error("[avena::data::mapping::Tree::operator T ()]: Value is NOT a Primitive type.");
 
   }
 
@@ -207,7 +209,7 @@ public:
   template<typename T>
   T getPrimitive() const {
     if(m_type != NodePrimitiveType<T>::type) {
-      throw std::runtime_error(std::string("[oatpp::data::mapping::Tree::getPrimitive()]: NOT a ") + NodePrimitiveType<T>::name);
+      throw std::runtime_error(std::string("[avena::data::mapping::Tree::getPrimitive()]: NOT a ") + NodePrimitiveType<T>::name);
     }
     T result;
     std::memcpy (&result, &m_data, sizeof(T));

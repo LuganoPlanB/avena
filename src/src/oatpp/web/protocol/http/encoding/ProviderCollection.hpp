@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,10 +32,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace encoding {
+namespace avena { namespace web { namespace protocol { namespace http { namespace encoding {
 
 /**
- * Collection of &id:oatpp::web::protocol::http::encoding::EncoderProvider;.
+ * Collection of &id:avena::web::protocol::http::encoding::EncoderProvider;.
  */
 class ProviderCollection {
 private:

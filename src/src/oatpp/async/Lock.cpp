@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Lock.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Lock
@@ -40,7 +42,7 @@ void Lock::onNewItem(CoroutineWaitList& list) {
   if(counter == 0) {
     list.notifyFirst();
   } else if(counter < 0) {
-    throw std::runtime_error("[oatpp::async::Lock::onNewItem()]: Error. Invalid state.");
+    throw std::runtime_error("[avena::async::Lock::onNewItem()]: Error. Invalid state.");
   }
 }
 
@@ -51,7 +53,7 @@ Action Lock::waitAsync() {
   } else if(counter == 0) {
     return Action::createActionByType(Action::TYPE_REPEAT);
   }
-  throw std::runtime_error("[oatpp::async::Lock::waitAsync()]: Error. Invalid state.");
+  throw std::runtime_error("[avena::async::Lock::waitAsync()]: Error. Invalid state.");
 }
 
 void Lock::lock() {
@@ -63,7 +65,7 @@ void Lock::unlock() {
   m_mutex.unlock();
   -- m_counter;
   if(m_counter < 0) {
-    throw std::runtime_error("[oatpp::async::Lock::unlock()]: Error. Invalid state.");
+    throw std::runtime_error("[avena::async::Lock::unlock()]: Error. Invalid state.");
   }
   m_list.notifyFirst();
 }
@@ -100,7 +102,7 @@ void LockGuard::setLockObject(Lock* lock) {
   if(m_lock == nullptr) {
     m_lock = lock;
   } else if(m_lock != lock) {
-    throw std::runtime_error("[oatpp::async::LockGuard::setLockObject()]: Error. Invalid state. LockGuard is NOT reusable.");
+    throw std::runtime_error("[avena::async::LockGuard::setLockObject()]: Error. Invalid state. LockGuard is NOT reusable.");
   }
 }
 
@@ -131,7 +133,7 @@ CoroutineStarter LockGuard::lockAsync(Lock* lock) {
 }
 
 
-Action LockGuard::lockAsyncInline(oatpp::async::Action&& nextAction) {
+Action LockGuard::lockAsyncInline(avena::async::Action&& nextAction) {
 
   if(!m_ownsLock) {
 
@@ -144,7 +146,7 @@ Action LockGuard::lockAsyncInline(oatpp::async::Action&& nextAction) {
     }
 
   } else {
-    throw std::runtime_error("[oatpp::async::LockGuard::lockAsyncInline()]: Error. Invalid state. Double lock attempt.");
+    throw std::runtime_error("[avena::async::LockGuard::lockAsyncInline()]: Error. Invalid state. Double lock attempt.");
   }
 
 }
@@ -163,11 +165,11 @@ void LockGuard::unlock() {
       m_ownsLock = false;
 
     } else {
-      throw std::runtime_error("[oatpp::async::LockGuard::unlock()]: Error. Invalid state. LockGuard is NOT owning the lock.");
+      throw std::runtime_error("[avena::async::LockGuard::unlock()]: Error. Invalid state. LockGuard is NOT owning the lock.");
     }
 
   } else {
-    throw std::runtime_error("[oatpp::async::LockGuard::unlock()]: Error. Invalid state. Lock object is nullptr.");
+    throw std::runtime_error("[avena::async::LockGuard::unlock()]: Error. Invalid state. Lock object is nullptr.");
   }
 
 }
@@ -175,15 +177,15 @@ void LockGuard::unlock() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Misc
 
-CoroutineStarter synchronize(oatpp::async::Lock *lock, CoroutineStarter&& starter) {
+CoroutineStarter synchronize(avena::async::Lock *lock, CoroutineStarter&& starter) {
 
-  class Synchronized : public oatpp::async::Coroutine<Synchronized> {
+  class Synchronized : public avena::async::Coroutine<Synchronized> {
   private:
-    oatpp::async::LockGuard m_lockGuard;
+    avena::async::LockGuard m_lockGuard;
     CoroutineStarter m_starter;
   public:
 
-    Synchronized(oatpp::async::Lock *lock, CoroutineStarter&& starter)
+    Synchronized(avena::async::Lock *lock, CoroutineStarter&& starter)
       : m_lockGuard(lock)
       , m_starter(std::forward<CoroutineStarter>(starter))
     {}

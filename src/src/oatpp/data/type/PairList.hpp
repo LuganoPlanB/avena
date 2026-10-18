@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 #include <initializer_list>
 #include <utility>
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 namespace __class {
 

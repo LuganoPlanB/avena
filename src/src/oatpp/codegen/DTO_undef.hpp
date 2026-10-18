@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -38,7 +40,7 @@
  * *For details see:*
  * <ul>
  *   <li>[Data Transfer Object(DTO) component](https://oatpp.io/docs/components/dto/)</li>
- *   <li>&id:oatpp::data::type::Object;</li>
+ *   <li>&id:avena::data::type::Object;</li>
  * </ul>
  */
 

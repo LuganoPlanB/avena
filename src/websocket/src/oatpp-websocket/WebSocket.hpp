@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,12 +33,12 @@
 #include "oatpp/data/stream/BufferStream.hpp"
 #include "oatpp/provider/Provider.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 /**
  * WebSocket.
  */
-class WebSocket : public oatpp::base::Countable {
+class WebSocket : public avena::base::Countable {
 public:
 
   /**
@@ -45,9 +47,9 @@ public:
   class Listener {
   public:
     /**
-     * Convenience typedef fo &id:oatpp::websocket::WebSocket;.
+     * Convenience typedef fo &id:avena::websocket::WebSocket;.
      */
-    typedef oatpp::websocket::WebSocket WebSocket;
+    typedef avena::websocket::WebSocket WebSocket;
   public:
 
     /**
@@ -57,36 +59,36 @@ public:
 
     /**
      * Called when "ping" frame received
-     * @param socket - &id:oatpp::websocket::WebSocket;.
-     * @param message - message text; &id:oatpp::String;.
+     * @param socket - &id:avena::websocket::WebSocket;.
+     * @param message - message text; &id:avena::String;.
      */
-    virtual void onPing(const WebSocket& socket, const oatpp::String& message) = 0;
+    virtual void onPing(const WebSocket& socket, const avena::String& message) = 0;
 
     /**
      * Called when "pong" frame received
-     * @param socket - &id:oatpp::websocket::WebSocket;.
-     * @param message - message text; &id:oatpp::String;.
+     * @param socket - &id:avena::websocket::WebSocket;.
+     * @param message - message text; &id:avena::String;.
      */
-    virtual void onPong(const WebSocket& socket, const oatpp::String& message) = 0;
+    virtual void onPong(const WebSocket& socket, const avena::String& message) = 0;
 
     /**
      * Called when "close" frame received
-     * @param socket - &id:oatpp::websocket::WebSocket;.
+     * @param socket - &id:avena::websocket::WebSocket;.
      * @param code - close frame message code.
-     * @param message - message text; &id:oatpp::String;.
+     * @param message - message text; &id:avena::String;.
      */
-    virtual void onClose(const WebSocket& socket, v_uint16 code, const oatpp::String& message) = 0;
+    virtual void onClose(const WebSocket& socket, v_uint16 code, const avena::String& message) = 0;
 
     /**
      * Called when "text" or "binary" frame received. <br>
      * When all data of message is read, readMessage is called again with size == 0 to
      * indicate end of the message.
-     * @param socket - &id:oatpp::websocket::WebSocket;.
-     * @param opcode - &id:oatpp::websocket::Frame::OPCODE_TEXT; or &id:oatpp::websocket::Frame::OPCODE_BINARY;.
+     * @param socket - &id:avena::websocket::WebSocket;.
+     * @param opcode - &id:avena::websocket::Frame::OPCODE_TEXT; or &id:avena::websocket::Frame::OPCODE_BINARY;.
      * @param data - pointer to message data.
      * @param size - data size.
      */
-    virtual void readMessage(const WebSocket& socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) = 0;
+    virtual void readMessage(const WebSocket& socket, v_uint8 opcode, p_char8 data, avena::v_io_size size) = 0;
     
   };
   
@@ -99,13 +101,13 @@ private:
    * if(shortMessageStream == nullptr) - read call readMessage() method of listener
    * if(shortMessageStream) - read message to shortMessageStream. Don't call listener
    */
-  void readPayload(const Frame::Header& frameHeader, oatpp::data::stream::BufferOutputStream* shortMessageStream) const;
+  void readPayload(const Frame::Header& frameHeader, avena::data::stream::BufferOutputStream* shortMessageStream) const;
   
   void handleFrame(const Frame::Header& frameHeader);
 
 private:
   Config m_config;
-  provider::ResourceHandle<oatpp::data::stream::IOStream> m_connection;
+  provider::ResourceHandle<avena::data::stream::IOStream> m_connection;
   mutable std::shared_ptr<Listener> m_listener;
   v_int32 m_lastOpcode;
   mutable bool m_listening;
@@ -114,17 +116,17 @@ public:
 
   /**
    * Constructor with Config.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
-   * @param config - &id:oatpp::websocket::Config;.
+   * @param connection - &id:avena::data::stream::IOStream;.
+   * @param config - &id:avena::websocket::Config;.
    */
-  WebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, const Config& config);
+  WebSocket(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, const Config& config);
 
   /**
    * Constructor.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
+   * @param connection - &id:avena::data::stream::IOStream;.
    * @param maskOutgoingMessages - for servers should be `false`. For clients should be `true`.
    */
-  WebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, bool maskOutgoingMessages);
+  WebSocket(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, bool maskOutgoingMessages);
 
   /**
    * Deleted copy-constructor.
@@ -136,35 +138,35 @@ public:
 
   /**
    * Create shared WebSocket with Config.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
-   * @param config - &id:oatpp::websocket::Config;.
+   * @param connection - &id:avena::data::stream::IOStream;.
+   * @param config - &id:avena::websocket::Config;.
    * @return - `std::shared_ptr` to WebSocket.
    */
-  static std::shared_ptr<WebSocket> createShared(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, const Config& config) {
+  static std::shared_ptr<WebSocket> createShared(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, const Config& config) {
     return std::make_shared<WebSocket>(connection, config);
   }
 
   /**
    * Create shared WebSocket.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
+   * @param connection - &id:avena::data::stream::IOStream;.
    * @param maskOutgoingMessages - for servers should be `false`. For clients should be `true`.
    * @return
    */
-  static std::shared_ptr<WebSocket> createShared(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, bool maskOutgoingMessages) {
+  static std::shared_ptr<WebSocket> createShared(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, bool maskOutgoingMessages) {
     return std::make_shared<WebSocket>(connection, maskOutgoingMessages);
   }
 
   /**
    * Set WebSocket config.
-   * @param config - &id:oatpp::websocket::Config;.
+   * @param config - &id:avena::websocket::Config;.
    */
   void setConfig(const Config& config);
 
   /**
    * Get WebSocket connection.
-   * @return - &id:oatpp::data::stream::IOStream;.
+   * @return - &id:avena::data::stream::IOStream;.
    */
-  provider::ResourceHandle<oatpp::data::stream::IOStream> getConnection() const {
+  provider::ResourceHandle<avena::data::stream::IOStream> getConnection() const {
     return m_connection;
   }
 
@@ -187,7 +189,7 @@ public:
   /**
    * Read one frame from connection and call corresponding methods of listener. <br>
    * *Use this method if you know what you are doing.*
-   * @param frameHeader - &id:oatpp::websocket::Frame::Header;.
+   * @param frameHeader - &id:avena::websocket::Frame::Header;.
    */
   void iterateFrame(Frame::Header& frameHeader);
 
@@ -206,14 +208,14 @@ public:
   /**
    * Send custom frame to peer. <br>
    * *Use this method if you know what you are doing.*
-   * @param frameHeader - &id:oatpp::websocket::Frame::Header;.
+   * @param frameHeader - &id:avena::websocket::Frame::Header;.
    */
   void writeFrameHeader(const Frame::Header& frameHeader) const;
 
   /**
    * Send default frame to peer with fin, opcode and messageSize set. <br>
    * *Use this method if you know what you are doing.*
-   * @param frameHeader - &id:oatpp::websocket::Frame::Header;.
+   * @param frameHeader - &id:avena::websocket::Frame::Header;.
    * @param fin - FIN bit.
    * @param opcode - operation code.
    * @param messageSize - coming message size.
@@ -224,19 +226,19 @@ public:
    * Send one frame message with custom fin and opcode.
    * @param fin - FIN bit.
    * @param opcode - operation code.
-   * @param message - message text. &id:oatpp::String;.
+   * @param message - message text. &id:avena::String;.
    * @return - `true` on success, `false` on error.
    * if `false` returned socket should be closed manually.
    */
-  bool sendOneFrame(bool fin, v_uint8 opcode, const oatpp::String& message) const;
+  bool sendOneFrame(bool fin, v_uint8 opcode, const avena::String& message) const;
 
   /**
    * Send close frame.
    * @param code - close message code.
-   * @param message - message text. &id:oatpp::String;.
+   * @param message - message text. &id:avena::String;.
    * @throws - `runtime_error`.
    */
-  void sendClose(v_uint16 code, const oatpp::String& message) const;
+  void sendClose(v_uint16 code, const avena::String& message) const;
 
   /**
    * Send close frame without message.
@@ -246,31 +248,31 @@ public:
 
   /**
    * Send ping frame.
-   * @param message - message text. &id:oatpp::String;.
+   * @param message - message text. &id:avena::String;.
    * @throws - `runtime_error`.
    */
-  void sendPing(const oatpp::String& message) const;
+  void sendPing(const avena::String& message) const;
 
   /**
    * Send pong message.
-   * @param message - message text. &id:oatpp::String;.
+   * @param message - message text. &id:avena::String;.
    * @throws - `runtime_error`.
    */
-  void sendPong(const oatpp::String& message) const;
+  void sendPong(const avena::String& message) const;
 
   /**
    * Send one-frame text message.
-   * @param message - message text. &id:oatpp::String;.
+   * @param message - message text. &id:avena::String;.
    * @throws - `runtime_error`.
    */
-  void sendOneFrameText(const oatpp::String& message) const;
+  void sendOneFrameText(const avena::String& message) const;
 
   /**
    * Send one-frame binary message.
-   * @param message - message text. &id:oatpp::String;.
+   * @param message - message text. &id:avena::String;.
    * @throws - `runtime_error`.
    */
-  void sendOneFrameBinary(const oatpp::String& message) const;
+  void sendOneFrameBinary(const avena::String& message) const;
   
 };
   

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -83,7 +85,7 @@ typedef v_buff_size* p_buff_size;
 typedef uintptr_t v_buff_usize;
 typedef v_buff_usize* p_buff_usize;
 
-namespace oatpp {
+namespace avena {
 
 /**
  * Interface for system-wide Logger.<br>

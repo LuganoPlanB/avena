@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
   
 const char* Hex::ALPHABET_UPPER = "0123456789ABCDEF";
 const char* Hex::ALPHABET_LOWER = "0123456789abcdef";
@@ -100,8 +102,8 @@ void Hex::encode(data::stream::ConsistentOutputStream* stream,
   }
 }
 
-oatpp::String Hex::encode(const oatpp::String& data, const char* alphabet) {
-  oatpp::data::stream::BufferOutputStream ss(256);
+avena::String Hex::encode(const avena::String& data, const char* alphabet) {
+  avena::data::stream::BufferOutputStream ss(256);
   encode(&ss, data->data(), static_cast<v_buff_size>(data->size()), alphabet);
   return ss.toString();
 }
@@ -143,8 +145,8 @@ void Hex::decode(data::stream::ConsistentOutputStream* stream,
 
 }
 
-oatpp::String Hex::decode(const oatpp::String& data, bool allowSeparators) {
-  oatpp::data::stream::BufferOutputStream ss(256);
+avena::String Hex::decode(const avena::String& data, bool allowSeparators) {
+  avena::data::stream::BufferOutputStream ss(256);
   decode(&ss, data->data(), static_cast<v_buff_size>(data->size()), allowSeparators);
   return ss.toString();
 }

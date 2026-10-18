@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,13 +27,13 @@
 
 #include "LoggerTest.hpp"
 
-namespace oatpp { namespace test {
+namespace avena { namespace test {
 
 OATPP_LOG_CATEGORY(LoggerTest::TESTCATEGORY, "LogCategory", true)
 
 void LoggerTest::onRun() {
 
-  auto logger = std::static_pointer_cast<oatpp::DefaultLogger>(oatpp::Environment::getLogger());
+  auto logger = std::static_pointer_cast<avena::DefaultLogger>(avena::Environment::getLogger());
 
   OATPP_LOGv("LoggerTest", "Verbose Log")
   OATPP_LOGd("LoggerTest", "Debug Log")
@@ -40,8 +42,8 @@ void LoggerTest::onRun() {
   OATPP_LOGe("LoggerTest", "Error Log")
 
   OATPP_LOGi("LoggerTest", " --- Disabling Debug Log")
-  logger->disablePriority(oatpp::DefaultLogger::PRIORITY_D);
-  OATPP_ASSERT(!logger->isLogPriorityEnabled(oatpp::DefaultLogger::PRIORITY_D))
+  logger->disablePriority(avena::DefaultLogger::PRIORITY_D);
+  OATPP_ASSERT(!logger->isLogPriorityEnabled(avena::DefaultLogger::PRIORITY_D))
 
   OATPP_LOGv("LoggerTest", "Verbose Log")
   OATPP_LOGd("LoggerTest", "Debug Log")
@@ -50,8 +52,8 @@ void LoggerTest::onRun() {
   OATPP_LOGe("LoggerTest", "Error Log")
 
   OATPP_LOGi("LoggerTest", " --- Enabling Debug Log again")
-  logger->enablePriority(oatpp::DefaultLogger::PRIORITY_D);
-  OATPP_ASSERT(logger->isLogPriorityEnabled(oatpp::DefaultLogger::PRIORITY_D))
+  logger->enablePriority(avena::DefaultLogger::PRIORITY_D);
+  OATPP_ASSERT(logger->isLogPriorityEnabled(avena::DefaultLogger::PRIORITY_D))
 
   OATPP_LOGv("LoggerTest", "Verbose Log")
   OATPP_LOGd("LoggerTest", "Debug Log")
@@ -67,8 +69,8 @@ void LoggerTest::onRun() {
   OATPP_LOGe(TESTCATEGORY, "Error Log")
 
   OATPP_LOGi(TESTCATEGORY, " --- Disabling Debug Log for category")
-  TESTCATEGORY.disablePriority(oatpp::DefaultLogger::PRIORITY_D);
-  OATPP_ASSERT(!TESTCATEGORY.isLogPriorityEnabled(oatpp::DefaultLogger::PRIORITY_D))
+  TESTCATEGORY.disablePriority(avena::DefaultLogger::PRIORITY_D);
+  OATPP_ASSERT(!TESTCATEGORY.isLogPriorityEnabled(avena::DefaultLogger::PRIORITY_D))
   OATPP_LOGv(TESTCATEGORY, "Verbose Log")
   OATPP_LOGd(TESTCATEGORY, "Debug Log")
   OATPP_LOGi(TESTCATEGORY, "Info Log")

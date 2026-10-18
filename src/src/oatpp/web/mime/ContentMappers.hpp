@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 
 #include <shared_mutex>
 
-namespace oatpp::web::mime {
+namespace avena::web::mime {
 
 class ContentMappers {
 private:
@@ -49,7 +51,7 @@ private:
 private:
   typedef std::unordered_map<data::share::StringKeyLabelCI, std::shared_ptr<data::mapping::ObjectMapper>> MappersBySubtypes;
 private:
-  std::pair<oatpp::String, oatpp::String> typeAndSubtype(const data::share::StringKeyLabelCI& contentType) const;
+  std::pair<avena::String, avena::String> typeAndSubtype(const data::share::StringKeyLabelCI& contentType) const;
   std::shared_ptr<data::mapping::ObjectMapper> selectMapper(const protocol::http::HeaderValueData& values) const;
 private:
   std::unordered_map<data::share::StringKeyLabelCI, MappersBySubtypes> m_index;
@@ -63,16 +65,16 @@ public:
 
   void putMapper(const std::shared_ptr<data::mapping::ObjectMapper>& mapper);
 
-  void setDefaultMapper(const oatpp::String& contentType);
+  void setDefaultMapper(const avena::String& contentType);
   void setDefaultMapper(const std::shared_ptr<data::mapping::ObjectMapper>& mapper);
 
-  std::shared_ptr<data::mapping::ObjectMapper> getMapper(const oatpp::String& contentType) const;
+  std::shared_ptr<data::mapping::ObjectMapper> getMapper(const avena::String& contentType) const;
   std::shared_ptr<data::mapping::ObjectMapper> getDefaultMapper() const;
 
-  std::shared_ptr<data::mapping::ObjectMapper> selectMapperForContent(const oatpp::String& contentTypeHeader) const;
+  std::shared_ptr<data::mapping::ObjectMapper> selectMapperForContent(const avena::String& contentTypeHeader) const;
 
-  std::shared_ptr<data::mapping::ObjectMapper> selectMapper(const oatpp::String& acceptHeader) const;
-  std::shared_ptr<data::mapping::ObjectMapper> selectMapper(const std::vector<oatpp::String>& acceptableContentTypes) const;
+  std::shared_ptr<data::mapping::ObjectMapper> selectMapper(const avena::String& acceptHeader) const;
+  std::shared_ptr<data::mapping::ObjectMapper> selectMapper(const std::vector<avena::String>& acceptableContentTypes) const;
 
   void clear();
 

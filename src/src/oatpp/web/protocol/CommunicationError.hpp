@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,35 +29,35 @@
 
 #include "oatpp/IODefinitions.hpp"
 
-namespace oatpp { namespace web { namespace protocol {
+namespace avena { namespace web { namespace protocol {
 
 /**
  * Communication Error
  */
 class CommunicationError : public std::runtime_error {
 private:
-  oatpp::v_io_size m_ioStatus;
-  oatpp::String m_message;
+  avena::v_io_size m_ioStatus;
+  avena::String m_message;
 public:
 
   /**
    * Constructor.
-   * @param ioStatus - I/O error. See &id:oatpp::v_io_size;.
+   * @param ioStatus - I/O error. See &id:avena::v_io_size;.
    * @param message - error message.
    */
-  CommunicationError(oatpp::v_io_size ioStatus, const oatpp::String& message);
+  CommunicationError(avena::v_io_size ioStatus, const avena::String& message);
 
   /**
-   * Get I/O error. See &id:oatpp::v_io_size;.
-   * @return &id:oatpp::v_io_size;.
+   * Get I/O error. See &id:avena::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
-  oatpp::v_io_size getIOStatus();
+  avena::v_io_size getIOStatus();
 
   /**
    * Get error message.
    * @return - error message.
    */
-  oatpp::String& getMessage();
+  avena::String& getMessage();
   
 };
 
@@ -74,10 +76,10 @@ struct ProtocolErrorInfo {
 
   /**
    * Constructor.
-   * @param pIOStatus - I/O level error. See &id:oatpp::v_io_size;.
+   * @param pIOStatus - I/O level error. See &id:avena::v_io_size;.
    * @param pStatus - configurable arbitrary data type.
    */
-  ProtocolErrorInfo(oatpp::v_io_size pIOStatus, const Status& pStatus)
+  ProtocolErrorInfo(avena::v_io_size pIOStatus, const Status& pStatus)
     : ioStatus(pIOStatus)
     , status(pStatus)
   {}
@@ -85,7 +87,7 @@ struct ProtocolErrorInfo {
   /**
    * Get I/O level error.
    */
-  oatpp::v_io_size ioStatus;
+  avena::v_io_size ioStatus;
 
   /**
    * Configurable arbitrary data type.
@@ -114,7 +116,7 @@ public:
    * @param info - &l:ProtocolError::Info ;.
    * @param message - error message.
    */
-  ProtocolError(const Info& info, const oatpp::String& message)
+  ProtocolError(const Info& info, const avena::String& message)
     : CommunicationError(info.ioStatus, message)
     , m_info(info)
   {}
@@ -135,7 +137,7 @@ public:
  * @tparam Status - arbitrary data type.
  */
 template<class Status>
-class AsyncProtocolError : public oatpp::AsyncIOError {
+class AsyncProtocolError : public avena::AsyncIOError {
 public:
   /**
    * Cenvenience typedef for ProtocolErrorInfo
@@ -143,7 +145,7 @@ public:
   typedef ProtocolErrorInfo<Status> Info;
 private:
   Info m_info;
-  oatpp::String m_message;
+  avena::String m_message;
 public:
 
   /**
@@ -151,8 +153,8 @@ public:
    * @param info - &l:ProtocolError::Info ;.
    * @param message - error message.
    */
-  AsyncProtocolError(const Info& info, const oatpp::String& message)
-    : oatpp::AsyncIOError("AsyncProtocolError", info.ioStatus)
+  AsyncProtocolError(const Info& info, const avena::String& message)
+    : avena::AsyncIOError("AsyncProtocolError", info.ioStatus)
     , m_info(info)
     , m_message(message)
   {}
@@ -161,7 +163,7 @@ public:
    * Error message.
    * @return - error message.
    */
-  oatpp::String getMessage() {
+  avena::String getMessage() {
     return m_message;
   }
 

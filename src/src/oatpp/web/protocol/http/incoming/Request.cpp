@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,12 +26,12 @@
 
 #include "Request.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
-Request::Request(const std::shared_ptr<oatpp::data::stream::IOStream>& connection,
+Request::Request(const std::shared_ptr<avena::data::stream::IOStream>& connection,
                  const http::RequestStartingLine& startingLine,
                  const http::Headers& headers,
-                 const std::shared_ptr<oatpp::data::stream::InputStream>& bodyStream,
+                 const std::shared_ptr<avena::data::stream::InputStream>& bodyStream,
                  const std::shared_ptr<const http::incoming::BodyDecoder>& bodyDecoder)
   : m_connection(connection)
   , m_startingLine(startingLine)
@@ -39,16 +41,16 @@ Request::Request(const std::shared_ptr<oatpp::data::stream::IOStream>& connectio
   , m_queryParamsParsed(false)
 {}
 
-std::shared_ptr<Request> Request::createShared(const std::shared_ptr<oatpp::data::stream::IOStream>& connection,
+std::shared_ptr<Request> Request::createShared(const std::shared_ptr<avena::data::stream::IOStream>& connection,
                                                const http::RequestStartingLine& startingLine,
                                                const http::Headers& headers,
-                                               const std::shared_ptr<oatpp::data::stream::InputStream>& bodyStream,
+                                               const std::shared_ptr<avena::data::stream::InputStream>& bodyStream,
                                                const std::shared_ptr<const http::incoming::BodyDecoder>& bodyDecoder)
 {
   return std::make_shared<Request>(connection, startingLine, headers, bodyStream, bodyDecoder);
 }
 
-std::shared_ptr<oatpp::data::stream::IOStream> Request::getConnection() {
+std::shared_ptr<avena::data::stream::IOStream> Request::getConnection() {
   return m_connection;
 }
 
@@ -70,22 +72,22 @@ const http::Headers& Request::getHeaders() const {
 
 const http::QueryParams& Request::getQueryParameters() const {
   if(!m_queryParamsParsed) {
-    oatpp::network::Url::Parser::parseQueryParams(m_queryParams, m_pathVariables.getTail());
+    avena::network::Url::Parser::parseQueryParams(m_queryParams, m_pathVariables.getTail());
     m_queryParamsParsed = true;
   }
   return m_queryParams;
 }
 
-oatpp::String Request::getQueryParameter(const oatpp::data::share::StringKeyLabel& name) const {
+avena::String Request::getQueryParameter(const avena::data::share::StringKeyLabel& name) const {
   return getQueryParameters().get(name);
 }
 
-oatpp::String Request::getQueryParameter(const oatpp::data::share::StringKeyLabel& name, const oatpp::String& defaultValue) const {
+avena::String Request::getQueryParameter(const avena::data::share::StringKeyLabel& name, const avena::String& defaultValue) const {
   auto value = getQueryParameter(name);
   return value ? value : defaultValue;
 }
 
-std::shared_ptr<oatpp::data::stream::InputStream> Request::getBodyStream() const {
+std::shared_ptr<avena::data::stream::InputStream> Request::getBodyStream() const {
   return m_bodyStream;
 }
 
@@ -93,11 +95,11 @@ std::shared_ptr<const http::incoming::BodyDecoder> Request::getBodyDecoder() con
   return m_bodyDecoder;
 }
 
-void Request::putHeader(const oatpp::String& key, const oatpp::String& value) {
+void Request::putHeader(const avena::String& key, const avena::String& value) {
   m_headers.put(key, value);
 }
 
-bool Request::putHeaderIfNotExists(const oatpp::String& key, const oatpp::String& value) {
+bool Request::putHeaderIfNotExists(const avena::String& key, const avena::String& value) {
   return m_headers.putIfNotExists(key, value);
 }
 
@@ -110,20 +112,20 @@ bool Request::putOrReplaceHeader_Unsafe(const data::share::StringKeyLabelCI& key
   return m_headers.putOrReplace(key, value);
 }
 
-void Request::putHeader_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value) {
+void Request::putHeader_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value) {
   m_headers.put(key, value);
 }
 
-bool Request::putHeaderIfNotExists_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value) {
+bool Request::putHeaderIfNotExists_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value) {
   return m_headers.putIfNotExists(key, value);
 }
 
-oatpp::String Request::getHeader(const oatpp::data::share::StringKeyLabelCI& headerName) const{
+avena::String Request::getHeader(const avena::data::share::StringKeyLabelCI& headerName) const{
   return m_headers.get(headerName);
 }
 
-std::vector<oatpp::String> Request::getHeaderValues(const oatpp::data::share::StringKeyLabelCI& headerName) const {
-  std::vector<oatpp::String> result;
+std::vector<avena::String> Request::getHeaderValues(const avena::data::share::StringKeyLabelCI& headerName) const {
+  std::vector<avena::String> result;
   auto range = m_headers.getAll_Unsafe().equal_range(headerName);
   for (auto it = range.first; it != range.second; ++it) {
     result.emplace_back(it->second.toString());
@@ -131,15 +133,15 @@ std::vector<oatpp::String> Request::getHeaderValues(const oatpp::data::share::St
   return result;
 }
 
-oatpp::String Request::getPathVariable(const oatpp::data::share::StringKeyLabel& name) const {
+avena::String Request::getPathVariable(const avena::data::share::StringKeyLabel& name) const {
   return m_pathVariables.getVariable(name);
 }
 
-oatpp::String Request::getPathTail() const {
+avena::String Request::getPathTail() const {
   return m_pathVariables.getTail();
 }
 
-void Request::putBundleData(const oatpp::String& key, const oatpp::Void& polymorph) {
+void Request::putBundleData(const avena::String& key, const avena::Void& polymorph) {
   m_bundle.put(key, polymorph);
 }
 
@@ -151,11 +153,11 @@ void Request::transferBody(const base::ObjectHandle<data::stream::WriteCallback>
   m_bodyDecoder->decode(m_headers, m_bodyStream.get(), writeCallback.get(), m_connection.get());
 }
 
-void Request::transferBodyToStream(const base::ObjectHandle<oatpp::data::stream::OutputStream>& toStream) const {
+void Request::transferBodyToStream(const base::ObjectHandle<avena::data::stream::OutputStream>& toStream) const {
   m_bodyDecoder->decode(m_headers, m_bodyStream.get(), toStream.get(), m_connection.get());
 }
 
-oatpp::String Request::readBodyToString() const {
+avena::String Request::readBodyToString() const {
   return m_bodyDecoder->decodeToString(m_headers, m_bodyStream.get(), m_connection.get());
 }
 
@@ -163,11 +165,11 @@ async::CoroutineStarter Request::transferBodyAsync(const std::shared_ptr<data::s
   return m_bodyDecoder->decodeAsync(m_headers, m_bodyStream, writeCallback, m_connection);
 }
 
-async::CoroutineStarter Request::transferBodyToStreamAsync(const std::shared_ptr<oatpp::data::stream::OutputStream>& toStream) const {
+async::CoroutineStarter Request::transferBodyToStreamAsync(const std::shared_ptr<avena::data::stream::OutputStream>& toStream) const {
   return m_bodyDecoder->decodeAsync(m_headers, m_bodyStream, toStream, m_connection);
 }
 
-async::CoroutineStarterForResult<const oatpp::String&> Request::readBodyToStringAsync() const {
+async::CoroutineStarterForResult<const avena::String&> Request::readBodyToStringAsync() const {
   return m_bodyDecoder->decodeToStringAsync(m_headers, m_bodyStream, m_connection);
 }
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 
 #include "oatpp/macro/codegen.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 namespace {
 
@@ -42,7 +44,7 @@ ENUM(Enum1, v_int32,
   VALUE(V3, 30, "enum1-v3")
 );
 
-class DTO1 : public oatpp::DTO {
+class DTO1 : public avena::DTO {
 
   DTO_INIT(DTO1, DTO)
 
@@ -56,11 +58,11 @@ class DTO1 : public oatpp::DTO {
 
 void EnumTest::onRun() {
 
-  oatpp::json::ObjectMapper mapper;
+  avena::json::ObjectMapper mapper;
 
   {
     OATPP_LOGi(TAG, "Serializer as string...")
-    oatpp::Fields<oatpp::Enum<Enum1>::AsString> map = {{"enum", Enum1::V1}};
+    avena::Fields<avena::Enum<Enum1>::AsString> map = {{"enum", Enum1::V1}};
     auto json = mapper.writeToString(map);
     OATPP_LOGd(TAG, "json='{}'", json->c_str())
     OATPP_ASSERT(json == "{\"enum\":\"enum1-v1\"}")
@@ -69,7 +71,7 @@ void EnumTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Serializer as string null...")
-    oatpp::Fields<oatpp::Enum<Enum1>::AsString> map = {{"enum", nullptr}};
+    avena::Fields<avena::Enum<Enum1>::AsString> map = {{"enum", nullptr}};
     auto json = mapper.writeToString(map);
     OATPP_LOGd(TAG, "json='{}'", json->c_str())
     OATPP_ASSERT(json == "{\"enum\":null}")
@@ -79,7 +81,7 @@ void EnumTest::onRun() {
   {
     OATPP_LOGi(TAG, "Serializer as string error on null...")
     bool error = false;
-    oatpp::Fields<oatpp::Enum<Enum1>::AsString::NotNull> map = {{"enum", nullptr}};
+    avena::Fields<avena::Enum<Enum1>::AsString::NotNull> map = {{"enum", nullptr}};
     try {
       auto json = mapper.writeToString(map);
     } catch (const data::mapping::MappingError& e) {
@@ -92,7 +94,7 @@ void EnumTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Serializer as int...")
-    oatpp::Fields<oatpp::Enum<Enum1>::AsNumber> map = {{"enum", Enum1::V1}};
+    avena::Fields<avena::Enum<Enum1>::AsNumber> map = {{"enum", Enum1::V1}};
     auto json = mapper.writeToString(map);
     OATPP_LOGd(TAG, "json='{}'", json)
     OATPP_ASSERT(json == "{\"enum\":10}")
@@ -101,7 +103,7 @@ void EnumTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Serializer as int null...")
-    oatpp::Fields<oatpp::Enum<Enum1>::AsNumber> map = {{"enum", nullptr}};
+    avena::Fields<avena::Enum<Enum1>::AsNumber> map = {{"enum", nullptr}};
     auto json = mapper.writeToString(map);
     OATPP_LOGd(TAG, "json='{}'", json)
     OATPP_ASSERT(json == "{\"enum\":null}")
@@ -111,7 +113,7 @@ void EnumTest::onRun() {
   {
     OATPP_LOGi(TAG, "Serializer as int error on null...")
     bool error = false;
-    oatpp::Fields<oatpp::Enum<Enum1>::AsNumber::NotNull> map = {{"enum", nullptr}};
+    avena::Fields<avena::Enum<Enum1>::AsNumber::NotNull> map = {{"enum", nullptr}};
     try {
       auto json = mapper.writeToString(map);
     } catch (const data::mapping::MappingError& e) {
@@ -124,16 +126,16 @@ void EnumTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Deserializer as string...")
-    oatpp::String json = "{\"enum\":\"enum1-v2\"}";
-    auto map = mapper.readFromString<oatpp::Fields<oatpp::Enum<Enum1>::AsString>>(json);
+    avena::String json = "{\"enum\":\"enum1-v2\"}";
+    auto map = mapper.readFromString<avena::Fields<avena::Enum<Enum1>::AsString>>(json);
     OATPP_ASSERT(map["enum"] == Enum1::V2)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Deserializer as string null...")
-    oatpp::String json = "{\"enum\":null}";
-    auto map = mapper.readFromString<oatpp::Fields<oatpp::Enum<Enum1>::AsString>>(json);
+    avena::String json = "{\"enum\":null}";
+    auto map = mapper.readFromString<avena::Fields<avena::Enum<Enum1>::AsString>>(json);
     OATPP_ASSERT(map["enum"] == nullptr)
     OATPP_LOGi(TAG, "OK")
   }
@@ -141,9 +143,9 @@ void EnumTest::onRun() {
   {
     OATPP_LOGi(TAG, "Deserializer as string error on null...")
     bool error = false;
-    oatpp::String json = "{\"enum\":null}";
+    avena::String json = "{\"enum\":null}";
     try {
-      auto map = mapper.readFromString<oatpp::Fields<oatpp::Enum<Enum1>::AsString::NotNull>>(json);
+      auto map = mapper.readFromString<avena::Fields<avena::Enum<Enum1>::AsString::NotNull>>(json);
     } catch (const data::mapping::MappingError& e) {
       OATPP_LOGd(TAG, "error - '{}'\ntrace:\n{}", e.what(), e.errorStack().stacktrace()->c_str())
       error = true;
@@ -154,16 +156,16 @@ void EnumTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Deserializer as int...")
-    oatpp::String json = "{\"enum\":20}";
-    auto map = mapper.readFromString<oatpp::Fields<oatpp::Enum<Enum1>::AsNumber>>(json);
+    avena::String json = "{\"enum\":20}";
+    auto map = mapper.readFromString<avena::Fields<avena::Enum<Enum1>::AsNumber>>(json);
     OATPP_ASSERT(map["enum"] == Enum1::V2)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Deserializer as int null...")
-    oatpp::String json = "{\"enum\":null}";
-    auto map = mapper.readFromString<oatpp::Fields<oatpp::Enum<Enum1>::AsNumber>>(json);
+    avena::String json = "{\"enum\":null}";
+    auto map = mapper.readFromString<avena::Fields<avena::Enum<Enum1>::AsNumber>>(json);
     OATPP_ASSERT(map["enum"] == nullptr)
     OATPP_LOGi(TAG, "OK")
   }
@@ -171,9 +173,9 @@ void EnumTest::onRun() {
   {
     OATPP_LOGi(TAG, "Deserializer as int error on null...")
     bool error = false;
-    oatpp::String json = "{\"enum\":null}";
+    avena::String json = "{\"enum\":null}";
     try {
-      auto map = mapper.readFromString<oatpp::Fields<oatpp::Enum<Enum1>::AsNumber::NotNull>>(json);
+      auto map = mapper.readFromString<avena::Fields<avena::Enum<Enum1>::AsNumber::NotNull>>(json);
     } catch (const data::mapping::MappingError& e) {
       OATPP_LOGd(TAG, "error - '{}'\ntrace:\n{}", e.what(), e.errorStack().stacktrace()->c_str())
       error = true;

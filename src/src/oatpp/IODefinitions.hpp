@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 #include <sys/socket.h>
 #endif
 
-namespace oatpp {
+namespace avena {
 
 /**
  * Represents I/O handle (ex.: file descriptor).
@@ -111,9 +113,9 @@ enum IOError : v_io_size {
 
 /**
  * Asynchronous I/O error. <br>
- * Extends &id:oatpp::async::Error;.
+ * Extends &id:avena::async::Error;.
  */
-class AsyncIOError : public oatpp::async::Error {
+class AsyncIOError : public avena::async::Error {
 private:
   v_io_size m_code;
 public:
@@ -124,7 +126,7 @@ public:
    * @param code - I/O opersation error code. &l:IOError;.
    */
   AsyncIOError(const char* what, v_io_size code)
-    : oatpp::async::Error(what)
+    : avena::async::Error(what)
     , m_code(code)
   {}
 
@@ -133,7 +135,7 @@ public:
    * @param code - I/O opersation error code. &l:IOError;.
    */
   AsyncIOError(v_io_size code)
-    : oatpp::async::Error("AsyncIOError")
+    : avena::async::Error("AsyncIOError")
     , m_code(code)
   {}
 

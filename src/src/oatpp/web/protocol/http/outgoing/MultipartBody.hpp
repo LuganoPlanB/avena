@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,26 +32,26 @@
 #include "oatpp/web/mime/multipart/Multipart.hpp"
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
-class MultipartBody : public oatpp::base::Countable, public Body {
+class MultipartBody : public avena::base::Countable, public Body {
 public:
 
   /**
-   * Convenience typedef for &id:oatpp::web::mime::multipart::Multipart;.
+   * Convenience typedef for &id:avena::web::mime::multipart::Multipart;.
    */
-  typedef oatpp::web::mime::multipart::Multipart Multipart;
+  typedef avena::web::mime::multipart::Multipart Multipart;
 
   /**
-   * Convenience typedef for &id:oatpp::web::mime::multipart::Part;.
+   * Convenience typedef for &id:avena::web::mime::multipart::Part;.
    */
-  typedef oatpp::web::mime::multipart::Part Part;
+  typedef avena::web::mime::multipart::Part Part;
 private:
 
   /*
-   * Convenience typedef for &id:oatpp::data::stream::ReadCallback;.
+   * Convenience typedef for &id:avena::data::stream::ReadCallback;.
    */
-  typedef oatpp::data::stream::ReadCallback ReadCallback;
+  typedef avena::data::stream::ReadCallback ReadCallback;
 
 private:
 
@@ -139,11 +141,11 @@ private:
 
 private:
   std::shared_ptr<Multipart> m_multipart;
-  oatpp::String m_contentType;
+  avena::String m_contentType;
 private:
   PartIterator m_iterator;
   v_int32 m_state;
-  oatpp::data::stream::BufferInputStream m_readStream;
+  avena::data::stream::BufferInputStream m_readStream;
   bool m_flushParts;
 private:
   v_io_size readBody(void *buffer, v_buff_size count, async::Action& action);
@@ -157,14 +159,14 @@ public:
    * @param flushParts - flush data part by part.
    */
   MultipartBody(const std::shared_ptr<Multipart>& multipart,
-                const oatpp::String& contentType = "multipart/form-data",
+                const avena::String& contentType = "multipart/form-data",
                 bool flushParts = false);
 
   /**
    * Read operation callback.
    * @param buffer - pointer to buffer.
    * @param count - size of the buffer in bytes.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes written to buffer. 0 - to indicate end-of-file.
    */
@@ -172,7 +174,7 @@ public:
 
   /**
    * Declare `Transfer-Encoding: chunked`, `Content-Type: multipart/<type>` header.
-   * @param headers - &id:oatpp::web::protocol::http::Headers;.
+   * @param headers - &id:avena::web::protocol::http::Headers;.
    */
   void declareHeaders(Headers& headers) override;
 

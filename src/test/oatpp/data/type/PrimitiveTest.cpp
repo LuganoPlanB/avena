@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 namespace {
 
@@ -41,52 +43,52 @@ namespace {
 void PrimitiveTest::onRun() {
 
   {
-    checkHash(oatpp::Boolean(true));
-    checkHash(oatpp::Int8(0x7F));
-    checkHash(oatpp::UInt8(0xFF));
-    checkHash(oatpp::Int16(0x7FFF));
-    checkHash(oatpp::UInt16(0xFFFF));
-    checkHash(oatpp::Int32(0x7FFFFFFF));
-    checkHash(oatpp::UInt32(0xFFFFFFFF));
-    checkHash(oatpp::Int64(0x7FFFFFFFFFFFFFFF));
-    checkHash(oatpp::UInt64(0xFFFFFFFFFFFFFFFF));
-    checkHash(oatpp::Float32(0.2f));
-    checkHash(oatpp::Float64(0.2));
+    checkHash(avena::Boolean(true));
+    checkHash(avena::Int8(0x7F));
+    checkHash(avena::UInt8(0xFF));
+    checkHash(avena::Int16(0x7FFF));
+    checkHash(avena::UInt16(0xFFFF));
+    checkHash(avena::Int32(0x7FFFFFFF));
+    checkHash(avena::UInt32(0xFFFFFFFF));
+    checkHash(avena::Int64(0x7FFFFFFFFFFFFFFF));
+    checkHash(avena::UInt64(0xFFFFFFFFFFFFFFFF));
+    checkHash(avena::Float32(0.2f));
+    checkHash(avena::Float64(0.2));
   }
 
   {
     OATPP_LOGi(TAG, "test default constructor")
-    oatpp::Int32 i;
+    avena::Int32 i;
     OATPP_ASSERT(!i)
     OATPP_ASSERT(i == nullptr)
-    OATPP_ASSERT(i.getValueType() == oatpp::Int32::Class::getType())
+    OATPP_ASSERT(i.getValueType() == avena::Int32::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test value constructor")
-    oatpp::Int32 i(0);
+    avena::Int32 i(0);
     OATPP_ASSERT(i)
     OATPP_ASSERT(i != nullptr)
     OATPP_ASSERT(i == 0)
-    OATPP_ASSERT(i.getValueType() == oatpp::Int32::Class::getType())
+    OATPP_ASSERT(i.getValueType() == avena::Int32::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test implicit value constructor")
-    oatpp::Int32 i = 0;
+    avena::Int32 i = 0;
     OATPP_ASSERT(i)
     OATPP_ASSERT(i != nullptr)
     OATPP_ASSERT(i == 0)
-    OATPP_ASSERT(i.getValueType() == oatpp::Int32::Class::getType())
+    OATPP_ASSERT(i.getValueType() == avena::Int32::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test '==' and '!=' operators")
-    oatpp::Int32 i1 = 0;
-    oatpp::Int32 i2;
+    avena::Int32 i1 = 0;
+    avena::Int32 i2;
 
     OATPP_ASSERT(i1)
     OATPP_ASSERT(i1 != nullptr)
@@ -114,8 +116,8 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test copy-assign operator")
-    oatpp::Int32 i1 = 0;
-    oatpp::Int32 i2;
+    avena::Int32 i1 = 0;
+    avena::Int32 i2;
 
     OATPP_ASSERT(i1 != i2)
 
@@ -135,8 +137,8 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test move-assign operator")
-    oatpp::Int32 i1 = 0;
-    oatpp::Int32 i2;
+    avena::Int32 i1 = 0;
+    avena::Int32 i2;
 
     OATPP_ASSERT(i1 != i2)
 
@@ -150,14 +152,14 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test move-assign operator")
-    oatpp::Int32 i = 0;
+    avena::Int32 i = 0;
     v_int32 v = i;
     OATPP_ASSERT(v == i)
   }
 
   {
     OATPP_LOGi(TAG, "Test Boolean [nullptr]")
-    oatpp::Boolean b;
+    avena::Boolean b;
 
     OATPP_ASSERT(!b)
     OATPP_ASSERT(b == nullptr)
@@ -168,7 +170,7 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test Boolean nullptr constructor")
-    oatpp::Boolean b = nullptr;
+    avena::Boolean b = nullptr;
 
     OATPP_ASSERT(!b)
     OATPP_ASSERT(b == nullptr)
@@ -179,7 +181,7 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test Boolean [false]")
-    oatpp::Boolean b = false;
+    avena::Boolean b = false;
 
     OATPP_ASSERT(!b) // <--- still !b
     OATPP_ASSERT(b != nullptr)
@@ -190,7 +192,7 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test Boolean [true]")
-    oatpp::Boolean b = true;
+    avena::Boolean b = true;
 
     OATPP_ASSERT(b)
     OATPP_ASSERT(b != nullptr)
@@ -201,8 +203,8 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test Boolean copy-assign operator")
-    oatpp::Boolean b1 = true;
-    oatpp::Boolean b2;
+    avena::Boolean b1 = true;
+    avena::Boolean b2;
 
     b2 = b1;
 
@@ -233,8 +235,8 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test Boolean move-assign operator")
-    oatpp::Boolean b1 = true;
-    oatpp::Boolean b2;
+    avena::Boolean b1 = true;
+    avena::Boolean b2;
 
     b2 = std::move(b1);
 
@@ -246,8 +248,8 @@ void PrimitiveTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "check default value")
-    oatpp::UInt8 s0;
-    oatpp::UInt8 s1 = 255;
+    avena::UInt8 s0;
+    avena::UInt8 s1 = 255;
     OATPP_ASSERT(s0.getValue(128) == 128)
     OATPP_ASSERT(s1.getValue(128) == 255)
   }

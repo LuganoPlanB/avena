@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "./Multipart.hpp"
 #include "oatpp/data/stream/Stream.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 /**
  * Abstract read handler of multipart parts.
@@ -54,7 +56,7 @@ public:
    * @param data - pointer to buffer containing chunk data.
    * @param size - size of the buffer.
    */
-  virtual void onPartData(const std::shared_ptr<Part>& part, const char* data, oatpp::v_io_size size) = 0;
+  virtual void onPartData(const std::shared_ptr<Part>& part, const char* data, avena::v_io_size size) = 0;
 
 };
 
@@ -72,7 +74,7 @@ public:
   /**
    * Called when new part headers are parsed and part object is created.
    * @param part
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   virtual async::CoroutineStarter onNewPartAsync(const std::shared_ptr<Part>& part) = 0;
 
@@ -82,9 +84,9 @@ public:
    * @param part
    * @param data - pointer to buffer containing chunk data.
    * @param size - size of the buffer.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  virtual async::CoroutineStarter onPartDataAsync(const std::shared_ptr<Part>& part, const char* data, oatpp::v_io_size size) = 0;
+  virtual async::CoroutineStarter onPartDataAsync(const std::shared_ptr<Part>& part, const char* data, avena::v_io_size size) = 0;
 
 };
 
@@ -125,7 +127,7 @@ private:
   static const char* const TAG_NAME;
 private:
 
-  class TagObject : public oatpp::base::Countable {
+  class TagObject : public avena::base::Countable {
   public:
     v_io_size size = 0;
     std::shared_ptr<data::resource::Resource> resource;
@@ -157,7 +159,7 @@ public:
    * @param data - pointer to buffer containing chunk data.
    * @param size - size of the buffer.
    */
-  void onPartData(const std::shared_ptr<Part>& part, const char* data, oatpp::v_io_size size) override;
+  void onPartData(const std::shared_ptr<Part>& part, const char* data, avena::v_io_size size) override;
 
 };
 
@@ -169,7 +171,7 @@ private:
   static const char* const TAG_NAME;
 private:
 
-  class TagObject : public oatpp::base::Countable {
+  class TagObject : public avena::base::Countable {
   public:
     v_io_size size = 0;
     std::shared_ptr<data::resource::Resource> resource;
@@ -191,7 +193,7 @@ public:
   /**
    * Called when new part headers are parsed and part object is created.
    * @param part
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   async::CoroutineStarter onNewPartAsync(const std::shared_ptr<Part>& part) override;
 
@@ -201,9 +203,9 @@ public:
    * @param part
    * @param data - pointer to buffer containing chunk data.
    * @param size - size of the buffer.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  async::CoroutineStarter onPartDataAsync(const std::shared_ptr<Part>& part, const char* data, oatpp::v_io_size size) override;
+  async::CoroutineStarter onPartDataAsync(const std::shared_ptr<Part>& part, const char* data, avena::v_io_size size) override;
 
 };
 

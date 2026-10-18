@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/encoding/Unicode.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace test { namespace encoding {
+namespace avena { namespace test { namespace encoding {
   
 namespace {
 
@@ -67,9 +69,9 @@ void UnicodeTest::onRun(){
   // 2 byte test
   
   for(v_int32 c = 128; c < 2048; c ++){
-    auto size = oatpp::encoding::Unicode::decodeUtf8Char(c, buff);
+    auto size = avena::encoding::Unicode::decodeUtf8Char(c, buff);
     OATPP_ASSERT(size == 2)
-    auto code = oatpp::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
+    auto code = avena::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
     OATPP_ASSERT(cnt == 2)
     OATPP_ASSERT(code == c)
   }
@@ -77,9 +79,9 @@ void UnicodeTest::onRun(){
   // 3 byte test
   
   for(v_int32 c = 2048; c < 65536; c ++){
-    auto size = oatpp::encoding::Unicode::decodeUtf8Char(c, buff);
+    auto size = avena::encoding::Unicode::decodeUtf8Char(c, buff);
     OATPP_ASSERT(size == 3)
-    auto code = oatpp::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
+    auto code = avena::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
     OATPP_ASSERT(cnt == 3)
     OATPP_ASSERT(code == c)
   }
@@ -87,9 +89,9 @@ void UnicodeTest::onRun(){
   // 4 byte test
   
   for(v_int32 c = 65536; c < 2097152; c ++){
-    auto size = oatpp::encoding::Unicode::decodeUtf8Char(c, buff);
+    auto size = avena::encoding::Unicode::decodeUtf8Char(c, buff);
     OATPP_ASSERT(size == 4)
-    auto code = oatpp::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
+    auto code = avena::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
     OATPP_ASSERT(cnt == 4)
     OATPP_ASSERT(code == c)
   }
@@ -97,9 +99,9 @@ void UnicodeTest::onRun(){
   // 5 byte test
   
   for(v_int32 c = 2097152; c < 67108864; c ++){
-    auto size = oatpp::encoding::Unicode::decodeUtf8Char(c, buff);
+    auto size = avena::encoding::Unicode::decodeUtf8Char(c, buff);
     OATPP_ASSERT(size == 5)
-    auto code = oatpp::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
+    auto code = avena::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
     OATPP_ASSERT(cnt == 5)
     OATPP_ASSERT(code == c)
   }
@@ -107,9 +109,9 @@ void UnicodeTest::onRun(){
   // 6 byte test
 
   for (v_int64 c = 67108864; c < 2147483647; c = c + 100) {
-    auto size = oatpp::encoding::Unicode::decodeUtf8Char(static_cast<v_int32>(c), buff);
+    auto size = avena::encoding::Unicode::decodeUtf8Char(static_cast<v_int32>(c), buff);
     OATPP_ASSERT(size == 6)
-    auto code = oatpp::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
+    auto code = avena::encoding::Unicode::encodeUtf8Char(reinterpret_cast<const char*>(buff), cnt);
     OATPP_ASSERT(cnt == 6)
     OATPP_ASSERT(code == c)
   }
@@ -117,19 +119,19 @@ void UnicodeTest::onRun(){
   // */
   
   const char* sequence = "𐐷";
-  auto code = oatpp::encoding::Unicode::encodeUtf8Char(sequence, cnt);
+  auto code = avena::encoding::Unicode::encodeUtf8Char(sequence, cnt);
   
   v_int16 high;
   v_int16 low;
-  oatpp::encoding::Unicode::codeToUtf16SurrogatePair(code, high, low);
-  auto check = oatpp::encoding::Unicode::utf16SurrogatePairToCode(high, low);
+  avena::encoding::Unicode::codeToUtf16SurrogatePair(code, high, low);
+  auto check = avena::encoding::Unicode::utf16SurrogatePairToCode(high, low);
   writeBinaryInt(code);
   writeBinaryInt(check);
   OATPP_ASSERT(code == check)
   
   for(v_int32 c = 0x010000; c <= 0x10FFFF; c++) {
-    oatpp::encoding::Unicode::codeToUtf16SurrogatePair(code, high, low);
-    check = oatpp::encoding::Unicode::utf16SurrogatePairToCode(high, low);
+    avena::encoding::Unicode::codeToUtf16SurrogatePair(code, high, low);
+    check = avena::encoding::Unicode::utf16SurrogatePairToCode(high, low);
     OATPP_ASSERT(code == check)
   }
 

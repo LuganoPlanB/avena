@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,12 +29,12 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
-class UnorderedSetTest : public oatpp::test::UnitTest {
+class UnorderedSetTest : public avena::test::UnitTest {
 public:
 
-  UnorderedSetTest():UnitTest("TEST[oatpp::json::UnorderedSetTest]"){}
+  UnorderedSetTest():UnitTest("TEST[avena::json::UnorderedSetTest]"){}
   void onRun() override;
 
 };

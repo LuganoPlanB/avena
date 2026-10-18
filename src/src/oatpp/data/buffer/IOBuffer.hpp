@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,13 +29,13 @@
 
 #include "oatpp/base/Countable.hpp"
 
-namespace oatpp { namespace data{ namespace buffer {
+namespace avena { namespace data{ namespace buffer {
 
 /**
  * Predefined buffer implementation for I/O operations.
- * Allocates buffer bytes using &id:oatpp::base::memory::ThreadDistributedMemoryPool;.
+ * Allocates buffer bytes using &id:avena::base::memory::ThreadDistributedMemoryPool;.
  */
-class IOBuffer : public oatpp::base::Countable {
+class IOBuffer : public avena::base::Countable {
 public:
   /**
    * Buffer size constant.

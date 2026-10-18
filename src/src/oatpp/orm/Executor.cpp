@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Executor.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
 Executor::Executor()
   : m_defaultTypeResolver(std::make_shared<data::mapping::TypeResolver>())
@@ -34,8 +36,8 @@ std::shared_ptr<const data::mapping::TypeResolver> Executor::getDefaultTypeResol
   return m_defaultTypeResolver;
 }
 
-std::shared_ptr<QueryResult> Executor::execute(const oatpp::String& query,
-                                               const std::unordered_map<oatpp::String, oatpp::Void>& params,
+std::shared_ptr<QueryResult> Executor::execute(const avena::String& query,
+                                               const std::unordered_map<avena::String, avena::Void>& params,
                                                const std::shared_ptr<const data::mapping::TypeResolver>& typeResolver,
                                                const provider::ResourceHandle<Connection>& connection)
 {

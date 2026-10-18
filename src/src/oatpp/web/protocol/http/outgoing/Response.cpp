@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 #include "oatpp/web/protocol/http/encoding/Chunked.hpp"
 #include "oatpp/utils/Conversion.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 Response::Response(const Status& status,
                    const std::shared_ptr<Body>& body)
@@ -52,11 +54,11 @@ std::shared_ptr<Body> Response::getBody() const {
   return m_body;
 }
 
-void Response::putHeader(const oatpp::String& key, const oatpp::String& value) {
+void Response::putHeader(const avena::String& key, const avena::String& value) {
   m_headers.put(key, value);
 }
 
-bool Response::putHeaderIfNotExists(const oatpp::String& key, const oatpp::String& value) {
+bool Response::putHeaderIfNotExists(const avena::String& key, const avena::String& value) {
   return m_headers.putIfNotExists(key, value);
 }
 
@@ -69,19 +71,19 @@ bool Response::putOrReplaceHeader_Unsafe(const data::share::StringKeyLabelCI& ke
   return m_headers.putOrReplace(key, value);
 }
 
-void Response::putHeader_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value) {
+void Response::putHeader_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value) {
   m_headers.put(key, value);
 }
 
-bool Response::putHeaderIfNotExists_Unsafe(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value) {
+bool Response::putHeaderIfNotExists_Unsafe(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value) {
   return m_headers.putIfNotExists(key, value);
 }
 
-oatpp::String Response::getHeader(const oatpp::data::share::StringKeyLabelCI& headerName) const {
+avena::String Response::getHeader(const avena::data::share::StringKeyLabelCI& headerName) const {
   return m_headers.get(headerName);
 }
 
-void Response::putBundleData(const oatpp::String& key, const oatpp::Void& polymorph) {
+void Response::putBundleData(const avena::String& key, const avena::Void& polymorph) {
   m_bundle.put(key, polymorph);
 }
 
@@ -89,11 +91,11 @@ const data::Bundle& Response::getBundle() const {
   return m_bundle;
 }
 
-void Response::setConnectionUpgradeHandler(const std::shared_ptr<oatpp::network::ConnectionHandler>& handler) {
+void Response::setConnectionUpgradeHandler(const std::shared_ptr<avena::network::ConnectionHandler>& handler) {
   m_connectionUpgradeHandler = handler;
 }
 
-std::shared_ptr<oatpp::network::ConnectionHandler> Response::getConnectionUpgradeHandler() {
+std::shared_ptr<avena::network::ConnectionHandler> Response::getConnectionUpgradeHandler() {
   return m_connectionUpgradeHandler;
 }
 
@@ -201,23 +203,23 @@ void Response::send(data::stream::OutputStream* stream,
 
 }
 
-oatpp::async::CoroutineStarter Response::sendAsync(const std::shared_ptr<Response>& _this,
+avena::async::CoroutineStarter Response::sendAsync(const std::shared_ptr<Response>& _this,
                                                    const std::shared_ptr<data::stream::OutputStream>& stream,
-                                                   const std::shared_ptr<oatpp::data::stream::BufferOutputStream>& headersWriteBuffer,
+                                                   const std::shared_ptr<avena::data::stream::BufferOutputStream>& headersWriteBuffer,
                                                    const std::shared_ptr<http::encoding::EncoderProvider>& contentEncoder)
 {
 
-  class SendAsyncCoroutine : public oatpp::async::Coroutine<SendAsyncCoroutine> {
+  class SendAsyncCoroutine : public avena::async::Coroutine<SendAsyncCoroutine> {
   private:
     std::shared_ptr<Response> m_this;
     std::shared_ptr<data::stream::OutputStream> m_stream;
-    std::shared_ptr<oatpp::data::stream::BufferOutputStream> m_headersWriteBuffer;
+    std::shared_ptr<avena::data::stream::BufferOutputStream> m_headersWriteBuffer;
     std::shared_ptr<http::encoding::EncoderProvider> m_contentEncoderProvider;
   public:
 
     SendAsyncCoroutine(const std::shared_ptr<Response>& _this,
                        const std::shared_ptr<data::stream::OutputStream>& stream,
-                       const std::shared_ptr<oatpp::data::stream::BufferOutputStream>& headersWriteBuffer,
+                       const std::shared_ptr<avena::data::stream::BufferOutputStream>& headersWriteBuffer,
                        const std::shared_ptr<http::encoding::EncoderProvider>& contentEncoderProvider)
       : m_this(_this)
       , m_stream(stream)
@@ -273,12 +275,12 @@ oatpp::async::CoroutineStarter Response::sendAsync(const std::shared_ptr<Respons
             if (bodySize + m_headersWriteBuffer->getCurrentPosition() < m_headersWriteBuffer->getCapacity()) {
 
               m_headersWriteBuffer->writeSimple(m_this->m_body->getKnownData(), bodySize);
-              return oatpp::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
+              return avena::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
                 .next(finish());
 
             } else {
 
-              return oatpp::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
+              return avena::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
                 .next(m_stream->writeExactSizeDataAsync(m_this->m_body->getKnownData(), bodySize))
                 .next(finish());
             }
@@ -286,7 +288,7 @@ oatpp::async::CoroutineStarter Response::sendAsync(const std::shared_ptr<Respons
           } else {
 
             auto chunkedEncoder = std::make_shared<http::encoding::EncoderChunked>();
-            return oatpp::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
+            return avena::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
               .next(data::stream::transferAsync(m_this->m_body, m_stream, 0, data::buffer::IOBuffer::createShared(), chunkedEncoder))
               .next(finish());
 
@@ -302,7 +304,7 @@ oatpp::async::CoroutineStarter Response::sendAsync(const std::shared_ptr<Respons
             chunkedEncoder
           }));
 
-          return oatpp::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
+          return avena::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
             .next(data::stream::transferAsync(m_this->m_body, m_stream, 0, data::buffer::IOBuffer::createShared(), pipeline)
             . next(finish()));
 
@@ -310,7 +312,7 @@ oatpp::async::CoroutineStarter Response::sendAsync(const std::shared_ptr<Respons
 
       } else {
 
-        return oatpp::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
+        return avena::data::stream::BufferOutputStream::flushToStreamAsync(m_headersWriteBuffer, m_stream)
           .next(finish());
       }
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Reader.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PartsParser
@@ -70,7 +72,7 @@ void PartsParser::onPartData(const char* data, v_buff_size size) {
   }
 }
 
-void PartsParser::setPartReader(const oatpp::String& partName, const std::shared_ptr<PartReader>& reader) {
+void PartsParser::setPartReader(const avena::String& partName, const std::shared_ptr<PartReader>& reader) {
   m_readers[partName] = reader;
 }
 
@@ -158,7 +160,7 @@ async::CoroutineStarter AsyncPartsParser::onPartDataAsync(const char* data, v_bu
   return nullptr;
 }
 
-void AsyncPartsParser::setPartReader(const oatpp::String& partName, const std::shared_ptr<AsyncPartReader>& reader) {
+void AsyncPartsParser::setPartReader(const avena::String& partName, const std::shared_ptr<AsyncPartReader>& reader) {
   m_readers[partName] = reader;
 }
 
@@ -180,7 +182,7 @@ v_io_size Reader::write(const void *data, v_buff_size count, async::Action& acti
   return count - inlineData.bytesLeft;
 }
 
-void Reader::setPartReader(const oatpp::String& partName, const std::shared_ptr<PartReader>& reader) {
+void Reader::setPartReader(const avena::String& partName, const std::shared_ptr<PartReader>& reader) {
   m_partsParser->m_readers[partName] = reader;
 }
 
@@ -208,7 +210,7 @@ v_io_size AsyncReader::write(const void *data, v_buff_size count, async::Action&
 
 }
 
-void AsyncReader::setPartReader(const oatpp::String& partName, const std::shared_ptr<AsyncPartReader>& reader) {
+void AsyncReader::setPartReader(const avena::String& partName, const std::shared_ptr<AsyncPartReader>& reader) {
   m_partsParser->m_readers[partName] = reader;
 }
 

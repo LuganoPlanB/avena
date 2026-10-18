@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "TypeResolver.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 TypeResolver::TypeResolver() {
 
@@ -85,7 +87,7 @@ bool TypeResolver::isKnownClass(const type::ClassId& classId) const {
   return false;
 }
 
-bool TypeResolver::isKnownType(const oatpp::Type* type) const {
+bool TypeResolver::isKnownType(const avena::Type* type) const {
   if (type != nullptr) {
     return isKnownClass(type->classId);
   }
@@ -100,7 +102,7 @@ const std::vector<std::string>& TypeResolver::getEnabledInterpretations() const 
   return m_enabledInterpretations;
 }
 
-const oatpp::Type* TypeResolver::resolveType(const oatpp::Type* type, Cache& cache) const {
+const avena::Type* TypeResolver::resolveType(const avena::Type* type, Cache& cache) const {
 
   if(type == nullptr) {
     return nullptr;
@@ -155,7 +157,7 @@ type::Void TypeResolver::resolveValue(const type::Void& value, Cache& cache) con
 
 }
 
-const oatpp::Type* TypeResolver::findPropertyType(const oatpp::Type* baseType,
+const avena::Type* TypeResolver::findPropertyType(const avena::Type* baseType,
                                                  const std::vector<std::string>& path,
                                                  v_uint32 pathPosition,
                                                  Cache& cache) const
@@ -178,7 +180,7 @@ const oatpp::Type* TypeResolver::findPropertyType(const oatpp::Type* baseType,
   }
 
   if(pathPosition > path.size()) {
-    throw std::runtime_error("[oatpp::data::mapping::TypeResolver::findPropertyType()]: Error. Invalid state.");
+    throw std::runtime_error("[avena::data::mapping::TypeResolver::findPropertyType()]: Error. Invalid state.");
   }
 
   auto resolvedType = resolveType(baseType, cache);
@@ -216,7 +218,7 @@ type::Void TypeResolver::findPropertyValue(const type::Void& baseObject,
   }
 
   if(pathPosition > path.size()) {
-    throw std::runtime_error("[oatpp::data::mapping::TypeResolver::findPropertyValue()]: Error. Invalid state.");
+    throw std::runtime_error("[avena::data::mapping::TypeResolver::findPropertyValue()]: Error. Invalid state.");
   }
 
   const auto& resolution = resolveValue(baseObject, cache);
@@ -228,7 +230,7 @@ type::Void TypeResolver::findPropertyValue(const type::Void& baseObject,
 
 }
 
-const oatpp::Type* TypeResolver::resolveObjectPropertyType(const oatpp::Type* objectType,
+const avena::Type* TypeResolver::resolveObjectPropertyType(const avena::Type* objectType,
                                                           const std::vector<std::string>& path,
                                                           Cache& cache) const
 {

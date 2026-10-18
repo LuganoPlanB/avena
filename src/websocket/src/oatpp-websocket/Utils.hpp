@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/concurrency/SpinLock.hpp"
 #include <random>
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 /**
  * Collection of utility methods.
@@ -38,15 +40,15 @@ class Utils {
 public:
   /**
    * Generate random mask for frame.
-   * @param frameHeader - &id:oatpp::websocket::Frame::Header;.
+   * @param frameHeader - &id:avena::websocket::Frame::Header;.
    */
   static void generateMaskForFrame(Frame::Header& frameHeader);
 
   /**
    * Generate `"Sec-WebSocket-Key"` header
-   * @return - `"Sec-WebSocket-Key"` header value. &id:oatpp::String;.
+   * @return - `"Sec-WebSocket-Key"` header value. &id:avena::String;.
    */
-  static oatpp::String generateKey();
+  static avena::String generateKey();
 
 };
   

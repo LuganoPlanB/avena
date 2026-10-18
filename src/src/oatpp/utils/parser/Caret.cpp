@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 #include <cstdlib>
 #include <algorithm>
 
-namespace oatpp { namespace utils { namespace parser {
+namespace avena { namespace utils { namespace parser {
   
   const char* const Caret::ERROR_INVALID_INTEGER = "ERROR_INVALID_INTEGER";
   const char* const Caret::ERROR_INVALID_FLOAT = "ERROR_INVALID_FLOAT";
@@ -73,12 +75,12 @@ namespace oatpp { namespace utils { namespace parser {
     return m_end;
   }
 
-  oatpp::String Caret::Label::toString(){
+  avena::String Caret::Label::toString(){
     v_buff_size end = m_end;
     if(end == -1){
       end = m_caret->m_pos;
     }
-    return oatpp::String(&m_caret->m_data[m_start], end - m_start);
+    return avena::String(&m_caret->m_data[m_start], end - m_start);
   }
 
   std::string Caret::Label::std_str(){
@@ -136,7 +138,7 @@ v_int64 Caret::StateSaveGuard::getSavedErrorCode() {
     , m_errorCode(0)
   {}
   
-  Caret::Caret(const oatpp::String& str)
+  Caret::Caret(const avena::String& str)
     : Caret(str->data(), static_cast<v_buff_size>(str->size()))
   {
     m_dataMemoryHandle = str.getPtr();
@@ -150,7 +152,7 @@ v_int64 Caret::StateSaveGuard::getSavedErrorCode() {
     return std::make_shared<Caret>(parseData, dataSize);
   }
   
-  std::shared_ptr<Caret> Caret::createShared(const oatpp::String& str){
+  std::shared_ptr<Caret> Caret::createShared(const avena::String& str){
     return std::make_shared<Caret>(str->data(), str->size());
   }
   

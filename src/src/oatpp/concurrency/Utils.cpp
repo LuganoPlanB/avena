@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 #include "Utils.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace concurrency {
+namespace avena { namespace concurrency {
 
 v_int32 Utils::setThreadAffinityToOneCpu(std::thread::native_handle_type nativeHandle, v_int32 cpuIndex) {
   return setThreadAffinityToCpuRange(nativeHandle, cpuIndex, cpuIndex);
@@ -54,7 +56,7 @@ v_int32 Utils::setThreadAffinityToCpuRange(std::thread::native_handle_type nativ
     v_int32 result = pthread_setaffinity_np(nativeHandle, sizeof(cpu_set_t), &cpuset);
 
     if (result != 0) {
-      OATPP_LOGd("[oatpp::concurrency::Thread::assignThreadToCpu(...)]", "error code - {}", result)
+      OATPP_LOGd("[avena::concurrency::Thread::assignThreadToCpu(...)]", "error code - {}", result)
     }
 
     return result;
@@ -75,7 +77,7 @@ v_int32 Utils::calcHardwareConcurrency() {
 #if !defined(OATPP_THREAD_HARDWARE_CONCURRENCY)
   v_int32 concurrency = static_cast<v_int32>(std::thread::hardware_concurrency());
   if(concurrency == 0) {
-    OATPP_LOGd("[oatpp::concurrency:Thread::calcHardwareConcurrency()]", "Warning - failed to get hardware_concurrency. Setting hardware_concurrency=1")
+    OATPP_LOGd("[avena::concurrency:Thread::calcHardwareConcurrency()]", "Warning - failed to get hardware_concurrency. Setting hardware_concurrency=1")
     concurrency = 1;
   }
   return concurrency;

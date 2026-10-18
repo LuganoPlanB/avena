@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "Stream.hpp"
 
-namespace oatpp { namespace data{ namespace stream {
+namespace avena { namespace data{ namespace stream {
 
 /**
  * BufferOutputStream
@@ -61,9 +63,9 @@ public:
    * Write `count` of bytes to stream.
    * @param data - data to write.
    * @param count - number of bytes to write.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;.
+   * @return - actual number of bytes written. &id:avena::v_io_size;.
    */
   v_io_size write(const void *data, v_buff_size count, async::Action& action) override;
 
@@ -122,10 +124,10 @@ public:
   void reset(v_buff_size initialCapacity = 2048);
 
   /**
-   * Copy data to &id:oatpp::String;.
+   * Copy data to &id:avena::String;.
    * @return
    */
-  oatpp::String toString();
+  avena::String toString();
 
   /**
    * Copy data to `std::string`.
@@ -134,27 +136,27 @@ public:
   std::string toStdString() const;
 
   /**
-   * Create &id:oatpp::String; from part of buffer.
+   * Create &id:avena::String; from part of buffer.
    * @param pos - starting position in buffer.
    * @param count - size of bytes to write to substring.
-   * @return - &id:oatpp::String;
+   * @return - &id:avena::String;
    */
-  oatpp::String getSubstring(v_buff_size pos, v_buff_size count);
+  avena::String getSubstring(v_buff_size pos, v_buff_size count);
 
   /**
    * Write all bytes from buffer to stream.
    * @param stream - stream to flush all data to.
    * @return - actual amount of bytes flushed.
    */
-  oatpp::v_io_size flushToStream(OutputStream* stream);
+  avena::v_io_size flushToStream(OutputStream* stream);
 
   /**
    * Write all bytes from buffer to stream in async manner.
    * @param _this - pointer to `this` buffer.
    * @param stream - stream to flush all data to.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  static oatpp::async::CoroutineStarter flushToStreamAsync(const std::shared_ptr<BufferOutputStream>& _this, const std::shared_ptr<OutputStream>& stream);
+  static avena::async::CoroutineStarter flushToStreamAsync(const std::shared_ptr<BufferOutputStream>& _this, const std::shared_ptr<OutputStream>& stream);
 
 };
 
@@ -191,7 +193,7 @@ public:
    * @param data - buffer.
    * @param captureData - capture auxiliary data to not get deleted until it's done with the stream.
    */
-  BufferInputStream(const oatpp::String& data, const std::shared_ptr<void>& captureData = nullptr);
+  BufferInputStream(const avena::String& data, const std::shared_ptr<void>& captureData = nullptr);
 
   /**
    * Reset stream data and set position to `0`.
@@ -217,7 +219,7 @@ public:
    * *Calls to this method are always NON-BLOCKING*
    * @param data - buffer to read data to.
    * @param count - size of the buffer.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes read. 0 - designates end of the buffer.
    */
@@ -281,7 +283,7 @@ public:
 
   /**
    * Amount of bytes currently available to read from buffer.
-   * @return &id:oatpp::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
   v_io_size availableToRead() const override;
 

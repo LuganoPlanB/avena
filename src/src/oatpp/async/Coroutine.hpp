@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -38,7 +40,7 @@
 #include <chrono>
 #include <exception>
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 class CoroutineHandle; // FWD
 class AbstractCoroutine; // FWD
@@ -177,7 +179,7 @@ public:
 private:
 
   struct IOData {
-    oatpp::v_io_handle ioHandle;
+    avena::v_io_handle ioHandle;
     IOEventType ioEventType;
   };
 
@@ -229,14 +231,14 @@ public:
 
   /**
    * Create TYPE_IO_WAIT Action
-   * @param ioHandle - &id:oatpp::v_io_handle;.
+   * @param ioHandle - &id:avena::v_io_handle;.
    * @return - Action.
    */
   static Action createIOWaitAction(v_io_handle ioHandle, IOEventType ioEventType);
 
   /**
    * Create TYPE_IO_REPEAT Action
-   * @param ioHandle - &id:oatpp::v_io_handle;.
+   * @param ioHandle - &id:avena::v_io_handle;.
    * @return - Action.
    */
   static Action createIORepeatAction(v_io_handle ioHandle, IOEventType ioEventType);
@@ -270,7 +272,7 @@ public:
 
   /**
    * Constructor. Create Error Action.
-   * @param error - pointer to &id:oatpp::async::Error;.
+   * @param error - pointer to &id:avena::async::Error;.
    */
   Action(Error* error);
 
@@ -328,9 +330,9 @@ public:
   /**
    * Get I/O handle which is passed with this action to I/O worker.
    * This method returns meaningful value only if Action is TYPE_IO_WAIT or TYPE_IO_REPEAT.
-   * @return - &id:oatpp::v_io_handle;.
+   * @return - &id:avena::v_io_handle;.
    */
-  oatpp::v_io_handle getIOHandle() const;
+  avena::v_io_handle getIOHandle() const;
 
   /**
    * This method returns meaningful value only if Action is TYPE_IO_WAIT or TYPE_IO_REPEAT.
@@ -412,20 +414,20 @@ public:
 /**
  * This class manages coroutines processing state and a chain of coroutine calls.
  */
-class CoroutineHandle : public oatpp::base::Countable {
+class CoroutineHandle : public avena::base::Countable {
   friend utils::FastQueue<CoroutineHandle>;
   friend Processor;
   friend worker::Worker;
   friend CoroutineWaitList;
 public:
-  typedef oatpp::async::Action Action;
-  typedef oatpp::async::Error Error;
+  typedef avena::async::Action Action;
+  typedef avena::async::Error Error;
   typedef Action (AbstractCoroutine::*FunctionPtr)();
 private:
   Processor* _PP; // Processor pointer
   AbstractCoroutine* _CP; // Coroutine pointer
   FunctionPtr _FP; // Function pointer
-  oatpp::async::Action _SCH_A; // Scheduled action
+  avena::async::Action _SCH_A; // Scheduled action
   CoroutineHandle* _ref; // pointer to next coroutine handle in list
 public:
 
@@ -443,15 +445,15 @@ public:
 /**
  * Abstract Coroutine. Base class for Coroutines. It provides state management, coroutines stack management and error reporting functionality.
  */
-class AbstractCoroutine : public oatpp::base::Countable {
+class AbstractCoroutine : public avena::base::Countable {
   friend CoroutineStarter;
   friend CoroutineHandle;
 public:
   /**
    * Convenience typedef for Action
    */
-  typedef oatpp::async::Action Action;
-  typedef oatpp::async::Error Error;
+  typedef avena::async::Action Action;
+  typedef avena::async::Error Error;
   typedef Action (AbstractCoroutine::*FunctionPtr)();
 public:
 
@@ -522,7 +524,7 @@ public:
   /**
    * Default implementation of handleError(error) function.
    * User may override this function in order to handle errors.
-   * @param error - &id:oatpp::async::Error;.
+   * @param error - &id:avena::async::Error;.
    * @return - Action. If handleError function returns Error,
    * current coroutine will finish, return control to caller coroutine and handleError is called for caller coroutine.
    */
@@ -576,7 +578,7 @@ public:
    * @tparam E - Error class type.
    * @tparam Args - Error constructor arguments.
    * @param args - actual error constructor arguments.
-   * @return - error reporting &id:oatpp::async::Action;.
+   * @return - error reporting &id:avena::async::Action;.
    */
   template<class E, typename ... Args>
   Action error(Args... args) {
@@ -588,7 +590,7 @@ public:
 /**
  * Coroutine template. <br>
  * Example usage:<br>
- * `class MyCoroutine : public oatpp::async::Coroutine<MyCoroutine>`
+ * `class MyCoroutine : public avena::async::Coroutine<MyCoroutine>`
  * @tparam T - child class type
  */
 template<class T>
@@ -612,7 +614,7 @@ public:
    * Create coroutine and return it's starter
    * @tparam ConstructorArgs - coroutine constructor arguments.
    * @param args - actual coroutine constructor arguments.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   template<typename ...ConstructorArgs>
   static CoroutineStarter start(ConstructorArgs&&... args) {
@@ -717,12 +719,12 @@ public:
      * @tparam C - caller coroutine type.
      * @tparam Args - callback params.
      * @param callback - callback to obtain result.
-     * @return - &id:oatpp::async::Action;.
+     * @return - &id:avena::async::Action;.
      */
     template<typename C>
     Action callbackTo(Action (C::*callback)(Args...)) {
       if(m_coroutine == nullptr) {
-        throw std::runtime_error("[oatpp::async::AbstractCoroutineWithResult::StarterForResult::callbackTo()]: Error. Coroutine is null.");
+        throw std::runtime_error("[avena::async::AbstractCoroutineWithResult::StarterForResult::callbackTo()]: Error. Coroutine is null.");
       }
       m_coroutine->m_parentMemberCaller = createMemberCaller(callback);
       Action result = m_coroutine;
@@ -742,7 +744,7 @@ CoroutineStarterForResult = typename AbstractCoroutineWithResult<Args...>::Start
 /**
  * Coroutine with result template. <br>
  * Example usage:<br>
- * `class CoroutineWithResult : public oatpp::async::CoroutineWithResult<CoroutineWithResult, const char*>`
+ * `class CoroutineWithResult : public avena::async::CoroutineWithResult<CoroutineWithResult, const char*>`
  * @tparam T - child class type.
  * @tparam Args - return argumet type.
  */

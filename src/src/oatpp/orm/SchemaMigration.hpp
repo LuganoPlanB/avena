@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "Executor.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
 /**
  * Database schema migration helper.
@@ -41,21 +43,21 @@ private:
   struct Source {
     v_int64 version;
     v_int32 type;
-    oatpp::String param;
+    avena::String param;
   };
 
 private:
   base::ObjectHandle<Executor> m_executor;
-  oatpp::String m_suffix;
+  avena::String m_suffix;
   std::vector<Source> m_scripts;
 public:
 
   /**
    * Constructor.
-   * @param executor - &id:oatpp::orm::Executor;.
+   * @param executor - &id:avena::orm::Executor;.
    * @param suffix - suffix of schema version control table.
    */
-  SchemaMigration(const base::ObjectHandle<Executor>& executor, const oatpp::String& suffix = nullptr);
+  SchemaMigration(const base::ObjectHandle<Executor>& executor, const avena::String& suffix = nullptr);
 
   /**
    * Default virtual destructor.
@@ -67,14 +69,14 @@ public:
    * @param version - schema version corresponding to this script.
    * @param script - script text.
    */
-  void addText(v_int64 version, const oatpp::String& script);
+  void addText(v_int64 version, const avena::String& script);
 
   /**
    * Add migration script file.
    * @param version - schema version corresponding to this script.
    * @param script - path to script file.
    */
-  void addFile(v_int64 version, const oatpp::String& filename);
+  void addFile(v_int64 version, const avena::String& filename);
 
   /**
    * Run database schema migration.

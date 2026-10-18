@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 #include <thread>
 #include <chrono>
 
-namespace oatpp { namespace web { namespace client {
+namespace avena { namespace web { namespace client {
 
 RequestExecutor::RequestExecutionError::RequestExecutionError(v_int32 errorCode, const char* message, v_int32 readErrorCode)
   : std::runtime_error(message)
@@ -100,11 +102,11 @@ std::shared_ptr<RequestExecutor::Response> RequestExecutor::execute(
       ch.reset();
 
       v_int64 waitMicro = m_retryPolicy->waitForMicroseconds(context);
-      v_int64 tick0 = oatpp::Environment::getMicroTickCount();
+      v_int64 tick0 = avena::Environment::getMicroTickCount();
       v_int64 tick = tick0;
       while(tick < tick0 + waitMicro) {
         std::this_thread::sleep_for(std::chrono::microseconds(tick0 + waitMicro - tick));
-        tick = oatpp::Environment::getMicroTickCount();
+        tick = avena::Environment::getMicroTickCount();
       }
 
     }
@@ -115,7 +117,7 @@ std::shared_ptr<RequestExecutor::Response> RequestExecutor::execute(
 
 }
 
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<RequestExecutor::Response>&>
+avena::async::CoroutineStarterForResult<const std::shared_ptr<RequestExecutor::Response>&>
 RequestExecutor::executeAsync(
   const String& method,
   const String& path,
@@ -124,7 +126,7 @@ RequestExecutor::executeAsync(
   const std::shared_ptr<ConnectionHandle>& connectionHandle
 ) {
 
-  class ExecutorCoroutine : public oatpp::async::CoroutineWithResult<ExecutorCoroutine, const std::shared_ptr<RequestExecutor::Response>&> {
+  class ExecutorCoroutine : public avena::async::CoroutineWithResult<ExecutorCoroutine, const std::shared_ptr<RequestExecutor::Response>&> {
   private:
     RequestExecutor* m_this;
     String m_method;

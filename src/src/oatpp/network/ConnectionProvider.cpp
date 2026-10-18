@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "./ConnectionProvider.hpp"
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
   
 const char* const ConnectionProvider::PROPERTY_HOST = "host";
 const char* const ConnectionProvider::PROPERTY_PORT = "port";

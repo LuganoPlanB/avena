@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,29 +28,29 @@
 
 #include <chrono>
 
-namespace oatpp { namespace test {
+namespace avena { namespace test {
 
 void UnitTest::run(v_int32 times) {
   
   OATPP_LOGi(TAG, "\033[1mSTART\033[0m...")
   
-  v_counter objectsCount = oatpp::Environment::getObjectsCount();
-  v_counter objectsCreated = oatpp::Environment::getObjectsCreated();
+  v_counter objectsCount = avena::Environment::getObjectsCount();
+  v_counter objectsCreated = avena::Environment::getObjectsCreated();
 
   before();
   
-  v_int64 ticks = oatpp::Environment::getMicroTickCount();
+  v_int64 ticks = avena::Environment::getMicroTickCount();
   
   for(v_int32 i = 0; i < times; i++){
     onRun();
   }
   
-  v_int64 millis = oatpp::Environment::getMicroTickCount() - ticks;
+  v_int64 millis = avena::Environment::getMicroTickCount() - ticks;
 
   after();
   
-  v_counter leakingObjects = oatpp::Environment::getObjectsCount() - objectsCount;
-  v_counter objectsCreatedPerTest = oatpp::Environment::getObjectsCreated() - objectsCreated;
+  v_counter leakingObjects = avena::Environment::getObjectsCount() - objectsCount;
+  v_counter objectsCreatedPerTest = avena::Environment::getObjectsCreated() - objectsCreated;
   
   if(leakingObjects == 0){
     OATPP_LOGi(TAG, "\033[1mFINISHED\033[0m - \033[1;32msuccess!\033[0m")

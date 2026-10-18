@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "CRC32.hpp"
 
-namespace oatpp { namespace utils {
+namespace avena { namespace utils {
   
 const p_uint32 CRC32::TABLE_04C11DB7 = generateTable(0x04C11DB7);
   

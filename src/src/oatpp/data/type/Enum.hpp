@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,7 +35,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 /**
  * Errors of enum interpretation.
@@ -48,12 +50,12 @@ enum class EnumInterpreterError : v_int32 {
   /**
    * Wrong `Interpreter` is used to interpret the variable. <br>
    * This may also occur if for example: <br>
-   * `oatpp::Enum<T>` is passed to interpreter of `oatpp::Enum<T>::NotNull`.
+   * `avena::Enum<T>` is passed to interpreter of `avena::Enum<T>::NotNull`.
    */
   TYPE_MISMATCH_ENUM = 1,
 
   /**
-   * Wrong &id:oatpp::data::type::Primitive; is passed to interpreter.
+   * Wrong &id:avena::data::type::Primitive; is passed to interpreter.
    */
   TYPE_MISMATCH_ENUM_VALUE = 2,
 
@@ -125,19 +127,19 @@ struct EnumValueInfo {
 
   /**
    * Name of the enum entry or name-qualifier, if qualifier was specified. <br>
-   * &id:oatpp::data::share::StringKeyLabel;.
+   * &id:avena::data::share::StringKeyLabel;.
    */
   const data::share::StringKeyLabel name;
 
   /**
    * Name of the enum entry <br>
-   * &id:oatpp::data::share::StringKeyLabel;.
+   * &id:avena::data::share::StringKeyLabel;.
    */
   const data::share::StringKeyLabel unqualifiedName;
   
   /**
    * Description of the enum etry. <br>
-   * &id:oatpp::data::share::StringKeyLabel;.
+   * &id:avena::data::share::StringKeyLabel;.
    */
   const data::share::StringKeyLabel description;
 };
@@ -216,7 +218,7 @@ public:
 };
 
 /**
- * Template class for `oatpp::Enum<T>`.
+ * Template class for `avena::Enum<T>`.
  * @tparam T - enum type.
  * @tparam EnumInterpreter - enum interpreter.
  */
@@ -402,7 +404,7 @@ public:
     if(it != EnumMeta<T>::getInfo()->byName.end()) {
       return it->second;
     }
-    throw std::runtime_error("[oatpp::data::type::Enum::getEntryByName()]: Error. Entry not found.");
+    throw std::runtime_error("[avena::data::type::Enum::getEntryByName()]: Error. Entry not found.");
   }
 
   /**
@@ -416,7 +418,7 @@ public:
     if(it != EnumMeta<T>::getInfo()->byUnqualifiedName.end()) {
       return it->second;
     }
-    throw std::runtime_error("[oatpp::data::type::Enum::getEntryByUnqualifiedName()]: Error. Entry not found.");
+    throw std::runtime_error("[avena::data::type::Enum::getEntryByUnqualifiedName()]: Error. Entry not found.");
   }
 
   /**
@@ -430,7 +432,7 @@ public:
     if(it != EnumMeta<T>::getInfo()->byValue.end()) {
       return it->second;
     }
-    throw std::runtime_error("[oatpp::data::type::Enum::getEntryByValue()]: Error. Entry not found.");
+    throw std::runtime_error("[avena::data::type::Enum::getEntryByValue()]: Error. Entry not found.");
   }
 
   /**
@@ -444,7 +446,7 @@ public:
     if(it != EnumMeta<T>::getInfo()->byValue.end()) {
       return it->second;
     }
-    throw std::runtime_error("[oatpp::data::type::Enum::getEntryByUnderlyingValue()]: Error. Entry not found.");
+    throw std::runtime_error("[avena::data::type::Enum::getEntryByUnderlyingValue()]: Error. Entry not found.");
   }
 
   /**
@@ -457,7 +459,7 @@ public:
     if(index >= 0 && index < EnumMeta<T>::getInfo()->byIndex.size()) {
       return EnumMeta<T>::getInfo()->byIndex[index];
     }
-    throw std::runtime_error("[oatpp::data::type::Enum::getEntryByIndex()]: Error. Entry not found.");
+    throw std::runtime_error("[avena::data::type::Enum::getEntryByIndex()]: Error. Entry not found.");
   }
 
   /**
@@ -636,7 +638,7 @@ namespace __class {
           type::EnumInterpreterError error = type::EnumInterpreterError::OK;
           result.push_back(type::Any(toInterpretation(EnumOW(e.value), useUnqualifiedNames, error)));
           if(error != type::EnumInterpreterError::OK) {
-            throw std::runtime_error("[oatpp::data::type::__class::Enum<T, Interpreter>::getInterpretedEnum()]: Unknown error.");
+            throw std::runtime_error("[avena::data::type::__class::Enum<T, Interpreter>::getInterpretedEnum()]: Unknown error.");
           }
         }
 
@@ -672,9 +674,9 @@ namespace __class {
 namespace std {
 
   template<class T, class I>
-  struct hash <oatpp::data::type::EnumObjectWrapper<T, I>> {
+  struct hash <avena::data::type::EnumObjectWrapper<T, I>> {
 
-    typedef oatpp::data::type::EnumObjectWrapper<T, I> argument_type;
+    typedef avena::data::type::EnumObjectWrapper<T, I> argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const &e) const noexcept {

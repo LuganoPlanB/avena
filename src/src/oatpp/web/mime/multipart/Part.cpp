@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,18 +31,18 @@
 
 #include <cstring>
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 Part::Part(const Headers &headers, const std::shared_ptr<data::resource::Resource>& payload)
   : m_headers(headers)
   , m_payload(payload)
 {
 
-  auto contentDisposition = m_headers.getAsMemoryLabel<oatpp::data::share::StringKeyLabel>("Content-Disposition");
+  auto contentDisposition = m_headers.getAsMemoryLabel<avena::data::share::StringKeyLabel>("Content-Disposition");
   if(contentDisposition) {
 
-    oatpp::web::protocol::http::HeaderValueData valueData;
-    oatpp::web::protocol::http::Parser::parseHeaderValueData(valueData, contentDisposition, ';');
+    avena::web::protocol::http::HeaderValueData valueData;
+    avena::web::protocol::http::Parser::parseHeaderValueData(valueData, contentDisposition, ';');
 
     m_name = valueData.getTitleParamValue("name");
     m_filename = valueData.getTitleParamValue("filename");
@@ -57,12 +59,12 @@ std::shared_ptr<data::resource::Resource> Part::getPayload() {
   return m_payload;
 }
 
-oatpp::String Part::getName() const {
+avena::String Part::getName() const {
   return m_name;
 }
 
 
-oatpp::String Part::getFilename() const {
+avena::String Part::getFilename() const {
   return m_filename;
 }
 
@@ -71,19 +73,19 @@ const Part::Headers& Part::getHeaders() const {
   return m_headers;
 }
 
-oatpp::String Part::getHeader(const oatpp::data::share::StringKeyLabelCI& headerName) const {
+avena::String Part::getHeader(const avena::data::share::StringKeyLabelCI& headerName) const {
   return m_headers.get(headerName);
 }
 
-void Part::putHeader(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value) {
+void Part::putHeader(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value) {
   m_headers.put(key, value);
 }
 
-bool Part::putHeaderIfNotExists(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value) {
+bool Part::putHeaderIfNotExists(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value) {
   return m_headers.putIfNotExists(key, value);
 }
 
-void Part::setTag(const char* tagName, const std::shared_ptr<oatpp::base::Countable>& tagObject) {
+void Part::setTag(const char* tagName, const std::shared_ptr<avena::base::Countable>& tagObject) {
   m_tagName = tagName;
   m_tagObject = tagObject;
 }
@@ -92,7 +94,7 @@ const char* Part::getTagName() {
   return m_tagName;
 }
 
-std::shared_ptr<oatpp::base::Countable> Part::getTagObject() {
+std::shared_ptr<avena::base::Countable> Part::getTagObject() {
   return m_tagObject;
 }
 

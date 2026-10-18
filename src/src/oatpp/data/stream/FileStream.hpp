@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,14 +31,14 @@
 
 #include <cstdio>
 
-namespace oatpp { namespace data{ namespace stream {
+namespace avena { namespace data{ namespace stream {
 
 /**
  * Wrapper over `std::FILE`.
  */
 class FileInputStream : public InputStream {
 public:
-  static oatpp::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
+  static avena::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
 private:
   std::FILE* m_file;
   bool m_ownsFile;
@@ -85,7 +87,7 @@ public:
    * It is a legal case if return result < count. Caller should handle this!
    * @param data - buffer to read data to.
    * @param count - size of the buffer.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes read.
    */
@@ -123,7 +125,7 @@ public:
  */
 class FileOutputStream : public OutputStream {
 public:
-  static oatpp::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
+  static avena::data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
 private:
   std::FILE* m_file;
   bool m_ownsFile;
@@ -173,9 +175,9 @@ public:
    * It is a legal case if return result < count. Caller should handle this!
    * @param data - data to write.
    * @param count - number of bytes to write.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;.
+   * @return - actual number of bytes written. &id:avena::v_io_size;.
    */
   v_io_size write(const void *data, v_buff_size count, async::Action& action) override;
 

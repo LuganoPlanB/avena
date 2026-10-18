@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,10 +30,10 @@
 #include "ConnectionProvider.hpp"
 #include "oatpp/provider/Pool.hpp"
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 /**
- * Wrapper over &id:oatpp::data::stream::IOStream;.
+ * Wrapper over &id:avena::data::stream::IOStream;.
  * Will acquire connection from the pool on initialization and will return connection to the pool on destruction.
  */
 struct ConnectionAcquisitionProxy : public provider::AcquisitionProxy<data::stream::IOStream, ConnectionAcquisitionProxy> {
@@ -44,27 +46,27 @@ struct ConnectionAcquisitionProxy : public provider::AcquisitionProxy<data::stre
   v_io_size write(const void *buff, v_buff_size count, async::Action& action) override;
   v_io_size read(void *buff, v_buff_size count, async::Action& action) override;
 
-  void setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
-  oatpp::data::stream::IOMode getOutputStreamIOMode() override;
+  void setOutputStreamIOMode(avena::data::stream::IOMode ioMode) override;
+  avena::data::stream::IOMode getOutputStreamIOMode() override;
 
-  void setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
-  oatpp::data::stream::IOMode getInputStreamIOMode() override;
+  void setInputStreamIOMode(avena::data::stream::IOMode ioMode) override;
+  avena::data::stream::IOMode getInputStreamIOMode() override;
 
-  oatpp::data::stream::Context& getOutputStreamContext() override;
-  oatpp::data::stream::Context& getInputStreamContext() override;
+  avena::data::stream::Context& getOutputStreamContext() override;
+  avena::data::stream::Context& getInputStreamContext() override;
 
 };
 
-typedef oatpp::provider::Pool<
-  oatpp::network::ClientConnectionProvider,
-  oatpp::data::stream::IOStream,
-  oatpp::network::ConnectionAcquisitionProxy
+typedef avena::provider::Pool<
+  avena::network::ClientConnectionProvider,
+  avena::data::stream::IOStream,
+  avena::network::ConnectionAcquisitionProxy
 > ClientConnectionPool;
 
-typedef oatpp::provider::Pool<
-  oatpp::network::ServerConnectionProvider,
-  oatpp::data::stream::IOStream,
-  oatpp::network::ConnectionAcquisitionProxy
+typedef avena::provider::Pool<
+  avena::network::ServerConnectionProvider,
+  avena::data::stream::IOStream,
+  avena::network::ConnectionAcquisitionProxy
 > ServerConnectionPool;
 
 

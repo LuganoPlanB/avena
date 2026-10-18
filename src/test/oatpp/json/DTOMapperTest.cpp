@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -37,13 +39,13 @@
 #include "oatpp/macro/codegen.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
   
 namespace {
   
 #include OATPP_CODEGEN_BEGIN(DTO)
   
-class TestChild : public oatpp::DTO {
+class TestChild : public avena::DTO {
   
   DTO_INIT(TestChild, DTO)
   
@@ -61,7 +63,7 @@ public:
 
 };
 
-class Test : public oatpp::DTO {
+class Test : public avena::DTO {
   
   DTO_INIT(Test, DTO)
   
@@ -91,7 +93,7 @@ class Test : public oatpp::DTO {
   
 };
 
-class Test2 : public oatpp::DTO {
+class Test2 : public avena::DTO {
 
   DTO_INIT(Test2, DTO)
 
@@ -101,13 +103,13 @@ class Test2 : public oatpp::DTO {
   DTO_FIELD(String, field_string);
 };
 
-class Test3 : public oatpp::DTO {
+class Test3 : public avena::DTO {
   DTO_INIT(Test3, DTO)
 
   DTO_FIELD(String, field_string);
 };
 
-class TestChild1 : public oatpp::DTO {
+class TestChild1 : public avena::DTO {
 
   DTO_INIT(TestChild1, DTO)
 
@@ -117,7 +119,7 @@ class TestChild1 : public oatpp::DTO {
   DTO_FIELD(String, name);
 };
 
-class Test4 : public oatpp::DTO {
+class Test4 : public avena::DTO {
 
   DTO_INIT(Test4, DTO)
 
@@ -126,14 +128,14 @@ class Test4 : public oatpp::DTO {
   DTO_FIELD(Object<TestChild1>, child);
 };
 
-class TestChild2 : public oatpp::DTO {
+class TestChild2 : public avena::DTO {
 
   DTO_INIT(TestChild2, DTO)
 
   DTO_FIELD(String, name);
 };
 
-class Test5 : public oatpp::DTO {
+class Test5 : public avena::DTO {
 
   DTO_INIT(Test5, DTO)
 
@@ -142,7 +144,7 @@ class Test5 : public oatpp::DTO {
   DTO_FIELD(Object<TestChild2>, child);
 };
 
-class TestAny : public oatpp::DTO {
+class TestAny : public avena::DTO {
 
   DTO_INIT(TestAny, DTO)
 
@@ -150,7 +152,7 @@ class TestAny : public oatpp::DTO {
 
 };
 
-class TestAnyNested : public oatpp::DTO {
+class TestAnyNested : public avena::DTO {
 
   DTO_INIT(TestAnyNested, DTO)
 
@@ -165,7 +167,7 @@ class TestAnyNested : public oatpp::DTO {
   
 void DTOMapperTest::onRun(){
 
-  oatpp::json::ObjectMapper mapper;
+  avena::json::ObjectMapper mapper;
   mapper.serializerConfig().json.useBeautifier = true;
 
   {
@@ -216,9 +218,9 @@ void DTOMapperTest::onRun(){
     test1->field_list_object->push_back(TestChild::createShared("child", "2"));
     test1->field_list_object->push_back(TestChild::createShared("child", "3"));
 
-    auto l1 = oatpp::List<oatpp::Object<TestChild>>::createShared();
-    auto l2 = oatpp::List<oatpp::Object<TestChild>>::createShared();
-    auto l3 = oatpp::List<oatpp::Object<TestChild>>::createShared();
+    auto l1 = avena::List<avena::Object<TestChild>>::createShared();
+    auto l2 = avena::List<avena::Object<TestChild>>::createShared();
+    auto l3 = avena::List<avena::Object<TestChild>>::createShared();
 
     l1->push_back(TestChild::createShared("list_1", "item_1"));
     l1->push_back(TestChild::createShared("list_1", "item_2"));
@@ -276,8 +278,8 @@ void DTOMapperTest::onRun(){
     OATPP_LOGv(TAG, "...")
     OATPP_LOGv(TAG, "...")
 
-    oatpp::utils::parser::Caret caret(result);
-    auto obj1 = mapper.readFromCaret<oatpp::Object<Test>>(caret);
+    avena::utils::parser::Caret caret(result);
+    auto obj1 = mapper.readFromCaret<avena::Object<Test>>(caret);
 
     OATPP_ASSERT(obj1->field_string)
     OATPP_ASSERT(obj1->field_string == test1->field_string)
@@ -308,8 +310,8 @@ void DTOMapperTest::onRun(){
       auto c = obj1->field_fields;
       v_int32 i = 0;
       for(auto& pair : *c) {
-        OATPP_ASSERT(pair.first == "key" + oatpp::utils::Conversion::int32ToStr(i))
-        OATPP_ASSERT(pair.second == "pair_item" + oatpp::utils::Conversion::int32ToStr(i))
+        OATPP_ASSERT(pair.first == "key" + avena::utils::Conversion::int32ToStr(i))
+        OATPP_ASSERT(pair.second == "pair_item" + avena::utils::Conversion::int32ToStr(i))
         i++;
       }
     }
@@ -328,7 +330,7 @@ void DTOMapperTest::onRun(){
 
   {
     auto test2 = Test2::createShared();
-    oatpp::String result;
+    avena::String result;
     try {
       result = mapper.writeToString(test2);
     } catch(std::runtime_error&) {
@@ -350,7 +352,7 @@ void DTOMapperTest::onRun(){
     auto test4 = Test4::createShared();
     test4->field_string = "string value";
     test4->child = TestChild1::createShared();
-    oatpp::String result;
+    avena::String result;
     try {
       result = mapper.writeToString(test4);
     } catch(std::runtime_error&) {
@@ -374,25 +376,25 @@ void DTOMapperTest::onRun(){
 
     auto obj2 = TestAny::createShared();
     obj2->anyList = {
-      oatpp::String("Hello Any!!!"),
-      oatpp::Int32(32),
-      oatpp::Int64(64),
-      oatpp::Float64(0.64),
-      oatpp::Float64(0.64),
+      avena::String("Hello Any!!!"),
+      avena::Int32(32),
+      avena::Int64(64),
+      avena::Float64(0.64),
+      avena::Float64(0.64),
       TestAnyNested::createShared()
     };
 
-    auto map = oatpp::Fields<Any>::createShared();
-    map["bool-field"] = oatpp::Boolean(false);
-    map["vector"] = oatpp::Vector<oatpp::String>({"vector_v1", "vector_v2", "vector_v3"});
-    map["unordered_map"] = oatpp::UnorderedFields<oatpp::String>({{"key1", "value1"}, {"key2", "value2"}});
+    auto map = avena::Fields<Any>::createShared();
+    map["bool-field"] = avena::Boolean(false);
+    map["vector"] = avena::Vector<avena::String>({"vector_v1", "vector_v2", "vector_v3"});
+    map["unordered_map"] = avena::UnorderedFields<avena::String>({{"key1", "value1"}, {"key2", "value2"}});
 
     obj2->anyList->push_back(map);
 
     auto json = mapper.writeToString(obj2);
     OATPP_LOGv(TAG, "any json='{}'", json->c_str())
 
-    auto deserializedAny = mapper.readFromString<oatpp::Fields<oatpp::Any>>(json);
+    auto deserializedAny = mapper.readFromString<avena::Fields<avena::Any>>(json);
 
     auto json2 = mapper.writeToString(deserializedAny);
     OATPP_LOGv(TAG, "any json='{}'", json2->c_str())

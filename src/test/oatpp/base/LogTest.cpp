@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp::base {
+namespace avena::base {
 
 void LogTest::onRun() {
 
@@ -38,7 +40,7 @@ void LogTest::onRun() {
 
   {
     LogMessage msg("{}");
-    msg << oatpp::String("hello");
+    msg << avena::String("hello");
     OATPP_ASSERT(msg.toStdString() == "hello")
   }
 
@@ -56,7 +58,7 @@ void LogTest::onRun() {
 
   {
     LogMessage msg("{} {}");
-    msg << oatpp::Boolean(true) << oatpp::Boolean(false);
+    msg << avena::Boolean(true) << avena::Boolean(false);
     OATPP_ASSERT(msg.toStdString() == "true false")
   }
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -47,18 +49,18 @@
 #include <sstream>
 #include <thread>
 
-namespace oatpp { namespace test { namespace web { namespace app {
+namespace avena { namespace test { namespace web { namespace app {
 
-namespace multipart = oatpp::web::mime::multipart;
+namespace multipart = avena::web::mime::multipart;
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
-class Controller : public oatpp::web::server::api::ApiController {
+class Controller : public avena::web::server::api::ApiController {
 private:
   static constexpr const char* TAG = "test::web::app::Controller";
 public:
   Controller(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
     , available(true)
   {}
 public:
@@ -114,14 +116,14 @@ public:
   ENDPOINT("GET", "queries", getWithQueries,
            QUERY(String, name), QUERY(Int32, age)) {
     auto dto = TestDto::createShared();
-    dto->testValue = "name=" + name + "&age=" + oatpp::utils::Conversion::int32ToStr(*age);
+    dto->testValue = "name=" + name + "&age=" + avena::utils::Conversion::int32ToStr(*age);
     return createDtoResponse(Status::CODE_200, dto);
   }
 
   ENDPOINT("GET", "queries/optional", getWithOptQueries,
            QUERY(String, name, "name", "Default"), QUERY(Int32, age, "age", 101)) {
     auto dto = TestDto::createShared();
-    dto->testValue = "name=" + name + "&age=" + oatpp::utils::Conversion::int32ToStr(*age);
+    dto->testValue = "name=" + name + "&age=" + avena::utils::Conversion::int32ToStr(*age);
     return createDtoResponse(Status::CODE_200, dto);
   }
 
@@ -176,8 +178,8 @@ public:
   ENDPOINT("GET", "header-value-set", headerValueSet,
            HEADER(String, valueSet, "X-VALUE-SET")) {
 
-    oatpp::web::protocol::http::HeaderValueData valueData;
-    oatpp::web::protocol::http::Parser::parseHeaderValueData(valueData, valueSet, ',');
+    avena::web::protocol::http::HeaderValueData valueData;
+    avena::web::protocol::http::Parser::parseHeaderValueData(valueData, valueSet, ',');
 
     OATPP_ASSERT_HTTP(valueData.tokens.find("VALUE_1") != valueData.tokens.end(), Status::CODE_400, "No header 'VALUE_1' in value set")
     OATPP_ASSERT_HTTP(valueData.tokens.find("VALUE_2") != valueData.tokens.end(), Status::CODE_400, "No header 'VALUE_2' in value set")
@@ -185,15 +187,15 @@ public:
     return createResponse(Status::CODE_200, "");
   }
 
-  class ReadCallback : public oatpp::data::stream::ReadCallback {
+  class ReadCallback : public avena::data::stream::ReadCallback {
   private:
-    oatpp::String m_text;
+    avena::String m_text;
     v_int32 m_counter;
     v_int32 m_iterations;
     data::buffer::InlineWriteData m_inlineData;
   public:
 
-    ReadCallback(const oatpp::String& text, v_int32 iterations)
+    ReadCallback(const avena::String& text, v_int32 iterations)
       : m_text(text)
       , m_counter(0)
       , m_iterations(iterations)
@@ -237,7 +239,7 @@ public:
            PATH(Int32, numIterations, "num-iterations"),
            REQUEST(std::shared_ptr<IncomingRequest>, request))
   {
-    auto body = std::make_shared<oatpp::web::protocol::http::outgoing::StreamingBody>
+    auto body = std::make_shared<avena::web::protocol::http::outgoing::StreamingBody>
       (std::make_shared<ReadCallback>(text, *numIterations));
     return OutgoingResponse::createShared(Status::CODE_200, body);
   }
@@ -247,14 +249,14 @@ public:
            REQUEST(std::shared_ptr<IncomingRequest>, request))
   {
 
-    auto multipart = std::make_shared<oatpp::web::mime::multipart::PartList>(request->getHeaders());
+    auto multipart = std::make_shared<avena::web::mime::multipart::PartList>(request->getHeaders());
 
-    oatpp::web::mime::multipart::Reader multipartReader(multipart.get());
-    multipartReader.setDefaultPartReader(oatpp::web::mime::multipart::createInMemoryPartReader(10));
+    avena::web::mime::multipart::Reader multipartReader(multipart.get());
+    multipartReader.setDefaultPartReader(avena::web::mime::multipart::createInMemoryPartReader(10));
 
     request->transferBody(&multipartReader);
 
-    auto responseBody = std::make_shared<oatpp::web::protocol::http::outgoing::MultipartBody>(multipart);
+    auto responseBody = std::make_shared<avena::web::protocol::http::outgoing::MultipartBody>(multipart);
 
     return OutgoingResponse::createShared(Status::CODE_200, responseBody);
 
@@ -305,15 +307,15 @@ public:
 
   }
 
-  class MPStream : public oatpp::web::mime::multipart::Multipart {
+  class MPStream : public avena::web::mime::multipart::Multipart {
   public:
-    typedef oatpp::web::mime::multipart::Part Part;
+    typedef avena::web::mime::multipart::Part Part;
   private:
     v_uint32 counter = 0;
   public:
 
     MPStream()
-      : oatpp::web::mime::multipart::Multipart(generateRandomBoundary())
+      : avena::web::mime::multipart::Multipart(generateRandomBoundary())
     {}
 
     std::shared_ptr<Part> readNextPart(async::Action& action) override {
@@ -327,14 +329,14 @@ public:
       auto part = std::make_shared<Part>();
       part->putHeader(Header::CONTENT_TYPE, "text/html");
 
-      oatpp::String frameData;
+      avena::String frameData;
 
 //      if(counter % 2 == 0) {
 //        frameData = "<html><body>0</body></html>";
 //      } else {
 //        frameData = "<html><body>1</body></html>";
 //      }
-//      part->setDataInfo(std::make_shared<oatpp::data::stream::BufferInputStream>(frameData));
+//      part->setDataInfo(std::make_shared<avena::data::stream::BufferInputStream>(frameData));
 
       if(counter % 2 == 0) {
         part->setPayload(std::make_shared<data::resource::File>("/Users/leonid/Documents/test/frame1.jpg"));
@@ -358,7 +360,7 @@ public:
 
   ENDPOINT("GET", "multipart-stream", multipartStream) {
     auto multipart = std::make_shared<MPStream>();
-    auto body = std::make_shared<oatpp::web::protocol::http::outgoing::MultipartBody>(
+    auto body = std::make_shared<avena::web::protocol::http::outgoing::MultipartBody>(
       multipart,
       "multipart/x-mixed-replace",
       true /* flush parts */
@@ -398,8 +400,8 @@ public:
   }
 
   ENDPOINT_INTERCEPTOR(getBundle, middleware) {
-    request->putBundleData("str_param", oatpp::String("str-param"));
-    request->putBundleData("int_param", oatpp::Int32(32000));
+    request->putBundleData("str_param", avena::String("str-param"));
+    request->putBundleData("int_param", avena::Int32(32000));
     return (this->*intercepted)(request);
   }
   ENDPOINT("GET", "bundle", getBundle,

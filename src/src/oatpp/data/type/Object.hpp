@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -41,12 +43,12 @@
 
 #include <type_traits>
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 /**
- * Base class of all object-like mapping-enabled structures ex.: oatpp::DTO.
+ * Base class of all object-like mapping-enabled structures ex.: avena::DTO.
  */
-class BaseObject : public oatpp::base::Countable {
+class BaseObject : public avena::base::Countable {
 public:
 
   /**
@@ -69,7 +71,7 @@ public:
       /**
        * Select property type.
        * @param self - pointer to `this` object.
-       * @return - &id:oatpp::Type;.
+       * @return - &id:avena::Type;.
        */
       virtual const type::Type* selectType(BaseObject* self) = 0;
     };
@@ -197,19 +199,19 @@ public:
 
     /**
      * Get properties as unordered map for random access.
-     * @return reference to std::unordered_map of std::string to &id:oatpp::data::type::BaseObject::Property;*.
+     * @return reference to std::unordered_map of std::string to &id:avena::data::type::BaseObject::Property;*.
      */
     const std::unordered_map<std::string, Property*>& getMap() const;
 
     /**
      * Get properties as unordered map for random access by unqualified names.
-     * @return reference to std::unordered_map of std::string to &id:oatpp::data::type::BaseObject::Property;*.
+     * @return reference to std::unordered_map of std::string to &id:avena::data::type::BaseObject::Property;*.
      */
     const std::unordered_map<std::string, Property*>& getUnqualifiedMap() const;
 
     /**
      * Get properties in ordered way.
-     * @return std::list of &id:oatpp::data::type::BaseObject::Property;*.
+     * @return std::list of &id:avena::data::type::BaseObject::Property;*.
      */
     const std::list<Property*>& getList() const;
 
@@ -314,7 +316,7 @@ namespace __class {
 
     /**
      * Get type describing this class.
-     * @return - &id:oatpp::data::type::Type;
+     * @return - &id:avena::data::type::Type;
      */
     static Type* getType() {
       static std::unique_ptr<Type> type = createType();
@@ -326,7 +328,7 @@ namespace __class {
 }
 
 /**
- * ObjectWrapper for &l:DTO;. AKA `oatpp::Object<T>`.
+ * ObjectWrapper for &l:DTO;. AKA `avena::Object<T>`.
  * @tparam ObjT - class extended from &l:DTO;.
  */
 template<class ObjT>
@@ -434,42 +436,42 @@ private:
   typedef DTO Z__CLASS;
   typedef DTO Z__CLASS_EXTENDED;
 public:
-  typedef oatpp::data::type::Void Void;
-  typedef oatpp::data::type::Any Any;
-  typedef oatpp::data::type::Tree Tree;
-  typedef oatpp::data::type::String String;
-  typedef oatpp::data::type::Int8 Int8;
-  typedef oatpp::data::type::UInt8 UInt8;
-  typedef oatpp::data::type::Int16 Int16;
-  typedef oatpp::data::type::UInt16 UInt16;
-  typedef oatpp::data::type::Int32 Int32;
-  typedef oatpp::data::type::UInt32 UInt32;
-  typedef oatpp::data::type::Int64 Int64;
-  typedef oatpp::data::type::UInt64 UInt64;
-  typedef oatpp::data::type::Float32 Float32;
-  typedef oatpp::data::type::Float64 Float64;
-  typedef oatpp::data::type::Boolean Boolean;
+  typedef avena::data::type::Void Void;
+  typedef avena::data::type::Any Any;
+  typedef avena::data::type::Tree Tree;
+  typedef avena::data::type::String String;
+  typedef avena::data::type::Int8 Int8;
+  typedef avena::data::type::UInt8 UInt8;
+  typedef avena::data::type::Int16 Int16;
+  typedef avena::data::type::UInt16 UInt16;
+  typedef avena::data::type::Int32 Int32;
+  typedef avena::data::type::UInt32 UInt32;
+  typedef avena::data::type::Int64 Int64;
+  typedef avena::data::type::UInt64 UInt64;
+  typedef avena::data::type::Float32 Float32;
+  typedef avena::data::type::Float64 Float64;
+  typedef avena::data::type::Boolean Boolean;
 
   template <class T>
   using Object = DTOWrapper<T>;
 
   template <class T>
-  using Enum = oatpp::data::type::Enum<T>;
+  using Enum = avena::data::type::Enum<T>;
 
   template <class T>
-  using Vector = oatpp::data::type::Vector<T>;
+  using Vector = avena::data::type::Vector<T>;
 
   template <class T>
-  using UnorderedSet = oatpp::data::type::UnorderedSet<T>;
+  using UnorderedSet = avena::data::type::UnorderedSet<T>;
 
   template <class T>
-  using List = oatpp::data::type::List<T>;
+  using List = avena::data::type::List<T>;
 
   template <class Value>
-  using Fields = oatpp::data::type::PairList<String, Value>;
+  using Fields = avena::data::type::PairList<String, Value>;
 
   template <class Value>
-  using UnorderedFields = oatpp::data::type::UnorderedMap<String, Value>;
+  using UnorderedFields = avena::data::type::UnorderedMap<String, Value>;
 
 private:
   static const type::Type* getParentType();
@@ -501,9 +503,9 @@ public:
 namespace std {
 
   template<class T>
-  struct hash<oatpp::data::type::DTOWrapper<T>> {
+  struct hash<avena::data::type::DTOWrapper<T>> {
 
-    typedef oatpp::data::type::DTOWrapper<T> argument_type;
+    typedef avena::data::type::DTOWrapper<T> argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const &ow) const noexcept {

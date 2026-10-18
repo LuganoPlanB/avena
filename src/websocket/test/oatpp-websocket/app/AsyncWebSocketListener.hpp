@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 //
 // Created by Leonid  on 2019-03-25.
 //
@@ -8,28 +10,28 @@
 #include "oatpp-websocket/AsyncConnectionHandler.hpp"
 #include "oatpp-websocket/AsyncWebSocket.hpp"
 
-namespace oatpp { namespace test { namespace websocket { namespace app {
+namespace avena { namespace test { namespace websocket { namespace app {
 
-class AsyncWebSocketListener : public oatpp::websocket::AsyncWebSocket::Listener {
+class AsyncWebSocketListener : public avena::websocket::AsyncWebSocket::Listener {
 private:
-  oatpp::data::stream::BufferOutputStream m_messageBuffer;
+  avena::data::stream::BufferOutputStream m_messageBuffer;
 public:
 
-  CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
+  CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const avena::String& message) override {
     return socket->sendPongAsync(message);
   }
 
-  CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
+  CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const avena::String& message) override {
     return nullptr;
   }
 
-  CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_uint16 code, const oatpp::String& message) override {
+  CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_uint16 code, const avena::String& message) override {
     return socket->sendCloseAsync();
   }
 
-  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) override {
+  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_uint8 opcode, p_char8 data, avena::v_io_size size) override {
     if(size == 0) {
-      oatpp::String wholeMessage = m_messageBuffer.toString();
+      avena::String wholeMessage = m_messageBuffer.toString();
       m_messageBuffer.setCurrentPosition(0);
       return socket->sendOneFrameTextAsync("Hello from oatpp!: " + wholeMessage);
     } else if(size > 0) {
@@ -40,12 +42,12 @@ public:
 
 };
 
-class ServerSenderCoroutine : public oatpp::async::Coroutine<ServerSenderCoroutine> {
+class ServerSenderCoroutine : public avena::async::Coroutine<ServerSenderCoroutine> {
 private:
-  std::shared_ptr<oatpp::websocket::AsyncWebSocket> m_socket;
+  std::shared_ptr<avena::websocket::AsyncWebSocket> m_socket;
 public:
 
-  ServerSenderCoroutine(const std::shared_ptr<oatpp::websocket::AsyncWebSocket>& socket)
+  ServerSenderCoroutine(const std::shared_ptr<avena::websocket::AsyncWebSocket>& socket)
     : m_socket(socket)
   {}
 
@@ -55,7 +57,7 @@ public:
 
 };
 
-class AsyncWebSocketInstanceListener : public oatpp::websocket::AsyncConnectionHandler::SocketInstanceListener {
+class AsyncWebSocketInstanceListener : public avena::websocket::AsyncConnectionHandler::SocketInstanceListener {
 private:
   static constexpr const char* const TAG = "AsyncWebSocketInstanceListener";
   static std::atomic<v_int32>& getAtom() {

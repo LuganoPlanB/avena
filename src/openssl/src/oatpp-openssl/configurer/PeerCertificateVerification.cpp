@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 #include "PeerCertificateVerification.hpp"
 #include <openssl/ssl.h>
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
 PeerCertificateVerification::PeerCertificateVerification(CertificateVerificationMode mode)
   : m_mode(mode)

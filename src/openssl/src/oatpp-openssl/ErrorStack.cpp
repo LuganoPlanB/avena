@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include <openssl/err.h>
 
-namespace oatpp { namespace openssl {
+namespace avena { namespace openssl {
 
 void ErrorStack::logErrors(const char *tag) {
   ERR_print_errors_cb(ErrorStack::logOneError, (void*)tag);

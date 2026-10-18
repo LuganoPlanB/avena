@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 #include "FIFOStream.hpp"
 #include "oatpp/utils/Binary.hpp"
 
-namespace oatpp { namespace data { namespace stream {
+namespace avena { namespace data { namespace stream {
 
 data::stream::DefaultInitializedContext FIFOInputStream::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_FINITE);
 
@@ -81,7 +83,7 @@ void FIFOInputStream::reserveBytesUpfront(v_buff_size count) {
     }
 
     if(newCapacity < capacityNeeded) {
-      throw std::runtime_error("[oatpp::data::stream::BufferOutputStream::reserveBytesUpfront()]: Error. Unable to allocate requested memory.");
+      throw std::runtime_error("[avena::data::stream::BufferOutputStream::reserveBytesUpfront()]: Error. Unable to allocate requested memory.");
     }
 
     // ToDo: In-Memory-Resize

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,11 +29,11 @@
 #include "oatpp/web/server/HttpRouter.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace test { namespace web { namespace server {
+namespace avena { namespace test { namespace web { namespace server {
 
 namespace {
 
-typedef oatpp::web::server::HttpRouterTemplate<v_int32> NumRouter;
+typedef avena::web::server::HttpRouterTemplate<v_int32> NumRouter;
 
 }
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,9 +29,9 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
-class AnyTest : public oatpp::test::UnitTest {
+class AnyTest : public avena::test::UnitTest {
 public:
 
   AnyTest():UnitTest("TEST[data::type::AnyTest]"){}

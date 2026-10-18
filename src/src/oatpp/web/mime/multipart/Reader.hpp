@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,18 +33,18 @@
 
 #include <unordered_map>
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 class Reader; // FWD
 
 /**
  * Map of part readers. `<part-name> --> <part-reader>`.
  */
-typedef std::unordered_map<oatpp::String, std::shared_ptr<PartReader>> PartReadersMap;
+typedef std::unordered_map<avena::String, std::shared_ptr<PartReader>> PartReadersMap;
 
 /**
  * In memory multipart parser. <br>
- * Extends - &id:oatpp::web::mime::multipart::StatefulParser::Listener;.
+ * Extends - &id:avena::web::mime::multipart::StatefulParser::Listener;.
  */
 class PartsParser : public StatefulParser::Listener {
   friend Reader;
@@ -56,7 +58,7 @@ public:
 
   /**
    * Constructor.
-   * @param multipart - pointer to &id:oatpp::web::mime::multipart::Multipart;.
+   * @param multipart - pointer to &id:avena::web::mime::multipart::Multipart;.
    */
   PartsParser(Multipart* multipart);
 
@@ -66,7 +68,7 @@ public:
 
   void onPartData(const char* data, v_buff_size size) override;
 
-  void setPartReader(const oatpp::String& partName, const std::shared_ptr<PartReader>& reader);
+  void setPartReader(const avena::String& partName, const std::shared_ptr<PartReader>& reader);
 
   void setDefaultPartReader(const std::shared_ptr<PartReader>& reader);
 
@@ -77,11 +79,11 @@ class AsyncReader; // FWD
 /**
  * Map of async part readers. `<part-name> --> <part-reader>`.
  */
-typedef std::unordered_map<oatpp::String, std::shared_ptr<AsyncPartReader>> AsyncPartReadersMap;
+typedef std::unordered_map<avena::String, std::shared_ptr<AsyncPartReader>> AsyncPartReadersMap;
 
 /**
  * Async In memory multipart parser. <br>
- * Extends - &id:oatpp::web::mime::multipart::StatefulParser::AsyncListener;.
+ * Extends - &id:avena::web::mime::multipart::StatefulParser::AsyncListener;.
  */
 class AsyncPartsParser : public StatefulParser::AsyncListener {
   friend AsyncReader;
@@ -97,7 +99,7 @@ public:
 
   /**
    * Constructor.
-   * @param multipart - pointer to &id:oatpp::web::mime::multipart::Multipart;.
+   * @param multipart - pointer to &id:avena::web::mime::multipart::Multipart;.
    */
   AsyncPartsParser(Multipart* multipart);
 
@@ -107,7 +109,7 @@ public:
 
   async::CoroutineStarter onPartDataAsync(const char* data, v_buff_size size) override;
 
-  void setPartReader(const oatpp::String& partName, const std::shared_ptr<AsyncPartReader>& reader);
+  void setPartReader(const avena::String& partName, const std::shared_ptr<AsyncPartReader>& reader);
 
   void setDefaultPartReader(const std::shared_ptr<AsyncPartReader>& reader);
 
@@ -115,9 +117,9 @@ public:
 
 /**
  * In memory Multipart reader.
- * Extends - &id:oatpp::data::stream::WriteCallback;.
+ * Extends - &id:avena::data::stream::WriteCallback;.
  */
-class Reader : public oatpp::data::stream::WriteCallback {
+class Reader : public avena::data::stream::WriteCallback {
 private:
   std::shared_ptr<PartsParser> m_partsParser;
   StatefulParser m_parser;
@@ -137,7 +139,7 @@ public:
    * @param partName - name of the part to read.
    * @param reader - reader to read part with.
    */
-  void setPartReader(const oatpp::String& partName, const std::shared_ptr<PartReader>& reader);
+  void setPartReader(const avena::String& partName, const std::shared_ptr<PartReader>& reader);
 
   /**
    * Set default reader for parts. <br>
@@ -150,9 +152,9 @@ public:
 
 /**
  * In memory Multipart reader.
- * Extends - &id:oatpp::data::stream::WriteCallback;.
+ * Extends - &id:avena::data::stream::WriteCallback;.
  */
-class AsyncReader : public oatpp::data::stream::WriteCallback {
+class AsyncReader : public avena::data::stream::WriteCallback {
 private:
   std::shared_ptr<AsyncPartsParser> m_partsParser;
   StatefulParser m_parser;
@@ -173,7 +175,7 @@ public:
    * @param partName - name of the part to read.
    * @param reader - reader to read part with.
    */
-  void setPartReader(const oatpp::String& partName, const std::shared_ptr<AsyncPartReader>& reader);
+  void setPartReader(const avena::String& partName, const std::shared_ptr<AsyncPartReader>& reader);
 
   /**
    * Set default reader for parts. <br>

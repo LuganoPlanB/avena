@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "AllowCorsGlobal.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace interceptor {
+namespace avena { namespace web { namespace server { namespace interceptor {
 
 std::shared_ptr<protocol::http::outgoing::Response> AllowOptionsGlobal::intercept(const std::shared_ptr<IncomingRequest> &request) {
 
@@ -38,10 +40,10 @@ std::shared_ptr<protocol::http::outgoing::Response> AllowOptionsGlobal::intercep
 
 }
 
-AllowCorsGlobal::AllowCorsGlobal(const oatpp::String &origin,
-                                 const oatpp::String &methods,
-                                 const oatpp::String &headers,
-                                 const oatpp::String &maxAge)
+AllowCorsGlobal::AllowCorsGlobal(const avena::String &origin,
+                                 const avena::String &methods,
+                                 const avena::String &headers,
+                                 const avena::String &maxAge)
   : m_origin(origin)
   , m_methods(methods)
   , m_headers(headers)

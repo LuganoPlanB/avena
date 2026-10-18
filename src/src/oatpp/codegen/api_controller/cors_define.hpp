@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,10 +31,10 @@
 #define OATPP_MACRO_API_CONTROLLER_ADD_CORS_BODY_DEFAULT_MAX_AGE "1728000"
 
 #define OATPP_MACRO_API_CONTROLLER_ADD_CORS_BODY(ARG_ORIGIN, ARG_METHODS, ARG_HEADERS, ARG_MAX_AGE) \
-  resp->putHeaderIfNotExists(oatpp::web::protocol::http::Header::CORS_ORIGIN, ARG_ORIGIN); \
-  resp->putHeaderIfNotExists(oatpp::web::protocol::http::Header::CORS_METHODS, ARG_METHODS); \
-  resp->putHeaderIfNotExists(oatpp::web::protocol::http::Header::CORS_HEADERS, ARG_HEADERS);\
-  resp->putHeaderIfNotExists(oatpp::web::protocol::http::Header::CORS_MAX_AGE, ARG_MAX_AGE);
+  resp->putHeaderIfNotExists(avena::web::protocol::http::Header::CORS_ORIGIN, ARG_ORIGIN); \
+  resp->putHeaderIfNotExists(avena::web::protocol::http::Header::CORS_METHODS, ARG_METHODS); \
+  resp->putHeaderIfNotExists(avena::web::protocol::http::Header::CORS_HEADERS, ARG_HEADERS);\
+  resp->putHeaderIfNotExists(avena::web::protocol::http::Header::CORS_MAX_AGE, ARG_MAX_AGE);
 
 #define OATPP_MACRO_API_CONTROLLER_ADD_CORS_OPTIONS_DECL(ENDPOINTNAME) \
 OATPP_MACRO_API_CONTROLLER_ENDPOINT_DECL_DEFAULTS(Z__CORS_OPTIONS_DECL_##ENDPOINTNAME, "OPTIONS", "") \
@@ -46,19 +48,19 @@ EndpointInfoBuilder Z__CREATE_ENDPOINT_INFO_Z__CORS_OPTIONS_DECL_##ENDPOINTNAME 
   return info; \
 }; \
 \
-const std::shared_ptr<oatpp::web::server::api::Endpoint>               \
+const std::shared_ptr<avena::web::server::api::Endpoint>               \
   Z__ENDPOINT_Z__CORS_OPTIONS_DECL_##ENDPOINTNAME = createEndpoint(m_endpoints, \
   Z__ENDPOINT_HANDLER_GET_INSTANCE_Z__CORS_OPTIONS_DECL_##ENDPOINTNAME(this), \
   Z__CREATE_ENDPOINT_INFO_Z__CORS_OPTIONS_DECL_##ENDPOINTNAME);\
 \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> \
-Z__PROXY_METHOD_Z__CORS_OPTIONS_DECL_##ENDPOINTNAME(const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& __request) \
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> \
+Z__PROXY_METHOD_Z__CORS_OPTIONS_DECL_##ENDPOINTNAME(const std::shared_ptr<avena::web::protocol::http::incoming::Request>& __request) \
 { \
   (void)__request; \
   return Z__CORS_OPTIONS_DECL_##ENDPOINTNAME(); \
 } \
 \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> Z__CORS_OPTIONS_DECL_##ENDPOINTNAME()
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> Z__CORS_OPTIONS_DECL_##ENDPOINTNAME()
 
 #define OATPP_MACRO_API_CONTROLLER_ADD_CORS_MACRO_1(ENDPOINTNAME, ...) \
 ENDPOINT_INTERCEPTOR(ENDPOINTNAME, CORS) { \

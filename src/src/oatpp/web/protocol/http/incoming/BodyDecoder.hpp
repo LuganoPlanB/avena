@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 #include "oatpp/data/stream/BufferStream.hpp"
 #include "oatpp/async/Coroutine.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 /**
  * Abstract BodyDecoder.
@@ -42,7 +44,7 @@ class BodyDecoder {
 private:
   
   template<class Wrapper>
-  class ToDtoDecoder : public oatpp::async::CoroutineWithResult<ToDtoDecoder<Wrapper>, const Wrapper&> {
+  class ToDtoDecoder : public avena::async::CoroutineWithResult<ToDtoDecoder<Wrapper>, const Wrapper&> {
   private:
     const BodyDecoder* m_decoder;
     Headers m_headers;
@@ -65,17 +67,17 @@ private:
       , m_outputStream(std::make_shared<data::stream::BufferOutputStream>())
     {}
     
-    oatpp::async::Action act() override {
+    avena::async::Action act() override {
       return m_decoder->decodeAsync(m_headers, m_bodyStream, m_outputStream, m_connection)
         .next(this->yieldTo(&ToDtoDecoder::onDecoded));
     }
     
-    oatpp::async::Action onDecoded() {
+    avena::async::Action onDecoded() {
       auto body = m_outputStream->toString();
-      oatpp::utils::parser::Caret caret(body);
+      avena::utils::parser::Caret caret(body);
       auto dto = m_objectMapper->readFromCaret<Wrapper>(caret);
       if(caret.hasError()) {
-        return this->template error<oatpp::async::Error>(caret.getErrorMessage());
+        return this->template error<avena::async::Error>(caret.getErrorMessage());
       }
       return this->_return(dto);
     }
@@ -91,9 +93,9 @@ public:
 
   /**
    * Implement this method! Decode bodyStream and write decoded data to toStream.
-   * @param headers - Headers map. &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - pointer to &id:oatpp::data::stream::InputStream;.
-   * @param writeCallback - &id:oatpp::data::stream::WriteCallback;.
+   * @param headers - Headers map. &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - pointer to &id:avena::data::stream::InputStream;.
+   * @param writeCallback - &id:avena::data::stream::WriteCallback;.
    * @param connection
    */
   virtual void decode(const Headers& headers,
@@ -103,29 +105,29 @@ public:
 
   /**
    * Implement this method! Same as &l:BodyDecoder::decode (); but Async.
-   * @param headers - Headers map. &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - `std::shared_ptr` to &id:oatpp::data::stream::InputStream;.
-   * @param writeCallback - `std::shared_ptr` to &id:oatpp::data::stream::WriteCallback;.
+   * @param headers - Headers map. &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - `std::shared_ptr` to &id:avena::data::stream::InputStream;.
+   * @param writeCallback - `std::shared_ptr` to &id:avena::data::stream::WriteCallback;.
    * @param connection
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  virtual oatpp::async::CoroutineStarter decodeAsync(const Headers& headers,
+  virtual avena::async::CoroutineStarter decodeAsync(const Headers& headers,
                                                      const std::shared_ptr<data::stream::InputStream>& bodyStream,
                                                      const std::shared_ptr<data::stream::WriteCallback>& writeCallback,
                                                      const std::shared_ptr<data::stream::IOStream>& connection) const = 0;
 
   /**
    * Read body stream and decode it to string.
-   * @param headers - Headers map. &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - pointer to &id:oatpp::data::stream::InputStream;.
+   * @param headers - Headers map. &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - pointer to &id:avena::data::stream::InputStream;.
    * @param connection
-   * @return - &oatpp::String;.
+   * @return - &avena::String;.
    */
-  oatpp::String decodeToString(const Headers& headers,
+  avena::String decodeToString(const Headers& headers,
                                data::stream::InputStream* bodyStream,
                                data::stream::IOStream* connection) const
   {
-    oatpp::data::stream::BufferOutputStream stream;
+    avena::data::stream::BufferOutputStream stream;
     decode(headers, bodyStream, &stream, connection);
     return stream.toString();
   }
@@ -133,10 +135,10 @@ public:
   /**
    * Read body stream, decode, and deserialize it as DTO Object (see [Data Transfer Object (DTO)](https://oatpp.io/docs/components/dto/)).
    * @tparam Wrapper - ObjectWrapper type.
-   * @param headers - Headers map. &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - pointer to &id:oatpp::data::stream::InputStream;.
+   * @param headers - Headers map. &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - pointer to &id:avena::data::stream::InputStream;.
    * @param connection
-   * @param objectMapper - pointer to &id:oatpp::data::mapping::ObjectMapper;.
+   * @param objectMapper - pointer to &id:avena::data::mapping::ObjectMapper;.
    * @return - deserialized DTO object.
    */
   template<class Wrapper>
@@ -150,12 +152,12 @@ public:
 
   /**
    * Same as &l:BodyDecoder::decodeToString (); but Async.
-   * @param headers - Headers map. &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - `std::shared_ptr` to &id:oatpp::data::stream::InputStream;.
+   * @param headers - Headers map. &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - `std::shared_ptr` to &id:avena::data::stream::InputStream;.
    * @param connection
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
-  oatpp::async::CoroutineStarterForResult<const oatpp::String&>
+  avena::async::CoroutineStarterForResult<const avena::String&>
   decodeToStringAsync(const Headers& headers,
                       const std::shared_ptr<data::stream::InputStream>& bodyStream,
                       const std::shared_ptr<data::stream::IOStream>& connection) const;
@@ -163,14 +165,14 @@ public:
   /**
    * Same as &l:BodyDecoder::decodeToDto (); but Async.
    * @tparam Wrapper - ObjectWrapper type.
-   * @param headers - Headers map. &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - `std::shared_ptr` to &id:oatpp::data::stream::InputStream;.
+   * @param headers - Headers map. &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - `std::shared_ptr` to &id:avena::data::stream::InputStream;.
    * @param connection
-   * @param objectMapper - `std::shared_ptr` to &id:oatpp::data::mapping::ObjectMapper;.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @param objectMapper - `std::shared_ptr` to &id:avena::data::mapping::ObjectMapper;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
   template<class Wrapper>
-  oatpp::async::CoroutineStarterForResult<const Wrapper&>
+  avena::async::CoroutineStarterForResult<const Wrapper&>
   decodeToDtoAsync(const Headers& headers,
                    const std::shared_ptr<data::stream::InputStream>& bodyStream,
                    const std::shared_ptr<data::stream::IOStream>& connection,

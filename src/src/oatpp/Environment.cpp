@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -43,7 +45,7 @@
   }
 #endif
 
-namespace oatpp {
+namespace avena {
 
 v_atomicCounter Environment::m_objectsCount(0);
 v_atomicCounter Environment::m_objectsCreated(0);
@@ -193,7 +195,7 @@ void Environment::init(const std::shared_ptr<Logger>& logger) {
     iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
     if (iResult != 0) {
 
-        throw std::runtime_error("[oatpp::Environment::init()]: Error. WSAStartup failed");
+        throw std::runtime_error("[avena::Environment::init()]: Error. WSAStartup failed");
     }
 #endif
 
@@ -210,7 +212,7 @@ void Environment::init(const std::shared_ptr<Logger>& logger) {
   {
     std::lock_guard<std::mutex> lock(getComponentsMutex());
     if (getComponents().size() > 0) {
-      throw std::runtime_error("[oatpp::Environment::init()]: Error. "
+      throw std::runtime_error("[avena::Environment::init()]: Error. "
                                "Invalid state. Components were created before call to Environment::init()");
     }
   }
@@ -221,7 +223,7 @@ void Environment::destroy(){
   {
     std::lock_guard<std::mutex> lock(getComponentsMutex());
     if(getComponents().size() > 0) {
-      throw std::runtime_error("[oatpp::Environment::destroy()]: Error. "
+      throw std::runtime_error("[avena::Environment::destroy()]: Error. "
                                "Invalid state. Leaking components");
     }
   }
@@ -338,7 +340,7 @@ void Environment::registerComponent(const std::string& typeName, const std::stri
   auto& bucket = getComponents()[typeName];
   auto it = bucket.find(componentName);
   if(it != bucket.end()){
-    throw std::runtime_error("[oatpp::Environment::registerComponent()]: Error. Component with given name already exists: name='" + componentName + "'");
+    throw std::runtime_error("[avena::Environment::registerComponent()]: Error. Component with given name already exists: name='" + componentName + "'");
   }
   bucket[componentName] = component;
 }
@@ -348,12 +350,12 @@ void Environment::unregisterComponent(const std::string& typeName, const std::st
   auto& components = getComponents();
   auto bucketIt = getComponents().find(typeName);
   if(bucketIt == components.end() || bucketIt->second.size() == 0) {
-    throw std::runtime_error("[oatpp::Environment::unregisterComponent()]: Error. Component of given type doesn't exist: type='" + typeName + "'");
+    throw std::runtime_error("[avena::Environment::unregisterComponent()]: Error. Component of given type doesn't exist: type='" + typeName + "'");
   }
   auto& bucket = bucketIt->second;
   auto componentIt = bucket.find(componentName);
   if(componentIt == bucket.end()) {
-    throw std::runtime_error("[oatpp::Environment::unregisterComponent()]: Error. Component with given name doesn't exist: name='" + componentName + "'");
+    throw std::runtime_error("[avena::Environment::unregisterComponent()]: Error. Component with given name doesn't exist: name='" + componentName + "'");
   }
   bucket.erase(componentIt);
   if(bucket.size() == 0) {
@@ -366,11 +368,11 @@ void* Environment::getComponent(const std::string& typeName) {
   auto& components = getComponents();
   auto bucketIt = components.find(typeName);
   if(bucketIt == components.end() || bucketIt->second.size() == 0) {
-    throw std::runtime_error("[oatpp::Environment::getComponent()]: Error. Component of given type doesn't exist: type='" + typeName + "'");
+    throw std::runtime_error("[avena::Environment::getComponent()]: Error. Component of given type doesn't exist: type='" + typeName + "'");
   }
   auto bucket = bucketIt->second;
   if(bucket.size() > 1){
-    throw std::runtime_error("[oatpp::Environment::getComponent()]: Error. Ambiguous component reference. Multiple components exist for a given type: type='" + typeName + "'");
+    throw std::runtime_error("[avena::Environment::getComponent()]: Error. Ambiguous component reference. Multiple components exist for a given type: type='" + typeName + "'");
   }
   return bucket.begin()->second;
 }
@@ -380,12 +382,12 @@ void* Environment::getComponent(const std::string& typeName, const std::string& 
   auto& components = getComponents();
   auto bucketIt = components.find(typeName);
   if(bucketIt == components.end() || bucketIt->second.size() == 0) {
-    throw std::runtime_error("[oatpp::Environment::getComponent()]: Error. Component of given type doesn't exist: type='" + typeName + "'");
+    throw std::runtime_error("[avena::Environment::getComponent()]: Error. Component of given type doesn't exist: type='" + typeName + "'");
   }
   auto bucket = bucketIt->second;
   auto componentIt = bucket.find(componentName);
   if(componentIt == bucket.end()) {
-    throw std::runtime_error("[oatpp::Environment::getComponent()]: Error. Component with given name doesn't exist: name='" + componentName + "'");
+    throw std::runtime_error("[avena::Environment::getComponent()]: Error. Component with given name doesn't exist: name='" + componentName + "'");
   }
   return componentIt->second;
 }

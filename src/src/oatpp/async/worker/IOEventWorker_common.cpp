@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 #include <unistd.h>
 #endif
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IOEventWorker
@@ -67,7 +69,7 @@ IOEventWorker::~IOEventWorker() {
 void IOEventWorker::pushTasks(utils::FastQueue<CoroutineHandle> &tasks) {
   if (tasks.first != nullptr) {
     {
-      std::lock_guard<oatpp::concurrency::SpinLock> guard(m_backlogLock);
+      std::lock_guard<avena::concurrency::SpinLock> guard(m_backlogLock);
       utils::FastQueue<CoroutineHandle>::moveAll(tasks, m_backlog);
     }
     triggerWakeup();
@@ -76,7 +78,7 @@ void IOEventWorker::pushTasks(utils::FastQueue<CoroutineHandle> &tasks) {
 
 void IOEventWorker::pushOneTask(CoroutineHandle *task) {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> guard(m_backlogLock);
+    std::lock_guard<avena::concurrency::SpinLock> guard(m_backlogLock);
     m_backlog.pushBack(task);
   }
   triggerWakeup();
@@ -95,7 +97,7 @@ void IOEventWorker::run() {
 
 void IOEventWorker::stop() {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> lock(m_backlogLock);
+    std::lock_guard<avena::concurrency::SpinLock> lock(m_backlogLock);
     m_running = false;
   }
   triggerWakeup();
@@ -142,7 +144,7 @@ void IOEventWorkerForeman::pushTasks(utils::FastQueue<CoroutineHandle>& tasks) {
         break;
 
       default:
-        throw std::runtime_error("[oatpp::async::worker::IOEventWorkerForeman::pushTasks()]: Error. Unknown Action Event Type.");
+        throw std::runtime_error("[avena::async::worker::IOEventWorkerForeman::pushTasks()]: Error. Unknown Action Event Type.");
 
     }
 
@@ -173,7 +175,7 @@ void IOEventWorkerForeman::pushOneTask(CoroutineHandle* task) {
       break;
 
     default:
-      throw std::runtime_error("[oatpp::async::worker::IOEventWorkerForeman::pushTasks()]: Error. Unknown Action Event Type.");
+      throw std::runtime_error("[avena::async::worker::IOEventWorkerForeman::pushTasks()]: Error. Unknown Action Event Type.");
 
   }
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/utils/parser/Caret.hpp"
 #include "oatpp/utils/parser/ParsingError.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // StatefulParser::ListenerCall
@@ -106,7 +108,7 @@ StatefulParser::ListenerCall::operator bool() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // StatefulParser
 
-StatefulParser::StatefulParser(const oatpp::String& boundary,
+StatefulParser::StatefulParser(const avena::String& boundary,
                                const std::shared_ptr<Listener>& listener,
                                const std::shared_ptr<AsyncListener>& asyncListener)
   : m_state(STATE_BOUNDARY)
@@ -192,7 +194,7 @@ StatefulParser::ListenerCall StatefulParser::parseNext_Boundary(data::buffer::In
 
   }
 
-  throw std::runtime_error("[oatpp::web::mime::multipart::StatefulParser::parseNext_Boundary()]: Error. Invalid state.");
+  throw std::runtime_error("[avena::web::mime::multipart::StatefulParser::parseNext_Boundary()]: Error. Invalid state.");
 
 }
 
@@ -206,7 +208,7 @@ void StatefulParser::parseNext_AfterBoundary(data::buffer::InlineWriteData& inli
     if(data[0] == '-') {
       m_finishingBoundary = true;
     } else if(data[0] != '\r') {
-      throw std::runtime_error("[oatpp::web::mime::multipart::StatefulParser::parseNext_AfterBoundary()]: Error. Invalid char.");
+      throw std::runtime_error("[avena::web::mime::multipart::StatefulParser::parseNext_AfterBoundary()]: Error. Invalid char.");
     }
 
   }
@@ -227,7 +229,7 @@ void StatefulParser::parseNext_AfterBoundary(data::buffer::InlineWriteData& inli
       inlineData.inc(result);
       return;
     } else {
-      throw std::runtime_error("[oatpp::web::mime::multipart::StatefulParser::parseNext_AfterBoundary()]: Error. Invalid trailing char.");
+      throw std::runtime_error("[avena::web::mime::multipart::StatefulParser::parseNext_AfterBoundary()]: Error. Invalid trailing char.");
     }
 
   }
@@ -253,7 +255,7 @@ StatefulParser::ListenerCall StatefulParser::parseNext_Headers(data::buffer::Inl
     if(m_headerSectionEndAccumulator == HEADERS_SECTION_END) {
 
       if(m_headersBuffer.getCurrentPosition() + i > m_maxPartHeadersSize) {
-        throw std::runtime_error("[oatpp::web::mime::multipart::StatefulParser::parseNext_Headers()]: Error. Too large heades.");
+        throw std::runtime_error("[avena::web::mime::multipart::StatefulParser::parseNext_Headers()]: Error. Too large heades.");
       }
 
       m_headersBuffer.writeSimple(data, i);
@@ -271,7 +273,7 @@ StatefulParser::ListenerCall StatefulParser::parseNext_Headers(data::buffer::Inl
   }
 
   if(m_headersBuffer.getCurrentPosition() + size > m_maxPartHeadersSize) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::StatefulParser::parseNext_Headers()]: Error. Headers section is too large.");
+    throw std::runtime_error("[avena::web::mime::multipart::StatefulParser::parseNext_Headers()]: Error. Headers section is too large.");
   }
 
   m_headersBuffer.writeSimple(data, size);
@@ -337,7 +339,7 @@ void StatefulParser::parseNext(data::buffer::InlineWriteData& inlineData, async:
       case STATE_DONE:
         return;
       default:
-        throw std::runtime_error("[oatpp::web::mime::multipart::StatefulParser::parseNext()]: Error. Invalid state.");
+        throw std::runtime_error("[avena::web::mime::multipart::StatefulParser::parseNext()]: Error. Invalid state.");
     }
 
     if(listenerCall) {

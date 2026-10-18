@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,56 +29,56 @@
 #include "oatpp/Types.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 void VectorTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test default constructor...")
-    oatpp::Vector<oatpp::String> vector;
+    avena::Vector<avena::String> vector;
 
     OATPP_ASSERT(!vector)
     OATPP_ASSERT(vector == nullptr)
 
     OATPP_ASSERT(vector.get() == nullptr)
-    OATPP_ASSERT(vector.getValueType()->classId.id == oatpp::data::type::__class::AbstractVector::CLASS_ID.id)
+    OATPP_ASSERT(vector.getValueType()->classId.id == avena::data::type::__class::AbstractVector::CLASS_ID.id)
     OATPP_ASSERT(vector.getValueType()->params.size() == 1)
-    OATPP_ASSERT(vector.getValueType()->params.front() == oatpp::String::Class::getType())
+    OATPP_ASSERT(vector.getValueType()->params.front() == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test empty ilist constructor...")
-    oatpp::Vector<oatpp::String> vector({});
+    avena::Vector<avena::String> vector({});
 
     OATPP_ASSERT(vector)
     OATPP_ASSERT(vector != nullptr)
     OATPP_ASSERT(vector->size() == 0)
 
     OATPP_ASSERT(vector.get() != nullptr)
-    OATPP_ASSERT(vector.getValueType()->classId.id == oatpp::data::type::__class::AbstractVector::CLASS_ID.id)
+    OATPP_ASSERT(vector.getValueType()->classId.id == avena::data::type::__class::AbstractVector::CLASS_ID.id)
     OATPP_ASSERT(vector.getValueType()->params.size() == 1)
-    OATPP_ASSERT(vector.getValueType()->params.front() == oatpp::String::Class::getType())
+    OATPP_ASSERT(vector.getValueType()->params.front() == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test createShared()...")
-    oatpp::Vector<oatpp::String> vector = oatpp::Vector<oatpp::String>::createShared();
+    avena::Vector<avena::String> vector = avena::Vector<avena::String>::createShared();
 
     OATPP_ASSERT(vector)
     OATPP_ASSERT(vector != nullptr)
     OATPP_ASSERT(vector->size() == 0)
 
     OATPP_ASSERT(vector.get() != nullptr)
-    OATPP_ASSERT(vector.getValueType()->classId.id == oatpp::data::type::__class::AbstractVector::CLASS_ID.id)
+    OATPP_ASSERT(vector.getValueType()->classId.id == avena::data::type::__class::AbstractVector::CLASS_ID.id)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test copy-assignment operator...")
-    oatpp::Vector<oatpp::String> vector1({});
-    oatpp::Vector<oatpp::String> vector2;
+    avena::Vector<avena::String> vector1({});
+    avena::Vector<avena::String> vector2;
 
     vector2 = vector1;
 
@@ -105,8 +107,8 @@ void VectorTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test move-assignment operator...")
-    oatpp::Vector<oatpp::String> vector1({});
-    oatpp::Vector<oatpp::String> vector2;
+    avena::Vector<avena::String> vector1({});
+    avena::Vector<avena::String> vector2;
 
     vector2 = std::move(vector1);
 
@@ -117,7 +119,7 @@ void VectorTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test get element by index...")
-    oatpp::Vector<oatpp::String> vector = {"a", "b", "c"};
+    avena::Vector<avena::String> vector = {"a", "b", "c"};
 
     OATPP_ASSERT(vector)
     OATPP_ASSERT(vector != nullptr)
@@ -139,13 +141,13 @@ void VectorTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test polymorphicDispatcher...")
-    oatpp::Vector<oatpp::String> vector = {"a", "b", "c"};
+    avena::Vector<avena::String> vector = {"a", "b", "c"};
 
-    auto polymorphicDispatcher = static_cast<const oatpp::data::type::__class::Collection::PolymorphicDispatcher*>(
+    auto polymorphicDispatcher = static_cast<const avena::data::type::__class::Collection::PolymorphicDispatcher*>(
       vector.getValueType()->polymorphicDispatcher
     );
 
-    polymorphicDispatcher->addItem(vector, oatpp::String("d"));
+    polymorphicDispatcher->addItem(vector, avena::String("d"));
 
     OATPP_ASSERT(vector->size() == 4)
 

@@ -1,3 +1,5 @@
+<!-- Copyright (C) 2026 Plan-B Foundation -->
+<!-- Updated C++ namespace examples for avena. -->
 # oatpp-openssl [![Build Status](https://dev.azure.com/lganzzzo/lganzzzo/_apis/build/status/oatpp.oatpp-openssl?branchName=master)](https://dev.azure.com/lganzzzo/lganzzzo/_build/latest?definitionId=32&branchName=master)
 
 This submodule provides secure server and client connection providers for oatpp applications. Based on OpenSSL.
@@ -21,8 +23,8 @@ OpenSSL installed.
 const char* pemFile = "path/to/file.pem";
 const char* crtFile = "path/to/file.crt";
 
-auto config = oatpp::openssl::Config::createDefaultServerConfigShared(pemFile, crtFile);
-auto connectionProvider = oatpp::openssl::server::ConnectionProvider::createShared(config, {"localhost", 443});
+auto config = avena::openssl::Config::createDefaultServerConfigShared(pemFile, crtFile);
+auto connectionProvider = avena::openssl::server::ConnectionProvider::createShared(config, {"localhost", 443});
 
 ```
 
@@ -38,8 +40,8 @@ auto connectionProvider = oatpp::openssl::server::ConnectionProvider::createShar
 
 const char* trust = "path/to/truststore";
 
-auto config = oatpp::openssl::Config::createDefaultClientConfigShared();
-config->addContextConfigurer(std::make_shared<oatpp::openssl::configurer::TrustStore>(trust, nullptr));
-auto connectionProvider = oatpp::openssl::client::ConnectionProvider::createShared(config, {"httpbin.org", 443});
+auto config = avena::openssl::Config::createDefaultClientConfigShared();
+config->addContextConfigurer(std::make_shared<avena::openssl::configurer::TrustStore>(trust, nullptr));
+auto connectionProvider = avena::openssl::client::ConnectionProvider::createShared(config, {"httpbin.org", 443});
 
 ```

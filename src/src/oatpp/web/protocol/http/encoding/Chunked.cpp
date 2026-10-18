@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/utils/Conversion.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace encoding {
+namespace avena { namespace web { namespace protocol { namespace http { namespace encoding {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // EncoderChunked
@@ -240,7 +242,7 @@ v_int32 DecoderChunked::iterate(data::buffer::InlineReadData& dataIn, data::buff
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ChunkedEncoderProvider
 
-oatpp::String ChunkedEncoderProvider::getEncodingName() {
+avena::String ChunkedEncoderProvider::getEncodingName() {
   return "chunked";
 }
 
@@ -251,7 +253,7 @@ std::shared_ptr<data::buffer::Processor> ChunkedEncoderProvider::getProcessor() 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ChunkedDecoderProvider
 
-oatpp::String ChunkedDecoderProvider::getEncodingName() {
+avena::String ChunkedDecoderProvider::getEncodingName() {
   return "chunked";
 }
 

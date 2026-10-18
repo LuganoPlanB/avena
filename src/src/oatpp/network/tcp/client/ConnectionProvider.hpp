@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 #include "oatpp/provider/Invalidator.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace network { namespace tcp { namespace client {
+namespace avena { namespace network { namespace tcp { namespace client {
 
 /**
  * Simple provider of clinet TCP connections.
@@ -53,14 +55,14 @@ protected:
 public:
   /**
    * Constructor.
-   * @param address - &id:oatpp::network::Address;.
+   * @param address - &id:avena::network::Address;.
    */
   ConnectionProvider(const network::Address& address);
 public:
 
   /**
    * Create shared client ConnectionProvider.
-   * @param address - &id:oatpp::network::Address;.
+   * @param address - &id:avena::network::Address;.
    * @return - `std::shared_ptr` to ConnectionProvider.
    */
   static std::shared_ptr<ConnectionProvider> createShared(const network::Address& address){
@@ -68,7 +70,7 @@ public:
   }
 
   /**
-   * Implements &id:oatpp::provider::TestProvider::stop;. Here does nothing.
+   * Implements &id:avena::provider::TestProvider::stop;. Here does nothing.
    */
   void stop() override {
     // DO NOTHING
@@ -76,18 +78,18 @@ public:
 
   /**
    * Get connection.
-   * @return - `std::shared_ptr` to &id:oatpp::data::stream::IOStream;.
+   * @return - `std::shared_ptr` to &id:avena::data::stream::IOStream;.
    */
   provider::ResourceHandle<data::stream::IOStream> get() override;
 
   /**
    * Get connection in asynchronous manner.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
-  oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override;
+  avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override;
 
   /**
-   * Get address - &id:oatpp::network::Address;.
+   * Get address - &id:avena::network::Address;.
    * @return
    */
   const network::Address& getAddress() const {

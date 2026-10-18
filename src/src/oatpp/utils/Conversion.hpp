@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -34,7 +36,7 @@
 
 #include <string>
 
-namespace oatpp { namespace utils {
+namespace avena { namespace utils {
 
 /**
  * Conversion utils
@@ -51,11 +53,11 @@ public:
 
   /**
    * String to 32-bit integer.
-   * @param str - string as `oatpp::String`.
+   * @param str - string as `avena::String`.
    * @param success - out parameter. `true` if operation was successful. `false` otherwise.
    * @return - 32-bit integer value.
    */
-  static v_int32 strToInt32(const oatpp::String &str, bool &success);
+  static v_int32 strToInt32(const avena::String &str, bool &success);
 
   /**
    * String to 32-bit unsigned integer.
@@ -66,11 +68,11 @@ public:
 
   /**
    * String to 32-bit unsigned integer.
-   * @param str - string as `oatpp::String`.
+   * @param str - string as `avena::String`.
    * @param success - out parameter. `true` if operation was successful. `false` otherwise.
    * @return - 32-bit unsigned integer value.
    */
-  static v_uint32 strToUInt32(const oatpp::String &str, bool &success);
+  static v_uint32 strToUInt32(const avena::String &str, bool &success);
 
   /**
    * String to 64-bit integer.
@@ -81,11 +83,11 @@ public:
 
   /**
    * String to 64-bit integer.
-   * @param str - string as `oatpp::String`.
+   * @param str - string as `avena::String`.
    * @param success - out parameter. `true` if operation was successful. `false` otherwise.
    * @return - 64-bit integer value.
    */
-  static v_int64 strToInt64(const oatpp::String &str, bool &success);
+  static v_int64 strToInt64(const avena::String &str, bool &success);
 
   /**
    * String to 64-bit unsigned integer.
@@ -96,11 +98,11 @@ public:
 
   /**
    * String to 64-bit unsigned integer.
-   * @param str - string as `oatpp::String`.
+   * @param str - string as `avena::String`.
    * @param success - out parameter. `true` if operation was successful. `false` otherwise.
    * @return - 64-bit unsigned integer value.
    */
-  static v_uint64 strToUInt64(const oatpp::String &str, bool &success);
+  static v_uint64 strToUInt64(const avena::String &str, bool &success);
 
   /**
    * Convert 32-bit integer to it's string representation.
@@ -141,30 +143,30 @@ public:
   /**
    * Convert 32-bit integer to it's string representation.
    * @param value - 32-bit integer value.
-   * @return - value as `oatpp::String`
+   * @return - value as `avena::String`
    */
-  static oatpp::String int32ToStr(v_int32 value);
+  static avena::String int32ToStr(v_int32 value);
 
   /**
    * Convert 32-bit unsigned integer to it's string representation.
    * @param value - 32-bit unsigned integer value.
-   * @return - value as `oatpp::String`
+   * @return - value as `avena::String`
    */
-  static oatpp::String uint32ToStr(v_uint32 value);
+  static avena::String uint32ToStr(v_uint32 value);
 
   /**
    * Convert 64-bit integer to it's string representation.
    * @param value - 64-bit integer value.
-   * @return - value as `oatpp::String`
+   * @return - value as `avena::String`
    */
-  static oatpp::String int64ToStr(v_int64 value);
+  static avena::String int64ToStr(v_int64 value);
 
   /**
    * Convert 64-bit unsigned integer to it's string representation.
    * @param value - 64-bit unsigned integer value.
-   * @return - value as `oatpp::String`
+   * @return - value as `avena::String`
    */
-  static oatpp::String uint64ToStr(v_uint64 value);
+  static avena::String uint64ToStr(v_uint64 value);
 
   /**
    * Convert 32-bit integer to it's string representation.
@@ -216,11 +218,11 @@ public:
    * @return - length of the resultant string.
    */
   template<typename T>
-  static oatpp::String primitiveToStr(T value, const char *pattern) {
+  static avena::String primitiveToStr(T value, const char *pattern) {
     v_char8 buff[100];
     auto size = primitiveToCharSequence(value, &buff[0], 100, pattern);
     if (size > 0) {
-      return oatpp::String(reinterpret_cast<const char *>(&buff[0]), size);
+      return avena::String(reinterpret_cast<const char *>(&buff[0]), size);
     }
     return nullptr;
   }
@@ -234,11 +236,11 @@ public:
 
   /**
    * String to 32-bit float.
-   * @param str - string as `oatpp::String`.
+   * @param str - string as `avena::String`.
    * @param success - out parameter. `true` if operation was successful. `false` otherwise.
    * @return - 32-bit float value.
    */
-  static v_float32 strToFloat32(const oatpp::String &str, bool &success);
+  static v_float32 strToFloat32(const avena::String &str, bool &success);
 
   /**
    * String to 64-bit float.
@@ -249,11 +251,11 @@ public:
 
   /**
    * String to 64-bit float.
-   * @param str - string as `oatpp::String`.
+   * @param str - string as `avena::String`.
    * @param success - out parameter. `true` if operation was successful. `false` otherwise.
    * @return - 64-bit float value.
    */
-  static v_float64 strToFloat64(const oatpp::String &str, bool &success);
+  static v_float64 strToFloat64(const avena::String &str, bool &success);
 
   /**
    * Convert 32-bit float to it's string representation.
@@ -276,23 +278,23 @@ public:
   /**
    * Convert 32-bit float to it's string representation.
    * @param value - 32-bit float value.
-   * @return - value as `oatpp::String`
+   * @return - value as `avena::String`
    */
-  static oatpp::String float32ToStr(v_float32 value, const char *format = OATPP_FLOAT_STRING_FORMAT);
+  static avena::String float32ToStr(v_float32 value, const char *format = OATPP_FLOAT_STRING_FORMAT);
 
   /**
    * Convert 64-bit float to it's string representation.
    * @param value - 64-bit float value.
-   * @return - value as `oatpp::String`
+   * @return - value as `avena::String`
    */
-  static oatpp::String float64ToStr(v_float64 value, const char *format = OATPP_FLOAT_STRING_FORMAT);
+  static avena::String float64ToStr(v_float64 value, const char *format = OATPP_FLOAT_STRING_FORMAT);
 
   /**
    * Convert boolean to it's string representation.
    * @param value - boolean value.
-   * @return - value as `oatpp::String`;
+   * @return - value as `avena::String`;
    */
-  static oatpp::String boolToStr(bool value);
+  static avena::String boolToStr(bool value);
 
   /**
    * parse string to boolean value.
@@ -300,7 +302,7 @@ public:
    * @param success - out parameter. `true` if operation was successful. `false` otherwise.
    * @return - boolean value.
    */
-  static bool strToBool(const oatpp::String &str, bool &success);
+  static bool strToBool(const avena::String &str, bool &success);
 
 };
 

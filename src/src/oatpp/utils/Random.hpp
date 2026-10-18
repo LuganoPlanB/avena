@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/Types.hpp"
 #include <random>
 
-namespace oatpp { namespace utils {
+namespace avena { namespace utils {
 
 /**
  * Utility class for random values.
@@ -40,7 +42,7 @@ private:
   static thread_local std::mt19937 RANDOM_GENERATOR;
 #else
   static std::mt19937 RANDOM_GENERATOR;
-  static oatpp::concurrency::SpinLock RANDOM_LOCK;
+  static avena::concurrency::SpinLock RANDOM_LOCK;
 #endif
 public:
 

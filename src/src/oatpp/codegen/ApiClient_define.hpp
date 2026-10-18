@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -38,7 +40,7 @@
  * *For details see:*
  * <ul>
  *   <li>[ApiClient component](https://oatpp.io/docs/components/api-client/)</li>
- *   <li>&id:oatpp::web::client::ApiClient;</li>
+ *   <li>&id:avena::web::client::ApiClient;</li>
  * </ul>
  */
 
@@ -71,18 +73,18 @@ OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_SELECTOR(MACRO, (__VA_ARGS__)) (TYPE, __VA_
 // INIT
 
 /**
- * Codegen macro to be used in classes extending &id:oatpp::web::client::ApiClient; to generate required fields/methods/constructors for ApiClient.
+ * Codegen macro to be used in classes extending &id:avena::web::client::ApiClient; to generate required fields/methods/constructors for ApiClient.
  * @param NAME - name of the ApiClient class.
  */
 #define API_CLIENT_INIT(NAME) \
 public: \
-  NAME(const std::shared_ptr<oatpp::web::client::RequestExecutor>& requestExecutor, \
-       const std::shared_ptr<oatpp::data::mapping::ObjectMapper>& objectMapper) \
-    : oatpp::web::client::ApiClient(requestExecutor, objectMapper) \
+  NAME(const std::shared_ptr<avena::web::client::RequestExecutor>& requestExecutor, \
+       const std::shared_ptr<avena::data::mapping::ObjectMapper>& objectMapper) \
+    : avena::web::client::ApiClient(requestExecutor, objectMapper) \
   {} \
 public: \
-  static std::shared_ptr<NAME> createShared(const std::shared_ptr<oatpp::web::client::RequestExecutor>& requestExecutor, \
-                                      const std::shared_ptr<oatpp::data::mapping::ObjectMapper>& objectMapper){ \
+  static std::shared_ptr<NAME> createShared(const std::shared_ptr<avena::web::client::RequestExecutor>& requestExecutor, \
+                                      const std::shared_ptr<avena::data::mapping::ObjectMapper>& objectMapper){ \
     return std::make_shared<NAME>(requestExecutor, objectMapper); \
   }
 
@@ -127,7 +129,7 @@ __body = OATPP_MACRO_FIRSTARG PARAM_LIST;
 // BODY_DTO MACRO
 
 #define OATPP_MACRO_API_CLIENT_BODY_DTO(TYPE, PARAM_LIST) \
-__body = oatpp::web::protocol::http::outgoing::BufferBody::createShared( \
+__body = avena::web::protocol::http::outgoing::BufferBody::createShared( \
     m_objectMapper->writeToString(OATPP_MACRO_FIRSTARG PARAM_LIST), \
     m_objectMapper->getInfo().httpContentType \
   );
@@ -135,7 +137,7 @@ __body = oatpp::web::protocol::http::outgoing::BufferBody::createShared( \
 // BODY_STRING MACRO
 
 #define OATPP_MACRO_API_CLIENT_BODY_STRING(TYPE, PARAM_LIST) \
-__body = oatpp::web::protocol::http::outgoing::BufferBody::createShared(OATPP_MACRO_FIRSTARG PARAM_LIST);
+__body = avena::web::protocol::http::outgoing::BufferBody::createShared(OATPP_MACRO_FIRSTARG PARAM_LIST);
 
 // AUTHORIZATION MACRO
 
@@ -148,7 +150,7 @@ OATPP_MACRO_API_CLIENT_MACRO_SELECTOR(OATPP_MACRO_API_CLIENT_AUTHORIZATION_, TYP
 // AUTHORIZATION_BASIC MACRO
 
 #define OATPP_MACRO_API_CLIENT_AUTHORIZATION_BASIC_1(TYPE, TOKEN) \
-__headers.put_LockFree("Authorization", String("Basic ") + oatpp::encoding::Base64::encode(TOKEN));
+__headers.put_LockFree("Authorization", String("Basic ") + avena::encoding::Base64::encode(TOKEN));
 
 #define OATPP_MACRO_API_CLIENT_AUTHORIZATION_BASIC(TYPE, PARAM_LIST) \
 OATPP_MACRO_API_CLIENT_MACRO_SELECTOR(OATPP_MACRO_API_CLIENT_AUTHORIZATION_BASIC_, TYPE, OATPP_MACRO_UNFOLD_VA_ARGS PARAM_LIST)
@@ -164,18 +166,18 @@ OATPP_MACRO_API_CLIENT_PARAM_MACRO X
 // API_CALL MACRO
 
 #define OATPP_API_CALL_0(NAME, METHOD, PATH) \
-const oatpp::data::share::StringTemplate Z_PATH_TEMPLATE_##NAME = parsePathTemplate(#NAME, PATH); \
+const avena::data::share::StringTemplate Z_PATH_TEMPLATE_##NAME = parsePathTemplate(#NAME, PATH); \
 \
-static void Z_ADD_HEADERS_##NAME(oatpp::web::client::ApiClient::Headers& headers, ...) { \
+static void Z_ADD_HEADERS_##NAME(avena::web::client::ApiClient::Headers& headers, ...) { \
   (void) headers; \
 } \
 \
-std::shared_ptr<oatpp::web::protocol::http::incoming::Response> NAME( \
-  const std::shared_ptr<oatpp::web::client::RequestExecutor::ConnectionHandle>& __connectionHandle = nullptr \
+std::shared_ptr<avena::web::protocol::http::incoming::Response> NAME( \
+  const std::shared_ptr<avena::web::client::RequestExecutor::ConnectionHandle>& __connectionHandle = nullptr \
 ) { \
-  oatpp::web::client::ApiClient::Headers __headers; \
+  avena::web::client::ApiClient::Headers __headers; \
   Z_ADD_HEADERS_##NAME(__headers, 1); \
-  std::shared_ptr<oatpp::web::protocol::http::outgoing::Body> body; \
+  std::shared_ptr<avena::web::protocol::http::outgoing::Body> body; \
   return executeRequest(METHOD, \
                         Z_PATH_TEMPLATE_##NAME, \
                         __headers, \
@@ -186,21 +188,21 @@ std::shared_ptr<oatpp::web::protocol::http::incoming::Response> NAME( \
 }
 
 #define OATPP_API_CALL_1(NAME, METHOD, PATH, ...) \
-const oatpp::data::share::StringTemplate Z_PATH_TEMPLATE_##NAME = parsePathTemplate(#NAME, PATH); \
+const avena::data::share::StringTemplate Z_PATH_TEMPLATE_##NAME = parsePathTemplate(#NAME, PATH); \
 \
-static void Z_ADD_HEADERS_##NAME(oatpp::web::client::ApiClient::Headers& headers, ...) { \
+static void Z_ADD_HEADERS_##NAME(avena::web::client::ApiClient::Headers& headers, ...) { \
   (void) headers; \
 } \
 \
-std::shared_ptr<oatpp::web::protocol::http::incoming::Response> NAME(\
+std::shared_ptr<avena::web::protocol::http::incoming::Response> NAME(\
 OATPP_MACRO_FOREACH(OATPP_MACRO_API_CLIENT_PARAM_DECL, __VA_ARGS__) \
-  const std::shared_ptr<oatpp::web::client::RequestExecutor::ConnectionHandle>& __connectionHandle = nullptr \
+  const std::shared_ptr<avena::web::client::RequestExecutor::ConnectionHandle>& __connectionHandle = nullptr \
 ) { \
-  oatpp::web::client::ApiClient::Headers __headers; \
+  avena::web::client::ApiClient::Headers __headers; \
   Z_ADD_HEADERS_##NAME(__headers, 1); \
-  std::unordered_map<oatpp::String, oatpp::String> __pathParams; \
-  std::unordered_map<oatpp::String, oatpp::String> __queryParams; \
-  std::shared_ptr<oatpp::web::protocol::http::outgoing::Body> __body; \
+  std::unordered_map<avena::String, avena::String> __pathParams; \
+  std::unordered_map<avena::String, avena::String> __queryParams; \
+  std::shared_ptr<avena::web::protocol::http::outgoing::Body> __body; \
   OATPP_MACRO_FOREACH(OATPP_MACRO_API_CLIENT_PARAM_PUT, __VA_ARGS__) \
   return executeRequest(METHOD, \
                         Z_PATH_TEMPLATE_##NAME, \
@@ -220,11 +222,11 @@ OATPP_API_CALL_0(NAME, METHOD, PATH)
 OATPP_API_CALL_1(NAME, METHOD, PATH, __VA_ARGS__)
 
 /**
- * Codegen macro to be used in `oatpp::web::client::ApiClient` to generate REST API-Calls.
+ * Codegen macro to be used in `avena::web::client::ApiClient` to generate REST API-Calls.
  * @param METHOD - Http method ("GET", "POST", "PUT", etc.)
  * @param PATH - Path to endpoint (without host)
  * @param NAME - Name of the generated method
- * @return - std::shared_ptr to &id:oatpp::web::protocol::http::incoming::Response;
+ * @return - std::shared_ptr to &id:avena::web::protocol::http::incoming::Response;
  */
 #define API_CALL(METHOD, PATH, ...) \
 OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_BINARY_SELECTOR(OATPP_API_CALL_MACRO_, (__VA_ARGS__)) (METHOD, PATH, __VA_ARGS__))
@@ -232,18 +234,18 @@ OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_BINARY_SELECTOR(OATPP_API_CALL_MACRO_, (__V
 // API_CALL_ASYNC MACRO
 
 #define OATPP_API_CALL_ASYNC_0(NAME, METHOD, PATH) \
-const oatpp::data::share::StringTemplate Z_PATH_TEMPLATE_##NAME = parsePathTemplate(#NAME, PATH); \
+const avena::data::share::StringTemplate Z_PATH_TEMPLATE_##NAME = parsePathTemplate(#NAME, PATH); \
 \
-static void Z_ADD_HEADERS_##NAME(oatpp::web::client::ApiClient::Headers& headers, ...) { \
+static void Z_ADD_HEADERS_##NAME(avena::web::client::ApiClient::Headers& headers, ...) { \
   (void) headers; \
 } \
 \
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::web::protocol::http::incoming::Response>&> NAME( \
-  const std::shared_ptr<oatpp::web::client::RequestExecutor::ConnectionHandle>& __connectionHandle = nullptr \
+avena::async::CoroutineStarterForResult<const std::shared_ptr<avena::web::protocol::http::incoming::Response>&> NAME( \
+  const std::shared_ptr<avena::web::client::RequestExecutor::ConnectionHandle>& __connectionHandle = nullptr \
 ) { \
-  oatpp::web::client::ApiClient::Headers __headers; \
+  avena::web::client::ApiClient::Headers __headers; \
   Z_ADD_HEADERS_##NAME(__headers, 1); \
-  std::shared_ptr<oatpp::web::protocol::http::outgoing::Body> body; \
+  std::shared_ptr<avena::web::protocol::http::outgoing::Body> body; \
   return executeRequestAsync(METHOD, \
                              Z_PATH_TEMPLATE_##NAME, \
                              __headers, \
@@ -254,21 +256,21 @@ oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::web::protoc
 }
 
 #define OATPP_API_CALL_ASYNC_1(NAME, METHOD, PATH, ...) \
-const oatpp::data::share::StringTemplate Z_PATH_TEMPLATE_##NAME = parsePathTemplate(#NAME, PATH); \
+const avena::data::share::StringTemplate Z_PATH_TEMPLATE_##NAME = parsePathTemplate(#NAME, PATH); \
 \
-static void Z_ADD_HEADERS_##NAME(oatpp::web::client::ApiClient::Headers& headers, ...) { \
+static void Z_ADD_HEADERS_##NAME(avena::web::client::ApiClient::Headers& headers, ...) { \
   (void) headers; \
 } \
 \
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::web::protocol::http::incoming::Response>&> NAME(\
+avena::async::CoroutineStarterForResult<const std::shared_ptr<avena::web::protocol::http::incoming::Response>&> NAME(\
   OATPP_MACRO_FOREACH(OATPP_MACRO_API_CLIENT_PARAM_DECL, __VA_ARGS__) \
-  const std::shared_ptr<oatpp::web::client::RequestExecutor::ConnectionHandle>& __connectionHandle = nullptr \
+  const std::shared_ptr<avena::web::client::RequestExecutor::ConnectionHandle>& __connectionHandle = nullptr \
 ) { \
-  oatpp::web::client::ApiClient::Headers __headers; \
+  avena::web::client::ApiClient::Headers __headers; \
   Z_ADD_HEADERS_##NAME(__headers, 1); \
-  std::unordered_map<oatpp::String, oatpp::String> __pathParams; \
-  std::unordered_map<oatpp::String, oatpp::String> __queryParams; \
-  std::shared_ptr<oatpp::web::protocol::http::outgoing::Body> __body; \
+  std::unordered_map<avena::String, avena::String> __pathParams; \
+  std::unordered_map<avena::String, avena::String> __queryParams; \
+  std::shared_ptr<avena::web::protocol::http::outgoing::Body> __body; \
   OATPP_MACRO_FOREACH(OATPP_MACRO_API_CLIENT_PARAM_PUT, __VA_ARGS__) \
   return executeRequestAsync(METHOD, \
                              Z_PATH_TEMPLATE_##NAME, \
@@ -286,11 +288,11 @@ OATPP_API_CALL_ASYNC_0(NAME, METHOD, PATH)
 OATPP_API_CALL_ASYNC_1(NAME, METHOD, PATH, __VA_ARGS__)
 
 /**
- * Codegen macro to be used in `oatpp::web::client::ApiClient` to generate Asynchronous REST API-Calls.
+ * Codegen macro to be used in `avena::web::client::ApiClient` to generate Asynchronous REST API-Calls.
  * @param METHOD - Http method ("GET", "POST", "PUT", etc.)
  * @param PATH - Path to endpoint (without host)
  * @param NAME - Name of the generated method
- * @return - &id:oatpp::async::CoroutineStarterForResult;<const std::shared_ptr<&id:oatpp::web::protocol::http::incoming::Response;>&>.
+ * @return - &id:avena::async::CoroutineStarterForResult;<const std::shared_ptr<&id:avena::web::protocol::http::incoming::Response;>&>.
  */
 #define API_CALL_ASYNC(METHOD, PATH, ...) \
 OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_BINARY_SELECTOR(OATPP_API_CALL_ASYNC_MACRO_, (__VA_ARGS__)) (METHOD, PATH, __VA_ARGS__))
@@ -300,9 +302,9 @@ OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_BINARY_SELECTOR(OATPP_API_CALL_ASYNC_MACRO_
  */
 #define API_CALL_HEADERS(NAME) \
 \
-static void Z_ADD_HEADERS_##NAME(oatpp::web::client::ApiClient::Headers& headers, int) { \
+static void Z_ADD_HEADERS_##NAME(avena::web::client::ApiClient::Headers& headers, int) { \
   Z_ADD_HEADERS_##NAME(headers); /* call first method */ \
   Z_ADD_DEFAULT_HEADERS_##NAME(headers); \
 } \
 \
-static void Z_ADD_DEFAULT_HEADERS_##NAME(oatpp::web::client::ApiClient::Headers& headers)
+static void Z_ADD_DEFAULT_HEADERS_##NAME(avena::web::client::ApiClient::Headers& headers)

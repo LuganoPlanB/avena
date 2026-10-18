@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "IOBuffer.hpp"
 
-namespace oatpp { namespace data { namespace buffer {
+namespace avena { namespace data { namespace buffer {
 
 const v_buff_size IOBuffer::BUFFER_SIZE = 4096;
 

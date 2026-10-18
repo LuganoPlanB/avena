@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,9 +27,9 @@
 
 #include "PartList.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
-PartList::PartList(const oatpp::String& boundary)
+PartList::PartList(const avena::String& boundary)
   : Multipart(boundary)
   , m_readIteratorInitialized(false)
 {}
@@ -37,7 +39,7 @@ PartList::PartList(const Headers& requestHeaders)
   , m_readIteratorInitialized(false)
 {
   if(!getBoundary()) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::PartList::PartList]: Error. No 'boundary' value found in headers.");
+    throw std::runtime_error("[avena::web::mime::multipart::PartList::PartList]: Error. No 'boundary' value found in headers.");
   }
 }
 
@@ -67,7 +69,7 @@ void PartList::writeNextPart(const std::shared_ptr<Part>& part, async::Action& a
 
 }
 
-std::shared_ptr<Part> PartList::getNamedPart(const oatpp::String& name) {
+std::shared_ptr<Part> PartList::getNamedPart(const avena::String& name) {
 
   auto it = m_namedParts.find(name);
   if(it != m_namedParts.end()) {
@@ -78,7 +80,7 @@ std::shared_ptr<Part> PartList::getNamedPart(const oatpp::String& name) {
 
 }
 
-std::list<std::shared_ptr<Part>> PartList::getNamedParts(const oatpp::String& name) {
+std::list<std::shared_ptr<Part>> PartList::getNamedParts(const avena::String& name) {
 
   auto it = m_namedParts.find(name);
   if(it != m_namedParts.end()) {

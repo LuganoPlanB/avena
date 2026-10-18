@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,13 +28,13 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
 static void deleteStackOfX509Info(STACK_OF(X509_INFO) *p) {
   sk_X509_INFO_pop_free(p, X509_INFO_free);
 }
 
-CaCertificateBundleBuffer::CaCertificateBundleBuffer(const oatpp::String& caBuffer)
+CaCertificateBundleBuffer::CaCertificateBundleBuffer(const avena::String& caBuffer)
   : CaCertificateBundleBuffer::CaCertificateBundleBuffer(caBuffer->data(), caBuffer->size())
 {}
 
@@ -44,14 +46,14 @@ CaCertificateBundleBuffer::CaCertificateBundleBuffer(const void *caBuffer, int c
 
   auto buffer = std::shared_ptr<BIO>(BIO_new_mem_buf(caBuffer, caBufferLength), BIO_free);
   if (buffer == nullptr) {
-    throw std::runtime_error("[oatpp::openssl::configurer::CaCertificateBundleBuffer::CaCertificateBundleBuffer()]: Error. BIO_new_mem_buf(): "
+    throw std::runtime_error("[avena::openssl::configurer::CaCertificateBundleBuffer::CaCertificateBundleBuffer()]: Error. BIO_new_mem_buf(): "
                              + std::string(ERR_error_string(ERR_get_error(), nullptr)));
   }
 
   m_certificates = std::shared_ptr<STACK_OF(X509_INFO)>(PEM_X509_INFO_read_bio(buffer.get(), nullptr, nullptr, nullptr), deleteStackOfX509Info);
   if (m_certificates == nullptr)
   {
-    throw std::runtime_error("[oatpp::openssl::configurer::CaCertificateBundleBuffer::CaCertificateBundleBuffer()]: Error. PEM_X509_INFO_read_bio(): "
+    throw std::runtime_error("[avena::openssl::configurer::CaCertificateBundleBuffer::CaCertificateBundleBuffer()]: Error. PEM_X509_INFO_read_bio(): "
                              + std::string(ERR_error_string(ERR_get_error(), nullptr)));
   }
 }
@@ -65,14 +67,14 @@ void CaCertificateBundleBuffer::configure(SSL_CTX *ctx) {
 
   if (trustedCertificatesStore == nullptr)
   {
-    throw std::runtime_error("[oatpp::openssl::configurer::CaCertificateBundleBuffer::configure()]: Error. SSL_CTX_get_cert_store(): "
+    throw std::runtime_error("[avena::openssl::configurer::CaCertificateBundleBuffer::configure()]: Error. SSL_CTX_get_cert_store(): "
                              + std::string(ERR_error_string(ERR_get_error(), nullptr)));
   }
 
   for (int i = 0; i < sk_X509_INFO_num(m_certificates.get()); i++) {
     auto certificate = sk_X509_INFO_value(m_certificates.get(), i)->x509;
     if (certificate != nullptr && !X509_STORE_add_cert(trustedCertificatesStore, certificate)) {
-      throw std::runtime_error("[oatpp::openssl::configurer::CaCertificateBundleBuffer::configure()]: Error. X509_STORE_add_cert(): "
+      throw std::runtime_error("[avena::openssl::configurer::CaCertificateBundleBuffer::configure()]: Error. X509_STORE_add_cert(): "
                                + std::string(ERR_error_string(ERR_get_error(), nullptr)));
 
     }

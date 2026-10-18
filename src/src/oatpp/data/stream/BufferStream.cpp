@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/utils/Binary.hpp"
 
-namespace oatpp { namespace data{ namespace stream {
+namespace avena { namespace data{ namespace stream {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BufferOutputStream
@@ -85,7 +87,7 @@ void BufferOutputStream::reserveBytesUpfront(v_buff_size count) {
     }
 
     if(newCapacity < capacityNeeded) {
-      throw std::runtime_error("[oatpp::data::stream::BufferOutputStream::reserveBytesUpfront()]: Error. Unable to allocate requested memory.");
+      throw std::runtime_error("[avena::data::stream::BufferOutputStream::reserveBytesUpfront()]: Error. Unable to allocate requested memory.");
     }
 
     auto newData = new v_char8[static_cast<unsigned long>(newCapacity)];
@@ -125,37 +127,37 @@ void BufferOutputStream::reset(v_buff_size initialCapacity) {
   m_position = 0;
 }
 
-oatpp::String BufferOutputStream::toString() {
-  return oatpp::String(reinterpret_cast<const char*>(m_data), m_position);
+avena::String BufferOutputStream::toString() {
+  return avena::String(reinterpret_cast<const char*>(m_data), m_position);
 }
 
 std::string BufferOutputStream::toStdString() const {
   return std::string(reinterpret_cast<const char*>(m_data), static_cast<unsigned long>(m_position));
 }
 
-oatpp::String BufferOutputStream::getSubstring(v_buff_size pos, v_buff_size count) {
+avena::String BufferOutputStream::getSubstring(v_buff_size pos, v_buff_size count) {
   if(pos + count <= m_position) {
-    return oatpp::String(reinterpret_cast<const char*>(m_data + pos), count);
+    return avena::String(reinterpret_cast<const char*>(m_data + pos), count);
   } else {
-    return oatpp::String(reinterpret_cast<const char*>(m_data + pos), m_position - pos);
+    return avena::String(reinterpret_cast<const char*>(m_data + pos), m_position - pos);
   }
 }
 
-oatpp::v_io_size BufferOutputStream::flushToStream(OutputStream* stream) {
+avena::v_io_size BufferOutputStream::flushToStream(OutputStream* stream) {
   return stream->writeExactSizeDataSimple(m_data, m_position);
 }
 
-oatpp::async::CoroutineStarter BufferOutputStream::flushToStreamAsync(const std::shared_ptr<BufferOutputStream>& _this, const std::shared_ptr<OutputStream>& stream) {
+avena::async::CoroutineStarter BufferOutputStream::flushToStreamAsync(const std::shared_ptr<BufferOutputStream>& _this, const std::shared_ptr<OutputStream>& stream) {
 
-  class WriteDataCoroutine : public oatpp::async::Coroutine<WriteDataCoroutine> {
+  class WriteDataCoroutine : public avena::async::Coroutine<WriteDataCoroutine> {
   private:
     std::shared_ptr<BufferOutputStream> m_this;
-    std::shared_ptr<oatpp::data::stream::OutputStream> m_stream;
+    std::shared_ptr<avena::data::stream::OutputStream> m_stream;
     data::buffer::InlineWriteData m_inlineData;
   public:
 
     WriteDataCoroutine(const std::shared_ptr<BufferOutputStream>& _this,
-                       const std::shared_ptr<oatpp::data::stream::OutputStream>& stream)
+                       const std::shared_ptr<avena::data::stream::OutputStream>& stream)
       : m_this(_this)
       , m_stream(stream)
     {}
@@ -192,7 +194,7 @@ BufferInputStream::BufferInputStream(const std::shared_ptr<std::string>& memoryH
   , m_capturedData(captureData)
 {}
 
-BufferInputStream::BufferInputStream(const oatpp::String& data, const std::shared_ptr<void>& captureData)
+BufferInputStream::BufferInputStream(const avena::String& data, const std::shared_ptr<void>& captureData)
   : BufferInputStream(data.getPtr(), reinterpret_cast<p_char8>(data->data()), static_cast<v_buff_size>(data->size()), captureData)
 {}
 

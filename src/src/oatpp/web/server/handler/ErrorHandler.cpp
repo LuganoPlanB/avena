@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 #include "oatpp/web/server/HttpServerError.hpp"
 #include "oatpp/web/protocol/http/outgoing/BufferBody.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace handler {
+namespace avena { namespace web { namespace server { namespace handler {
 
 void DefaultErrorHandler::unwrapErrorStack(HttpServerErrorStacktrace& stacktrace, const std::exception& e) {
 

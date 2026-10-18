@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "Stream.hpp"
 #include "oatpp/data/buffer/FIFOBuffer.hpp"
 
-namespace oatpp { namespace data { namespace stream {
+namespace avena { namespace data { namespace stream {
 
 
 /**
@@ -65,7 +67,7 @@ class FIFOInputStream : public BufferedInputStream, public WriteCallback {
    * *Calls to this method are always NON-BLOCKING*
    * @param data - buffer to read data to.
    * @param count - size of the buffer.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes read. 0 - designates end of the buffer.
    */
@@ -99,7 +101,7 @@ class FIFOInputStream : public BufferedInputStream, public WriteCallback {
    * Write operation callback.
    * @param data - pointer to data.
    * @param count - size of the data in bytes.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes written. 0 - to indicate end-of-file.
    */
@@ -115,7 +117,7 @@ class FIFOInputStream : public BufferedInputStream, public WriteCallback {
 
   /**
    * Amount of bytes currently available to read from buffer.
-   * @return &id:oatpp::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
   v_io_size availableToRead() const override;
 
@@ -127,7 +129,7 @@ class FIFOInputStream : public BufferedInputStream, public WriteCallback {
   v_io_size commitReadOffset(v_buff_size count) override;
 
   /**
-   * Reserve bytes for future writes. Check &id:oatpp::data::stream::FIFOStream::availableToWrite for the capacity.
+   * Reserve bytes for future writes. Check &id:avena::data::stream::FIFOStream::availableToWrite for the capacity.
    */
   void reserveBytesUpfront(v_buff_size count);
 
@@ -165,7 +167,7 @@ class FIFOInputStream : public BufferedInputStream, public WriteCallback {
 
   /**
    * Amount of buffer space currently available for data writes.
-   * @return &id:oatpp::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
   v_io_size availableToWrite();
 };

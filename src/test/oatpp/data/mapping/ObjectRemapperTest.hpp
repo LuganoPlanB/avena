@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,11 +29,11 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
-class ObjectRemapperTest : public oatpp::test::UnitTest {
+class ObjectRemapperTest : public avena::test::UnitTest {
 public:
-  ObjectRemapperTest() : UnitTest("TEST[oatpp::data::mapping::ObjectRemapperTest]") {}
+  ObjectRemapperTest() : UnitTest("TEST[avena::data::mapping::ObjectRemapperTest]") {}
   void onRun() override;
 };
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "Hex.hpp"
 #include "oatpp/data/stream/Stream.hpp"
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
 
 class Url {
 public:
@@ -54,8 +56,8 @@ public:
   static void encode(data::stream::ConsistentOutputStream* stream, const void* data, v_buff_size size, const Config& config);
   static void decode(data::stream::ConsistentOutputStream* stream, const void* data, v_buff_size size);
 
-  static oatpp::String encode(const oatpp::String& data, const Config& config);
-  static oatpp::String decode(const oatpp::String& data);
+  static avena::String encode(const avena::String& data, const Config& config);
+  static avena::String decode(const avena::String& data);
 
 };
 

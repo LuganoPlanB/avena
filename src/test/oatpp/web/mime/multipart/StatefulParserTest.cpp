@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,11 +35,11 @@
 
 #include <unordered_map>
 
-namespace oatpp { namespace test { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace test { namespace web { namespace mime { namespace multipart {
 
 namespace {
 
-  typedef oatpp::web::mime::multipart::Part Part;
+  typedef avena::web::mime::multipart::Part Part;
 
   static const char* TEST_DATA_1 =
     "--12345\r\n"
@@ -65,21 +67,21 @@ namespace {
     ;
 
 
-  void parseStepByStep(const oatpp::String& text,
-                       const oatpp::String& boundary,
-                       const std::shared_ptr<oatpp::web::mime::multipart::StatefulParser::Listener>& listener,
+  void parseStepByStep(const avena::String& text,
+                       const avena::String& boundary,
+                       const std::shared_ptr<avena::web::mime::multipart::StatefulParser::Listener>& listener,
                        const size_t step)
   {
 
-    oatpp::web::mime::multipart::StatefulParser parser(boundary, listener, nullptr);
+    avena::web::mime::multipart::StatefulParser parser(boundary, listener, nullptr);
 
-    oatpp::data::stream::BufferInputStream stream(text.getPtr(), text->data(), static_cast<v_buff_size>(text->size()));
+    avena::data::stream::BufferInputStream stream(text.getPtr(), text->data(), static_cast<v_buff_size>(text->size()));
     std::unique_ptr<v_char8[]> buffer(new v_char8[step]);
     v_io_size size;
     while((size = stream.readSimple(buffer.get(), static_cast<v_buff_size>(step))) != 0) {
-      oatpp::data::buffer::InlineWriteData inlineData(buffer.get(), size);
+      avena::data::buffer::InlineWriteData inlineData(buffer.get(), size);
       while(inlineData.bytesLeft > 0 && !parser.finished()) {
-        oatpp::async::Action action;
+        avena::async::Action action;
         parser.parseNext(inlineData, action);
       }
     }
@@ -87,7 +89,7 @@ namespace {
 
   }
 
-  void assertPartData(const std::shared_ptr<Part>& part, const oatpp::String& value) {
+  void assertPartData(const std::shared_ptr<Part>& part, const avena::String& value) {
 
     auto payload = part->getPayload();
     OATPP_ASSERT(payload)
@@ -97,10 +99,10 @@ namespace {
     v_buff_size bufferSize = 16;
     std::unique_ptr<v_char8[]> buffer(new v_char8[static_cast<unsigned long>(bufferSize)]);
 
-    oatpp::data::stream::BufferOutputStream stream;
-    oatpp::data::stream::transfer(payload->openInputStream(), &stream, 0, buffer.get(), bufferSize);
+    avena::data::stream::BufferOutputStream stream;
+    avena::data::stream::transfer(payload->openInputStream(), &stream, 0, buffer.get(), bufferSize);
 
-    oatpp::String readData = stream.toString();
+    avena::String readData = stream.toString();
 
     OATPP_ASSERT(readData == payload->getInMemoryData())
 
@@ -110,14 +112,14 @@ namespace {
 
 void StatefulParserTest::onRun() {
 
-  oatpp::String text = TEST_DATA_1;
+  avena::String text = TEST_DATA_1;
 
   for(size_t i = 1; i < text->size(); i++) {
 
-    oatpp::web::mime::multipart::PartList multipart("12345");
+    avena::web::mime::multipart::PartList multipart("12345");
 
-    auto listener = std::make_shared<oatpp::web::mime::multipart::PartsParser>(&multipart);
-    listener->setDefaultPartReader(oatpp::web::mime::multipart::createInMemoryPartReader(128));
+    auto listener = std::make_shared<avena::web::mime::multipart::PartsParser>(&multipart);
+    listener->setDefaultPartReader(avena::web::mime::multipart::createInMemoryPartReader(128));
 
     parseStepByStep(text, "12345", listener, i);
 

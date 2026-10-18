@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -36,16 +38,16 @@
 
 #include "oatpp-test/Checker.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
   
 namespace {
 
-typedef oatpp::json::Serializer Serializer;
-typedef oatpp::json::Deserializer Deserializer;
+typedef avena::json::Serializer Serializer;
+typedef avena::json::Deserializer Deserializer;
 
 #include OATPP_CODEGEN_BEGIN(DTO)
   
-  class Test1 : public oatpp::DTO {
+  class Test1 : public avena::DTO {
     
     DTO_INIT(Test1, DTO)
     
@@ -74,25 +76,25 @@ void DTOMapperPerfTest::onRun() {
   
   v_int32 numIterations = 1000000;
 
-  oatpp::json::ObjectMapper mapper;
+  avena::json::ObjectMapper mapper;
   
   auto test1 = Test1::createTestInstance();
   auto test1_Text = mapper.writeToString(test1);
   OATPP_LOGv(TAG, "json='{}'", test1_Text->c_str())
 
   {
-    oatpp::test::PerformanceChecker checker("Serializer");
+    avena::test::PerformanceChecker checker("Serializer");
     for(v_int32 i = 0; i < numIterations; i ++) {
       mapper.writeToString(test1);
     }
   }
   
   {
-    oatpp::test::PerformanceChecker checker("Deserializer");
-    oatpp::utils::parser::Caret caret(test1_Text);
+    avena::test::PerformanceChecker checker("Deserializer");
+    avena::utils::parser::Caret caret(test1_Text);
     for(v_int32 i = 0; i < numIterations; i ++) {
       caret.setPosition(0);
-      mapper.readFromCaret<oatpp::Object<Test1>>(caret);
+      mapper.readFromCaret<avena::Object<Test1>>(caret);
     }
   }
 

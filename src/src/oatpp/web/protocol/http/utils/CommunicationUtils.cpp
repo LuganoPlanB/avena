@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "CommunicationUtils.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace utils {
+namespace avena { namespace web { namespace protocol { namespace http { namespace utils {
   
 void CommunicationUtils::considerConnectionState(const std::shared_ptr<protocol::http::incoming::Request>& request,
                                                  const std::shared_ptr<protocol::http::outgoing::Response>& response,
@@ -35,7 +37,7 @@ void CommunicationUtils::considerConnectionState(const std::shared_ptr<protocol:
     return;
   }
 
-  auto outState = response->getHeaders().getAsMemoryLabel<oatpp::data::share::StringKeyLabelCI>(Header::CONNECTION);
+  auto outState = response->getHeaders().getAsMemoryLabel<avena::data::share::StringKeyLabelCI>(Header::CONNECTION);
   if(outState && outState == Header::Value::CONNECTION_UPGRADE) {
     connectionState = ConnectionState::DELEGATED;
     return;
@@ -43,7 +45,7 @@ void CommunicationUtils::considerConnectionState(const std::shared_ptr<protocol:
   
   if(request) {
     /* If the connection header is present in the request and its value isn't keep-alive, then close */
-    auto connection = request->getHeaders().getAsMemoryLabel<oatpp::data::share::StringKeyLabelCI>(Header::CONNECTION);
+    auto connection = request->getHeaders().getAsMemoryLabel<avena::data::share::StringKeyLabelCI>(Header::CONNECTION);
     if(connection) {
       if(connection != Header::Value::CONNECTION_KEEP_ALIVE) {
         connectionState = ConnectionState::CLOSING;
@@ -55,7 +57,7 @@ void CommunicationUtils::considerConnectionState(const std::shared_ptr<protocol:
     /* Set HTTP/1.1 default Connection header value (Keep-Alive), if no Connection header present in response. */
     /* Set keep-alive to value specified in response otherwise */
     auto& protocol = request->getStartingLine().protocol;
-    if(protocol && oatpp::utils::String::compareCI_ASCII(protocol.getData(), protocol.getSize(), "HTTP/1.1", 8) == 0) {
+    if(protocol && avena::utils::String::compareCI_ASCII(protocol.getData(), protocol.getSize(), "HTTP/1.1", 8) == 0) {
       if(outState && outState != Header::Value::CONNECTION_KEEP_ALIVE) {
         connectionState = ConnectionState::CLOSING;
       }
@@ -80,7 +82,7 @@ CommunicationUtils::selectEncoder(const std::shared_ptr<http::incoming::Request>
 {
   if(providers && request) {
 
-    auto suggested = request->getHeaders().getAsMemoryLabel<oatpp::data::share::StringKeyLabel>(Header::ACCEPT_ENCODING);
+    auto suggested = request->getHeaders().getAsMemoryLabel<avena::data::share::StringKeyLabel>(Header::ACCEPT_ENCODING);
 
     if(suggested) {
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,31 +28,31 @@
 
 #include <algorithm>
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
-SchemaMigration::SchemaMigration(const base::ObjectHandle<Executor>& executor, const oatpp::String& suffix)
+SchemaMigration::SchemaMigration(const base::ObjectHandle<Executor>& executor, const avena::String& suffix)
   : m_executor(executor)
   , m_suffix(suffix)
 {}
 
-void SchemaMigration::addText(v_int64 version, const oatpp::String& script) {
+void SchemaMigration::addText(v_int64 version, const avena::String& script) {
   m_scripts.push_back({version, SOURCE_TEXT, script});
 }
 
-void SchemaMigration::addFile(v_int64 version, const oatpp::String& filename) {
+void SchemaMigration::addFile(v_int64 version, const avena::String& filename) {
   m_scripts.push_back({version, SOURCE_FILE, filename});
 }
 
 void SchemaMigration::migrate() {
 
   if(!m_executor) {
-    throw std::runtime_error("[oatpp::orm::SchemaMigration::migrate()]: Error. Executor is null.");
+    throw std::runtime_error("[avena::orm::SchemaMigration::migrate()]: Error. Executor is null.");
   }
 
   auto connection = m_executor->getConnection();
 
   if(!connection) {
-    throw std::runtime_error("[oatpp::orm::SchemaMigration::migrate()]: Error. Can't connect to Database.");
+    throw std::runtime_error("[avena::orm::SchemaMigration::migrate()]: Error. Can't connect to Database.");
   }
 
   v_int64 currVersion = m_executor->getSchemaVersion(m_suffix, connection);
@@ -63,7 +65,7 @@ void SchemaMigration::migrate() {
 
     if(source.version > currVersion) {
 
-      oatpp::String script;
+      avena::String script;
 
       switch (source.type) {
 
@@ -72,11 +74,11 @@ void SchemaMigration::migrate() {
           break;
 
         case SOURCE_FILE:
-          script = oatpp::String::loadFromFile(source.param->c_str());
+          script = avena::String::loadFromFile(source.param->c_str());
           break;
 
         default:
-          throw std::runtime_error("[oatpp::orm::SchemaMigration::migrate()]: Error. Unknown source type.");
+          throw std::runtime_error("[avena::orm::SchemaMigration::migrate()]: Error. Unknown source type.");
 
       }
 

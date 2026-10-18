@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/web/client/HttpRequestExecutor.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 /**
  * Helper class to do client websocket connect.
@@ -35,45 +37,45 @@ namespace oatpp { namespace websocket {
 class Connector {
 public:
   /**
-   * Convenience typedef for &id:oatpp::data::stream::IOStream;.
+   * Convenience typedef for &id:avena::data::stream::IOStream;.
    */
-  typedef oatpp::data::stream::IOStream Connection;
+  typedef avena::data::stream::IOStream Connection;
 
   /**
-   * Convenience typedef for &id:oatpp::async::Action;.
+   * Convenience typedef for &id:avena::async::Action;.
    */
-  typedef oatpp::async::Action Action;
+  typedef avena::async::Action Action;
 
   /*
-   * Convenience typedef for &id:oatpp::async::CoroutineStarterForResult;.
+   * Convenience typedef for &id:avena::async::CoroutineStarterForResult;.
    */
   template <typename ...Args>
   using
-  CoroutineStarterForResult = typename oatpp::async::CoroutineStarterForResult<Args...>;
+  CoroutineStarterForResult = typename avena::async::CoroutineStarterForResult<Args...>;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::Headers;.
+   * Convenience typedef for &id:avena::web::protocol::http::Headers;.
    */
-  typedef oatpp::web::protocol::http::Headers Headers;
+  typedef avena::web::protocol::http::Headers Headers;
 
 private:
-  std::shared_ptr<oatpp::network::ClientConnectionProvider> m_connectionProvider;
-  oatpp::web::client::HttpRequestExecutor m_requestExecutor;
+  std::shared_ptr<avena::network::ClientConnectionProvider> m_connectionProvider;
+  avena::web::client::HttpRequestExecutor m_requestExecutor;
 public:
 
   /**
    * Constructor.
-   * @param connectionProvider - &id:oatpp::network::ClientConnectionProvider;.
+   * @param connectionProvider - &id:avena::network::ClientConnectionProvider;.
    */
-  Connector(const std::shared_ptr<oatpp::network::ClientConnectionProvider>& connectionProvider);
+  Connector(const std::shared_ptr<avena::network::ClientConnectionProvider>& connectionProvider);
 public:
 
   /**
    * Create shared Connector.
-   * @param connectionProvider - &id:oatpp::network::ClientConnectionProvider;.
+   * @param connectionProvider - &id:avena::network::ClientConnectionProvider;.
    * @return - `std::shared_ptr` to Connector.
    */
-  static std::shared_ptr<Connector> createShared(const std::shared_ptr<oatpp::network::ClientConnectionProvider>& connectionProvider) {
+  static std::shared_ptr<Connector> createShared(const std::shared_ptr<avena::network::ClientConnectionProvider>& connectionProvider) {
     return std::make_shared<Connector>(connectionProvider);
   }
 
@@ -84,16 +86,16 @@ public:
    * @param headers - websocket connect request headers.
    * @return - &l:Connector::Connection;.
    */
-  provider::ResourceHandle<Connection> connect(const oatpp::String& path, const Headers& headers = {});
+  provider::ResourceHandle<Connection> connect(const avena::String& path, const Headers& headers = {});
 
   /**
    * Connect to server, do websocket-handshake and return Connection which can be then passed to WebSocket constructor. <br>
    * **(Async call)**
    * @param path - path to websocket endpoint.
    * @param headers - websocket connect request headers.
-   * @return - &id:oatpp::async::Action;.
+   * @return - &id:avena::async::Action;.
    */
-  CoroutineStarterForResult<const provider::ResourceHandle<Connection>&> connectAsync(const oatpp::String& path, const Headers& headers = {});
+  CoroutineStarterForResult<const provider::ResourceHandle<Connection>&> connectAsync(const avena::String& path, const Headers& headers = {});
   
 };
   

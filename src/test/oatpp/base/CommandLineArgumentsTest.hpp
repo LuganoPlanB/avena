@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,12 +29,12 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp { namespace base {
+namespace avena { namespace base {
   
 /**
  * Test command line arguments parsing.
  */
-class CommandLineArgumentsTest : public oatpp::test::UnitTest{
+class CommandLineArgumentsTest : public avena::test::UnitTest{
 public:
   
   CommandLineArgumentsTest():UnitTest("TEST[base::CommandLineArgumentsTest]"){}

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 #include "oatpp/async/Executor.hpp"
 #include "oatpp/async/ConditionVariable.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 namespace {
 
@@ -35,16 +37,16 @@ struct Resource {
   v_int64 counter;
 };
 
-class TestCoroutineWait : public oatpp::async::Coroutine<TestCoroutineWait> {
+class TestCoroutineWait : public avena::async::Coroutine<TestCoroutineWait> {
 private:
   std::shared_ptr<Resource> m_resource;
-  oatpp::async::LockGuard m_lockGuard;
-  oatpp::async::ConditionVariable* m_cv;
+  avena::async::LockGuard m_lockGuard;
+  avena::async::ConditionVariable* m_cv;
 public:
 
   TestCoroutineWait(std::shared_ptr<Resource> resource,
-                    oatpp::async::Lock* lock,
-                    oatpp::async::ConditionVariable* cv)
+                    avena::async::Lock* lock,
+                    avena::async::ConditionVariable* cv)
     : m_resource(resource)
     , m_lockGuard(lock)
     , m_cv(cv)
@@ -62,16 +64,16 @@ public:
 
 };
 
-class TestCoroutineWaitWithTimeout : public oatpp::async::Coroutine<TestCoroutineWaitWithTimeout> {
+class TestCoroutineWaitWithTimeout : public avena::async::Coroutine<TestCoroutineWaitWithTimeout> {
 private:
   std::shared_ptr<Resource> m_resource;
-  oatpp::async::LockGuard m_lockGuard;
-  oatpp::async::ConditionVariable* m_cv;
+  avena::async::LockGuard m_lockGuard;
+  avena::async::ConditionVariable* m_cv;
 public:
 
   TestCoroutineWaitWithTimeout(std::shared_ptr<Resource> resource,
-                               oatpp::async::Lock* lock,
-                               oatpp::async::ConditionVariable* cv)
+                               avena::async::Lock* lock,
+                               avena::async::ConditionVariable* cv)
     : m_resource(resource)
     , m_lockGuard(lock)
     , m_cv(cv)
@@ -89,16 +91,16 @@ public:
 
 };
 
-class TestCoroutineTimeout : public oatpp::async::Coroutine<TestCoroutineTimeout> {
+class TestCoroutineTimeout : public avena::async::Coroutine<TestCoroutineTimeout> {
 private:
   std::shared_ptr<Resource> m_resource;
-  oatpp::async::LockGuard m_lockGuard;
-  oatpp::async::ConditionVariable* m_cv;
+  avena::async::LockGuard m_lockGuard;
+  avena::async::ConditionVariable* m_cv;
 public:
 
   TestCoroutineTimeout(std::shared_ptr<Resource> resource,
-                       oatpp::async::Lock* lock,
-                       oatpp::async::ConditionVariable* cv)
+                       avena::async::Lock* lock,
+                       avena::async::ConditionVariable* cv)
     : m_resource(resource)
     , m_lockGuard(lock)
     , m_cv(cv)
@@ -122,9 +124,9 @@ void ConditionVariableTest::onRun() {
   std::atomic<bool> finished(false);
 
   std::thread timeoutThread([&finished] {
-    auto now = oatpp::Environment::getMicroTickCount();
+    auto now = avena::Environment::getMicroTickCount();
     while(!finished) {
-      auto ticks = oatpp::Environment::getMicroTickCount();
+      auto ticks = avena::Environment::getMicroTickCount();
       if(ticks - now > 10 * 60 * 1000 * 1000) {
         break;
       }
@@ -139,11 +141,11 @@ void ConditionVariableTest::onRun() {
 
       OATPP_LOGd("ITERATION 'WAIT'", "{}", iter)
 
-      oatpp::async::Executor executor;
+      avena::async::Executor executor;
 
       auto resource = std::make_shared<Resource>();
-      oatpp::async::Lock lock;
-      oatpp::async::ConditionVariable cv;
+      avena::async::Lock lock;
+      avena::async::ConditionVariable cv;
       executor.execute<TestCoroutineWait>(resource, &lock, &cv);
 
       std::vector<std::thread> threads;
@@ -151,7 +153,7 @@ void ConditionVariableTest::onRun() {
       for (v_int32 i = 0; i < 100; i++) {
         threads.push_back(std::thread([&resource, &lock, &cv] {
           {
-            std::lock_guard<oatpp::async::Lock> guard(lock);
+            std::lock_guard<avena::async::Lock> guard(lock);
             resource->counter++;
           }
           cv.notifyAll();
@@ -176,11 +178,11 @@ void ConditionVariableTest::onRun() {
 
       OATPP_LOGd("ITERATION 'WAIT-WITH-TIMEOUT'", "{}", iter)
 
-      oatpp::async::Executor executor;
+      avena::async::Executor executor;
 
       auto resource = std::make_shared<Resource>();
-      oatpp::async::Lock lock;
-      oatpp::async::ConditionVariable cv;
+      avena::async::Lock lock;
+      avena::async::ConditionVariable cv;
       executor.execute<TestCoroutineWaitWithTimeout>(resource, &lock, &cv);
 
       std::vector<std::thread> threads;
@@ -188,7 +190,7 @@ void ConditionVariableTest::onRun() {
       for (v_int32 i = 0; i < 100; i++) {
         threads.push_back(std::thread([&resource, &lock, &cv] {
           {
-            std::lock_guard<oatpp::async::Lock> guard(lock);
+            std::lock_guard<avena::async::Lock> guard(lock);
             resource->counter++;
           }
           cv.notifyAll();
@@ -213,11 +215,11 @@ void ConditionVariableTest::onRun() {
 
       OATPP_LOGd("ITERATION 'TIMEOUT'", "{}", iter)
 
-      oatpp::async::Executor executor;
+      avena::async::Executor executor;
 
       auto resource = std::make_shared<Resource>();
-      oatpp::async::Lock lock;
-      oatpp::async::ConditionVariable cv;
+      avena::async::Lock lock;
+      avena::async::ConditionVariable cv;
       executor.execute<TestCoroutineTimeout>(resource, &lock, &cv);
 
       executor.waitTasksFinished();

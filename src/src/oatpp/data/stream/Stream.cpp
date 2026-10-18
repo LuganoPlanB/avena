@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 #include "oatpp/utils/Conversion.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace data{ namespace stream {
+namespace avena { namespace data{ namespace stream {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WriteCallback
@@ -43,8 +45,8 @@ v_io_size WriteCallback::writeSimple(const void *data, v_buff_size count) {
   async::Action action;
   auto res = write(data, count, action);
   if(!action.isNone()) {
-    OATPP_LOGe("[oatpp::data::stream::WriteCallback::writeSimple()]", "Error. writeSimple is called on a stream in Async mode.")
-    throw std::runtime_error("[oatpp::data::stream::WriteCallback::writeSimple()]: Error. writeSimple is called on a stream in Async mode.");
+    OATPP_LOGe("[avena::data::stream::WriteCallback::writeSimple()]", "Error. writeSimple is called on a stream in Async mode.")
+    throw std::runtime_error("[avena::data::stream::WriteCallback::writeSimple()]: Error. writeSimple is called on a stream in Async mode.");
   }
   return res;
 }
@@ -55,8 +57,8 @@ v_io_size WriteCallback::writeExactSizeDataSimple(data::buffer::InlineWriteData&
     async::Action action;
     auto res = write(inlineData, action);
     if(!action.isNone()) {
-      OATPP_LOGe("[oatpp::data::stream::WriteCallback::writeExactSizeDataSimple()]", "Error. writeExactSizeDataSimple() is called on a stream in Async mode.")
-      throw std::runtime_error("[oatpp::data::stream::WriteCallback::writeExactSizeDataSimple()]: Error. writeExactSizeDataSimple() is called on a stream in Async mode.");
+      OATPP_LOGe("[avena::data::stream::WriteCallback::writeExactSizeDataSimple()]", "Error. writeExactSizeDataSimple() is called on a stream in Async mode.")
+      throw std::runtime_error("[avena::data::stream::WriteCallback::writeExactSizeDataSimple()]: Error. writeExactSizeDataSimple() is called on a stream in Async mode.");
     }
     if(res == IOError::BROKEN_PIPE || res == IOError::ZERO_VALUE) {
       break;
@@ -94,9 +96,9 @@ async::Action WriteCallback::writeExactSizeDataAsyncInline(data::buffer::InlineW
         case IOError::RETRY_WRITE:
           return async::Action::createActionByType(async::Action::TYPE_REPEAT);
         default:
-          OATPP_LOGe("[oatpp::data::stream::writeExactSizeDataAsyncInline()]", "Error. Unknown IO result.")
+          OATPP_LOGe("[avena::data::stream::writeExactSizeDataAsyncInline()]", "Error. Unknown IO result.")
           return new async::Error(
-            "[oatpp::data::stream::writeExactSizeDataAsyncInline()]: Error. Unknown IO result.");
+            "[avena::data::stream::writeExactSizeDataAsyncInline()]: Error. Unknown IO result.");
       }
     }
 
@@ -108,7 +110,7 @@ async::Action WriteCallback::writeExactSizeDataAsyncInline(data::buffer::InlineW
 
 async::CoroutineStarter WriteCallback::writeExactSizeDataAsync(const void* data, v_buff_size size) {
 
-  class WriteDataCoroutine : public oatpp::async::Coroutine<WriteDataCoroutine> {
+  class WriteDataCoroutine : public avena::async::Coroutine<WriteDataCoroutine> {
   private:
     WriteCallback* m_this;
     data::buffer::InlineWriteData m_inlineData;
@@ -147,8 +149,8 @@ v_io_size ReadCallback::readExactSizeDataSimple(data::buffer::InlineReadData& in
     async::Action action;
     auto res = read(inlineData, action);
     if(!action.isNone()) {
-      OATPP_LOGe("[oatpp::data::stream::ReadCallback::readExactSizeDataSimple()]", "Error. readExactSizeDataSimple() is called on a stream in Async mode.")
-      throw std::runtime_error("[oatpp::data::stream::ReadCallback::readExactSizeDataSimple()]: Error. readExactSizeDataSimple() is called on a stream in Async mode.");
+      OATPP_LOGe("[avena::data::stream::ReadCallback::readExactSizeDataSimple()]", "Error. readExactSizeDataSimple() is called on a stream in Async mode.")
+      throw std::runtime_error("[avena::data::stream::ReadCallback::readExactSizeDataSimple()]: Error. readExactSizeDataSimple() is called on a stream in Async mode.");
     }
     if(res <= 0 && res != IOError::RETRY_READ && res != IOError::RETRY_WRITE) {
       break;
@@ -178,7 +180,7 @@ async::Action ReadCallback::readExactSizeDataAsyncInline(data::buffer::InlineRea
     } else {
       switch (res) {
         case IOError::BROKEN_PIPE:
-          return new AsyncIOError("[oatpp::data::stream::readExactSizeDataAsyncInline()]: IOError::BROKEN_PIPE", IOError::BROKEN_PIPE);
+          return new AsyncIOError("[avena::data::stream::readExactSizeDataAsyncInline()]: IOError::BROKEN_PIPE", IOError::BROKEN_PIPE);
         case IOError::ZERO_VALUE:
           break;
         case IOError::RETRY_READ:
@@ -186,9 +188,9 @@ async::Action ReadCallback::readExactSizeDataAsyncInline(data::buffer::InlineRea
         case IOError::RETRY_WRITE:
           return async::Action::createActionByType(async::Action::TYPE_REPEAT);
         default:
-          OATPP_LOGe("[oatpp::data::stream::readExactSizeDataAsyncInline()]", "Error. Unknown IO result.")
+          OATPP_LOGe("[avena::data::stream::readExactSizeDataAsyncInline()]", "Error. Unknown IO result.")
           return new async::Error(
-            "[oatpp::data::stream::readExactSizeDataAsyncInline()]: Error. Unknown IO result.");
+            "[avena::data::stream::readExactSizeDataAsyncInline()]: Error. Unknown IO result.");
       }
     }
 
@@ -220,9 +222,9 @@ async::Action ReadCallback::readSomeDataAsyncInline(data::buffer::InlineReadData
         case IOError::RETRY_WRITE:
           return async::Action::createActionByType(async::Action::TYPE_REPEAT);
         default:
-          OATPP_LOGe("[oatpp::data::stream::readSomeDataAsyncInline()]", "Error. Unknown IO result.")
+          OATPP_LOGe("[avena::data::stream::readSomeDataAsyncInline()]", "Error. Unknown IO result.")
           return new async::Error(
-            "[oatpp::data::stream::readSomeDataAsyncInline()]: Error. Unknown IO result.");
+            "[avena::data::stream::readSomeDataAsyncInline()]: Error. Unknown IO result.");
       }
     }
 
@@ -236,8 +238,8 @@ v_io_size ReadCallback::readSimple(void *data, v_buff_size count) {
   async::Action action;
   auto res = read(data, count, action);
   if(!action.isNone()) {
-    OATPP_LOGe("[oatpp::data::stream::ReadCallback::readSimple()]", "Error. readSimple is called on a stream in Async mode.")
-    throw std::runtime_error("[oatpp::data::stream::ReadCallback::readSimple()]: Error. readSimple is called on a stream in Async mode.");
+    OATPP_LOGe("[avena::data::stream::ReadCallback::readSimple()]", "Error. readSimple is called on a stream in Async mode.")
+    throw std::runtime_error("[avena::data::stream::ReadCallback::readSimple()]: Error. readSimple is called on a stream in Async mode.");
   }
   return res;
 }
@@ -428,7 +430,7 @@ v_io_size ConsistentOutputStream::writeAsString(bool value) {
 // Other functions
 
 
-ConsistentOutputStream& operator << (ConsistentOutputStream& s, const oatpp::String& str) {
+ConsistentOutputStream& operator << (ConsistentOutputStream& s, const avena::String& str) {
   if(str) {
     s.writeSimple(str);
   } else {
@@ -662,12 +664,12 @@ async::CoroutineStarter transferAsync(const base::ObjectHandle<ReadCallback>& re
                                       const base::ObjectHandle<data::buffer::Processor>& processor)
 {
 
-  class TransferCoroutine : public oatpp::async::Coroutine<TransferCoroutine> {
+  class TransferCoroutine : public avena::async::Coroutine<TransferCoroutine> {
   private:
     base::ObjectHandle<ReadCallback> m_readCallback;
     base::ObjectHandle<WriteCallback> m_writeCallback;
     v_buff_size m_transferSize;
-    base::ObjectHandle<oatpp::data::buffer::IOBuffer> m_buffer;
+    base::ObjectHandle<avena::data::buffer::IOBuffer> m_buffer;
     base::ObjectHandle<data::buffer::Processor> m_processor;
   private:
     v_buff_size m_progress;
@@ -729,7 +731,7 @@ async::CoroutineStarter transferAsync(const base::ObjectHandle<ReadCallback>& re
 
             case IOError::BROKEN_PIPE:
               if(m_transferSize > 0) {
-                return error<AsyncTransferError>("[oatpp::data::stream::transferAsync]: Error. ReadCallback. BROKEN_PIPE.");
+                return error<AsyncTransferError>("[avena::data::stream::transferAsync]: Error. ReadCallback. BROKEN_PIPE.");
               }
               m_inData.set(nullptr, 0);
               break;
@@ -755,7 +757,7 @@ async::CoroutineStarter transferAsync(const base::ObjectHandle<ReadCallback>& re
                 if (!action.isNone()) {
                   return action;
                 }
-                return error<AsyncTransferError>("[oatpp::data::stream::transferAsync]: Error. ReadCallback. Unknown IO error.");
+                return error<AsyncTransferError>("[avena::data::stream::transferAsync]: Error. ReadCallback. Unknown IO error.");
               }
               m_inData.set(nullptr, 0);
 
@@ -798,7 +800,7 @@ async::CoroutineStarter transferAsync(const base::ObjectHandle<ReadCallback>& re
           return finish();
 
         default:
-          return error<AsyncTransferError>("[oatpp::data::stream::transferAsync]: Error. ReadCallback. Unknown processing error.");
+          return error<AsyncTransferError>("[avena::data::stream::transferAsync]: Error. ReadCallback. Unknown processing error.");
 
       }
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,9 +30,9 @@
 #include "oatpp/encoding/Base64.hpp"
 #include "oatpp/utils/parser/Caret.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace handler {
+namespace avena { namespace web { namespace server { namespace handler {
 
-AuthorizationHandler::AuthorizationHandler(const oatpp::String& scheme, const oatpp::String& realm)
+AuthorizationHandler::AuthorizationHandler(const avena::String& scheme, const avena::String& realm)
   : m_scheme(scheme)
   , m_realm(realm)
 {}
@@ -45,31 +47,31 @@ void AuthorizationHandler::addErrorResponseHeaders(Headers& headers) {
   headers.put_LockFree(protocol::http::Header::WWW_AUTHENTICATE, stream.toString());
 }
 
-oatpp::String AuthorizationHandler::getScheme() {
+avena::String AuthorizationHandler::getScheme() {
   return m_scheme;
 }
 
-oatpp::String AuthorizationHandler::getRealm() {
+avena::String AuthorizationHandler::getRealm() {
   return m_realm;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BasicAuthorizationHandler
 
-BasicAuthorizationHandler::BasicAuthorizationHandler(const oatpp::String& realm)
+BasicAuthorizationHandler::BasicAuthorizationHandler(const avena::String& realm)
   : AuthorizationHandler("Basic", realm)
 {}
 
-std::shared_ptr<handler::AuthorizationObject> BasicAuthorizationHandler::handleAuthorization(const oatpp::String &header) {
+std::shared_ptr<handler::AuthorizationObject> BasicAuthorizationHandler::handleAuthorization(const avena::String &header) {
 
   if(header && header->size() > 6 && utils::String::compare(header->data(), 6, "Basic ", 6) == 0) {
 
-    oatpp::String auth = oatpp::encoding::Base64::decode(header->c_str() + 6, static_cast<v_buff_size>(header->size() - 6));
+    avena::String auth = avena::encoding::Base64::decode(header->c_str() + 6, static_cast<v_buff_size>(header->size() - 6));
     utils::parser::Caret caret(auth);
 
     if (caret.findChar(':')) {
-      oatpp::String userId(&caret.getData()[0], caret.getPosition());
-      oatpp::String password(&caret.getData()[caret.getPosition() + 1],
+      avena::String userId(&caret.getData()[0], caret.getPosition());
+      avena::String password(&caret.getData()[caret.getPosition() + 1],
                              caret.getDataSize() - caret.getPosition() - 1);
       auto authResult = authorize(userId, password);
       if(authResult) {
@@ -90,8 +92,8 @@ std::shared_ptr<handler::AuthorizationObject> BasicAuthorizationHandler::handleA
 
 }
 
-std::shared_ptr<AuthorizationObject> BasicAuthorizationHandler::authorize(const oatpp::String &userId,
-                                                                          const oatpp::String &password)
+std::shared_ptr<AuthorizationObject> BasicAuthorizationHandler::authorize(const avena::String &userId,
+                                                                          const avena::String &password)
 {
   auto authorizationObject = std::make_shared<DefaultBasicAuthorizationObject>();
   authorizationObject->userId = userId;
@@ -102,15 +104,15 @@ std::shared_ptr<AuthorizationObject> BasicAuthorizationHandler::authorize(const 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BearerAuthorizationHandler
 
-BearerAuthorizationHandler::BearerAuthorizationHandler(const oatpp::String& realm)
+BearerAuthorizationHandler::BearerAuthorizationHandler(const avena::String& realm)
   : AuthorizationHandler("Bearer", realm)
 {}
 
-std::shared_ptr<AuthorizationObject> BearerAuthorizationHandler::handleAuthorization(const oatpp::String &header) {
+std::shared_ptr<AuthorizationObject> BearerAuthorizationHandler::handleAuthorization(const avena::String &header) {
 
   if(header && header->size() > 7 && utils::String::compare(header->data(), 7, "Bearer ", 7) == 0) {
 
-    oatpp::String token = oatpp::String(header->c_str() + 7, static_cast<v_buff_size>(header->size() - 7));
+    avena::String token = avena::String(header->c_str() + 7, static_cast<v_buff_size>(header->size() - 7));
 
     auto authResult = authorize(token);
     if(authResult) {
@@ -129,7 +131,7 @@ std::shared_ptr<AuthorizationObject> BearerAuthorizationHandler::handleAuthoriza
 
 }
 
-std::shared_ptr<AuthorizationObject> BearerAuthorizationHandler::authorize(const oatpp::String& token) {
+std::shared_ptr<AuthorizationObject> BearerAuthorizationHandler::authorize(const avena::String& token) {
   auto authObject = std::make_shared<DefaultBearerAuthorizationObject>();
   authObject->token = token;
   return authObject;

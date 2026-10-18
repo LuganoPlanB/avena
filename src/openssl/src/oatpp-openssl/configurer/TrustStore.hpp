@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,17 +31,17 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
 /**
  * Context configurer for a trust store for certificate validation. <br>
  * Enables certificate validation and host name verification in the client.
- * @extends &id:oatpp::openssl::configurer::ContextConfigurer;.
+ * @extends &id:avena::openssl::configurer::ContextConfigurer;.
  */
 class TrustStore : public ContextConfigurer {
 private:
-  oatpp::String m_cafile;
-  oatpp::String m_cadir;
+  avena::String m_cafile;
+  avena::String m_cadir;
 public:
 
   /**
@@ -47,7 +49,7 @@ public:
    * @param file - Name of file with trusted certificates in PEM format
    * @param dir - Name of directory containing trusted certificates, see `c_rehash`
    */
-  TrustStore(const oatpp::String& file, const oatpp::String& dir);
+  TrustStore(const avena::String& file, const avena::String& dir);
 
   void configure(SSL_CTX* ctx) override;
 

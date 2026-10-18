@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 
 #include <iostream>
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 namespace {
 
@@ -46,7 +48,7 @@ ENUM(TestEnum2, v_int32,
      VALUE(VALUE_2, 2, "other-value-2")
 )
 
-class TestDto1 : public oatpp::DTO {
+class TestDto1 : public avena::DTO {
 
   DTO_INIT(TestDto1, DTO)
 
@@ -60,7 +62,7 @@ class TestDto1 : public oatpp::DTO {
 
 };
 
-class TestDto2 : public oatpp::DTO {
+class TestDto2 : public avena::DTO {
 
   DTO_INIT(TestDto2, DTO)
 
@@ -72,7 +74,7 @@ class TestDto2 : public oatpp::DTO {
 
 };
 
-class PrimitivesDto : public oatpp::DTO {
+class PrimitivesDto : public avena::DTO {
 
   DTO_INIT(PrimitivesDto, DTO)
 
@@ -95,7 +97,7 @@ class PrimitivesDto : public oatpp::DTO {
 
 };
 
-class TextPrimitivesDto : public oatpp::DTO {
+class TextPrimitivesDto : public avena::DTO {
 
   DTO_INIT(TextPrimitivesDto, DTO)
 
@@ -143,7 +145,7 @@ void ObjectRemapperTest::onRun() {
     obj1->enum2 = TestEnum1::VALUE_2;
 
     ErrorStack errorStack;
-    auto obj2 = remapper.remap<oatpp::Object<TestDto2>>(obj1, errorStack);
+    auto obj2 = remapper.remap<avena::Object<TestDto2>>(obj1, errorStack);
     if(!errorStack.empty()) {
       std::cout << *errorStack.stacktrace() << std::endl;
     }
@@ -173,7 +175,7 @@ void ObjectRemapperTest::onRun() {
     obj1->enum2 = TestEnum1::VALUE_2;
 
     ErrorStack errorStack;
-    auto obj2 = remapper.remap<oatpp::Object<TestDto2>>(obj1, errorStack);
+    auto obj2 = remapper.remap<avena::Object<TestDto2>>(obj1, errorStack);
     if(!errorStack.empty()) {
       std::cout << *errorStack.stacktrace() << std::endl;
     }
@@ -203,7 +205,7 @@ void ObjectRemapperTest::onRun() {
     obj1->i32 = nullptr;
 
     ErrorStack errorStack;
-    auto vec = remapper.remap<oatpp::Vector<oatpp::String>>(obj1, errorStack);
+    auto vec = remapper.remap<avena::Vector<avena::String>>(obj1, errorStack);
     if(!errorStack.empty()) {
       std::cout << *errorStack.stacktrace() << std::endl;
     }
@@ -231,21 +233,21 @@ void ObjectRemapperTest::onRun() {
     tree[2]["field_2"] = "val2.3";
 
     {
-      auto map = remapper.remap<oatpp::UnorderedFields<String>>(tree[0]);
+      auto map = remapper.remap<avena::UnorderedFields<String>>(tree[0]);
       OATPP_ASSERT(map->size() == 2)
       OATPP_ASSERT(map["field_1"] == "val1")
       OATPP_ASSERT(map["field_2"] == "val2")
     }
 
     {
-      auto map = remapper.remap<oatpp::UnorderedFields<String>>(tree[1]);
+      auto map = remapper.remap<avena::UnorderedFields<String>>(tree[1]);
       OATPP_ASSERT(map->size() == 2)
       OATPP_ASSERT(map["field_1"] == "val1.2")
       OATPP_ASSERT(map["field_2"] == "val2.2")
     }
 
     {
-      auto map = remapper.remap<oatpp::UnorderedFields<String>>(tree[2]);
+      auto map = remapper.remap<avena::UnorderedFields<String>>(tree[2]);
       OATPP_ASSERT(map->size() == 2)
       OATPP_ASSERT(map["field_1"] == "val1.3")
       OATPP_ASSERT(map["field_2"] == "val2.3")
@@ -254,7 +256,7 @@ void ObjectRemapperTest::onRun() {
   }
 
   {
-    oatpp::Tree tree;
+    avena::Tree tree;
     OATPP_ASSERT(tree == nullptr)
 
     OATPP_ASSERT(tree->isUndefined()) // implicitly initialized
@@ -283,7 +285,7 @@ void ObjectRemapperTest::onRun() {
     p->f64 = 0.5;
 
     ErrorStack errorStack;
-    auto tp = remapper.remap<oatpp::Object<TextPrimitivesDto>>(p, errorStack);
+    auto tp = remapper.remap<avena::Object<TextPrimitivesDto>>(p, errorStack);
     if(!errorStack.empty()) {
       OATPP_LOGe(TAG, "stack:\n{}", errorStack.stacktrace())
     }
@@ -322,7 +324,7 @@ void ObjectRemapperTest::onRun() {
     tp->f64 = "0.5";
 
     ErrorStack errorStack;
-    auto p = remapper.remap<oatpp::Object<PrimitivesDto>>(tp, errorStack);
+    auto p = remapper.remap<avena::Object<PrimitivesDto>>(tp, errorStack);
     if(!errorStack.empty()) {
       OATPP_LOGe(TAG, "stack:\n{}", errorStack.stacktrace())
     }

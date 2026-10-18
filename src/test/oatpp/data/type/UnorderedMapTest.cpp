@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,60 +28,60 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 void UnorderedMapTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test default constructor...")
-    oatpp::UnorderedFields<String> map;
+    avena::UnorderedFields<String> map;
 
     OATPP_ASSERT(!map)
     OATPP_ASSERT(map == nullptr)
 
     OATPP_ASSERT(map.get() == nullptr)
-    OATPP_ASSERT(map.getValueType()->classId.id == oatpp::data::type::__class::AbstractUnorderedMap::CLASS_ID.id)
+    OATPP_ASSERT(map.getValueType()->classId.id == avena::data::type::__class::AbstractUnorderedMap::CLASS_ID.id)
     OATPP_ASSERT(map.getValueType()->params.size() == 2)
     auto it = map.getValueType()->params.begin();
-    OATPP_ASSERT(*it++ == oatpp::String::Class::getType())
-    OATPP_ASSERT(*it++ == oatpp::String::Class::getType())
+    OATPP_ASSERT(*it++ == avena::String::Class::getType())
+    OATPP_ASSERT(*it++ == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test empty ilist constructor...")
-    oatpp::UnorderedFields<String> map({});
+    avena::UnorderedFields<String> map({});
 
     OATPP_ASSERT(map)
     OATPP_ASSERT(map != nullptr)
     OATPP_ASSERT(map->size() == 0)
 
     OATPP_ASSERT(map.get() != nullptr)
-    OATPP_ASSERT(map.getValueType()->classId.id == oatpp::data::type::__class::AbstractUnorderedMap::CLASS_ID.id)
+    OATPP_ASSERT(map.getValueType()->classId.id == avena::data::type::__class::AbstractUnorderedMap::CLASS_ID.id)
     OATPP_ASSERT(map.getValueType()->params.size() == 2)
     auto it = map.getValueType()->params.begin();
-    OATPP_ASSERT(*it++ == oatpp::String::Class::getType())
-    OATPP_ASSERT(*it++ == oatpp::String::Class::getType())
+    OATPP_ASSERT(*it++ == avena::String::Class::getType())
+    OATPP_ASSERT(*it++ == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test createShared()...")
-    oatpp::UnorderedFields<String> map = oatpp::UnorderedFields<String>::createShared();
+    avena::UnorderedFields<String> map = avena::UnorderedFields<String>::createShared();
 
     OATPP_ASSERT(map)
     OATPP_ASSERT(map != nullptr)
     OATPP_ASSERT(map->size() == 0)
 
     OATPP_ASSERT(map.get() != nullptr)
-    OATPP_ASSERT(map.getValueType()->classId.id == oatpp::data::type::__class::AbstractUnorderedMap::CLASS_ID.id)
+    OATPP_ASSERT(map.getValueType()->classId.id == avena::data::type::__class::AbstractUnorderedMap::CLASS_ID.id)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test copy-assignment operator...")
-    oatpp::UnorderedFields<String> map1({});
-    oatpp::UnorderedFields<String> map2;
+    avena::UnorderedFields<String> map1({});
+    avena::UnorderedFields<String> map2;
 
     map2 = map1;
 
@@ -108,8 +110,8 @@ void UnorderedMapTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test move-assignment operator...")
-    oatpp::UnorderedFields<String> map1({});
-    oatpp::UnorderedFields<String> map2;
+    avena::UnorderedFields<String> map1({});
+    avena::UnorderedFields<String> map2;
 
     map2 = std::move(map1);
 
@@ -120,7 +122,7 @@ void UnorderedMapTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test get element by index...")
-    oatpp::UnorderedFields<String> map = {{"key1", "a"}, {"key2", "b"}, {"key3", "c"}};
+    avena::UnorderedFields<String> map = {{"key1", "a"}, {"key2", "b"}, {"key3", "c"}};
 
     OATPP_ASSERT(map)
     OATPP_ASSERT(map != nullptr)
@@ -142,13 +144,13 @@ void UnorderedMapTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test polymorphicDispatcher...")
-    oatpp::UnorderedFields<String> map = {{"key1", "a"}, {"key2", "b"}, {"key3", "c"}};
+    avena::UnorderedFields<String> map = {{"key1", "a"}, {"key2", "b"}, {"key3", "c"}};
 
-    auto polymorphicDispatcher = static_cast<const typename oatpp::data::type::__class::Map::PolymorphicDispatcher*>(
+    auto polymorphicDispatcher = static_cast<const typename avena::data::type::__class::Map::PolymorphicDispatcher*>(
       map.getValueType()->polymorphicDispatcher
     );
 
-    polymorphicDispatcher->addItem(map, oatpp::String("key1"), oatpp::String("d"));
+    polymorphicDispatcher->addItem(map, avena::String("key1"), avena::String("d"));
 
     OATPP_ASSERT(map->size() == 3)
 

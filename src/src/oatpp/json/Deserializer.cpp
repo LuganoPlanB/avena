@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,13 +29,13 @@
 #include "oatpp/data/stream/BufferStream.hpp"
 #include "oatpp/utils/Conversion.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 void Deserializer::deserializeNull(State& state) {
   if(state.caret->isAtText("null", true)){
     state.tree->setNull();
   } else {
-    state.errorStack.push("[oatpp::json::Deserializer::deserializeNull()]: 'null' expected");
+    state.errorStack.push("[avena::json::Deserializer::deserializeNull()]: 'null' expected");
   }
 }
 
@@ -51,7 +53,7 @@ void Deserializer::deserializeBoolean(State& state) {
   } else if(state.caret->isAtText("false", true)) {
     state.tree->setPrimitive<bool>(false);
   } else {
-    state.errorStack.push("[oatpp::json::Deserializer::deserializeBoolean()]: 'true' or 'false' expected");
+    state.errorStack.push("[avena::json::Deserializer::deserializeBoolean()]: 'true' or 'false' expected");
   }
 }
 
@@ -85,7 +87,7 @@ void Deserializer::deserializeArray(State& state) {
 
       if(!nestedState.errorStack.empty()) {
         state.errorStack.splice(nestedState.errorStack);
-        state.errorStack.push("[oatpp::json::Deserializer::deserializeArray()]: index=" + utils::Conversion::int64ToStr(index));
+        state.errorStack.push("[avena::json::Deserializer::deserializeArray()]: index=" + utils::Conversion::int64ToStr(index));
         return;
       }
 
@@ -98,12 +100,12 @@ void Deserializer::deserializeArray(State& state) {
     }
 
     if(!state.caret->canContinueAtChar(']', 1)){
-      state.errorStack.push("[oatpp::json::Deserializer::deserializeArray()]: ']' expected");
+      state.errorStack.push("[avena::json::Deserializer::deserializeArray()]: ']' expected");
       return;
     }
 
   } else {
-    state.errorStack.push("[oatpp::json::Deserializer::deserializeArray()]: '[' expected");
+    state.errorStack.push("[avena::json::Deserializer::deserializeArray()]: '[' expected");
   }
 
 }
@@ -123,13 +125,13 @@ void Deserializer::deserializeMap(State& state) {
 
       auto key = Utils::parseString(*state.caret);
       if(state.caret->hasError()){
-        state.errorStack.push("[oatpp::json::Deserializer::deserializeMap()]: Item key name expected");
+        state.errorStack.push("[avena::json::Deserializer::deserializeMap()]: Item key name expected");
         return;
       }
 
       state.caret->skipBlankChars();
       if(!state.caret->canContinueAtChar(':', 1)){
-        state.errorStack.push("[oatpp::json::Deserializer::deserializeMap()]: ':' expected");
+        state.errorStack.push("[avena::json::Deserializer::deserializeMap()]: ':' expected");
         return;
       }
 
@@ -144,7 +146,7 @@ void Deserializer::deserializeMap(State& state) {
 
       if(!nestedState.errorStack.empty()) {
         state.errorStack.splice(nestedState.errorStack);
-        state.errorStack.push("[oatpp::json::Deserializer::deserializeMap()]: key='" + key + "'");
+        state.errorStack.push("[avena::json::Deserializer::deserializeMap()]: key='" + key + "'");
         return;
       }
 
@@ -154,12 +156,12 @@ void Deserializer::deserializeMap(State& state) {
     }
 
     if(!state.caret->canContinueAtChar('}', 1)){
-      state.errorStack.push("[oatpp::json::Deserializer::deserializeMap()]: '}' expected");
+      state.errorStack.push("[avena::json::Deserializer::deserializeMap()]: '}' expected");
       return;
     }
 
   } else {
-    state.errorStack.push("[oatpp::json::Deserializer::deserializeMap()]: '{' expected");
+    state.errorStack.push("[avena::json::Deserializer::deserializeMap()]: '{' expected");
   }
 
 }

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
 DbClient::DbClient(const std::shared_ptr<Executor>& executor)
   : m_executor(executor)
@@ -45,8 +47,8 @@ std::shared_ptr<const data::mapping::TypeResolver> DbClient::getTypeResolver() {
   return m_typeResolver;
 }
 
-data::share::StringTemplate DbClient::parseQueryTemplate(const oatpp::String& name,
-                                                         const oatpp::String& text,
+data::share::StringTemplate DbClient::parseQueryTemplate(const avena::String& name,
+                                                         const avena::String& text,
                                                          const Executor::ParamsTypeMap& paramsTypeMap,
                                                          bool prepare)
 {
@@ -54,14 +56,14 @@ data::share::StringTemplate DbClient::parseQueryTemplate(const oatpp::String& na
 }
 
 std::shared_ptr<QueryResult> DbClient::execute(const data::share::StringTemplate& queryTemplate,
-                                               const std::unordered_map<oatpp::String, oatpp::Void>& params,
+                                               const std::unordered_map<avena::String, avena::Void>& params,
                                                const provider::ResourceHandle<Connection>& connection)
 {
   return m_executor->execute(queryTemplate, params, m_typeResolver, connection);
 }
 
-std::shared_ptr<QueryResult> DbClient::executeQuery(const oatpp::String& query,
-                                                    const std::unordered_map<oatpp::String, oatpp::Void>& params,
+std::shared_ptr<QueryResult> DbClient::executeQuery(const avena::String& query,
+                                                    const std::unordered_map<avena::String, avena::Void>& params,
                                                     const provider::ResourceHandle<Connection>& connection)
 {
   return m_executor->execute(query, params, m_typeResolver, connection);

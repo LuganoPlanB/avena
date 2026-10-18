@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,14 +34,14 @@
 #include "oatpp/macro/codegen.hpp"
 #include "oatpp/macro/component.hpp"
 
-namespace oatpp { namespace test { namespace openssl { namespace app {
+namespace avena { namespace test { namespace openssl { namespace app {
   
-class AsyncController : public oatpp::web::server::api::ApiController {
+class AsyncController : public avena::web::server::api::ApiController {
 private:
   static constexpr const char* TAG = "test::web::app::AsyncController";
 public:
   AsyncController(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 public:
   

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,10 +26,10 @@
 
 #include "QueryResult.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
   v_uint64 QueryResult::getRowsAffected() const {
-    throw std::runtime_error("[oatpp::orm::QueryResult::getRowsAffected()]: Error. Not implemented!");
+    throw std::runtime_error("[avena::orm::QueryResult::getRowsAffected()]: Error. Not implemented!");
   }
 
 }}

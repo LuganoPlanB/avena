@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,13 +29,13 @@
 #include <openssl/x509_vfy.h>
 #include <openssl/err.h>
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
 static void deleteStackOfX509Info(STACK_OF(X509_INFO) *p) {
   sk_X509_INFO_pop_free(p, X509_INFO_free);
 }
 
-CertificateChainBuffer::CertificateChainBuffer(const oatpp::String& certificateChainBuffer)
+CertificateChainBuffer::CertificateChainBuffer(const avena::String& certificateChainBuffer)
   : CertificateChainBuffer::CertificateChainBuffer(certificateChainBuffer->data(), certificateChainBuffer->size())
 {}
 
@@ -44,14 +46,14 @@ CertificateChainBuffer::CertificateChainBuffer(const void *certificateChainBuffe
   }
   auto buffer = std::shared_ptr<BIO>(BIO_new_mem_buf(certificateChainBuffer, certificateChainBufferLength), BIO_free);
   if (buffer == nullptr) {
-    throw std::runtime_error("[oatpp::openssl::configurer::CertificateChainBuffer::CertificateChainBuffer()]: Error. BIO_new_mem_buf(): "
+    throw std::runtime_error("[avena::openssl::configurer::CertificateChainBuffer::CertificateChainBuffer()]: Error. BIO_new_mem_buf(): "
                              + std::string(ERR_error_string(ERR_get_error(), nullptr)));
   }
 
   m_certificates = std::shared_ptr<STACK_OF(X509_INFO)>(PEM_X509_INFO_read_bio(buffer.get(), nullptr, nullptr, nullptr), deleteStackOfX509Info);
   if (m_certificates == nullptr)
   {
-    throw std::runtime_error("[oatpp::openssl::configurer::CertificateChainBuffer::CertificateChainBuffer()]: Error. PEM_X509_INFO_read_bio(): "
+    throw std::runtime_error("[avena::openssl::configurer::CertificateChainBuffer::CertificateChainBuffer()]: Error. PEM_X509_INFO_read_bio(): "
                              + std::string(ERR_error_string(ERR_get_error(), nullptr)));
   }
 }
@@ -70,7 +72,7 @@ void CertificateChainBuffer::configure(SSL_CTX *ctx) {
       if(SSL_CTX_use_certificate(ctx, certificate)) {
         break;
       } else {
-        throw std::runtime_error("[oatpp::openssl::configurer::CertificateChainBuffer::configure()]: Error. SSL_CTX_use_certificate(): "
+        throw std::runtime_error("[avena::openssl::configurer::CertificateChainBuffer::configure()]: Error. SSL_CTX_use_certificate(): "
                                  + std::string(ERR_error_string(ERR_get_error(), nullptr)));
       }
     }
@@ -78,13 +80,13 @@ void CertificateChainBuffer::configure(SSL_CTX *ctx) {
 
   // If we reached the end without setting a certificate it is an error
   if(i == numberOfCertificates) {
-    throw std::runtime_error("[oatpp::openssl::configurer::CertificateChainBuffer::configure()]: Error. "
+    throw std::runtime_error("[avena::openssl::configurer::CertificateChainBuffer::configure()]: Error. "
                              "No certificates in PEM buffer.");
   }
 
   // Cleanup the previous certificate chain
   if(!SSL_CTX_clear_chain_certs(ctx)) {
-    throw std::runtime_error("[oatpp::openssl::configurer::CertificateChainBuffer::configure()]: Error. SSL_CTX_clear_chain_certs(): "
+    throw std::runtime_error("[avena::openssl::configurer::CertificateChainBuffer::configure()]: Error. SSL_CTX_clear_chain_certs(): "
                              + std::string(ERR_error_string(ERR_get_error(), nullptr)));
   }
 
@@ -92,7 +94,7 @@ void CertificateChainBuffer::configure(SSL_CTX *ctx) {
   while (++i < numberOfCertificates) {
     auto certificate = sk_X509_INFO_value(m_certificates.get(), i)->x509;
     if(certificate != nullptr && !SSL_CTX_add1_chain_cert(ctx, certificate)) {
-      throw std::runtime_error("[oatpp::openssl::configurer::CertificateChainBuffer::configure()]: Error. SSL_CTX_add1_chain_cert(): "
+      throw std::runtime_error("[avena::openssl::configurer::CertificateChainBuffer::configure()]: Error. SSL_CTX_add1_chain_cert(): "
                                + std::string(ERR_error_string(ERR_get_error(), nullptr)));
     }
   }

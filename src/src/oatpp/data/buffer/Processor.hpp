@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/base/ObjectHandle.hpp"
 #include <vector>
 
-namespace oatpp { namespace data { namespace buffer {
+namespace avena { namespace data { namespace buffer {
 
 /**
  * Convenience structure for stream Async-Inline read operations.

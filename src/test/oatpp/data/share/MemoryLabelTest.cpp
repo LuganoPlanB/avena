@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 #include "oatpp/web/protocol/http/Http.hpp"
 #include "oatpp-test/Checker.hpp"
 
-namespace oatpp { namespace data { namespace share {
+namespace avena { namespace data { namespace share {
   
 void MemoryLabelTest::onRun() {
 
@@ -43,7 +45,7 @@ void MemoryLabelTest::onRun() {
     OATPP_ASSERT(s == nullptr)
     OATPP_ASSERT(s == s0)
     OATPP_ASSERT(s != "text")
-    OATPP_ASSERT(s != oatpp::String("text"))
+    OATPP_ASSERT(s != avena::String("text"))
     OATPP_LOGi(TAG, "OK")
   }
 
@@ -53,7 +55,7 @@ void MemoryLabelTest::onRun() {
     OATPP_ASSERT(!s)
     OATPP_ASSERT(s == nullptr)
     OATPP_ASSERT(s != "text")
-    OATPP_ASSERT(s != oatpp::String("text"))
+    OATPP_ASSERT(s != avena::String("text"))
     OATPP_LOGi(TAG, "OK")
   }
 
@@ -66,21 +68,21 @@ void MemoryLabelTest::onRun() {
     OATPP_ASSERT(s != s0)
     OATPP_ASSERT(s0 != s)
     OATPP_ASSERT(s == "hello")
-    OATPP_ASSERT(s == oatpp::String("hello"))
+    OATPP_ASSERT(s == avena::String("hello"))
     OATPP_ASSERT(s != "text")
-    OATPP_ASSERT(s != oatpp::String("text"))
+    OATPP_ASSERT(s != avena::String("text"))
     OATPP_LOGi(TAG, "OK")
   }
 
   {
-    OATPP_LOGi(TAG, "StringKeyLabel oatpp::String constructor...")
-    StringKeyLabel s(oatpp::String("hello"));
+    OATPP_LOGi(TAG, "StringKeyLabel avena::String constructor...")
+    StringKeyLabel s(avena::String("hello"));
     OATPP_ASSERT(s)
     OATPP_ASSERT(s != nullptr)
     OATPP_ASSERT(s == "hello")
-    OATPP_ASSERT(s == oatpp::String("hello"))
+    OATPP_ASSERT(s == avena::String("hello"))
     OATPP_ASSERT(s != "text")
-    OATPP_ASSERT(s != oatpp::String("text"))
+    OATPP_ASSERT(s != avena::String("text"))
     OATPP_LOGi(TAG, "OK")
   }
 
@@ -92,7 +94,7 @@ void MemoryLabelTest::onRun() {
     OATPP_ASSERT(s == nullptr)
     OATPP_ASSERT(s == s0)
     OATPP_ASSERT(s != "teXt")
-    OATPP_ASSERT(s != oatpp::String("teXt"))
+    OATPP_ASSERT(s != avena::String("teXt"))
     OATPP_LOGi(TAG, "OK")
   }
 
@@ -102,7 +104,7 @@ void MemoryLabelTest::onRun() {
     OATPP_ASSERT(!s)
     OATPP_ASSERT(s == nullptr)
     OATPP_ASSERT(s != "teXt")
-    OATPP_ASSERT(s != oatpp::String("teXt"))
+    OATPP_ASSERT(s != avena::String("teXt"))
     OATPP_LOGi(TAG, "OK")
   }
 
@@ -115,32 +117,32 @@ void MemoryLabelTest::onRun() {
     OATPP_ASSERT(s != s0)
     OATPP_ASSERT(s0 != s)
     OATPP_ASSERT(s == "helLO")
-    OATPP_ASSERT(s == oatpp::String("helLO"))
+    OATPP_ASSERT(s == avena::String("helLO"))
     OATPP_ASSERT(s != "text")
-    OATPP_ASSERT(s != oatpp::String("teXt"))
+    OATPP_ASSERT(s != avena::String("teXt"))
     OATPP_LOGi(TAG, "OK")
   }
 
   {
-    OATPP_LOGi(TAG, "StringKeyLabelCI oatpp::String constructor...")
-    StringKeyLabelCI s(oatpp::String("hello"));
+    OATPP_LOGi(TAG, "StringKeyLabelCI avena::String constructor...")
+    StringKeyLabelCI s(avena::String("hello"));
     OATPP_ASSERT(s)
     OATPP_ASSERT(s != nullptr)
     OATPP_ASSERT(s == "helLO")
-    OATPP_ASSERT(s == oatpp::String("helLO"))
+    OATPP_ASSERT(s == avena::String("helLO"))
     OATPP_ASSERT(s != "text")
-    OATPP_ASSERT(s != oatpp::String("teXt"))
+    OATPP_ASSERT(s != avena::String("teXt"))
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "general test...")
 
-    oatpp::String sharedData = "big text goes here";
-    oatpp::String key1 = "key1";
-    oatpp::String key2 = "key2";
-    oatpp::String key3 = "key3";
-    oatpp::String key4 = "key4";
+    avena::String sharedData = "big text goes here";
+    avena::String key1 = "key1";
+    avena::String key2 = "key2";
+    avena::String key3 = "key3";
+    avena::String key4 = "key4";
 
     std::unordered_map<StringKeyLabel, MemoryLabel> stringMap;
     std::unordered_map<StringKeyLabelCI, MemoryLabel> stringMapCI;
@@ -184,7 +186,7 @@ void MemoryLabelTest::onRun() {
 
       v_int32 iterationsCount = 100;
 
-      oatpp::String headersText =
+      avena::String headersText =
         "header0: value0\r\n"
         "header1: value1\r\n"
         "header2: value2\r\n"
@@ -199,14 +201,14 @@ void MemoryLabelTest::onRun() {
 
       {
 
-        oatpp::test::PerformanceChecker timer("timer");
+        avena::test::PerformanceChecker timer("timer");
 
         for (v_int32 i = 0; i < iterationsCount; i++) {
 
-          oatpp::utils::parser::Caret caret(headersText);
-          oatpp::web::protocol::http::Status status;
-          oatpp::web::protocol::http::Headers headers;
-          oatpp::web::protocol::http::Parser::parseHeaders(headers, headersText.getPtr(), caret, status);
+          avena::utils::parser::Caret caret(headersText);
+          avena::web::protocol::http::Status status;
+          avena::web::protocol::http::Headers headers;
+          avena::web::protocol::http::Parser::parseHeaders(headers, headersText.getPtr(), caret, status);
 
           OATPP_ASSERT(status.code == 0)
           OATPP_ASSERT(headers.getSize() == 10)
@@ -246,7 +248,7 @@ void MemoryLabelTest::onRun() {
 
   {
 
-    oatpp::String headersText =
+    avena::String headersText =
       "header0: value0\r\n"
       "header0: value1\r\n"
       "header1: value2\r\n"
@@ -259,10 +261,10 @@ void MemoryLabelTest::onRun() {
       "header4: value9\r\n"
       "\r\n";
 
-    oatpp::utils::parser::Caret caret(headersText);
-    oatpp::web::protocol::http::Status status;
-    oatpp::web::protocol::http::Headers headers;
-    oatpp::web::protocol::http::Parser::parseHeaders(headers, headersText.getPtr(), caret, status);
+    avena::utils::parser::Caret caret(headersText);
+    avena::web::protocol::http::Status status;
+    avena::web::protocol::http::Headers headers;
+    avena::web::protocol::http::Parser::parseHeaders(headers, headersText.getPtr(), caret, status);
 
     OATPP_ASSERT(status.code == 0)
     OATPP_ASSERT(headers.getSize() == 10)

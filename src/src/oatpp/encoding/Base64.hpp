@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
 
 /**
  * Base64 - encoder/decoder.
@@ -124,17 +126,17 @@ public:
    * @param data - pointer to data.
    * @param size - data size.
    * @param alphabet - base64 alphabet to use.
-   * @return - encoded base64 string as &id:oatpp::String;.
+   * @return - encoded base64 string as &id:avena::String;.
    */
-  static oatpp::String encode(const void* data, v_buff_size size, const char* alphabet = ALPHABET_BASE64);
+  static avena::String encode(const void* data, v_buff_size size, const char* alphabet = ALPHABET_BASE64);
 
   /**
    * Encode data as base64 string.
    * @param data - data to encode.
    * @param alphabet - base64 alphabet to use.
-   * @return - encoded base64 string as &id:oatpp::String;.
+   * @return - encoded base64 string as &id:avena::String;.
    */
-  static oatpp::String encode(const oatpp::String& data, const char* alphabet = ALPHABET_BASE64);
+  static avena::String encode(const avena::String& data, const char* alphabet = ALPHABET_BASE64);
 
   /**
    * Decode base64 encoded data. This method assumes that data passed as a param consists of standard base64 set of chars
@@ -142,20 +144,20 @@ public:
    * @param data - pointer to data to decode.
    * @param size - encoded data size.
    * @param auxiliaryChars - configurable auxiliary chars.
-   * @return - decoded data as &id:oatpp::String;.
+   * @return - decoded data as &id:avena::String;.
    * @throws - &l:Base64::DecodingError;
    */
-  static oatpp::String decode(const char* data, v_buff_size size, const char* auxiliaryChars = ALPHABET_BASE64_AUXILIARY_CHARS);
+  static avena::String decode(const char* data, v_buff_size size, const char* auxiliaryChars = ALPHABET_BASE64_AUXILIARY_CHARS);
   
   /**
    * Decode base64 encoded data. This method assumes that data passed as a param consists of standard base64 set of chars
    * `['A'-'Z', 'a'-'z', '0'-'9']` and three configurable auxiliary chars.
    * @param data - data to decode.
    * @param auxiliaryChars - configurable auxiliary chars.
-   * @return - decoded data as &id:oatpp::String;.
+   * @return - decoded data as &id:avena::String;.
    * @throws - &l:Base64::DecodingError;
    */
-  static oatpp::String decode(const oatpp::String& data, const char* auxiliaryChars = ALPHABET_BASE64_AUXILIARY_CHARS);
+  static avena::String decode(const avena::String& data, const char* auxiliaryChars = ALPHABET_BASE64_AUXILIARY_CHARS);
   
 };
   

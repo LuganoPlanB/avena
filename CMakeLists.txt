@@ -68,6 +68,12 @@ else()
 endif()
 
 if(BUILD_TESTING)
+    if(CMAKE_NM AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        add_test(NAME avena-namespace-symbols COMMAND ${CMAKE_COMMAND}
+            "-Dnm=${CMAKE_NM}" "-Dlibrary=$<TARGET_FILE:avena>"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/check-namespace.cmake")
+        set_tests_properties(avena-namespace-symbols PROPERTIES TIMEOUT 30)
+    endif()
     add_executable(avena-smoke tests/consumer/main.cpp)
     target_link_libraries(avena-smoke PRIVATE avena::avena)
     add_test(NAME avena-smoke COMMAND avena-smoke)

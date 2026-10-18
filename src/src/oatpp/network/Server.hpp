@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -37,11 +39,11 @@
 #include <thread>
 #include <functional>
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 /**
- * Server calls &id:oatpp::network::ConnectionProvider::get; in the loop and passes obtained Connection
- * to &id:oatpp::network::ConnectionHandler;.
+ * Server calls &id:avena::network::ConnectionProvider::get; in the loop and passes obtained Connection
+ * to &id:avena::network::ConnectionHandler;.
  */
 class Server : public base::Countable {
 private:
@@ -68,8 +70,8 @@ public:
 
   /**
    * Constructor.
-   * @param connectionProvider - &id:oatpp::network::ConnectionProvider;.
-   * @param connectionHandler - &id:oatpp::network::ConnectionHandler;.
+   * @param connectionProvider - &id:avena::network::ConnectionProvider;.
+   * @param connectionHandler - &id:avena::network::ConnectionHandler;.
    */
   Server(const std::shared_ptr<ConnectionProvider>& connectionProvider,
          const std::shared_ptr<ConnectionHandler>& connectionHandler);
@@ -105,8 +107,8 @@ public:
 
   /**
    * Create shared Server.
-   * @param connectionProvider - &id:oatpp::network::ConnectionProvider;.
-   * @param connectionHandler - &id:oatpp::network::ConnectionHandler;.
+   * @param connectionProvider - &id:avena::network::ConnectionProvider;.
+   * @param connectionHandler - &id:avena::network::ConnectionHandler;.
    * @return - `std::shared_ptr` to Server.
    */
   static std::shared_ptr<Server> createShared(const std::shared_ptr<ServerConnectionProvider>& connectionProvider,
@@ -115,16 +117,16 @@ public:
   }
 
   /**
-   * Call &id:oatpp::network::ConnectionProvider::getConnection; in the loop and passes obtained Connection
-   * to &id:oatpp::network::ConnectionHandler;.
+   * Call &id:avena::network::ConnectionProvider::getConnection; in the loop and passes obtained Connection
+   * to &id:avena::network::ConnectionHandler;.
    * @param conditional - Function that is called every mainloop iteration to check if the server should continue to run <br>
    * Return true to let the server continue, false to shut it down.
    */
   void run(std::function<bool()> conditional = nullptr);
 
   /**
-   * Call &id:oatpp::network::ConnectionProvider::getConnection; in the loop and passes obtained Connection
-   * to &id:oatpp::network::ConnectionHandler;.
+   * Call &id:avena::network::ConnectionProvider::getConnection; in the loop and passes obtained Connection
+   * to &id:avena::network::ConnectionHandler;.
    * @param startAsNewThread - Start the server blocking (thread of callee) or non-blocking (own thread)
    * @deprecated Deprecated since 1.3.0, will be removed in the next release.
    * The new repository https://github.com/oatpp/oatpp-threaded-starter shows many configurations how to run Oat++ in its own thread.

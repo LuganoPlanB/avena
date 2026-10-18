@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,10 +29,10 @@
 #include "oatpp/json/ObjectMapper.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 void BooleanTest::onRun() {
-  oatpp::json::ObjectMapper mapper;
+  avena::json::ObjectMapper mapper;
 
   {
     OATPP_LOGd(TAG, "Serialize true to string...")

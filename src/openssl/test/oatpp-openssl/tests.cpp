@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 
 #include "FullTest.hpp"
 #include "FullAsyncTest.hpp"
@@ -19,40 +21,40 @@ void runTests() {
 
   {
 
-    oatpp::test::openssl::FullTest test_virtual(0, 100, false);
+    avena::test::openssl::FullTest test_virtual(0, 100, false);
     test_virtual.run();
 
-    oatpp::test::openssl::FullTest test_port(8443, 10, false);
+    avena::test::openssl::FullTest test_port(8443, 10, false);
     test_port.run();
 
   }
 
   {
 
-    oatpp::test::openssl::FullTest test_virtual(0, 100, true);
+    avena::test::openssl::FullTest test_virtual(0, 100, true);
     test_virtual.run();
 
-    oatpp::test::openssl::FullTest test_port(8443, 10, true);
+    avena::test::openssl::FullTest test_port(8443, 10, true);
     test_port.run();
 
   }
 
   {
 
-    oatpp::test::openssl::FullAsyncTest test_virtual(0, 100);
+    avena::test::openssl::FullAsyncTest test_virtual(0, 100);
     test_virtual.run();
 
-    oatpp::test::openssl::FullAsyncTest test_port(8443, 10);
+    avena::test::openssl::FullAsyncTest test_port(8443, 10);
     test_port.run();
 
   }
 
   {
 
-    oatpp::test::openssl::FullAsyncClientTest test_virtual(0, 10);
+    avena::test::openssl::FullAsyncClientTest test_virtual(0, 10);
     test_virtual.run(20); // - run this test 20 times.
 
-    oatpp::test::openssl::FullAsyncClientTest test_port(8443, 10);
+    avena::test::openssl::FullAsyncClientTest test_port(8443, 10);
     test_port.run(1);
 
   }
@@ -63,19 +65,19 @@ void runTests() {
 
 int main() {
 
-  oatpp::Environment::init();
+  avena::Environment::init();
 
   runTests();
 
   /* Print how much objects were created during app running, and what have left-probably leaked */
   /* Disable object counting for release builds using '-D OATPP_DISABLE_ENV_OBJECT_COUNTERS' flag for better performance */
   std::cout << "\nEnvironment:\n";
-  std::cout << "objectsCount = " << oatpp::Environment::getObjectsCount() << "\n";
-  std::cout << "objectsCreated = " << oatpp::Environment::getObjectsCreated() << "\n\n";
+  std::cout << "objectsCount = " << avena::Environment::getObjectsCount() << "\n";
+  std::cout << "objectsCreated = " << avena::Environment::getObjectsCreated() << "\n\n";
 
-  OATPP_ASSERT(oatpp::Environment::getObjectsCount() == 0);
+  OATPP_ASSERT(avena::Environment::getObjectsCount() == 0);
 
-  oatpp::Environment::destroy();
+  avena::Environment::destroy();
 
   return 0;
 }

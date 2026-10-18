@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,11 +32,11 @@
 #include "oatpp/async/Executor.hpp"
 #include "oatpp/network/ConnectionHandler.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 /**
  * Asynchronous websocket connection handler.
- * Extends &id:oatpp::base::Countable;, &id:oatpp::network::ConnectionHandler;.
+ * Extends &id:avena::base::Countable;, &id:avena::network::ConnectionHandler;.
  */
 class AsyncConnectionHandler : public base::Countable, public network::ConnectionHandler {
 public:
@@ -45,14 +47,14 @@ public:
   class SocketInstanceListener {
   public:
     /**
-     * Convenience typedef for &id:oatpp::websocket::AsyncWebSocket;.
+     * Convenience typedef for &id:avena::websocket::AsyncWebSocket;.
      */
-    typedef oatpp::websocket::AsyncWebSocket AsyncWebSocket;
+    typedef avena::websocket::AsyncWebSocket AsyncWebSocket;
 
     /**
-     * Convenience typedef for &id:oatpp::network::ConnectionHandler::ParameterMap;.
+     * Convenience typedef for &id:avena::network::ConnectionHandler::ParameterMap;.
      */
-    typedef oatpp::network::ConnectionHandler::ParameterMap ParameterMap;
+    typedef avena::network::ConnectionHandler::ParameterMap ParameterMap;
   public:
 
     /**
@@ -63,52 +65,52 @@ public:
     /**
      * Called when socket is created. <br>
      * **This method should not block**.
-     * @param socket - &id:oatpp::websocket::AsyncWebSocket;.
-     * @param params - `std::shared_ptr` to const &id:oatpp::network::ConnectionHandler::ParameterMap;.
+     * @param socket - &id:avena::websocket::AsyncWebSocket;.
+     * @param params - `std::shared_ptr` to const &id:avena::network::ConnectionHandler::ParameterMap;.
      */
     virtual void onAfterCreate_NonBlocking(const std::shared_ptr<AsyncWebSocket>& socket, const std::shared_ptr<const ParameterMap>& params) = 0;
 
     /**
      * Called before socket instance is destroyed. <br>
      * **This method should not block**.
-     * @param socket - &id:oatpp::websocket::AsyncWebSocket;.
+     * @param socket - &id:avena::websocket::AsyncWebSocket;.
      */
     virtual void onBeforeDestroy_NonBlocking(const std::shared_ptr<AsyncWebSocket>& socket) = 0;
   };
   
 private:
-  std::shared_ptr<oatpp::async::Executor> m_executor;
+  std::shared_ptr<avena::async::Executor> m_executor;
   std::shared_ptr<SocketInstanceListener> m_listener;
 public:
 
   /**
    * Constructor. With threadCount.
-   * Will create &id:oatpp::async::Executor;.
-   * @param threadCount - number of threads for &id:oatpp::async::Executor;.
+   * Will create &id:avena::async::Executor;.
+   * @param threadCount - number of threads for &id:avena::async::Executor;.
    */
-  AsyncConnectionHandler(v_int32 threadCount = oatpp::async::Executor::VALUE_SUGGESTED);
+  AsyncConnectionHandler(v_int32 threadCount = avena::async::Executor::VALUE_SUGGESTED);
 
   /**
-   * Constructor. With &id:oatpp::async::Executor;.
-   * @param executor - &id:oatpp::async::Executor;.
+   * Constructor. With &id:avena::async::Executor;.
+   * @param executor - &id:avena::async::Executor;.
    */
-  AsyncConnectionHandler(const std::shared_ptr<oatpp::async::Executor>& executor);
+  AsyncConnectionHandler(const std::shared_ptr<avena::async::Executor>& executor);
 
 public:
 
   /**
    * Create shared AsyncConnectionHandler with threadCount.
-   * @param threadCount - number of threads for &id:oatpp::async::Executor;.
+   * @param threadCount - number of threads for &id:avena::async::Executor;.
    * @return - `std::shared_ptr` to AsyncConnectionHandler.
    */
-  static std::shared_ptr<AsyncConnectionHandler> createShared(v_int32 threadCount = oatpp::async::Executor::VALUE_SUGGESTED);
+  static std::shared_ptr<AsyncConnectionHandler> createShared(v_int32 threadCount = avena::async::Executor::VALUE_SUGGESTED);
 
   /**
-   * Create shared AsyncConnectionHandler with &id:oatpp::async::Executor;.
-   * @param executor - &id:oatpp::async::Executor;.
+   * Create shared AsyncConnectionHandler with &id:avena::async::Executor;.
+   * @param executor - &id:avena::async::Executor;.
    * @return - `std::shared_ptr` to AsyncConnectionHandler.
    */
-  static std::shared_ptr<AsyncConnectionHandler> createShared(const std::shared_ptr<oatpp::async::Executor>& executor);
+  static std::shared_ptr<AsyncConnectionHandler> createShared(const std::shared_ptr<avena::async::Executor>& executor);
 
   /**
    * Set &l:AsyncConnectionHandler::SocketInstanceListener;.
@@ -117,13 +119,13 @@ public:
   void setSocketInstanceListener(const std::shared_ptr<SocketInstanceListener>& listener);
 
   /**
-   * Implementation of &id:oatpp::network::ConnectionHandler::handleConnection;.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
+   * Implementation of &id:avena::network::ConnectionHandler::handleConnection;.
+   * @param connection - &id:avena::data::stream::IOStream;.
    */
   void handleConnection(const provider::ResourceHandle<IOStream>& connection, const std::shared_ptr<const ParameterMap>& params) override;
 
   /**
-   * Will call &id:oatpp::async::Executor::stop;.
+   * Will call &id:avena::async::Executor::stop;.
    */
   void stop() override;
   

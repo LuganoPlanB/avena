@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,15 +35,15 @@
 #include "oatpp/data/share/MemoryLabel.hpp"
 #include "oatpp/data/share/StringTemplate.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
 /**
  * Database executor.
  */
 class Executor {
 public:
-  typedef oatpp::data::share::StringTemplate StringTemplate;
-  typedef std::unordered_map<data::share::StringKeyLabel, const oatpp::Type*> ParamsTypeMap;
+  typedef avena::data::share::StringTemplate StringTemplate;
+  typedef std::unordered_map<data::share::StringKeyLabel, const avena::Type*> ParamsTypeMap;
 protected:
   std::shared_ptr<data::mapping::TypeResolver> m_defaultTypeResolver;
 public:
@@ -80,10 +82,10 @@ public:
    * @param text - template text.
    * @param paramsTypeMap - template parameter types.
    * @param prepare - `true` if the query should use prepared statement, `false` otherwise.
-   * @return - &id:oatpp::data::share::StringTemplate;.
+   * @return - &id:avena::data::share::StringTemplate;.
    */
-  virtual StringTemplate parseQueryTemplate(const oatpp::String& name,
-                                            const oatpp::String& text,
+  virtual StringTemplate parseQueryTemplate(const avena::String& name,
+                                            const avena::String& text,
                                             const ParamsTypeMap& paramsTypeMap,
                                             bool prepare = false) = 0;
 
@@ -93,10 +95,10 @@ public:
    * @param params - query parameters.
    * @param enabledInterpretations - enabled type interpretations.
    * @param connection - database connection.
-   * @return - &id:oatpp::orm::QueryResult;.
+   * @return - &id:avena::orm::QueryResult;.
    */
   virtual std::shared_ptr<QueryResult> execute(const StringTemplate& queryTemplate,
-                                               const std::unordered_map<oatpp::String, oatpp::Void>& params,
+                                               const std::unordered_map<avena::String, avena::Void>& params,
                                                const std::shared_ptr<const data::mapping::TypeResolver>& typeResolver = nullptr,
                                                const provider::ResourceHandle<Connection>& connection = nullptr) = 0;
 
@@ -108,31 +110,31 @@ public:
    * @param params - query parameters.
    * @param enabledInterpretations - enabled type interpretations.
    * @param connection - database connection.
-   * @return - &id:oatpp::orm::QueryResult;.
+   * @return - &id:avena::orm::QueryResult;.
    */
-  virtual std::shared_ptr<QueryResult> execute(const oatpp::String& query,
-                                               const std::unordered_map<oatpp::String, oatpp::Void>& params,
+  virtual std::shared_ptr<QueryResult> execute(const avena::String& query,
+                                               const std::unordered_map<avena::String, avena::Void>& params,
                                                const std::shared_ptr<const data::mapping::TypeResolver>& typeResolver = nullptr,
                                                const provider::ResourceHandle<Connection>& connection = nullptr);
 
   /**
-   * Begin database transaction. Should NOT be used directly. Use &id:oatpp::orm::Transaction; instead.
+   * Begin database transaction. Should NOT be used directly. Use &id:avena::orm::Transaction; instead.
    * @param connection - database connection.
-   * @return - &id:oatpp::orm::QueryResult;.
+   * @return - &id:avena::orm::QueryResult;.
    */
   virtual std::shared_ptr<QueryResult> begin(const provider::ResourceHandle<Connection>& connection = nullptr) = 0;
 
   /**
-   * Commit database transaction. Should NOT be used directly. Use &id:oatpp::orm::Transaction; instead.
+   * Commit database transaction. Should NOT be used directly. Use &id:avena::orm::Transaction; instead.
    * @param connection
-   * @return - &id:oatpp::orm::QueryResult;.
+   * @return - &id:avena::orm::QueryResult;.
    */
   virtual std::shared_ptr<QueryResult> commit(const provider::ResourceHandle<Connection>& connection) = 0;
 
   /**
-   * Rollback database transaction. Should NOT be used directly. Use &id:oatpp::orm::Transaction; instead.
+   * Rollback database transaction. Should NOT be used directly. Use &id:avena::orm::Transaction; instead.
    * @param connection
-   * @return - &id:oatpp::orm::QueryResult;.
+   * @return - &id:avena::orm::QueryResult;.
    */
   virtual std::shared_ptr<QueryResult> rollback(const provider::ResourceHandle<Connection>& connection) = 0;
 
@@ -142,19 +144,19 @@ public:
    * @param connection - database connection.
    * @return - schema version.
    */
-  virtual v_int64 getSchemaVersion(const oatpp::String& suffix = nullptr,
+  virtual v_int64 getSchemaVersion(const avena::String& suffix = nullptr,
                                    const provider::ResourceHandle<Connection>& connection = nullptr) = 0;
 
   /**
-   * Run schema migration script. Should NOT be used directly. Use &id:oatpp::orm::SchemaMigration; instead.
+   * Run schema migration script. Should NOT be used directly. Use &id:avena::orm::SchemaMigration; instead.
    * @param script - script text.
    * @param newVersion - schema version corresponding to this script.
    * @param suffix - suffix of schema version control table name.
    * @param connection - database connection.
    */
-  virtual void migrateSchema(const oatpp::String& script,
+  virtual void migrateSchema(const avena::String& script,
                              v_int64 newVersion,
-                             const oatpp::String& suffix = nullptr,
+                             const avena::String& suffix = nullptr,
                              const provider::ResourceHandle<Connection>& connection = nullptr) = 0;
 
 };

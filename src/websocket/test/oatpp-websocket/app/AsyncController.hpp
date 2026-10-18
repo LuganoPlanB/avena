@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 //
 //  AsyncController.hpp
 //  web-starter-project
@@ -18,16 +20,16 @@
 #include "oatpp/macro/component.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace test {namespace websocket { namespace app {
+namespace avena { namespace test {namespace websocket { namespace app {
 
-class AsyncController : public oatpp::web::server::api::ApiController {
+class AsyncController : public avena::web::server::api::ApiController {
 private:
   typedef AsyncController __ControllerType;
 private:
-  OATPP_COMPONENT(std::shared_ptr<oatpp::websocket::AsyncConnectionHandler>, websocketConnectionHandler);
+  OATPP_COMPONENT(std::shared_ptr<avena::websocket::AsyncConnectionHandler>, websocketConnectionHandler);
 protected:
   AsyncController(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 public:
 
@@ -51,9 +53,9 @@ public:
 
     Action act() override {
       getAtom() ++;
-      auto params = std::make_shared<oatpp::network::ConnectionHandler::ParameterMap>();
+      auto params = std::make_shared<avena::network::ConnectionHandler::ParameterMap>();
       (*params)["p1"] = "v1";
-      auto response = oatpp::websocket::Handshaker::serversideHandshake(request->getHeaders(), controller->websocketConnectionHandler);
+      auto response = avena::websocket::Handshaker::serversideHandshake(request->getHeaders(), controller->websocketConnectionHandler);
       response->setConnectionUpgradeParameters(params);
       return _return(response);
     }
@@ -65,7 +67,7 @@ public:
   ENDPOINT_ASYNC_INIT(ALL)
 
     Action act() override {
-      oatpp::String path = request->getPathTail();
+      avena::String path = request->getPathTail();
       if(path) {
         OATPP_LOGd("Controller", "path='{}'", path);
       } else {

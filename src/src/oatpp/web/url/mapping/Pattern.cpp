@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace web { namespace url { namespace mapping {
+namespace avena { namespace web { namespace url { namespace mapping {
 
 const char* Pattern::Part::FUNCTION_CONST = "const";
 const char* Pattern::Part::FUNCTION_VAR = "var";
@@ -50,7 +52,7 @@ std::shared_ptr<Pattern> Pattern::parse(p_char8 data, v_buff_size size){
     if(a == '/'){
       
       if(i - lastPos > 0){
-        auto part = Part::createShared(Part::FUNCTION_CONST, oatpp::String(reinterpret_cast<const char*>(&data[lastPos]), i - lastPos));
+        auto part = Part::createShared(Part::FUNCTION_CONST, avena::String(reinterpret_cast<const char*>(&data[lastPos]), i - lastPos));
         result->m_parts->push_back(part);
       }
       
@@ -59,10 +61,10 @@ std::shared_ptr<Pattern> Pattern::parse(p_char8 data, v_buff_size size){
     } else if(a == '*'){
       lastPos = i + 1;
       if(size > lastPos){
-        auto part = Part::createShared(Part::FUNCTION_ANY_END, oatpp::String(reinterpret_cast<const char*>(&data[lastPos]), size - lastPos));
+        auto part = Part::createShared(Part::FUNCTION_ANY_END, avena::String(reinterpret_cast<const char*>(&data[lastPos]), size - lastPos));
         result->m_parts->push_back(part);
       }else{
-        auto part = Part::createShared(Part::FUNCTION_ANY_END, oatpp::String(0));
+        auto part = Part::createShared(Part::FUNCTION_ANY_END, avena::String(0));
         result->m_parts->push_back(part);
       }
       return result;
@@ -75,10 +77,10 @@ std::shared_ptr<Pattern> Pattern::parse(p_char8 data, v_buff_size size){
       }
       
       if(i > lastPos){
-        auto part = Part::createShared(Part::FUNCTION_VAR, oatpp::String(reinterpret_cast<const char*>(&data[lastPos]), i - lastPos));
+        auto part = Part::createShared(Part::FUNCTION_VAR, avena::String(reinterpret_cast<const char*>(&data[lastPos]), i - lastPos));
         result->m_parts->push_back(part);
       }else{
-        auto part = Part::createShared(Part::FUNCTION_VAR, oatpp::String(0));
+        auto part = Part::createShared(Part::FUNCTION_VAR, avena::String(0));
         result->m_parts->push_back(part);
       }
       
@@ -91,7 +93,7 @@ std::shared_ptr<Pattern> Pattern::parse(p_char8 data, v_buff_size size){
   }
   
   if(i - lastPos > 0){
-    auto part = Part::createShared(Part::FUNCTION_CONST, oatpp::String(reinterpret_cast<const char*>(&data[lastPos]), i - lastPos));
+    auto part = Part::createShared(Part::FUNCTION_CONST, avena::String(reinterpret_cast<const char*>(&data[lastPos]), i - lastPos));
     result->m_parts->push_back(part);
   }
   
@@ -102,11 +104,11 @@ std::shared_ptr<Pattern> Pattern::parse(const char* data){
   return parse(reinterpret_cast<p_char8>(const_cast<char*>(data)), static_cast<v_buff_size>(std::strlen(data)));
 }
 
-std::shared_ptr<Pattern> Pattern::parse(const oatpp::String& data){
+std::shared_ptr<Pattern> Pattern::parse(const avena::String& data){
   return parse(reinterpret_cast<p_char8>(data->data()), static_cast<v_buff_size>(data->size()));
 }
   
-v_char8 Pattern::findSysChar(oatpp::utils::parser::Caret& caret) const {
+v_char8 Pattern::findSysChar(avena::utils::parser::Caret& caret) const {
   auto data = caret.getData();
   for (v_buff_size i = caret.getPosition(); i < caret.getDataSize(); i++) {
     v_char8 a = static_cast<v_char8>(data[i]);
@@ -121,7 +123,7 @@ v_char8 Pattern::findSysChar(oatpp::utils::parser::Caret& caret) const {
   
 bool Pattern::match(const StringKeyLabel& url, MatchMap& matchMap) const {
   
-  oatpp::utils::parser::Caret caret(reinterpret_cast<const char*>(url.getData()), url.getSize());
+  avena::utils::parser::Caret caret(reinterpret_cast<const char*>(url.getData()), url.getSize());
   
   if (m_parts->empty()) {
     return !caret.skipChar('/');    
@@ -181,8 +183,8 @@ bool Pattern::match(const StringKeyLabel& url, MatchMap& matchMap) const {
   
 }
 
-oatpp::String Pattern::reconstruct(const std::unordered_map<oatpp::String, oatpp::String>& params, const oatpp::String& tail) const {
-  oatpp::data::stream::BufferOutputStream stream;
+avena::String Pattern::reconstruct(const std::unordered_map<avena::String, avena::String>& params, const avena::String& tail) const {
+  avena::data::stream::BufferOutputStream stream;
   for (const std::shared_ptr<Part>& part : *m_parts) {
     if(part->function == Part::FUNCTION_CONST) {
       stream.writeSimple("/", 1);
@@ -198,8 +200,8 @@ oatpp::String Pattern::reconstruct(const std::unordered_map<oatpp::String, oatpp
   return stream.toString();
 }
 
-oatpp::String Pattern::toString() const {
-  oatpp::data::stream::BufferOutputStream stream;
+avena::String Pattern::toString() const {
+  avena::data::stream::BufferOutputStream stream;
   for (const std::shared_ptr<Part>& part : *m_parts) {
     if(part->function == Part::FUNCTION_CONST) {
       stream.writeSimple("/", 1);

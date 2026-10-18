@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,11 +31,11 @@
 
 #include "oatpp-test/Checker.hpp"
 
-namespace oatpp { namespace test { namespace network {
+namespace avena { namespace test { namespace network {
 
 void UrlTest::onRun() {
 
-  typedef oatpp::network::Url Url;
+  typedef avena::network::Url Url;
 
   {
     const char* urlText = "http://root@127.0.0.1:8000/path/to/resource/?q1=1&q2=2";

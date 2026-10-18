@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace utils { namespace parser {
+namespace avena { namespace utils { namespace parser {
 
 /**
  * Helper class to do parsing operations
@@ -94,9 +96,9 @@ public:
 
     /**
      * Same as`toString(true).`
-     * @return - &id:oatpp::String;.
+     * @return - &id:avena::String;.
      */
-    oatpp::String toString();
+    avena::String toString();
 
     /**
      * Create `std::string` from labeled data.
@@ -160,12 +162,12 @@ private:
 public:
   Caret(const char* text);
   Caret(const char* parseData, v_buff_size dataSize);
-  Caret(const oatpp::String& str);
+  Caret(const avena::String& str);
 public:
   
   static std::shared_ptr<Caret> createShared(const char* text);
   static std::shared_ptr<Caret> createShared(const char* parseData, v_buff_size dataSize);
-  static std::shared_ptr<Caret> createShared(const oatpp::String& str);
+  static std::shared_ptr<Caret> createShared(const avena::String& str);
 
   virtual ~Caret();
 

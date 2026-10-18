@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 /**
  * Helper class to work with oatpp types.
@@ -42,22 +44,22 @@ public:
     /**
      * types map.
      */
-    std::unordered_map<const oatpp::Type*, const oatpp::Type*> types;
+    std::unordered_map<const avena::Type*, const avena::Type*> types;
 
     /**
      * values by type map.
      */
-    std::unordered_map<const oatpp::Type*, std::unordered_map<oatpp::Void, oatpp::Void>> values;
+    std::unordered_map<const avena::Type*, std::unordered_map<avena::Void, avena::Void>> values;
   };
 
 private:
 
-  const oatpp::Type* findPropertyType(const oatpp::Type* baseType,
+  const avena::Type* findPropertyType(const avena::Type* baseType,
                                       const std::vector<std::string>& path,
                                       v_uint32 pathPosition,
                                       Cache& cache) const;
 
-  oatpp::Void findPropertyValue(const oatpp::Void& baseObject,
+  avena::Void findPropertyValue(const avena::Void& baseObject,
                                 const std::vector<std::string>& path,
                                 v_uint32 pathPosition,
                                 Cache& cache) const;
@@ -82,27 +84,27 @@ public:
    * @param classId
    * @param isKnown
    */
-  void setKnownClass(const oatpp::ClassId& classId, bool isKnown);
+  void setKnownClass(const avena::ClassId& classId, bool isKnown);
 
   /**
    * Set all mentioned type classes as known.
    * @param knownClasses
    */
-  void addKnownClasses(const std::vector<oatpp::ClassId>& knownClasses);
+  void addKnownClasses(const std::vector<avena::ClassId>& knownClasses);
 
   /**
    * Check if type class is known.
    * @param classId
    * @return
    */
-  bool isKnownClass(const oatpp::ClassId& classId) const;
+  bool isKnownClass(const avena::ClassId& classId) const;
 
   /**
    * Check if type is known.
    * @param type
    * @return
    */
-  bool isKnownType(const oatpp::Type* type) const;
+  bool isKnownType(const avena::Type* type) const;
 
   /**
    * Set enabled type interpretations.
@@ -122,7 +124,7 @@ public:
    * @param cache - local cache.
    * @return
    */
-  const oatpp::Type* resolveType(const oatpp::Type* type, Cache& cache) const;
+  const avena::Type* resolveType(const avena::Type* type, Cache& cache) const;
 
   /**
    * Resolve unknown value according to enabled interpretations.
@@ -130,16 +132,16 @@ public:
    * @param cache - local cache.
    * @return
    */
-  oatpp::Void resolveValue(const oatpp::Void& value, Cache& cache) const;
+  avena::Void resolveValue(const avena::Void& value, Cache& cache) const;
 
   /**
    * Traverse object property tree resolving unknown types according to enabled interpretations.
    * @param objectType - base object type.
    * @param path - vector of property names.
    * @param cache - local cache.
-   * @return - &id:oatpp::Type;. `nullptr` - if couldn't resolve.
+   * @return - &id:avena::Type;. `nullptr` - if couldn't resolve.
    */
-  const oatpp::Type* resolveObjectPropertyType(const oatpp::Type* objectType,
+  const avena::Type* resolveObjectPropertyType(const avena::Type* objectType,
                                               const std::vector<std::string>& path,
                                               Cache& cache) const;
 
@@ -148,10 +150,10 @@ public:
    * @param object - base object.
    * @param path - vector of property names.
    * @param cache - local cache.
-   * @return - value as &id:oatpp::Void;. The `valueType` will be set to resolved type
-   * or to `oatpp::Void::Class::getType()` if couldn't resolve.
+   * @return - value as &id:avena::Void;. The `valueType` will be set to resolved type
+   * or to `avena::Void::Class::getType()` if couldn't resolve.
    */
-  oatpp::Void resolveObjectPropertyValue(const oatpp::Void& object,
+  avena::Void resolveObjectPropertyValue(const avena::Void& object,
                                          const std::vector<std::string>& path,
                                          Cache& cache) const;
 

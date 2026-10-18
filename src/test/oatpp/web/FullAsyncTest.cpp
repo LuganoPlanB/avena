@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -48,12 +50,12 @@
 
 #include "oatpp-test/web/ClientServerTestRunner.hpp"
 
-namespace oatpp { namespace test { namespace web {
+namespace avena { namespace test { namespace web {
 
 namespace {
 
-typedef oatpp::web::mime::multipart::PartList PartList;
-typedef oatpp::web::protocol::http::outgoing::MultipartBody MultipartBody;
+typedef avena::web::mime::multipart::PartList PartList;
+typedef avena::web::protocol::http::outgoing::MultipartBody MultipartBody;
 
 class TestComponent {
 private:
@@ -64,71 +66,71 @@ public:
     : m_port(port)
   {}
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor)([] {
-    return std::make_shared<oatpp::async::Executor>(1, 1, 1);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::async::Executor>, executor)([] {
+    return std::make_shared<avena::async::Executor>(1, 1, 1);
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, virtualInterface)([] {
-    return oatpp::network::virtual_::Interface::obtainShared("virtualhost");
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, virtualInterface)([] {
+    return avena::network::virtual_::Interface::obtainShared("virtualhost");
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([this] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ServerConnectionProvider>, serverConnectionProvider)([this] {
 
     if(m_port == 0) {
-      OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, _interface);
-      return std::static_pointer_cast<oatpp::network::ServerConnectionProvider>(
-        oatpp::network::virtual_::server::ConnectionProvider::createShared(_interface)
+      OATPP_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, _interface);
+      return std::static_pointer_cast<avena::network::ServerConnectionProvider>(
+        avena::network::virtual_::server::ConnectionProvider::createShared(_interface)
       );
     }
 
-    return std::static_pointer_cast<oatpp::network::ServerConnectionProvider>(
-      oatpp::network::tcp::server::ConnectionProvider::createShared({"localhost", m_port})
+    return std::static_pointer_cast<avena::network::ServerConnectionProvider>(
+      avena::network::tcp::server::ConnectionProvider::createShared({"localhost", m_port})
     );
 
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)([] {
-    return oatpp::web::server::HttpRouter::createShared();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, httpRouter)([] {
+    return avena::web::server::HttpRouter::createShared();
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
-    OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
-    OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executr);
-    return oatpp::web::server::AsyncHttpConnectionHandler::createShared(router, executr);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ConnectionHandler>, serverConnectionHandler)([] {
+    OATPP_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, router);
+    OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, executr);
+    return avena::web::server::AsyncHttpConnectionHandler::createShared(router, executr);
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper)([] {
-    return std::make_shared<oatpp::json::ObjectMapper>();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::data::mapping::ObjectMapper>, objectMapper)([] {
+    return std::make_shared<avena::json::ObjectMapper>();
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
 
     if(m_port == 0) {
-      OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, _interface);
-      return std::static_pointer_cast<oatpp::network::ClientConnectionProvider>(
-        oatpp::network::virtual_::client::ConnectionProvider::createShared(_interface)
+      OATPP_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, _interface);
+      return std::static_pointer_cast<avena::network::ClientConnectionProvider>(
+        avena::network::virtual_::client::ConnectionProvider::createShared(_interface)
       );
     }
 
-    return std::static_pointer_cast<oatpp::network::ClientConnectionProvider>(
-      oatpp::network::tcp::client::ConnectionProvider::createShared({"localhost", m_port})
+    return std::static_pointer_cast<avena::network::ClientConnectionProvider>(
+      avena::network::tcp::client::ConnectionProvider::createShared({"localhost", m_port})
     );
 
   }());
 
 };
 
-std::shared_ptr<PartList> createMultipart(const std::unordered_map<oatpp::String, oatpp::String>& map) {
+std::shared_ptr<PartList> createMultipart(const std::unordered_map<avena::String, avena::String>& map) {
 
-  auto multipart = oatpp::web::mime::multipart::PartList::createSharedWithRandomBoundary();
+  auto multipart = avena::web::mime::multipart::PartList::createSharedWithRandomBoundary();
 
   for(auto& pair : map) {
 
-    oatpp::web::mime::multipart::Headers partHeaders;
-    auto part = std::make_shared<oatpp::web::mime::multipart::Part>(partHeaders);
+    avena::web::mime::multipart::Headers partHeaders;
+    auto part = std::make_shared<avena::web::mime::multipart::Part>(partHeaders);
     multipart->writeNextPartSimple(part);
     part->putHeader("Content-Disposition", "form-data; name=\"" + pair.first + "\"");
-    part->setPayload(std::make_shared<oatpp::data::resource::InMemoryData>(pair.second));
+    part->setPayload(std::make_shared<avena::data::resource::InMemoryData>(pair.second));
 
   }
 
@@ -142,17 +144,17 @@ void FullAsyncTest::onRun() {
 
   TestComponent component(m_port);
 
-  oatpp::test::web::ClientServerTestRunner runner;
+  avena::test::web::ClientServerTestRunner runner;
 
   runner.addController(app::ControllerAsync::createShared());
   runner.addController(app::ControllerWithInterceptorsAsync::createShared());
 
   runner.run([this] {
 
-    OATPP_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider);
-    OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
+    OATPP_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider);
+    OATPP_COMPONENT(std::shared_ptr<avena::data::mapping::ObjectMapper>, objectMapper);
 
-    auto requestExecutor = oatpp::web::client::HttpRequestExecutor::createShared(clientConnectionProvider);
+    auto requestExecutor = avena::web::client::HttpRequestExecutor::createShared(clientConnectionProvider);
     auto client = app::Client::createShared(requestExecutor, objectMapper);
 
     auto connection = client->getConnection();
@@ -160,7 +162,7 @@ void FullAsyncTest::onRun() {
 
     v_int32 iterationsStep = m_iterationsPerStep;
 
-    auto lastTick = oatpp::Environment::getMicroTickCount();
+    auto lastTick = avena::Environment::getMicroTickCount();
 
     for(v_int32 i = 0; i < iterationsStep * 10; i ++) {
 
@@ -176,7 +178,7 @@ void FullAsyncTest::onRun() {
       { // test GET with path parameter
         auto response = client->getWithParams("my_test_param-Async", connection);
         OATPP_ASSERT(response->getStatusCode() == 200)
-        auto dto = response->readBodyToDto<oatpp::Object<app::TestDto>>(objectMapper.get());
+        auto dto = response->readBodyToDto<avena::Object<app::TestDto>>(objectMapper.get());
         OATPP_ASSERT(dto)
         OATPP_ASSERT(dto->testValue == "my_test_param-Async")
       }
@@ -184,7 +186,7 @@ void FullAsyncTest::onRun() {
       { // test GET with header parameter
         auto response = client->getWithHeaders("my_test_header-Async", connection);
         OATPP_ASSERT(response->getStatusCode() == 200)
-        auto dto = response->readBodyToDto<oatpp::Object<app::TestDto>>(objectMapper.get());
+        auto dto = response->readBodyToDto<avena::Object<app::TestDto>>(objectMapper.get());
         OATPP_ASSERT(dto)
         OATPP_ASSERT(dto->testValue == "my_test_header-Async")
       }
@@ -192,14 +194,14 @@ void FullAsyncTest::onRun() {
       { // test POST with body
         auto response = client->postBody("my_test_body-Async", connection);
         OATPP_ASSERT(response->getStatusCode() == 200)
-        auto dto = response->readBodyToDto<oatpp::Object<app::TestDto>>(objectMapper.get());
+        auto dto = response->readBodyToDto<avena::Object<app::TestDto>>(objectMapper.get());
         OATPP_ASSERT(dto)
         OATPP_ASSERT(dto->testValue == "my_test_body-Async")
       }
 
       { // test Big Echo with body
-        oatpp::data::stream::BufferOutputStream stream;
-        for(v_int32 j = 0; j < oatpp::data::buffer::IOBuffer::BUFFER_SIZE; j++) {
+        avena::data::stream::BufferOutputStream stream;
+        for(v_int32 j = 0; j < avena::data::buffer::IOBuffer::BUFFER_SIZE; j++) {
           stream.writeSimple("0123456789", 10);
         }
         auto data = stream.toString();
@@ -213,9 +215,9 @@ void FullAsyncTest::onRun() {
       }
 
       { // test Chunked body
-        oatpp::String sample = "__abcdefghijklmnopqrstuvwxyz-0123456789";
+        avena::String sample = "__abcdefghijklmnopqrstuvwxyz-0123456789";
         v_int32 numIterations = 10;
-        oatpp::data::stream::BufferOutputStream stream;
+        avena::data::stream::BufferOutputStream stream;
         for(v_int32 j = 0; j < numIterations; j++) {
           stream.writeSimple(sample->data(), static_cast<v_buff_size>(sample->size()));
         }
@@ -229,7 +231,7 @@ void FullAsyncTest::onRun() {
 
       { // Multipart body
 
-        std::unordered_map<oatpp::String, oatpp::String> map;
+        std::unordered_map<avena::String, avena::String> map;
         map["value1"] = "Hello";
         map["value2"] = "World";
         auto multipart = createMultipart(map);
@@ -239,11 +241,11 @@ void FullAsyncTest::onRun() {
         auto response = client->multipartTest(i + 1, body);
         OATPP_ASSERT(response->getStatusCode() == 200)
 
-        multipart = std::make_shared<oatpp::web::mime::multipart::PartList>(response->getHeaders());
+        multipart = std::make_shared<avena::web::mime::multipart::PartList>(response->getHeaders());
 
-        oatpp::web::mime::multipart::Reader multipartReader(multipart.get());
-        multipartReader.setPartReader("value1", oatpp::web::mime::multipart::createInMemoryPartReader(10));
-        multipartReader.setPartReader("value2", oatpp::web::mime::multipart::createInMemoryPartReader(10));
+        avena::web::mime::multipart::Reader multipartReader(multipart.get());
+        multipartReader.setPartReader("value1", avena::web::mime::multipart::createInMemoryPartReader(10));
+        multipartReader.setPartReader("value2", avena::web::mime::multipart::createInMemoryPartReader(10));
 
         response->transferBody(&multipartReader);
 
@@ -275,12 +277,12 @@ void FullAsyncTest::onRun() {
         auto value = response->readBodyToString();
         auto host = clientConnectionProvider->getProperty("host");
         OATPP_ASSERT(host)
-        OATPP_ASSERT(value == host.toString() + ":" + oatpp::utils::Conversion::int32ToStr(m_port))
+        OATPP_ASSERT(value == host.toString() + ":" + avena::utils::Conversion::int32ToStr(m_port))
       }
 
       if((i + 1) % iterationsStep == 0) {
-        auto ticks = oatpp::Environment::getMicroTickCount() - lastTick;
-        lastTick = oatpp::Environment::getMicroTickCount();
+        auto ticks = avena::Environment::getMicroTickCount() - lastTick;
+        lastTick = avena::Environment::getMicroTickCount();
         OATPP_LOGv("i", "{}, tick={}", i + 1, ticks)
       }
 
@@ -292,7 +294,7 @@ void FullAsyncTest::onRun() {
   }, std::chrono::minutes(10));
 
 
-  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
+  OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, executor);
   executor->waitTasksFinished();
   executor->stop();
   executor->join();

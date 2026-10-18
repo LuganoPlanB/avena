@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Processor.hpp"
 
-namespace oatpp { namespace data{ namespace buffer {
+namespace avena { namespace data{ namespace buffer {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // InlineReadData

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/data/stream/BufferStream.hpp"
 #include "oatpp/macro/basic.hpp"
 
-namespace oatpp { namespace base {
+namespace avena { namespace base {
 
 class LogMessage {
 private:
@@ -41,13 +43,13 @@ private:
 private:
   bool writeNextChunk();
 private:
-  oatpp::String m_msg;
+  avena::String m_msg;
   mutable data::stream::BufferOutputStream m_stream;
   v_uint64 m_currParam;
   std::vector<Parameter> m_params;
 public:
 
-  explicit LogMessage(const oatpp::String& msg);
+  explicit LogMessage(const avena::String& msg);
 
   std::string toStdString() const;
 
@@ -68,7 +70,7 @@ public:
   LogMessage& operator << (double value);
   LogMessage& operator << (long double value);
 
-  LogMessage& operator << (const oatpp::String& str);
+  LogMessage& operator << (const avena::String& str);
   LogMessage& operator << (const Boolean& value);
   LogMessage& operator << (const Int8& value);
   LogMessage& operator << (const UInt8& value);
@@ -90,15 +92,15 @@ struct Log {
   }
 
   template<typename ... Types>
-  static void stream(v_uint32 priority, const std::string& tag, const oatpp::String& message, Types... args) {
-    oatpp::base::LogMessage msg(message);
+  static void stream(v_uint32 priority, const std::string& tag, const avena::String& message, Types... args) {
+    avena::base::LogMessage msg(message);
     ignore({std::addressof(msg << args)...});
     log(priority, tag, msg);
   }
 
   template<typename ... Types>
-  static void stream(v_uint32 priority, const LogCategory& category, const oatpp::String& message, Types... args) {
-    oatpp::base::LogMessage msg(message);
+  static void stream(v_uint32 priority, const LogCategory& category, const avena::String& message, Types... args) {
+    avena::base::LogMessage msg(message);
     ignore({std::addressof(msg << args)...});
     log(priority, category, msg);
   }
@@ -124,7 +126,7 @@ struct Log {
  * @param ... - optional format parameter.
  */
 #define OATPP_LOGv(TAG, ...) \
-  oatpp::base::Log::stream(oatpp::Logger::PRIORITY_V, TAG, __VA_ARGS__);
+  avena::base::Log::stream(avena::Logger::PRIORITY_V, TAG, __VA_ARGS__);
 
 #else
   #define OATPP_LOGv(TAG, ...)
@@ -140,7 +142,7 @@ struct Log {
  * @param ... - optional format parameter.
  */
 #define OATPP_LOGd(TAG, ...) \
-  oatpp::base::Log::stream(oatpp::Logger::PRIORITY_D, TAG, __VA_ARGS__);
+  avena::base::Log::stream(avena::Logger::PRIORITY_D, TAG, __VA_ARGS__);
 
 #else
   #define OATPP_LOGd(TAG, ...)
@@ -156,7 +158,7 @@ struct Log {
  * @param ... - optional format parameter.
  */
 #define OATPP_LOGi(TAG, ...) \
-  oatpp::base::Log::stream(oatpp::Logger::PRIORITY_I, TAG, __VA_ARGS__);
+  avena::base::Log::stream(avena::Logger::PRIORITY_I, TAG, __VA_ARGS__);
 
 #else
   #define OATPP_LOGi(TAG, ...)
@@ -172,7 +174,7 @@ struct Log {
  * @param ... - optional format parameter.
  */
 #define OATPP_LOGw(TAG, ...) \
-  oatpp::base::Log::stream(oatpp::Logger::PRIORITY_W, TAG, __VA_ARGS__);
+  avena::base::Log::stream(avena::Logger::PRIORITY_W, TAG, __VA_ARGS__);
 
 #else
   #define OATPP_LOGw(TAG, ...)
@@ -188,7 +190,7 @@ struct Log {
  * @param ... - optional format parameter.
  */
 #define OATPP_LOGe(TAG, ...) \
-  oatpp::base::Log::stream(oatpp::Logger::PRIORITY_E, TAG, __VA_ARGS__);
+  avena::base::Log::stream(avena::Logger::PRIORITY_E, TAG, __VA_ARGS__);
 
 #else
   #define OATPP_LOGe(TAG, ...)
@@ -204,7 +206,7 @@ struct Log {
  * @param NAME - variable-name of the category which is later used to reference the category.
  */
 #define OATPP_DECLARE_LOG_CATEGORY(NAME) \
-  static oatpp::LogCategory NAME;
+  static avena::LogCategory NAME;
 
 /**
  * Convenience macro to implement a logging category directly in a class header.
@@ -213,7 +215,7 @@ struct Log {
  * @param ENABLED - enable or disable a category (bool).
  */
 #define OATPP_LOG_CATEGORY(NAME, TAG, ENABLED) \
-  oatpp::LogCategory NAME = oatpp::LogCategory(TAG, ENABLED);
+  avena::LogCategory NAME = avena::LogCategory(TAG, ENABLED);
 
 
 //////////////////////

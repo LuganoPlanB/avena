@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/data/stream/Stream.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
 
 /**
  * Utility class for hex string encoding/decoding .
@@ -109,7 +111,7 @@ public:
    * @param alphabet
    * @return
    */
-  static oatpp::String encode(const oatpp::String& data, const char* alphabet = ALPHABET_UPPER);
+  static avena::String encode(const avena::String& data, const char* alphabet = ALPHABET_UPPER);
 
   /**
    * Read binary data from hex string.
@@ -128,7 +130,7 @@ public:
    * @param allowSeparators
    * @return
    */
-  static oatpp::String decode(const oatpp::String& data, bool allowSeparators = false);
+  static avena::String decode(const avena::String& data, bool allowSeparators = false);
   
 };
   

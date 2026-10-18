@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,13 +32,13 @@
 #include "oatpp/network/Address.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 
-namespace oatpp { namespace openssl { namespace server {
+namespace avena { namespace openssl { namespace server {
 
 /**
  * Openssl server connection provider.
- * Extends &id:oatpp::base::Countable;, &id:oatpp::network::ServerConnectionProvider;.
+ * Extends &id:avena::base::Countable;, &id:avena::network::ServerConnectionProvider;.
  */
-class ConnectionProvider : public oatpp::network::ServerConnectionProvider {
+class ConnectionProvider : public avena::network::ServerConnectionProvider {
 private:
 
   class ConnectionInvalidator : public provider::Invalidator<data::stream::IOStream> {
@@ -47,7 +49,7 @@ private:
 private:
   std::shared_ptr<ConnectionInvalidator> m_connectionInvalidator;
   std::shared_ptr<Config> m_config;
-  std::shared_ptr<oatpp::network::ServerConnectionProvider> m_streamProvider;
+  std::shared_ptr<avena::network::ServerConnectionProvider> m_streamProvider;
 private:
   void instantiateTLSServer();
 private:
@@ -55,8 +57,8 @@ private:
 public:
   /**
    * Constructor.
-   * @param config - &id:oatpp::openssl::Config;.
-   * @param streamProvider - provider of underlying transport stream. &id:oatpp::network::ServerConnectionProvider;.
+   * @param config - &id:avena::openssl::Config;.
+   * @param streamProvider - provider of underlying transport stream. &id:avena::network::ServerConnectionProvider;.
    */
   ConnectionProvider(const std::shared_ptr<Config>& config,
                      const std::shared_ptr<network::ServerConnectionProvider>& streamProvider);
@@ -64,8 +66,8 @@ public:
 
   /**
    * Create shared ConnectionProvider.
-   * @param config - &id:oatpp::openssl::Config;.
-   * @param streamProvider - provider of underlying transport stream. &id:oatpp::network::ServerConnectionProvider;.
+   * @param config - &id:avena::openssl::Config;.
+   * @param streamProvider - provider of underlying transport stream. &id:avena::network::ServerConnectionProvider;.
    * @return - `std::shared_ptr` to ConnectionProvider.
    */
   static std::shared_ptr<ConnectionProvider> createShared(const std::shared_ptr<Config>& config,
@@ -73,10 +75,10 @@ public:
 
   /**
    * Create shared ConnectionProvider.
-   * @param config - &id:oatpp::openssl::Config;.
-   * @param address - &id:oatpp::network::Address;.
+   * @param config - &id:avena::openssl::Config;.
+   * @param address - &id:avena::network::Address;.
    * @param useExtendedConnections - set `true` to use &l:ConnectionProvider::ExtendedConnection;.
-   * `false` to use &id:oatpp::network::tcp::Connection;.
+   * `false` to use &id:avena::network::tcp::Connection;.
    * @return - `std::shared_ptr` to ConnectionProvider.
    */
   static std::shared_ptr<ConnectionProvider> createShared(const std::shared_ptr<Config>& config,
@@ -96,7 +98,7 @@ public:
 
   /**
    * Get incoming connection.
-   * @return &id:oatpp::data::stream::IOStream;.
+   * @return &id:avena::data::stream::IOStream;.
    */
   provider::ResourceHandle<data::stream::IOStream> get() override;
 
@@ -108,14 +110,14 @@ public:
    * <br>
    * *It may be implemented later*
    */
-  oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override {
+  avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override {
     /*
      *  No need to implement this.
      *  For Asynchronous IO in oatpp it is considered to be a good practice
      *  to accept connections in a seperate thread with the blocking accept()
      *  and then process connections in Asynchronous manner with non-blocking read/write
      */
-    throw std::runtime_error("oatpp::openssl::server::ConnectionProvider::getAsync not implemented.");
+    throw std::runtime_error("avena::openssl::server::ConnectionProvider::getAsync not implemented.");
   }
 
 };

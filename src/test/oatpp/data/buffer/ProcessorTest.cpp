@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,29 +32,29 @@
 #include "oatpp/async/Executor.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace data { namespace buffer {
+namespace avena { namespace data { namespace buffer {
 
 namespace {
 
-typedef oatpp::data::buffer::Processor Processor;
+typedef avena::data::buffer::Processor Processor;
 
-class BaseProcessor : public oatpp::data::buffer::Processor {
+class BaseProcessor : public avena::data::buffer::Processor {
 private:
   v_int32 m_bufferSize;
-  oatpp::data::stream::BufferOutputStream m_buffer;
+  avena::data::stream::BufferOutputStream m_buffer;
 public:
 
   BaseProcessor(v_int32 bufferSize)
     : m_bufferSize(bufferSize)
   {}
 
-  oatpp::v_io_size suggestInputStreamReadSize() override {
+  avena::v_io_size suggestInputStreamReadSize() override {
     return m_bufferSize;
   }
 
   virtual void process(p_char8 data, v_buff_size size) = 0;
 
-  v_int32 iterate(oatpp::data::buffer::InlineReadData& dataIn, oatpp::data::buffer::InlineReadData& dataOut) override {
+  v_int32 iterate(avena::data::buffer::InlineReadData& dataIn, avena::data::buffer::InlineReadData& dataOut) override {
 
     if(dataOut.bytesLeft > 0) {
       return Error::FLUSH_DATA_OUT;
@@ -134,24 +136,24 @@ public:
 
 };
 
-class TestCoroutine : public oatpp::async::Coroutine<TestCoroutine> {
+class TestCoroutine : public avena::async::Coroutine<TestCoroutine> {
 public:
   static std::atomic<v_int64> COUNTER;
 private:
-  oatpp::String m_data;
-  oatpp::String m_etalon;
-  std::shared_ptr<oatpp::data::stream::ReadCallback> m_readCallback;
-  std::shared_ptr<oatpp::data::stream::BufferOutputStream> m_writeCallback;
-  std::shared_ptr<oatpp::data::buffer::Processor> m_processor;
-  std::shared_ptr<oatpp::data::buffer::IOBuffer> m_buffer;
+  avena::String m_data;
+  avena::String m_etalon;
+  std::shared_ptr<avena::data::stream::ReadCallback> m_readCallback;
+  std::shared_ptr<avena::data::stream::BufferOutputStream> m_writeCallback;
+  std::shared_ptr<avena::data::buffer::Processor> m_processor;
+  std::shared_ptr<avena::data::buffer::IOBuffer> m_buffer;
 public:
 
-  TestCoroutine(const oatpp::String &mData,
-                const oatpp::String &mEtalon,
-                const std::shared_ptr<oatpp::data::stream::ReadCallback> &mReadCallback,
-                const std::shared_ptr<oatpp::data::stream::BufferOutputStream> &mWriteCallback,
+  TestCoroutine(const avena::String &mData,
+                const avena::String &mEtalon,
+                const std::shared_ptr<avena::data::stream::ReadCallback> &mReadCallback,
+                const std::shared_ptr<avena::data::stream::BufferOutputStream> &mWriteCallback,
                 const std::shared_ptr<Processor> &mProcessor,
-                const std::shared_ptr<oatpp::data::buffer::IOBuffer> &mBuffer)
+                const std::shared_ptr<avena::data::buffer::IOBuffer> &mBuffer)
     : m_data(mData)
     , m_etalon(mEtalon)
     , m_readCallback(mReadCallback)
@@ -167,7 +169,7 @@ public:
   }
 
   Action act() override {
-    return oatpp::data::stream::transferAsync(m_readCallback, m_writeCallback, 0, m_buffer, m_processor)
+    return avena::data::stream::transferAsync(m_readCallback, m_writeCallback, 0, m_buffer, m_processor)
       .next(yieldTo(&TestCoroutine::compare));
   }
 
@@ -181,19 +183,19 @@ public:
 
 std::atomic<v_int64> TestCoroutine::COUNTER(0);
 
-oatpp::String runTestCase(const oatpp::String& data, v_int32 p1N, v_int32 p2N, v_int32 p3N, v_int32 bufferSize) {
+avena::String runTestCase(const avena::String& data, v_int32 p1N, v_int32 p2N, v_int32 p3N, v_int32 bufferSize) {
 
-  oatpp::data::stream::BufferInputStream inStream(data);
-  oatpp::data::stream::BufferOutputStream outStream;
+  avena::data::stream::BufferInputStream inStream(data);
+  avena::data::stream::BufferOutputStream outStream;
 
-  oatpp::data::buffer::ProcessingPipeline processor({
-    oatpp::base::ObjectHandle<Processor>(std::make_shared<ProcessorToUpper>(p1N)),
-    oatpp::base::ObjectHandle<Processor>(std::make_shared<ProcessorChangeLetter>('A', '-', p2N)),
-    oatpp::base::ObjectHandle<Processor>(std::make_shared<ProcessorToLower>(p3N)),
+  avena::data::buffer::ProcessingPipeline processor({
+    avena::base::ObjectHandle<Processor>(std::make_shared<ProcessorToUpper>(p1N)),
+    avena::base::ObjectHandle<Processor>(std::make_shared<ProcessorChangeLetter>('A', '-', p2N)),
+    avena::base::ObjectHandle<Processor>(std::make_shared<ProcessorToLower>(p3N)),
   });
 
   std::unique_ptr<v_char8[]> buffer(new v_char8[static_cast<unsigned long>(bufferSize)]);
-  oatpp::data::stream::transfer(&inStream, &outStream, 0, buffer.get(), bufferSize, &processor);
+  avena::data::stream::transfer(&inStream, &outStream, 0, buffer.get(), bufferSize, &processor);
 
   return outStream.toString();
 
@@ -203,8 +205,8 @@ oatpp::String runTestCase(const oatpp::String& data, v_int32 p1N, v_int32 p2N, v
 
 void ProcessorTest::onRun() {
 
-  oatpp::String data = ">aaaaa0123456789bbbbb<";
-  oatpp::String etalon = ">-----0123456789bbbbb<";
+  avena::String data = ">aaaaa0123456789bbbbb<";
+  avena::String etalon = ">-----0123456789bbbbb<";
 
   for(v_int32 p1N = 1; p1N < 11; p1N ++) {
     for(v_int32 p2N = 1; p2N < 11; p2N ++) {
@@ -229,10 +231,10 @@ void ProcessorTest::onRun() {
 
     for(v_int32 i = 1; i < 30; i++) {
 
-      oatpp::data::stream::BufferInputStream inStream(data);
-      oatpp::data::stream::BufferOutputStream outStream;
+      avena::data::stream::BufferInputStream inStream(data);
+      avena::data::stream::BufferOutputStream outStream;
 
-      auto progress = oatpp::data::stream::transfer(&inStream, &outStream, 0, buffer, i);
+      auto progress = avena::data::stream::transfer(&inStream, &outStream, 0, buffer, i);
 
       auto result = outStream.toString();
 
@@ -243,7 +245,7 @@ void ProcessorTest::onRun() {
 
   }
 
-  oatpp::async::Executor executor;
+  avena::async::Executor executor;
 
   {
 
@@ -251,16 +253,16 @@ void ProcessorTest::onRun() {
       for(v_int32 p2N = 1; p2N < 11; p2N ++) {
         for (v_int32 p3N = 1; p3N < 11; p3N++) {
 
-          auto inStream = std::make_shared<oatpp::data::stream::BufferInputStream>(data);
-          auto outStream = std::make_shared<oatpp::data::stream::BufferOutputStream>();
+          auto inStream = std::make_shared<avena::data::stream::BufferInputStream>(data);
+          auto outStream = std::make_shared<avena::data::stream::BufferOutputStream>();
 
-          auto processor = std::shared_ptr<oatpp::data::buffer::ProcessingPipeline>(new oatpp::data::buffer::ProcessingPipeline({
-            oatpp::base::ObjectHandle<Processor>(std::make_shared<ProcessorToUpper>(p1N)),
-            oatpp::base::ObjectHandle<Processor>(std::make_shared<ProcessorChangeLetter>('A', '-', p2N)),
-            oatpp::base::ObjectHandle<Processor>(std::make_shared<ProcessorToLower>(p3N)),
+          auto processor = std::shared_ptr<avena::data::buffer::ProcessingPipeline>(new avena::data::buffer::ProcessingPipeline({
+            avena::base::ObjectHandle<Processor>(std::make_shared<ProcessorToUpper>(p1N)),
+            avena::base::ObjectHandle<Processor>(std::make_shared<ProcessorChangeLetter>('A', '-', p2N)),
+            avena::base::ObjectHandle<Processor>(std::make_shared<ProcessorToLower>(p3N)),
           }));
 
-          auto buffer = std::make_shared<oatpp::data::buffer::IOBuffer>();
+          auto buffer = std::make_shared<avena::data::buffer::IOBuffer>();
 
           executor.execute<TestCoroutine>(data, etalon, inStream, outStream, processor, buffer);
 
