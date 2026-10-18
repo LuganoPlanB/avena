@@ -1,0 +1,132 @@
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+name: Release
+
+on:
+  push:
+    tags: ['[0-9]*.[0-9]*.[0-9]*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to build (leave empty to calculate and tag the next release)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: avena-release
+  cancel-in-progress: false
+
+jobs:
+  version:
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.select.outputs.tag }}
+      sha: ${{ steps.select.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Calculate next version from conventional commits
+        if: github.event_name == 'workflow_dispatch' && inputs.tag == ''
+        id: semver
+        uses: ietf-tools/semver-action@c90370b2958652d71c06a3484129a4d423a6d8a8 # v1.11.0
+        with:
+          token: ${{ github.token }}
+          branch: ${{ github.sha }}
+          fallbackTag: '1.4.0'
+          tagFilter: '^[0-9]+\.[0-9]+\.[0-9]+$'
+          noVersionBumpBehavior: patch
+      - name: Select immutable source revision
+        id: select
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EXISTING_TAG: ${{ inputs.tag }}
+          NEXT_TAG: ${{ steps.semver.outputs.nextStrict }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if [[ "$EVENT_NAME" == push ]]; then
+            tag="$GITHUB_REF_NAME"
+          elif [[ -n "$EXISTING_TAG" ]]; then
+            tag="$EXISTING_TAG"
+          else
+            [[ "$GITHUB_REF" == refs/heads/main ]] || { echo 'New releases must run on main' >&2; exit 1; }
+            tag="$NEXT_TAG"
+          fi
+          [[ "$tag" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]] || { echo 'Expected an unprefixed stable semver tag' >&2; exit 1; }
+          if [[ "$EVENT_NAME" == push || -n "$EXISTING_TAG" ]]; then
+            sha="$(git rev-parse --verify "refs/tags/$tag^{commit}")"
+          else
+            sha="$GITHUB_SHA"
+          fi
+          printf 'tag=%s\nsha=%s\n' "$tag" "$sha" >> "$GITHUB_OUTPUT"
+
+  musl:
+    needs: version
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      # The workflow tooling can build old tags that predate this workflow.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: automation
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.version.outputs.sha }}
+          path: source
+      - name: Install build tools
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build binutils
+      - name: Set up Dyne musl toolchain
+        id: musl
+        uses: dyne/musl-action@d26fe56f7fe134a54e729d781ec687e847db34d3 # main
+        with:
+          target_arch: x86_64
+      - name: Build, test and package static libraries
+        env:
+          CC: ${{ steps.musl.outputs.CC }}
+          CXX: ${{ steps.musl.outputs.CXX }}
+          RELEASE_TAG: ${{ needs.version.outputs.tag }}
+        run: bash automation/scripts/build-musl-release.sh "$PWD/source" "$RELEASE_TAG" "$PWD/dist"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: musl-release
+          path: dist/*
+          if-no-files-found: error
+
+  publish:
+    needs: [version, musl]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: musl-release
+          path: dist
+      - name: Tag validated revision and publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.version.outputs.tag }}
+          RELEASE_SHA: ${{ needs.version.outputs.sha }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if git show-ref --verify --quiet "refs/tags/$RELEASE_TAG"; then
+            [[ "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")" == "$RELEASE_SHA" ]]
+          else
+            gh api "repos/$GITHUB_REPOSITORY/git/refs" \
+              -f "ref=refs/tags/$RELEASE_TAG" -f "sha=$RELEASE_SHA"
+          fi
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" dist/* --clobber
+          else
+            gh release create "$RELEASE_TAG" dist/* --verify-tag \
+              --title "avena $RELEASE_TAG" --generate-notes
+          fi

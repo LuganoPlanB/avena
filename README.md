@@ -61,6 +61,39 @@ inherited tests, and builds/runs an installed consumer. A separate production
 build checks that libraries work without test support. This is build and
 functional test coverage; no line-coverage percentage is claimed.
 
+## Releases
+
+The initial `1.4.0` tag identifies commit `2946e9e`, before release automation
+was added. Tags use stable `MAJOR.MINOR.PATCH` names without a `v` prefix.
+
+Run the **Release** workflow on `main` to calculate the next version with
+[`ietf-tools/semver-action`](https://github.com/ietf-tools/semver-action).
+Conventional `feat:` commits increase the minor version, `fix:` commits increase
+the patch version, and breaking changes increase the major version. Other
+changes fall back to a patch release. The workflow builds and validates the
+package before creating the new tag and GitHub release. To build an existing
+tag, supply its name in the workflow's optional `tag` input. Pushing a new tag
+that contains the workflow also starts a release build.
+
+[`dyne/musl-action`](https://github.com/dyne/musl-action) supplies the x86-64
+musl compiler and its bundled LibreSSL 4.1.0 headers and static libraries.
+`scripts/build-musl-release.sh` uses only this Dyne toolchain for target code;
+it builds all three avena libraries and runs a fully static installed consumer.
+CMake dependency lookup is restricted to the package and musl compiler roots.
+Release archives contain headers, static libraries (including LibreSSL),
+CMake packages, licenses and build information, plus a separate SHA-256
+checksum. They target x86-64
+Linux with musl; the regular CI suites continue to test the native builds.
+Installed oatpp CMake package versions retain the compatible 1.4.0 API line.
+
+To reproduce a release after installing the Dyne toolchain:
+
+```sh
+CC=/opt/dyne/gcc-musl/bin/x86_64-linux-musl-gcc \
+CXX=/opt/dyne/gcc-musl/bin/x86_64-linux-musl-g++ \
+bash scripts/build-musl-release.sh "$PWD" 1.4.0 "$PWD/build/release"
+```
+
 ## License and maintenance
 
 Apache License 2.0, with original licenses and copyright notices preserved.
