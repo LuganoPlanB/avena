@@ -92,9 +92,7 @@ int main() {
 When migrating an oatpp application, change qualified names and `using`
 declarations to `avena::`, update public includes to `<avena/...>`, and link
 `avena::avena` (or `-lavena`). Rebuild all dependent C++ objects and libraries;
-there is no compatibility namespace alias. The adapted
-[release notes](src/changelog/1.4.0.md) use the same namespace, while preserving
-the context of upstream API changes.
+there is no compatibility namespace alias.
 
 Pass the installation prefix in `CMAKE_PREFIX_PATH`. The same target is
 available when embedding avena with `add_subdirectory` (set BUILD_TESTING=OFF
@@ -129,6 +127,41 @@ GitHub Actions builds musl Debug/static and native Release/shared variants,
 runs the inherited tests, and builds/runs an installed consumer. A production
 build checks that libraries work without test support. This is build and
 functional test coverage; no line-coverage percentage is claimed.
+
+### TLS connection providers
+
+Use `avena::openssl` providers for encrypted connections. For a server, pass
+its PEM private key and certificate chain to the configuration factory:
+
+```cpp
+#include <avena/openssl/Config.hpp>
+#include <avena/openssl/server/ConnectionProvider.hpp>
+
+auto config = avena::openssl::Config::createDefaultServerConfigShared(
+    "path/to/key.pem", "path/to/certificate.crt");
+auto provider = avena::openssl::server::ConnectionProvider::createShared(
+    config, {"localhost", 443});
+```
+
+For a client, configure a trust store containing the trusted CA certificates:
+
+```cpp
+#include <avena/openssl/Config.hpp>
+#include <avena/openssl/client/ConnectionProvider.hpp>
+#include <avena/openssl/configurer/TrustStore.hpp>
+
+auto config = avena::openssl::Config::createDefaultClientConfigShared();
+config->addContextConfigurer(
+    std::make_shared<avena::openssl::configurer::TrustStore>(
+        "path/to/ca-certificates.pem", nullptr));
+auto provider = avena::openssl::client::ConnectionProvider::createShared(
+    config, {"example.com", 443});
+```
+
+Create these objects after `avena::Environment::init()` and release them before
+`avena::Environment::destroy()`. The
+[installed consumer](tests/consumer/main.cpp) provides a complete example of
+DTO generation, JSON, WebSocket handshake headers and TLS configuration.
 
 ## Releases
 
@@ -172,3 +205,6 @@ bash scripts/build-musl-release.sh "$PWD" 1.4.0 "$PWD/build/release"
 Apache License 2.0, with original licenses and copyright notices preserved.
 Plan-B changes carry `Copyright (C) 2026 Plan-B Foundation`.
 See [LICENSE](LICENSE), [NOTICE](NOTICE), and [AGENTS.md](AGENTS.md).
+Submit issues and pull requests to
+[LuganoPlanB/avena](https://github.com/LuganoPlanB/avena). Follow the root build
+and test instructions above when contributing.

@@ -11,6 +11,9 @@ OpenSSL. Read README.md and PROVENANCE.md before changing the build or imports.
   syntax. Mark modifications and use SPDX-License-Identifier: Apache-2.0 for
   new files. Extend the year range for later-year contributions; retain 2026.
   Do not rewrite untouched upstream files solely to claim copyright.
+- Keep current usage and contribution guidance in the root README, agent
+  maintenance rules here, and import history in PROVENANCE.md. Avoid duplicate
+  component READMEs and obsolete upstream release/community documentation.
 - Use the root CMake entry point. Keep builds out of source. Never commit
   generated files, local credentials, build trees or install prefixes.
 - Use the `avena` C++ namespace throughout the library, codegen and tests.
