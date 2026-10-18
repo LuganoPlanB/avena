@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,16 +35,16 @@
 #include <iostream>
 #include <thread>
 
-namespace oatpp { namespace test { namespace network { namespace virtual_ {
+namespace avena { namespace test { namespace network { namespace virtual_ {
   
 namespace {
   
-  typedef oatpp::network::virtual_::Pipe Pipe;
+  typedef avena::network::virtual_::Pipe Pipe;
   
   const char* DATA_CHUNK = "<0123456789/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ>";
   const v_buff_size CHUNK_SIZE = static_cast<v_buff_size>(std::strlen(DATA_CHUNK));
 
-  class WriterTask : public oatpp::base::Countable {
+  class WriterTask : public avena::base::Countable {
   private:
     std::shared_ptr<Pipe> m_pipe;
     v_int64 m_chunksToTransfer;
@@ -71,14 +73,14 @@ namespace {
     
   };
   
-  class ReaderTask : public oatpp::base::Countable {
+  class ReaderTask : public avena::base::Countable {
   private:
-    std::shared_ptr<oatpp::data::stream::BufferOutputStream> m_buffer;
+    std::shared_ptr<avena::data::stream::BufferOutputStream> m_buffer;
     std::shared_ptr<Pipe> m_pipe;
     v_int64 m_chunksToTransfer;
   public:
     
-    ReaderTask(const std::shared_ptr<oatpp::data::stream::BufferOutputStream> &buffer,
+    ReaderTask(const std::shared_ptr<avena::data::stream::BufferOutputStream> &buffer,
                const std::shared_ptr<Pipe>& pipe,
                v_int64 chunksToTransfer)
       : m_buffer(buffer)
@@ -103,11 +105,11 @@ namespace {
     
     OATPP_LOGv("transfer", "writer-nb: {}, reader-nb: {}", writeNonBlock, readerNonBlock)
     
-    auto buffer = std::make_shared<oatpp::data::stream::BufferOutputStream>();
+    auto buffer = std::make_shared<avena::data::stream::BufferOutputStream>();
     
     {
       
-      oatpp::test::PerformanceChecker timer("timer");
+      avena::test::PerformanceChecker timer("timer");
 
       std::thread writerThread(&WriterTask::run, WriterTask(pipe, chunksToTransfer));
       std::thread readerThread(&ReaderTask::run, ReaderTask(buffer, pipe, chunksToTransfer));
@@ -119,7 +121,7 @@ namespace {
     
     OATPP_ASSERT(buffer->getCurrentPosition() == chunksToTransfer * CHUNK_SIZE)
     
-    auto ruleBuffer = std::make_shared<oatpp::data::stream::BufferOutputStream>();
+    auto ruleBuffer = std::make_shared<avena::data::stream::BufferOutputStream>();
     for(v_int32 i = 0; i < chunksToTransfer; i ++) {
       ruleBuffer->writeSimple(DATA_CHUNK, CHUNK_SIZE);
     }
@@ -137,7 +139,7 @@ void PipeTest::onRun() {
   
   auto pipe = Pipe::createShared();
 
-  v_int64 chunkCount = oatpp::data::buffer::IOBuffer::BUFFER_SIZE * 10 / CHUNK_SIZE;
+  v_int64 chunkCount = avena::data::buffer::IOBuffer::BUFFER_SIZE * 10 / CHUNK_SIZE;
   
   runTransfer(pipe, chunkCount, false, false);
   runTransfer(pipe, chunkCount, true, false);

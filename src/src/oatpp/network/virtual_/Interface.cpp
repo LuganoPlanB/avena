@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 #include "Interface.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace network { namespace virtual_ {
+namespace avena { namespace network { namespace virtual_ {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ListenerLock
@@ -44,7 +46,7 @@ Interface::ListenerLock::~ListenerLock() {
 // Interface
 
 std::recursive_mutex Interface::m_registryMutex;
-std::unordered_map<oatpp::String, std::weak_ptr<Interface>> Interface::m_registry;
+std::unordered_map<avena::String, std::weak_ptr<Interface>> Interface::m_registry;
 
 void Interface::registerInterface(const std::shared_ptr<Interface>& _interface) {
 
@@ -53,28 +55,28 @@ void Interface::registerInterface(const std::shared_ptr<Interface>& _interface) 
   auto it = m_registry.find(_interface->getName());
   if(it != m_registry.end()) {
     throw std::runtime_error
-    ("[oatpp::network::virtual_::Interface::registerInterface()]: Error. Interface with such name already exists - '" + *_interface->getName() + "'.");
+    ("[avena::network::virtual_::Interface::registerInterface()]: Error. Interface with such name already exists - '" + *_interface->getName() + "'.");
   }
 
   m_registry.insert({_interface->getName(), _interface});
 
 }
 
-void Interface::unregisterInterface(const oatpp::String& name) {
+void Interface::unregisterInterface(const avena::String& name) {
 
   std::lock_guard<std::recursive_mutex> lock(m_registryMutex);
 
   auto it = m_registry.find(name);
   if(it == m_registry.end()) {
     throw std::runtime_error
-      ("[oatpp::network::virtual_::Interface::unregisterInterface()]: Error. Interface NOT FOUND - '" + *name + "'.");
+      ("[avena::network::virtual_::Interface::unregisterInterface()]: Error. Interface NOT FOUND - '" + *name + "'.");
   }
 
   m_registry.erase(it);
 
 }
 
-Interface::Interface(const oatpp::String& name)
+Interface::Interface(const avena::String& name)
   : m_name(name)
   , m_listenerLock(nullptr)
 {}
@@ -86,7 +88,7 @@ Interface::~Interface() {
   {
     std::lock_guard<std::mutex> lock(m_listenerMutex);
     if (m_listenerLock != nullptr) {
-      OATPP_LOGe("[oatpp::network::virtual_::Interface::~Interface()]",
+      OATPP_LOGe("[avena::network::virtual_::Interface::~Interface()]",
                  "Error! Interface destructor called, but listener is still bonded!!!")
       m_listenerLock.load()->m_interface = nullptr;
     }
@@ -96,7 +98,7 @@ Interface::~Interface() {
 
 }
 
-std::shared_ptr<Interface> Interface::obtainShared(const oatpp::String& name) {
+std::shared_ptr<Interface> Interface::obtainShared(const avena::String& name) {
 
   std::lock_guard<std::recursive_mutex> lock(m_registryMutex);
 
@@ -167,7 +169,7 @@ std::shared_ptr<Interface::ListenerLock> Interface::bind() {
     return std::shared_ptr<ListenerLock>(m_listenerLock.load());
   }
   throw std::runtime_error(
-    "[oatpp::network::virtual_::Interface::bind()]: Can't bind to interface '" + *m_name + "'. Listener lock is already acquired");
+    "[avena::network::virtual_::Interface::bind()]: Can't bind to interface '" + *m_name + "'. Listener lock is already acquired");
 }
 
 void Interface::unbindListener(ListenerLock* listenerLock) {
@@ -176,7 +178,7 @@ void Interface::unbindListener(ListenerLock* listenerLock) {
     m_listenerLock = nullptr;
     dropAllConnection();
   } else {
-    OATPP_LOGe("[oatpp::network::virtual_::Interface::unbindListener()]", "Error! Unbinding wrong listener!!!")
+    OATPP_LOGe("[avena::network::virtual_::Interface::unbindListener()]", "Error! Unbinding wrong listener!!!")
   }
 }
   

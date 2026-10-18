@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,12 +29,12 @@
 
 #include "oatpp/base/Countable.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 /**
  * Class to hold and communicate errors between Coroutines
  */
-class Error : public oatpp::base::Countable {
+class Error : public avena::base::Countable {
 private:
   std::string m_message;
   std::exception_ptr m_exceptionPtr;

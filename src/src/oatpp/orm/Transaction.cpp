@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Transaction.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
 Transaction::Transaction(const base::ObjectHandle<Executor>& executor, const provider::ResourceHandle<Connection>& connection)
   : m_executor(executor)
@@ -35,7 +37,7 @@ Transaction::Transaction(const base::ObjectHandle<Executor>& executor, const pro
     m_connection = res->getConnection();
   } else {
     m_open = false;
-    throw std::runtime_error("[oatpp::orm::Transaction::Transaction()]: "
+    throw std::runtime_error("[avena::orm::Transaction::Transaction()]: "
                              "Error. Can't begin transaction - " + *res->getErrorMessage());
   }
 }
@@ -79,7 +81,7 @@ std::shared_ptr<QueryResult> Transaction::commit() {
     m_open = false;
     return m_executor->commit(m_connection);
   } else {
-    throw std::runtime_error("[oatpp::orm::Transaction::commit()]: Error. The transaction is already closed.");
+    throw std::runtime_error("[avena::orm::Transaction::commit()]: Error. The transaction is already closed.");
   }
 }
 
@@ -88,7 +90,7 @@ std::shared_ptr<QueryResult> Transaction::rollback() {
     m_open = false;
     return m_executor->rollback(m_connection);
   } else {
-    throw std::runtime_error("[oatpp::orm::Transaction::commit()]: Error. The transaction is already closed.");
+    throw std::runtime_error("[avena::orm::Transaction::commit()]: Error. The transaction is already closed.");
   }
 }
 

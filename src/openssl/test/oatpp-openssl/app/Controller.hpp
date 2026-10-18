@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -34,14 +36,14 @@
 
 #include <sstream>
 
-namespace oatpp { namespace test { namespace openssl { namespace app {
+namespace avena { namespace test { namespace openssl { namespace app {
 
-class Controller : public oatpp::web::server::api::ApiController {
+class Controller : public avena::web::server::api::ApiController {
 private:
   static constexpr const char* TAG = "test::web::app::Controller";
 public:
   Controller(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 public:
   
@@ -69,7 +71,7 @@ public:
            QUERY(String, name), QUERY(Int32, age))
   {
     auto dto = TestDto::createShared();
-    dto->testValue = "name=" + name + "&age=" + oatpp::utils::Conversion::int32ToStr(age);
+    dto->testValue = "name=" + name + "&age=" + avena::utils::Conversion::int32ToStr(age);
     return createDtoResponse(Status::CODE_200, dto);
   }
 
@@ -112,8 +114,8 @@ public:
   ENDPOINT("GET", "header-value-set", headerValueSet,
            HEADER(String, valueSet, "X-VALUE-SET"))
   {
-    oatpp::web::protocol::http::HeaderValueData values;
-    oatpp::web::protocol::http::Parser::parseHeaderValueData(values, valueSet, ',');
+    avena::web::protocol::http::HeaderValueData values;
+    avena::web::protocol::http::Parser::parseHeaderValueData(values, valueSet, ',');
     OATPP_ASSERT_HTTP(values.tokens.find("VALUE_1") != values.tokens.end(), Status::CODE_400, "No header 'VALUE_1' in value set");
     OATPP_ASSERT_HTTP(values.tokens.find("VALUE_2") != values.tokens.end(), Status::CODE_400, "No header 'VALUE_2' in value set");
     OATPP_ASSERT_HTTP(values.tokens.find("VALUE_3") != values.tokens.end(), Status::CODE_400, "No header 'VALUE_3' in value set");

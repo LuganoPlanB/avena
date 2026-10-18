@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "./Object.hpp"
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BaseObject
@@ -120,7 +122,7 @@ const char* DTO::Z__CLASS_TYPE_NAME() {
   return "DTO";
 }
 
-oatpp::data::type::BaseObject::Properties* DTO::Z__CLASS_GET_FIELDS_MAP() {
+avena::data::type::BaseObject::Properties* DTO::Z__CLASS_GET_FIELDS_MAP() {
   static data::type::BaseObject::Properties map;
   return &map;
 }

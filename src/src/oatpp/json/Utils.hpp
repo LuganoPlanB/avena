@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,11 +32,11 @@
 
 #include <string>
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 /**
  * Utility class for json serializer/deserializer.
- * Used by &id:oatpp::json::Serializer;, &id:oatpp::json::Deserializer;.
+ * Used by &id:avena::json::Serializer;, &id:avena::json::Deserializer;.
  */
 class Utils {
 public:
@@ -68,8 +70,8 @@ public:
   static constexpr v_char8 JSON_DECIMAL_SEPARATOR = '.';
 
 public:
-  typedef oatpp::String String;
-  typedef oatpp::utils::parser::Caret ParsingCaret;
+  typedef avena::String String;
+  typedef avena::utils::parser::Caret ParsingCaret;
 private:
   static v_buff_size escapeUtf8CharSize(const char* sequence);
   static v_buff_size escapeUtf8Char(const char* sequence, p_char8 buffer);
@@ -85,7 +87,7 @@ public:
    * @param data - pointer to string to escape.
    * @param size - data size.
    * @param flags - escape flags.
-   * @return - &id:oatpp::String;.
+   * @return - &id:avena::String;.
    */
   static String escapeString(const char* data, v_buff_size size, v_uint32 flags = FLAG_ESCAPE_ALL);
 
@@ -101,7 +103,7 @@ public:
    *   <li>&l:Utils::ERROR_CODE_PARSER_QUOTE_EXPECTED;</li>
    * </ul>
    * @param errorPosition - out parameter. Error position in data.
-   * @return - &id:oatpp::String;.
+   * @return - &id:avena::String;.
    */
   static String unescapeString(const char* data, v_buff_size size, v_int64& errorCode, v_buff_size& errorPosition);
 
@@ -117,20 +119,20 @@ public:
    *   <li>&l:Utils::ERROR_CODE_PARSER_QUOTE_EXPECTED;</li>
    * </ul>
    * @param errorPosition - out parameter. Error position in data.
-   * @return - &id:oatpp::String;.
+   * @return - &id:avena::String;.
    */
   static std::string unescapeStringToStdString(const char* data, v_buff_size size, v_int64& errorCode, v_buff_size& errorPosition);
 
   /**
    * Parse string enclosed in `"<string>"`.
-   * @param caret - &id:oatpp::utils::parser::Caret;.
-   * @return - &id:oatpp::String;.
+   * @param caret - &id:avena::utils::parser::Caret;.
+   * @return - &id:avena::String;.
    */
   static String parseString(ParsingCaret& caret);
 
   /**
    * Parse string enclosed in `"<string>"`.
-   * @param caret - &id:oatpp::utils::parser::Caret;.
+   * @param caret - &id:avena::utils::parser::Caret;.
    * @return - `std::string`.
    */
   static std::string parseStringToStdString(ParsingCaret& caret);

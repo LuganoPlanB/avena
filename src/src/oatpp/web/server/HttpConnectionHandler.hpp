@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,10 +33,10 @@
 
 #include <unordered_map>
 
-namespace oatpp { namespace web { namespace server {
+namespace avena { namespace web { namespace server {
 
 /**
- * Simple ConnectionHandler (&id:oatpp::network::ConnectionHandler;) for handling HTTP communication. <br>
+ * Simple ConnectionHandler (&id:avena::network::ConnectionHandler;) for handling HTTP communication. <br>
  * Will create one thread per each connection to handle communication.
  */
 class HttpConnectionHandler : public base::Countable, public network::ConnectionHandler, public HttpProcessor::TaskProcessingListener {
@@ -49,18 +51,18 @@ private:
   std::shared_ptr<HttpProcessor::Components> m_components;
   std::atomic_bool m_continue;
   std::unordered_map<v_uint64, provider::ResourceHandle<data::stream::IOStream>> m_connections;
-  oatpp::concurrency::SpinLock m_connectionsLock;
+  avena::concurrency::SpinLock m_connectionsLock;
 public:
 
   /**
    * Constructor.
-   * @param components - &id:oatpp::web::server::HttpProcessor::Components;.
+   * @param components - &id:avena::web::server::HttpProcessor::Components;.
    */
   HttpConnectionHandler(const std::shared_ptr<HttpProcessor::Components>& components);
 
   /**
    * Constructor.
-   * @param router - &id:oatpp::web::server::HttpRouter; to route incoming requests.
+   * @param router - &id:avena::web::server::HttpRouter; to route incoming requests.
    */
   HttpConnectionHandler(const std::shared_ptr<HttpRouter>& router)
     : HttpConnectionHandler(std::make_shared<HttpProcessor::Components>(router))
@@ -68,8 +70,8 @@ public:
 
   /**
    * Constructor.
-   * @param router - &id:oatpp::web::server::HttpRouter; to route incoming requests.
-   * @param config - &id:oatpp::web::server::HttpProcessor::Config;.
+   * @param router - &id:avena::web::server::HttpRouter; to route incoming requests.
+   * @param config - &id:avena::web::server::HttpProcessor::Config;.
    */
   HttpConnectionHandler(const std::shared_ptr<HttpRouter>& router,
                         const std::shared_ptr<HttpProcessor::Config>& config)
@@ -80,7 +82,7 @@ public:
 
   /**
    * Create shared HttpConnectionHandler.
-   * @param router - &id:oatpp::web::server::HttpRouter; to route incoming requests.
+   * @param router - &id:avena::web::server::HttpRouter; to route incoming requests.
    * @return - `std::shared_ptr` to HttpConnectionHandler.
    */
   static std::shared_ptr<HttpConnectionHandler> createShared(const std::shared_ptr<HttpRouter>& router);
@@ -88,27 +90,27 @@ public:
   /**
    * Set root error handler for all requests coming through this Connection Handler.
    * All unhandled errors will be handled by this error handler.
-   * @param errorHandler - &id:oatpp::web::server::handler::ErrorHandler;.
+   * @param errorHandler - &id:avena::web::server::handler::ErrorHandler;.
    */
   void setErrorHandler(const std::shared_ptr<handler::ErrorHandler>& errorHandler);
 
   /**
    * Add request interceptor. Request interceptors are called before routing happens.
    * If multiple interceptors set then the order of interception is the same as the order of calls to `addRequestInterceptor`.
-   * @param interceptor - &id:oatpp::web::server::interceptor::RequestInterceptor;.
+   * @param interceptor - &id:avena::web::server::interceptor::RequestInterceptor;.
    */
   void addRequestInterceptor(const std::shared_ptr<interceptor::RequestInterceptor>& interceptor);
 
   /**
    * Add response interceptor.
    * If multiple interceptors set then the order of interception is the same as the order of calls to `addResponseInterceptor`.
-   * @param interceptor - &id:oatpp::web::server::interceptor::RequestInterceptor;.
+   * @param interceptor - &id:avena::web::server::interceptor::RequestInterceptor;.
    */
   void addResponseInterceptor(const std::shared_ptr<interceptor::ResponseInterceptor>& interceptor);
 
   /**
-   * Implementation of &id:oatpp::network::ConnectionHandler::handleConnection;.
-   * @param connection - &id:oatpp::data::stream::IOStream; representing connection.
+   * Implementation of &id:avena::network::ConnectionHandler::handleConnection;.
+   * @param connection - &id:avena::data::stream::IOStream; representing connection.
    */
   void handleConnection(const provider::ResourceHandle<IOStream>& connection,
                         const std::shared_ptr<const ParameterMap>& params) override;

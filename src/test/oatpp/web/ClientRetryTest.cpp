@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -52,11 +54,11 @@
 #include "oatpp-test/web/ClientServerTestRunner.hpp"
 #include "oatpp-test/Checker.hpp"
 
-namespace oatpp { namespace test { namespace web {
+namespace avena { namespace test { namespace web {
 
 namespace {
 
-typedef oatpp::web::server::api::ApiController ApiController;
+typedef avena::web::server::api::ApiController ApiController;
 
 class TestServerComponent {
 private:
@@ -67,32 +69,32 @@ public:
     : m_port(port)
   {}
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([this] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ServerConnectionProvider>, serverConnectionProvider)([this] {
 
     if(m_port == 0) { // Use oatpp virtual interface
-      auto _interface = oatpp::network::virtual_::Interface::obtainShared("virtualhost");
-      return std::static_pointer_cast<oatpp::network::ServerConnectionProvider>(
-        oatpp::network::virtual_::server::ConnectionProvider::createShared(_interface)
+      auto _interface = avena::network::virtual_::Interface::obtainShared("virtualhost");
+      return std::static_pointer_cast<avena::network::ServerConnectionProvider>(
+        avena::network::virtual_::server::ConnectionProvider::createShared(_interface)
       );
     }
 
-    return std::static_pointer_cast<oatpp::network::ServerConnectionProvider>(
-      oatpp::network::tcp::server::ConnectionProvider::createShared({"localhost", m_port})
+    return std::static_pointer_cast<avena::network::ServerConnectionProvider>(
+      avena::network::tcp::server::ConnectionProvider::createShared({"localhost", m_port})
     );
 
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)([] {
-    return oatpp::web::server::HttpRouter::createShared();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, httpRouter)([] {
+    return avena::web::server::HttpRouter::createShared();
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
-    OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
-    return oatpp::web::server::HttpConnectionHandler::createShared(router);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ConnectionHandler>, serverConnectionHandler)([] {
+    OATPP_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, router);
+    return avena::web::server::HttpConnectionHandler::createShared(router);
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper)([] {
-    return std::make_shared<oatpp::json::ObjectMapper>();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::data::mapping::ObjectMapper>, objectMapper)([] {
+    return std::make_shared<avena::json::ObjectMapper>();
   }());
 
 };
@@ -106,17 +108,17 @@ public:
     : m_port(port)
   {}
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
 
     if(m_port == 0) {
-      auto _interface = oatpp::network::virtual_::Interface::obtainShared("virtualhost");
-      return std::static_pointer_cast<oatpp::network::ClientConnectionProvider>(
-        oatpp::network::virtual_::client::ConnectionProvider::createShared(_interface)
+      auto _interface = avena::network::virtual_::Interface::obtainShared("virtualhost");
+      return std::static_pointer_cast<avena::network::ClientConnectionProvider>(
+        avena::network::virtual_::client::ConnectionProvider::createShared(_interface)
       );
     }
 
-    return std::static_pointer_cast<oatpp::network::ClientConnectionProvider>(
-      oatpp::network::tcp::client::ConnectionProvider::createShared({"localhost", m_port})
+    return std::static_pointer_cast<avena::network::ClientConnectionProvider>(
+      avena::network::tcp::client::ConnectionProvider::createShared({"localhost", m_port})
     );
 
   }());
@@ -127,7 +129,7 @@ void runServer(v_uint16 port, v_int32 delaySeconds, v_int32 iterations, bool sta
 
   TestServerComponent component(port);
 
-  oatpp::test::web::ClientServerTestRunner runner;
+  avena::test::web::ClientServerTestRunner runner;
 
   runner.addController(controller);
 
@@ -153,18 +155,18 @@ void ClientRetryTest::onRun() {
 
   TestClientComponent component(m_port);
 
-  auto objectMapper = std::make_shared<oatpp::json::ObjectMapper>();
+  auto objectMapper = std::make_shared<avena::json::ObjectMapper>();
   auto controller = app::Controller::createShared(objectMapper);
 
-  OATPP_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, connectionProvider);
+  OATPP_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, connectionProvider);
 
   {
 
     OATPP_LOGi(TAG, "Test: no server available")
-    oatpp::test::PerformanceChecker checker("test: no server available");
+    avena::test::PerformanceChecker checker("test: no server available");
 
-    auto retryPolicy = std::make_shared<oatpp::web::client::SimpleRetryPolicy>(2, std::chrono::seconds(1));
-    auto requestExecutor = oatpp::web::client::HttpRequestExecutor::createShared(connectionProvider, retryPolicy);
+    auto retryPolicy = std::make_shared<avena::web::client::SimpleRetryPolicy>(2, std::chrono::seconds(1));
+    auto requestExecutor = avena::web::client::HttpRequestExecutor::createShared(connectionProvider, retryPolicy);
     auto client = app::Client::createShared(requestExecutor, objectMapper);
 
     auto response = client->getRoot();
@@ -196,10 +198,10 @@ void ClientRetryTest::onRun() {
   {
 
     OATPP_LOGi(TAG, "Test: server pops up")
-    oatpp::test::PerformanceChecker checker("test: server pops up");
+    avena::test::PerformanceChecker checker("test: server pops up");
 
-    auto retryPolicy = std::make_shared<oatpp::web::client::SimpleRetryPolicy>(10 * 10, std::chrono::milliseconds(100));
-    auto requestExecutor = oatpp::web::client::HttpRequestExecutor::createShared(connectionProvider, retryPolicy);
+    auto retryPolicy = std::make_shared<avena::web::client::SimpleRetryPolicy>(10 * 10, std::chrono::milliseconds(100));
+    auto requestExecutor = avena::web::client::HttpRequestExecutor::createShared(connectionProvider, retryPolicy);
     auto client = app::Client::createShared(requestExecutor, objectMapper);
 
     std::list<std::thread> threads;
@@ -232,9 +234,9 @@ void ClientRetryTest::onRun() {
 
     OATPP_LOGi(TAG, "Test: unstable server!")
 
-    auto retryPolicy = std::make_shared<oatpp::web::client::SimpleRetryPolicy>(-1, std::chrono::seconds(1));
-    auto connectionPool = oatpp::network::ClientConnectionPool::createShared(connectionProvider, 10, std::chrono::seconds(1));
-    auto requestExecutor = oatpp::web::client::HttpRequestExecutor::createShared(connectionPool, retryPolicy);
+    auto retryPolicy = std::make_shared<avena::web::client::SimpleRetryPolicy>(-1, std::chrono::seconds(1));
+    auto connectionPool = avena::network::ClientConnectionPool::createShared(connectionProvider, 10, std::chrono::seconds(1));
+    auto requestExecutor = avena::web::client::HttpRequestExecutor::createShared(connectionPool, retryPolicy);
     auto client = app::Client::createShared(requestExecutor, objectMapper);
 
     std::list<std::thread> threads;
@@ -243,9 +245,9 @@ void ClientRetryTest::onRun() {
 
       v_int64 counter = 0;
 
-      v_int64 tick0 = oatpp::Environment::getMicroTickCount();
+      v_int64 tick0 = avena::Environment::getMicroTickCount();
 
-      while(oatpp::Environment::getMicroTickCount() - tick0 < 10 * 1000 * 1000) {
+      while(avena::Environment::getMicroTickCount() - tick0 < 10 * 1000 * 1000) {
 
         auto response = client->getAvailability();
         OATPP_ASSERT(response && "Test: unstable server!")

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,27 +30,27 @@
 #include "./Resource.hpp"
 #include "oatpp/data/stream/Stream.hpp"
 
-namespace oatpp { namespace data { namespace resource {
+namespace avena { namespace data { namespace resource {
 
 /**
  * File.
- * @extends - &id:oatpp::data::Resource;.
+ * @extends - &id:avena::data::Resource;.
  */
 class File : public Resource {
 private:
   
   struct FileHandle {
 
-    oatpp::String fileName;
+    avena::String fileName;
 
-    FileHandle(const oatpp::String& fullFileName)
+    FileHandle(const avena::String& fullFileName)
       : fileName(fullFileName)
     {}
 
   };
 
 public:
-  static oatpp::String concatDirAndName(const oatpp::String& dir, const oatpp::String& filename);
+  static avena::String concatDirAndName(const avena::String& dir, const avena::String& filename);
 private:
   std::shared_ptr<FileHandle> m_handle;
 public:
@@ -62,26 +64,26 @@ public:
    * Constructor.
    * @param fullFilename
    */
-  File(const oatpp::String& fullFilename);
+  File(const avena::String& fullFilename);
 
   /**
    * Constructor.
    * @param directory
    * @param filename
    */
-  File(const oatpp::String& directory, const oatpp::String& filename);
+  File(const avena::String& directory, const avena::String& filename);
 
   /**
    * Open output stream to a file. <br>
    * *Note: stream also captures file-handle. The file object won't be deleted until the stream is deleted.*
-   * @return - `std::shared_ptr` to &id:oatpp::data::stream::OutputStream;.
+   * @return - `std::shared_ptr` to &id:avena::data::stream::OutputStream;.
    */
   std::shared_ptr<data::stream::OutputStream> openOutputStream() override;
 
   /**
    * Open input stream to a temporary file. <br>
    * *Note: stream also captures file-handle. The file won't be deleted until the stream is deleted.*
-   * @return - `std::shared_ptr` &id:oatpp::data::stream::InputStream;.
+   * @return - `std::shared_ptr` &id:avena::data::stream::InputStream;.
    */
   std::shared_ptr<data::stream::InputStream> openInputStream() override;
 
@@ -89,7 +91,7 @@ public:
    * Not applicable.
    * @return - always returns `nullptr`.
    */
-  oatpp::String getInMemoryData() override;
+  avena::String getInMemoryData() override;
 
   /**
    * Not applicable.
@@ -99,9 +101,9 @@ public:
 
   /**
    * Get location where temporary data is stored.
-   * @return - `&id:oatpp::String;`.
+   * @return - `&id:avena::String;`.
    */
-  oatpp::String getLocation() override;
+  avena::String getLocation() override;
 
 };
 

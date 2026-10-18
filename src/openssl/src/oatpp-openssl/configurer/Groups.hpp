@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,22 +31,22 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
 /**
  * Context configurer for limiting the groups used by the TLS connection
- * @extends &id:oatpp::openssl::configurer::ContextConfigurer;.
+ * @extends &id:avena::openssl::configurer::ContextConfigurer;.
  */
 class Groups : public ContextConfigurer {
 private:
-  oatpp::String m_groupsColonSeparated;
+  avena::String m_groupsColonSeparated;
 public:
 
   /**
    * Constructor.
    * @param groups DH or ECDH groups (others may be added via external providers through openssl)
    */
-  Groups(const oatpp::List<oatpp::String>& groups);
+  Groups(const avena::List<avena::String>& groups);
 
   void configure(SSL_CTX* ctx) override;
 

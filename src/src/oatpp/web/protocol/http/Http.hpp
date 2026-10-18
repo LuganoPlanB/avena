@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -36,19 +38,19 @@
 #include <unordered_map>
 #include <unordered_set>
 
-namespace oatpp { namespace web { namespace protocol { namespace http {
+namespace avena { namespace web { namespace protocol { namespace http {
 
 /**
  * Typedef for headers map. Headers map key is case-insensitive.
- * For more info see &id:oatpp::data::share::LazyStringMultimap;.
+ * For more info see &id:avena::data::share::LazyStringMultimap;.
  */
-typedef oatpp::data::share::LazyStringMultimap<oatpp::data::share::StringKeyLabelCI> Headers;
+typedef avena::data::share::LazyStringMultimap<avena::data::share::StringKeyLabelCI> Headers;
 
 /**
  * Typedef for query parameters map.
- * For more info see &id:oatpp::data::share::LazyStringMultimap;.
+ * For more info see &id:avena::data::share::LazyStringMultimap;.
  */
-typedef oatpp::data::share::LazyStringMultimap<oatpp::data::share::StringKeyLabel> QueryParams;
+typedef avena::data::share::LazyStringMultimap<avena::data::share::StringKeyLabel> QueryParams;
 
 /**
  * Http status.
@@ -410,7 +412,7 @@ public:
 };
 
 /**
- * HttpError extends &id:oatpp::web::protocol::ProtocolError;<&l:Status;>.
+ * HttpError extends &id:avena::web::protocol::ProtocolError;<&l:Status;>.
  */
 class HttpError : public protocol::ProtocolError<Status> {
 private:
@@ -424,7 +426,7 @@ public:
    * @param headers - additional headers recommended for error response.
    */
   HttpError(const Info& info,
-            const oatpp::String& message,
+            const avena::String& message,
             const Headers& headers = {})
     : protocol::ProtocolError<Status>(info, message)
     , m_headers(headers)
@@ -437,7 +439,7 @@ public:
    * @param headers - additional headers recommended for error response.
    */
   HttpError(const Status& status,
-            const oatpp::String& message,
+            const avena::String& message,
             const Headers& headers = {})
     : protocol::ProtocolError<Status>(Info(0, status), message)
     , m_headers(headers)
@@ -460,7 +462,7 @@ public:
  * @param MESSAGE - String message.
  */
 #define OATPP_ASSERT_HTTP(COND, STATUS, MESSAGE) \
-if(!(COND)) { throw oatpp::web::protocol::http::HttpError(STATUS, MESSAGE, {}); }
+if(!(COND)) { throw avena::web::protocol::http::HttpError(STATUS, MESSAGE, {}); }
 
 /**
  * Collection of HTTP Header constants.
@@ -512,7 +514,7 @@ class Range {
 public:
   static const char* const UNIT_BYTES;
 private:
-  static Range parseNextRemaining(oatpp::utils::parser::Caret& caret, const oatpp::String& units);
+  static Range parseNextRemaining(avena::utils::parser::Caret& caret, const avena::String& units);
 private:
   Range()
     : units(nullptr)
@@ -522,7 +524,7 @@ private:
   {}
 public:
   
-  Range(const oatpp::String& pUnits,
+  Range(const avena::String& pUnits,
         v_int64 pStart,
         v_int64 pEnd,
         bool pValid = true)
@@ -532,23 +534,23 @@ public:
     , valid(pValid)
   {}
   
-  oatpp::String units;
+  avena::String units;
   v_int64 start;
   v_int64 end;
   bool valid;
   
-  oatpp::String toString() const;
+  avena::String toString() const;
   
   bool isValid() const {
     return units.get() != nullptr && valid;
   }
   
-  static Range parse(oatpp::utils::parser::Caret& caret);
-  static Range parse(const oatpp::String& str);
+  static Range parse(avena::utils::parser::Caret& caret);
+  static Range parse(const avena::String& str);
 
-  static Range parseNext(oatpp::utils::parser::Caret& caret, const oatpp::String& units);
-  static void parseAll(std::vector<Range>& ranges, oatpp::utils::parser::Caret& caret);
-  static void parseAll(std::vector<Range>& ranges, const oatpp::String& str);
+  static Range parseNext(avena::utils::parser::Caret& caret, const avena::String& units);
+  static void parseAll(std::vector<Range>& ranges, avena::utils::parser::Caret& caret);
+  static void parseAll(std::vector<Range>& ranges, const avena::String& str);
   
 };
   
@@ -561,7 +563,7 @@ private:
   {}
 public:
   
-  ContentRange(const oatpp::String& pUnits,
+  ContentRange(const avena::String& pUnits,
                v_int64 pStart,
                v_int64 pEnd,
                v_int64 pSize,
@@ -573,20 +575,20 @@ public:
     , isSizeKnown(pIsSizeKnown)
   {}
   
-  oatpp::String units;
+  avena::String units;
   v_int64 start;
   v_int64 end;
   v_int64 size;
   bool isSizeKnown;
   
-  oatpp::String toString() const;
+  avena::String toString() const;
   
   bool isValid() const {
     return units.get() != nullptr;
   }
   
-  static ContentRange parse(oatpp::utils::parser::Caret& caret);
-  static ContentRange parse(const oatpp::String& str);
+  static ContentRange parse(avena::utils::parser::Caret& caret);
+  static ContentRange parse(const avena::String& str);
   
 };
 
@@ -596,19 +598,19 @@ public:
  */
 struct RequestStartingLine {
   /**
-   * Method as &id:oatpp::data::share::StringKeyLabel;.
+   * Method as &id:avena::data::share::StringKeyLabel;.
    */
-  oatpp::data::share::StringKeyLabel method; // GET, POST ...
+  avena::data::share::StringKeyLabel method; // GET, POST ...
 
   /**
-   * Path as &id:oatpp::data::share::StringKeyLabel;.
+   * Path as &id:avena::data::share::StringKeyLabel;.
    */
-  oatpp::data::share::StringKeyLabel path;
+  avena::data::share::StringKeyLabel path;
 
   /**
-   * Protocol as &id:oatpp::data::share::StringKeyLabel;.
+   * Protocol as &id:avena::data::share::StringKeyLabel;.
    */
-  oatpp::data::share::StringKeyLabel protocol;
+  avena::data::share::StringKeyLabel protocol;
 };
 
 /**
@@ -617,9 +619,9 @@ struct RequestStartingLine {
  */
 struct ResponseStartingLine {
   /**
-   * Protocol as &id:oatpp::data::share::StringKeyLabel;.
+   * Protocol as &id:avena::data::share::StringKeyLabel;.
    */
-  oatpp::data::share::StringKeyLabel protocol;
+  avena::data::share::StringKeyLabel protocol;
 
   /**
    * Status code as v_int32.
@@ -627,9 +629,9 @@ struct ResponseStartingLine {
   v_int32 statusCode;
 
   /**
-   * Description as &id:oatpp::data::share::StringKeyLabel;.
+   * Description as &id:avena::data::share::StringKeyLabel;.
    */
-  oatpp::data::share::StringKeyLabel description;
+  avena::data::share::StringKeyLabel description;
 };
 
 /**
@@ -652,7 +654,7 @@ struct HeaderValueData {
    * @param key
    * @return
    */
-  oatpp::String getTitleParamValue(const data::share::StringKeyLabelCI& key) const;
+  avena::String getTitleParamValue(const data::share::StringKeyLabelCI& key) const;
 
 };
 
@@ -661,34 +663,34 @@ struct HeaderValueData {
  */
 class Parser {
 private:
-  static oatpp::data::share::StringKeyLabelCI parseHeaderNameLabel(const std::shared_ptr<std::string>& headersText,
-                                                                   oatpp::utils::parser::Caret& caret);
+  static avena::data::share::StringKeyLabelCI parseHeaderNameLabel(const std::shared_ptr<std::string>& headersText,
+                                                                   avena::utils::parser::Caret& caret);
 public:
 
   /**
    * Parse &l:RequestStartingLine;.
    * @param line - &l:RequestStartingLine;. Values will be set to line's fields.
    * @param headersText - `std::shared_ptr` to `std::string` needed as a "memory handle" for
-   * &l:RequestStartingLine; fields. See &id:oatpp::data::share::MemoryLabel;.
-   * @param caret - &id:oatpp::utils::parser::Caret;.
+   * &l:RequestStartingLine; fields. See &id:avena::data::share::MemoryLabel;.
+   * @param caret - &id:avena::utils::parser::Caret;.
    * @param error - out parameter &l:Status;.
    */
   static void parseRequestStartingLine(RequestStartingLine& line,
                                        const std::shared_ptr<std::string>& headersText,
-                                       oatpp::utils::parser::Caret& caret,
+                                       avena::utils::parser::Caret& caret,
                                        Status& error);
 
   /**
    * Parse &l:ResponseStartingLine;.
    * @param line - &l:ResponseStartingLine;. Values will be set to line's fields.
    * @param headersText - `std::shared_ptr` to `std::string` needed as a "memory handle" for
-   * &l:ResponseStartingLine; fields. See &id:oatpp::data::share::MemoryLabel;.
-   * @param caret - &id:oatpp::utils::parser::Caret;.
+   * &l:ResponseStartingLine; fields. See &id:avena::data::share::MemoryLabel;.
+   * @param caret - &id:avena::utils::parser::Caret;.
    * @param error - out parameter &l:Status;.
    */
   static void parseResponseStartingLine(ResponseStartingLine& line,
                                         const std::shared_ptr<std::string>& headersText,
-                                        oatpp::utils::parser::Caret& caret,
+                                        avena::utils::parser::Caret& caret,
                                         Status& error);
 
   /**
@@ -696,26 +698,26 @@ public:
    * `"Content-Type: application/json\r\n"`.
    * @param headers - &l:Headers; map to put parsed header to.
    * @param headersText - `std::shared_ptr` to `std::string` needed as a "memory handle" for
-   * &l:Headers; values. See &id:oatpp::data::share::MemoryLabel;.
-   * @param caret - &id:oatpp::utils::parser::Caret;.
+   * &l:Headers; values. See &id:avena::data::share::MemoryLabel;.
+   * @param caret - &id:avena::utils::parser::Caret;.
    * @param error - out parameter &l:Status;.
    */
   static void parseOneHeader(Headers& headers,
                              const std::shared_ptr<std::string>& headersText,
-                             oatpp::utils::parser::Caret& caret,
+                             avena::utils::parser::Caret& caret,
                              Status& error);
 
   /**
    * Parse HTTP headers to &l:Headers; map.
    * @param headers - &l:Headers; map to put parsed headers to.
    * @param headersText - `std::shared_ptr` to `std::string` needed as a "memory handle" for
-   * &l:Headers; values. See &id:oatpp::data::share::MemoryLabel;.
-   * @param caret - &id:oatpp::utils::parser::Caret;.
+   * &l:Headers; values. See &id:avena::data::share::MemoryLabel;.
+   * @param caret - &id:avena::utils::parser::Caret;.
    * @param error - out parameter &l:Status;.
    */
   static void parseHeaders(Headers& headers,
                            const std::shared_ptr<std::string>& headersText,
-                           oatpp::utils::parser::Caret& caret,
+                           avena::utils::parser::Caret& caret,
                            Status& error);
 
   /**
@@ -724,7 +726,7 @@ public:
    * @param headerValue - header value string.
    * @param separator - subvalues separator.
    */
-  static void parseHeaderValueData(HeaderValueData& data, const oatpp::data::share::StringKeyLabel& headerValue, char separator);
+  static void parseHeaderValueData(HeaderValueData& data, const avena::data::share::StringKeyLabel& headerValue, char separator);
 
 };
 
@@ -748,12 +750,12 @@ public:
 namespace std {
   
   template<>
-  struct hash<oatpp::web::protocol::http::Status> {
+  struct hash<avena::web::protocol::http::Status> {
     
-    typedef oatpp::web::protocol::http::Status argument_type;
+    typedef avena::web::protocol::http::Status argument_type;
     typedef v_uint64 result_type;
     
-    result_type operator()(oatpp::web::protocol::http::Status const& s) const noexcept {
+    result_type operator()(avena::web::protocol::http::Status const& s) const noexcept {
       return static_cast<result_type>(s.code);
     }
     

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 #include "FIFOBuffer.hpp"
 #include <mutex>
 
-namespace oatpp { namespace data{ namespace buffer {
+namespace avena { namespace data{ namespace buffer {
 
 FIFOBuffer::FIFOBuffer(void* buffer, v_buff_size bufferSize,
                        v_buff_size readPosition, v_buff_size writePosition,
@@ -76,7 +78,7 @@ v_io_size FIFOBuffer::read(void *data, v_buff_size count) {
   if(count == 0) {
     return 0;
   } else if(count < 0) {
-    throw std::runtime_error("[oatpp::data::buffer::FIFOBuffer::read(...)]: count < 0");
+    throw std::runtime_error("[avena::data::buffer::FIFOBuffer::read(...)]: count < 0");
   }
   
   if(m_readPosition < m_writePosition) {
@@ -125,7 +127,7 @@ v_io_size FIFOBuffer::peek(void *data, v_buff_size count) {
   if(count == 0) {
     return 0;
   } else if(count < 0) {
-    throw std::runtime_error("[oatpp::data::buffer::FIFOBuffer::peek(...)]: count < 0");
+    throw std::runtime_error("[avena::data::buffer::FIFOBuffer::peek(...)]: count < 0");
   }
 
   if(m_readPosition < m_writePosition) {
@@ -165,7 +167,7 @@ v_io_size FIFOBuffer::commitReadOffset(v_buff_size count) {
   if(count == 0) {
     return 0;
   } else if(count < 0) {
-    throw std::runtime_error("[oatpp::data::buffer::FIFOBuffer::commitReadOffset(...)]: count < 0");
+    throw std::runtime_error("[avena::data::buffer::FIFOBuffer::commitReadOffset(...)]: count < 0");
   }
 
   if(m_readPosition < m_writePosition) {
@@ -210,7 +212,7 @@ v_io_size FIFOBuffer::write(const void *data, v_buff_size count) {
   if(count == 0) {
     return 0;
   } else if(count < 0) {
-    throw std::runtime_error("[oatpp::data::buffer::FIFOBuffer::write(...)]: count < 0");
+    throw std::runtime_error("[avena::data::buffer::FIFOBuffer::write(...)]: count < 0");
   } else {
     m_canRead = true;
   }
@@ -255,7 +257,7 @@ v_io_size FIFOBuffer::readAndWriteToStream(data::stream::WriteCallback* stream, 
   if(count == 0) {
     return 0;
   } else if(count < 0) {
-    throw std::runtime_error("[oatpp::data::buffer::FIFOBuffer::readAndWriteToStream(...)]: count < 0");
+    throw std::runtime_error("[avena::data::buffer::FIFOBuffer::readAndWriteToStream(...)]: count < 0");
   }
 
   if(m_readPosition < m_writePosition) {
@@ -308,7 +310,7 @@ v_io_size FIFOBuffer::readFromStreamAndWrite(data::stream::ReadCallback* stream,
   if(count == 0) {
     return 0;
   } else if(count < 0) {
-    throw std::runtime_error("[oatpp::data::buffer::FIFOBuffer::readFromStreamAndWrite(...)]: count < 0");
+    throw std::runtime_error("[avena::data::buffer::FIFOBuffer::readFromStreamAndWrite(...)]: count < 0");
   }
 
   if(m_writePosition < m_readPosition) {
@@ -375,7 +377,7 @@ v_io_size FIFOBuffer::flushToStream(data::stream::OutputStream* stream) {
 async::CoroutineStarter FIFOBuffer::flushToStreamAsync(const std::shared_ptr<data::stream::OutputStream>& stream)
 {
 
-  class FlushCoroutine : public oatpp::async::Coroutine<FlushCoroutine> {
+  class FlushCoroutine : public avena::async::Coroutine<FlushCoroutine> {
   private:
     FIFOBuffer* m_fifo;
     std::shared_ptr<data::stream::OutputStream> m_stream;
@@ -442,27 +444,27 @@ SynchronizedFIFOBuffer::SynchronizedFIFOBuffer(void* buffer, v_buff_size bufferS
 {}
 
 void SynchronizedFIFOBuffer::setBufferPosition(v_buff_size readPosition, v_buff_size writePosition, bool canRead) {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_lock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_lock);
   m_fifo.setBufferPosition(readPosition, writePosition, canRead);
 }
 
 v_io_size SynchronizedFIFOBuffer::availableToRead() {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_lock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_lock);
   return m_fifo.availableToRead();
 }
 
 v_io_size SynchronizedFIFOBuffer::availableToWrite() {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_lock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_lock);
   return m_fifo.availableToWrite();
 }
 
 v_io_size SynchronizedFIFOBuffer::read(void *data, v_buff_size count) {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_lock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_lock);
   return m_fifo.read(data, count);
 }
 
 v_io_size SynchronizedFIFOBuffer::write(const void *data, v_buff_size count) {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_lock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_lock);
   return m_fifo.write(data, count);
 }
 

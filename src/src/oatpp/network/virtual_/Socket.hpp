@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,14 +29,14 @@
 
 #include "./Pipe.hpp"
 
-namespace oatpp { namespace network { namespace virtual_ {
+namespace avena { namespace network { namespace virtual_ {
 
 /**
  * Virtual socket implementation. Can be used as a bidirectional data transfer between different threads of the same process. <br>
- * Under the hood it uses a pair of &id:oatpp::network::virtual_::Pipe;. One to write data to, and one to read data from.
- * Extends &id:oatpp::base::Countable; and &id:oatpp::data::stream::IOStream;.
+ * Under the hood it uses a pair of &id:avena::network::virtual_::Pipe;. One to write data to, and one to read data from.
+ * Extends &id:avena::base::Countable; and &id:avena::data::stream::IOStream;.
  */
-class Socket : public oatpp::data::stream::IOStream, public oatpp::base::Countable {
+class Socket : public avena::data::stream::IOStream, public avena::base::Countable {
 private:
   std::shared_ptr<Pipe> m_pipeIn;
   std::shared_ptr<Pipe> m_pipeOut;
@@ -72,7 +74,7 @@ public:
    * Read data from socket.
    * @param data - buffer to read data to.
    * @param count - buffer size.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual amount of data read from socket.
    */
@@ -82,7 +84,7 @@ public:
    * Write data to socket.
    * @param data - data to write to socket.
    * @param count - data size.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual amount of data written to socket.
    */
@@ -92,37 +94,37 @@ public:
    * Set OutputStream I/O mode.
    * @param ioMode
    */
-  void setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+  void setOutputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
   /**
    * Set OutputStream I/O mode.
    * @return
    */
-  oatpp::data::stream::IOMode getOutputStreamIOMode() override;
+  avena::data::stream::IOMode getOutputStreamIOMode() override;
 
   /**
    * Set InputStream I/O mode.
    * @param ioMode
    */
-  void setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+  void setInputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
   /**
    * Get InputStream I/O mode.
    * @return
    */
-  oatpp::data::stream::IOMode getInputStreamIOMode() override;
+  avena::data::stream::IOMode getInputStreamIOMode() override;
 
   /**
    * Get output stream context.
    * @return
    */
-  oatpp::data::stream::Context& getOutputStreamContext() override;
+  avena::data::stream::Context& getOutputStreamContext() override;
 
   /**
    * Get input stream context.
    * @return
    */
-  oatpp::data::stream::Context& getInputStreamContext() override;
+  avena::data::stream::Context& getInputStreamContext() override;
 
   /**
    * Close socket pipes.

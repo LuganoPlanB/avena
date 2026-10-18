@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -43,7 +45,7 @@
   #include <unistd.h>
 #endif
 
-namespace oatpp { namespace network { namespace tcp { namespace client {
+namespace avena { namespace network { namespace tcp { namespace client {
 
 void ConnectionProvider::ConnectionInvalidator::invalidate(const std::shared_ptr<data::stream::IOStream>& connection) {
 
@@ -75,12 +77,12 @@ ConnectionProvider::ConnectionProvider(const network::Address& address)
   , m_address(address)
 {
   setProperty(PROPERTY_HOST, address.host);
-  setProperty(PROPERTY_PORT, oatpp::utils::Conversion::int32ToStr(address.port));
+  setProperty(PROPERTY_PORT, avena::utils::Conversion::int32ToStr(address.port));
 }
 
 provider::ResourceHandle<data::stream::IOStream> ConnectionProvider::get() {
 
-  auto portStr = oatpp::utils::Conversion::int32ToStr(m_address.port);
+  auto portStr = avena::utils::Conversion::int32ToStr(m_address.port);
 
   addrinfo hints;
 
@@ -102,20 +104,20 @@ provider::ResourceHandle<data::stream::IOStream> ConnectionProvider::get() {
 
   if (res != 0) {
 #if defined(WIN32) || defined(_WIN32)
-    throw std::runtime_error("[oatpp::network::tcp::client::ConnectionProvider::getConnection()]. "
+    throw std::runtime_error("[avena::network::tcp::client::ConnectionProvider::getConnection()]. "
                              "Error. Call to getaddrinfo() failed with code " + std::to_string(res));
 #else
-    std::string errorString = "[oatpp::network::tcp::client::ConnectionProvider::getConnection()]. Error. Call to getaddrinfo() failed: ";
+    std::string errorString = "[avena::network::tcp::client::ConnectionProvider::getConnection()]. Error. Call to getaddrinfo() failed: ";
 	  throw std::runtime_error(errorString.append(gai_strerror(res)));
 #endif
   }
 
   if (result == nullptr) {
-    throw std::runtime_error("[oatpp::network::tcp::client::ConnectionProvider::getConnection()]. Error. Call to getaddrinfo() returned no results.");
+    throw std::runtime_error("[avena::network::tcp::client::ConnectionProvider::getConnection()]. Error. Call to getaddrinfo() returned no results.");
   }
 
   addrinfo* currResult = result;
-  oatpp::v_io_handle clientHandle = INVALID_IO_HANDLE;
+  avena::v_io_handle clientHandle = INVALID_IO_HANDLE;
   int err = 0;
 
   while(currResult != nullptr) {
@@ -144,7 +146,7 @@ provider::ResourceHandle<data::stream::IOStream> ConnectionProvider::get() {
   freeaddrinfo(result);
 
   if(currResult == nullptr) {
-    throw std::runtime_error("[oatpp::network::tcp::client::ConnectionProvider::getConnection()]: Error. Can't connect: " +
+    throw std::runtime_error("[avena::network::tcp::client::ConnectionProvider::getConnection()]: Error. Can't connect: " +
                                  std::string(strerror(err)));
   }
 
@@ -152,24 +154,24 @@ provider::ResourceHandle<data::stream::IOStream> ConnectionProvider::get() {
   int yes = 1;
   v_int32 ret = setsockopt(clientHandle, SOL_SOCKET, SO_NOSIGPIPE, &yes, sizeof(int));
   if(ret < 0) {
-    OATPP_LOGd("[oatpp::network::tcp::client::ConnectionProvider::getConnection()]", "Warning. Failed to set {} for socket", "SO_NOSIGPIPE")
+    OATPP_LOGd("[avena::network::tcp::client::ConnectionProvider::getConnection()]", "Warning. Failed to set {} for socket", "SO_NOSIGPIPE")
   }
 #endif
 
   return provider::ResourceHandle<data::stream::IOStream>(
-      std::make_shared<oatpp::network::tcp::Connection>(clientHandle),
+      std::make_shared<avena::network::tcp::Connection>(clientHandle),
       m_invalidator
   );
 
 }
 
-oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> ConnectionProvider::getAsync() {
+avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> ConnectionProvider::getAsync() {
 
-  class ConnectCoroutine : public oatpp::async::CoroutineWithResult<ConnectCoroutine, const provider::ResourceHandle<oatpp::data::stream::IOStream>&> {
+  class ConnectCoroutine : public avena::async::CoroutineWithResult<ConnectCoroutine, const provider::ResourceHandle<avena::data::stream::IOStream>&> {
   private:
     std::shared_ptr<ConnectionInvalidator> m_connectionInvalidator;
     network::Address m_address;
-    oatpp::v_io_handle m_clientHandle;
+    avena::v_io_handle m_clientHandle;
   private:
     addrinfo* m_result;
     addrinfo* m_currentResult;
@@ -193,7 +195,7 @@ oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::str
 
     Action act() override {
 
-      auto portStr = oatpp::utils::Conversion::int32ToStr(m_address.port);
+      auto portStr = avena::utils::Conversion::int32ToStr(m_address.port);
 
       addrinfo hints;
 
@@ -214,14 +216,14 @@ oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::str
       auto res = getaddrinfo(m_address.host->c_str(), portStr->c_str(), &hints, &m_result);
       if (res != 0) {
         return error<async::Error>(
-          "[oatpp::network::tcp::client::ConnectionProvider::getConnectionAsync()]. Error. Call to getaddrinfo() failed.");
+          "[avena::network::tcp::client::ConnectionProvider::getConnectionAsync()]. Error. Call to getaddrinfo() failed.");
       }
 
       m_currentResult = m_result;
 
       if (m_result == nullptr) {
         return error<async::Error>(
-          "[oatpp::network::tcp::client::ConnectionProvider::getConnectionAsync()]. Error. Call to getaddrinfo() returned no results.");
+          "[avena::network::tcp::client::ConnectionProvider::getConnectionAsync()]. Error. Call to getaddrinfo() returned no results.");
       }
 
       return yieldTo(&ConnectCoroutine::iterateAddrInfoResults);
@@ -267,7 +269,7 @@ oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::str
         int yes = 1;
         v_int32 ret = setsockopt(m_clientHandle, SOL_SOCKET, SO_NOSIGPIPE, &yes, sizeof(int));
         if(ret < 0) {
-          OATPP_LOGd("[oatpp::network::tcp::client::ConnectionProvider::getConnectionAsync()]", "Warning. Failed to set {} for socket", "SO_NOSIGPIPE")
+          OATPP_LOGd("[avena::network::tcp::client::ConnectionProvider::getConnectionAsync()]", "Warning. Failed to set {} for socket", "SO_NOSIGPIPE")
         }
 #endif
 
@@ -276,7 +278,7 @@ oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::str
 
       }
 
-      return error<Error>("[oatpp::network::tcp::client::ConnectionProvider::getConnectionAsync()]: Error. Can't connect.");
+      return error<Error>("[avena::network::tcp::client::ConnectionProvider::getConnectionAsync()]: Error. Can't connect.");
 
     }
 
@@ -291,31 +293,31 @@ oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::str
 
       if(res == 0 || error == WSAEISCONN) {
         return _return(provider::ResourceHandle<data::stream::IOStream>(
-                std::make_shared<oatpp::network::tcp::Connection>(m_clientHandle),
+                std::make_shared<avena::network::tcp::Connection>(m_clientHandle),
                 m_connectionInvalidator
             ));
       }
       if(error == WSAEWOULDBLOCK || error == WSAEINPROGRESS) {
-        return ioWait(m_clientHandle, oatpp::async::Action::IOEventType::IO_EVENT_WRITE);
+        return ioWait(m_clientHandle, avena::async::Action::IOEventType::IO_EVENT_WRITE);
       } else if(error == WSAEINTR || error == WSAEALREADY) {
-        return ioRepeat(m_clientHandle, oatpp::async::Action::IOEventType::IO_EVENT_WRITE);
+        return ioRepeat(m_clientHandle, avena::async::Action::IOEventType::IO_EVENT_WRITE);
       } else if(error == WSAEINVAL) {
          return AbstractCoroutine::error(new async::Error(
-                  "[oatpp::network::tcp::client::ConnectionProvider::doConnect()]: Error. The parameter m_clientHandle is a listening socket."));
+                  "[avena::network::tcp::client::ConnectionProvider::doConnect()]: Error. The parameter m_clientHandle is a listening socket."));
       }
 
 #else
 
       if(res == 0 || errno == EISCONN) {
         return _return(provider::ResourceHandle<data::stream::IOStream>(
-                std::make_shared<oatpp::network::tcp::Connection>(m_clientHandle),
+                std::make_shared<avena::network::tcp::Connection>(m_clientHandle),
                 m_connectionInvalidator
             ));
       }
       if(errno == EALREADY || errno == EINPROGRESS) {
-        return ioWait(m_clientHandle, oatpp::async::Action::IOEventType::IO_EVENT_WRITE);
+        return ioWait(m_clientHandle, avena::async::Action::IOEventType::IO_EVENT_WRITE);
       } else if(errno == EINTR) {
-        return ioRepeat(m_clientHandle, oatpp::async::Action::IOEventType::IO_EVENT_WRITE);
+        return ioRepeat(m_clientHandle, avena::async::Action::IOEventType::IO_EVENT_WRITE);
       }
 
 #endif

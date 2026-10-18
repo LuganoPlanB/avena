@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,9 +29,9 @@
 #include "oatpp/utils/parser/Caret.hpp"
 #include "oatpp/macro/basic.hpp"
 
-namespace oatpp { namespace base {
+namespace avena { namespace base {
 
-LogMessage::LogMessage(const oatpp::String& msg)
+LogMessage::LogMessage(const avena::String& msg)
   : m_msg(msg != nullptr ? msg : "<null>")
   , m_stream(256)
   , m_currParam(0)
@@ -184,7 +186,7 @@ LogMessage& LogMessage::operator << (long double value) {
   return *this;
 }
 
-LogMessage& LogMessage::operator << (const oatpp::String& str) {
+LogMessage& LogMessage::operator << (const avena::String& str) {
   if(writeNextChunk()) {
     if(str != nullptr) {
       m_stream.writeSimple(str);
@@ -317,7 +319,7 @@ LogMessage& LogMessage::operator << (const Float64& value) {
 }
 
 void Log::log(v_uint32 priority, const std::string& tag, const LogMessage& message) {
-  oatpp::Environment::log(priority, tag, message.toStdString());
+  avena::Environment::log(priority, tag, message.toStdString());
 }
 
 void Log::log(v_uint32 priority, const LogCategory& category, const LogMessage& message) {

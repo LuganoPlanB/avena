@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,12 +29,12 @@
 
 #include "oatpp/data/stream/Stream.hpp"
 
-namespace oatpp { namespace data { namespace resource {
+namespace avena { namespace data { namespace resource {
 
 /**
  * Abstract data resource
  */
-class Resource : public oatpp::base::Countable {
+class Resource : public avena::base::Countable {
 public:
 
   /**
@@ -54,9 +56,9 @@ public:
 
   /**
    * Get in-memory data if applicable.
-   * @return - `&id:oatpp::String;` or `nullptr` if not applicable.
+   * @return - `&id:avena::String;` or `nullptr` if not applicable.
    */
-  virtual oatpp::String getInMemoryData() = 0;
+  virtual avena::String getInMemoryData() = 0;
 
   /**
    * Get known data size if applicable.
@@ -67,9 +69,9 @@ public:
   /**
    * Get resource location if applicable. <br>
    * location can be for example a file name.
-   * @return - `&id:oatpp::String;` or `nullptr` if not applicable.
+   * @return - `&id:avena::String;` or `nullptr` if not applicable.
    */
-  virtual oatpp::String getLocation() = 0;
+  virtual avena::String getLocation() = 0;
 
 };
 

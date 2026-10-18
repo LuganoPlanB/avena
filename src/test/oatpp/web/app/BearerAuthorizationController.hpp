@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -35,23 +37,23 @@
 
 #include <sstream>
 
-namespace oatpp { namespace test { namespace web { namespace app {
+namespace avena { namespace test { namespace web { namespace app {
 
-class BearerAuthorizationObject : public oatpp::web::server::handler::AuthorizationObject {
+class BearerAuthorizationObject : public avena::web::server::handler::AuthorizationObject {
 public:
-  oatpp::String user;
-  oatpp::String password;
-  oatpp::String token;
+  avena::String user;
+  avena::String password;
+  avena::String token;
 };
 
-class MyBearerAuthorizationHandler : public oatpp::web::server::handler::BearerAuthorizationHandler {
+class MyBearerAuthorizationHandler : public avena::web::server::handler::BearerAuthorizationHandler {
 public:
 
   MyBearerAuthorizationHandler()
-    : oatpp::web::server::handler::BearerAuthorizationHandler("custom-bearer-realm")
+    : avena::web::server::handler::BearerAuthorizationHandler("custom-bearer-realm")
   {}
 
-  std::shared_ptr<AuthorizationObject> authorize(const oatpp::String& token) override {
+  std::shared_ptr<AuthorizationObject> authorize(const avena::String& token) override {
 
     if(token == "4e99e8c12de7e01535248d2bac85e732") {
       auto obj = std::make_shared<BearerAuthorizationObject>();
@@ -66,7 +68,7 @@ public:
 
 };
 
-class BearerAuthorizationController : public oatpp::web::server::api::ApiController {
+class BearerAuthorizationController : public avena::web::server::api::ApiController {
 private:
   static constexpr const char* TAG = "test::web::app::BearerAuthorizationController";
 
@@ -75,7 +77,7 @@ private:
 public:
 
   BearerAuthorizationController(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 public:
 

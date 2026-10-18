@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,14 +28,14 @@
 
 #include "oatpp/data/share/StringTemplate.hpp"
 
-namespace oatpp { namespace data { namespace share {
+namespace avena { namespace data { namespace share {
 
 void StringTemplateTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Case1 ...")
     StringTemplate t("{} World!", {{0, 1, "p1", nullptr}});
-    auto result = t.format(std::vector<oatpp::String>({"Hello"}));
+    auto result = t.format(std::vector<avena::String>({"Hello"}));
     OATPP_ASSERT(result == "Hello World!")
     OATPP_LOGi(TAG, "OK")
   }
@@ -41,7 +43,7 @@ void StringTemplateTest::onRun() {
   {
     OATPP_LOGi(TAG, "Case2 ...")
     StringTemplate t("{} World!", {{0, 1, "p1", nullptr}});
-    auto result = t.format(std::unordered_map<oatpp::String, oatpp::String>({{"p1", "Hello"}}));
+    auto result = t.format(std::unordered_map<avena::String, avena::String>({{"p1", "Hello"}}));
     OATPP_ASSERT(result == "Hello World!")
     OATPP_LOGi(TAG, "OK")
   }
@@ -49,7 +51,7 @@ void StringTemplateTest::onRun() {
   {
     OATPP_LOGi(TAG, "Case3 ...")
     StringTemplate t("Hello {}", {{6, 7, "p1", nullptr}});
-    auto result = t.format(std::vector<oatpp::String>({"World!"}));
+    auto result = t.format(std::vector<avena::String>({"World!"}));
     OATPP_ASSERT(result == "Hello World!")
     OATPP_LOGi(TAG, "OK")
   }
@@ -57,7 +59,7 @@ void StringTemplateTest::onRun() {
   {
     OATPP_LOGi(TAG, "Case4 ...")
     StringTemplate t("Hello {}", {{6, 7, "p1", nullptr}});
-    auto result = t.format(std::unordered_map<oatpp::String, oatpp::String>({{"p1", "World!"}}));
+    auto result = t.format(std::unordered_map<avena::String, avena::String>({{"p1", "World!"}}));
     OATPP_ASSERT(result == "Hello World!")
     OATPP_LOGi(TAG, "OK")
   }
@@ -65,7 +67,7 @@ void StringTemplateTest::onRun() {
   {
     OATPP_LOGi(TAG, "Case5 ...")
     StringTemplate t("Hello {} World!", {{6, 7, "p1", nullptr}});
-    auto result = t.format(std::vector<oatpp::String>({"My"}));
+    auto result = t.format(std::vector<avena::String>({"My"}));
     OATPP_ASSERT(result == "Hello My World!")
     OATPP_LOGi(TAG, "OK")
   }
@@ -73,7 +75,7 @@ void StringTemplateTest::onRun() {
   {
     OATPP_LOGi(TAG, "Case6 ...")
     StringTemplate t("Hello {} World!", {{6, 7, "p1", nullptr}});
-    auto result = t.format(std::unordered_map<oatpp::String, oatpp::String>({{"p1", "My"}}));
+    auto result = t.format(std::unordered_map<avena::String, avena::String>({{"p1", "My"}}));
     OATPP_ASSERT(result == "Hello My World!")
     OATPP_LOGi(TAG, "OK")
   }
@@ -81,7 +83,7 @@ void StringTemplateTest::onRun() {
   {
     OATPP_LOGi(TAG, "Case7 ...")
     StringTemplate t("? ? ?", {{0, 0, "p1", nullptr}, {2, 2, "p2", nullptr}, {4, 4, "p3", nullptr}});
-    auto result = t.format(std::vector<oatpp::String>({"Hello", "World", "Oat++!"}));
+    auto result = t.format(std::vector<avena::String>({"Hello", "World", "Oat++!"}));
     OATPP_ASSERT(result == "Hello World Oat++!")
     OATPP_LOGi(TAG, "OK")
   }
@@ -89,7 +91,7 @@ void StringTemplateTest::onRun() {
   {
     OATPP_LOGi(TAG, "Case8 ...")
     StringTemplate t("? ? ?", {{0, 0, "p1", nullptr}, {2, 2, "p2", nullptr}, {4, 4, "p3", nullptr}});
-    auto result = t.format(std::unordered_map<oatpp::String, oatpp::String>({{"p3", "Hello"}, {"p2", "World"}, {"p1", "Oat++!"}}));
+    auto result = t.format(std::unordered_map<avena::String, avena::String>({{"p3", "Hello"}, {"p2", "World"}, {"p1", "Oat++!"}}));
     OATPP_ASSERT(result == "Oat++! World Hello")
     OATPP_LOGi(TAG, "OK")
   }
@@ -106,9 +108,9 @@ void StringTemplateTest::onRun() {
     OATPP_LOGi(TAG, "Case10 ...")
     StringTemplate t("? ? ?",
       {
-        {0, 0, "p1", std::make_shared<oatpp::base::Countable>()},
-        {2, 2, "p2", std::make_shared<oatpp::base::Countable>()},
-        {4, 4, "p3", std::make_shared<oatpp::base::Countable>()}
+        {0, 0, "p1", std::make_shared<avena::base::Countable>()},
+        {2, 2, "p2", std::make_shared<avena::base::Countable>()},
+        {4, 4, "p3", std::make_shared<avena::base::Countable>()}
       }
     );
     auto result = t.format("(A)");

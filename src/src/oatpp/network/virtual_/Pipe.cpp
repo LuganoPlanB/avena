@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,15 +26,15 @@
 
 #include "Pipe.hpp"
 
-namespace oatpp { namespace network { namespace virtual_ {
+namespace avena { namespace network { namespace virtual_ {
 
 data::stream::DefaultInitializedContext Pipe::Reader::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
 
-void Pipe::Reader::setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Pipe::Reader::setInputStreamIOMode(avena::data::stream::IOMode ioMode) {
   m_ioMode = ioMode;
 }
 
-oatpp::data::stream::IOMode Pipe::Reader::getInputStreamIOMode() {
+avena::data::stream::IOMode Pipe::Reader::getInputStreamIOMode() {
   return m_ioMode;
 }
 
@@ -47,9 +49,9 @@ v_io_size Pipe::Reader::read(void *data, v_buff_size count, async::Action& actio
   }
   
   Pipe& pipe = *m_pipe;
-  oatpp::v_io_size result;
+  avena::v_io_size result;
   
-  if(m_ioMode == oatpp::data::stream::IOMode::ASYNCHRONOUS) {
+  if(m_ioMode == avena::data::stream::IOMode::ASYNCHRONOUS) {
 
     std::lock_guard<std::mutex> lock(pipe.m_mutex);
 
@@ -83,7 +85,7 @@ v_io_size Pipe::Reader::read(void *data, v_buff_size count, async::Action& actio
   
 }
 
-oatpp::data::stream::Context& Pipe::Reader::getInputStreamContext() {
+avena::data::stream::Context& Pipe::Reader::getInputStreamContext() {
   return DEFAULT_CONTEXT;
 }
 
@@ -95,15 +97,15 @@ void Pipe::Reader::notifyWaitList() {
 
 data::stream::DefaultInitializedContext Pipe::Writer::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_INFINITE);
 
-void Pipe::Writer::setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Pipe::Writer::setOutputStreamIOMode(avena::data::stream::IOMode ioMode) {
   m_ioMode = ioMode;
 }
 
-oatpp::data::stream::IOMode Pipe::Writer::getOutputStreamIOMode() {
+avena::data::stream::IOMode Pipe::Writer::getOutputStreamIOMode() {
   return m_ioMode;
 }
 
-oatpp::data::stream::Context& Pipe::Writer::getOutputStreamContext() {
+avena::data::stream::Context& Pipe::Writer::getOutputStreamContext() {
   return DEFAULT_CONTEXT;
 }
 
@@ -118,9 +120,9 @@ v_io_size Pipe::Writer::write(const void *data, v_buff_size count, async::Action
   }
 
   Pipe& pipe = *m_pipe;
-  oatpp::v_io_size result;
+  avena::v_io_size result;
   
-  if(m_ioMode == oatpp::data::stream::IOMode::ASYNCHRONOUS) {
+  if(m_ioMode == avena::data::stream::IOMode::ASYNCHRONOUS) {
 
     std::lock_guard<std::mutex> lock(pipe.m_mutex);
 

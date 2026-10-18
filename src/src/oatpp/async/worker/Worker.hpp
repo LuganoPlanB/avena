@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,11 +30,11 @@
 #include "oatpp/async/Coroutine.hpp"
 #include <thread>
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 /**
  * Worker base class.
- * Workers are used by &id:oatpp::async::Executor; to reschedule worker-specific tasks from &id:oatpp::async::Processor;.
+ * Workers are used by &id:avena::async::Executor; to reschedule worker-specific tasks from &id:avena::async::Processor;.
  */
 class Worker {
 public:
@@ -87,13 +89,13 @@ public:
 
   /**
    * Push list of tasks to worker.
-   * @param tasks - &id:oatpp::async::utils::FastQueue; of &id:oatpp::async::CoroutineHandle;.
+   * @param tasks - &id:avena::async::utils::FastQueue; of &id:avena::async::CoroutineHandle;.
    */
   virtual void pushTasks(utils::FastQueue<CoroutineHandle>& tasks) = 0;
 
   /**
    * Push one task to worker.
-   * @param task - &id:oatpp::async::CoroutineHandle;.
+   * @param task - &id:avena::async::CoroutineHandle;.
    */
   virtual void pushOneTask(CoroutineHandle* task) = 0;
 

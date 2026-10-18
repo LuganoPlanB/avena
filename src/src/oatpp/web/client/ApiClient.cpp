@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,13 +28,13 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace web { namespace client {
+namespace avena { namespace web { namespace client {
 
 std::shared_ptr<RequestExecutor::ConnectionHandle> ApiClient::getConnection() {
   return m_requestExecutor->getConnection();
 }
 
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<RequestExecutor::ConnectionHandle>&> ApiClient::getConnectionAsync() {
+avena::async::CoroutineStarterForResult<const std::shared_ptr<RequestExecutor::ConnectionHandle>&> ApiClient::getConnectionAsync() {
   return m_requestExecutor->getConnectionAsync();
 }
 
@@ -40,11 +42,11 @@ void ApiClient::invalidateConnection(const std::shared_ptr<RequestExecutor::Conn
   m_requestExecutor->invalidateConnection(connectionHandle);
 }
 
-std::shared_ptr<oatpp::data::mapping::ObjectMapper> ApiClient::getObjectMapper() {
+std::shared_ptr<avena::data::mapping::ObjectMapper> ApiClient::getObjectMapper() {
   return m_objectMapper;
 }
 
-ApiClient::StringTemplate ApiClient::parsePathTemplate(const oatpp::String& name, const oatpp::String& text) {
+ApiClient::StringTemplate ApiClient::parsePathTemplate(const avena::String& name, const avena::String& text) {
 
   std::vector<StringTemplate::Variable> variables;
   utils::parser::Caret caret(text);
@@ -82,9 +84,9 @@ ApiClient::StringTemplate ApiClient::parsePathTemplate(const oatpp::String& name
 
 }
 
-oatpp::String ApiClient::formatPath(const StringTemplate& pathTemplate,
-                                    const std::unordered_map<oatpp::String, oatpp::String>& pathParams,
-                                    const std::unordered_map<oatpp::String, oatpp::String>& queryParams)
+avena::String ApiClient::formatPath(const StringTemplate& pathTemplate,
+                                    const std::unordered_map<avena::String, avena::String>& pathParams,
+                                    const std::unordered_map<avena::String, avena::String>& queryParams)
 {
 
   data::stream::BufferOutputStream stream;
@@ -94,7 +96,7 @@ oatpp::String ApiClient::formatPath(const StringTemplate& pathTemplate,
     auto extra = std::static_pointer_cast<PathTemplateExtra>(pathTemplate.getExtraData());
     bool first = !extra->hasQueryParams;
     for(const auto& q : queryParams) {
-      oatpp::String value = q.second;
+      avena::String value = q.second;
       if(value) {
         if (first) {
           stream.writeCharSimple('?');
@@ -111,11 +113,11 @@ oatpp::String ApiClient::formatPath(const StringTemplate& pathTemplate,
 
 }
 
-std::shared_ptr<ApiClient::Response> ApiClient::executeRequest(const oatpp::String& method,
+std::shared_ptr<ApiClient::Response> ApiClient::executeRequest(const avena::String& method,
                                                                const StringTemplate& pathTemplate,
                                                                const Headers& headers,
-                                                               const std::unordered_map<oatpp::String, oatpp::String>& pathParams,
-                                                               const std::unordered_map<oatpp::String, oatpp::String>& queryParams,
+                                                               const std::unordered_map<avena::String, avena::String>& pathParams,
+                                                               const std::unordered_map<avena::String, avena::String>& queryParams,
                                                                const std::shared_ptr<RequestExecutor::Body>& body,
                                                                const std::shared_ptr<RequestExecutor::ConnectionHandle>& connectionHandle)
 {
@@ -128,12 +130,12 @@ std::shared_ptr<ApiClient::Response> ApiClient::executeRequest(const oatpp::Stri
 
 }
 
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<ApiClient::Response>&>
-ApiClient::executeRequestAsync(const oatpp::String& method,
+avena::async::CoroutineStarterForResult<const std::shared_ptr<ApiClient::Response>&>
+ApiClient::executeRequestAsync(const avena::String& method,
                                const StringTemplate& pathTemplate,
                                const Headers& headers,
-                               const std::unordered_map<oatpp::String, oatpp::String>& pathParams,
-                               const std::unordered_map<oatpp::String, oatpp::String>& queryParams,
+                               const std::unordered_map<avena::String, avena::String>& pathParams,
+                               const std::unordered_map<avena::String, avena::String>& queryParams,
                                const std::shared_ptr<RequestExecutor::Body>& body,
                                const std::shared_ptr<RequestExecutor::ConnectionHandle>& connectionHandle)
 {

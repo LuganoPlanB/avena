@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/utils/parser/Caret.hpp"
 
-namespace oatpp { namespace utils { namespace parser {
+namespace avena { namespace utils { namespace parser {
 
 void CaretTest::onRun() {
 

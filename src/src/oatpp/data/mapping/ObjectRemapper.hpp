@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 class ObjectRemapper {
 protected:
@@ -43,7 +45,7 @@ public:
   ObjectRemapper() = default;
   virtual ~ObjectRemapper() = default;
 
-  oatpp::Void remap(const Tree& tree, const oatpp::Type* toType, ErrorStack& errorStack) const;
+  avena::Void remap(const Tree& tree, const avena::Type* toType, ErrorStack& errorStack) const;
 
   template<class Wrapper>
   Wrapper remap(const Tree& tree, ErrorStack& errorStack) const {
@@ -62,16 +64,16 @@ public:
     return result;
   }
 
-  oatpp::Void remap(const oatpp::Void& polymorph, const oatpp::Type* toType, ErrorStack& errorStack) const;
+  avena::Void remap(const avena::Void& polymorph, const avena::Type* toType, ErrorStack& errorStack) const;
 
   template<class Wrapper>
-  Wrapper remap(const oatpp::Void& polymorph, ErrorStack& errorStack) const {
+  Wrapper remap(const avena::Void& polymorph, ErrorStack& errorStack) const {
     auto toType = Wrapper::Class::getType();
     return remap(polymorph, toType, errorStack).template cast<Wrapper>();
   }
 
   template<class Wrapper>
-  Wrapper remap(const oatpp::Void& polymorph) const {
+  Wrapper remap(const avena::Void& polymorph) const {
     auto toType = Wrapper::Class::getType();
     ErrorStack errorStack;
     const auto& result = remap(polymorph, toType, errorStack).template cast<Wrapper>();

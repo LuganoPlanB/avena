@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 // [intaken src] https://github.com/vog/sha1
 /*
      sha1.hpp - header of
@@ -30,14 +32,14 @@
 #include <iostream>
 #include <string>
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 /**
  * SHA1 implementation needed for websocket handshake key.
  */
 class SHA1 {
 private:
-  typedef oatpp::data::stream::BufferOutputStream BufferOutputStream;
+  typedef avena::data::stream::BufferOutputStream BufferOutputStream;
 private:
   static constexpr size_t BLOCK_INTS = 16;  /* number of 32bit integers per SHA1 block */
   static constexpr size_t BLOCK_BYTES = BLOCK_INTS * 4;
@@ -54,7 +56,7 @@ private:
   static void buffer_to_block(BufferOutputStream& buffer, uint32_t block[BLOCK_INTS]);
 private:
   uint32_t digest[5];
-  oatpp::data::stream::BufferOutputStream buffer;
+  avena::data::stream::BufferOutputStream buffer;
   uint64_t transforms;
 public:
 
@@ -65,9 +67,9 @@ public:
 
   /**
    * Update digest.
-   * @param s - &id:oatpp::String;.
+   * @param s - &id:avena::String;.
    */
-  void update(const oatpp::String& s);
+  void update(const avena::String& s);
 
   /**
    * Update digest from `std::istream`.
@@ -77,16 +79,16 @@ public:
 
   /**
    * Add padding and return the message digest.
-   * @return - &id:oatpp::String;.
+   * @return - &id:avena::String;.
    */
-  oatpp::String finalBinary();
+  avena::String finalBinary();
 
   /**
    * Get digest of the file content.
-   * @param filename - name of the file. &id:oatpp::String;.
-   * @return - &id:oatpp::String;.
+   * @param filename - name of the file. &id:avena::String;.
+   * @return - &id:avena::String;.
    */
-  static oatpp::String fromFile(const oatpp::String& filename);
+  static avena::String fromFile(const avena::String& filename);
 };
 
 }}

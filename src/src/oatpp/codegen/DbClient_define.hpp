@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -115,33 +117,33 @@ OATPP_MACRO_PARAM_USECASE_BODY X
 // QUERY MACRO
 
 #define OATPP_QUERY_0(NAME, QUERY_TEXT) \
-const oatpp::data::share::StringTemplate Z_QUERY_TEMPLATE_##NAME = \
+const avena::data::share::StringTemplate Z_QUERY_TEMPLATE_##NAME = \
   this->parseQueryTemplate(#NAME, QUERY_TEXT, {}, false); \
 \
-std::shared_ptr<oatpp::orm::QueryResult> NAME(const oatpp::provider::ResourceHandle<oatpp::orm::Connection>& connection = nullptr) { \
-  std::unordered_map<oatpp::String, oatpp::Void> __params; \
+std::shared_ptr<avena::orm::QueryResult> NAME(const avena::provider::ResourceHandle<avena::orm::Connection>& connection = nullptr) { \
+  std::unordered_map<avena::String, avena::Void> __params; \
   return this->execute(Z_QUERY_TEMPLATE_##NAME, __params, connection); \
 }
 
 
 #define OATPP_QUERY_1(NAME, QUERY_TEXT, ...) \
 \
-oatpp::data::share::StringTemplate Z_QUERY_TEMPLATE_CREATOR_##NAME() { \
+avena::data::share::StringTemplate Z_QUERY_TEMPLATE_CREATOR_##NAME() { \
   bool __prepare = false; \
-  oatpp::orm::Executor::ParamsTypeMap map;  \
+  avena::orm::Executor::ParamsTypeMap map;  \
   \
   OATPP_MACRO_FOREACH(OATPP_MACRO_DB_CLIENT_PARAM_PUT_TYPE, __VA_ARGS__) \
   \
   return this->parseQueryTemplate(#NAME, QUERY_TEXT, map, __prepare); \
 } \
 \
-const oatpp::data::share::StringTemplate Z_QUERY_TEMPLATE_##NAME = Z_QUERY_TEMPLATE_CREATOR_##NAME(); \
+const avena::data::share::StringTemplate Z_QUERY_TEMPLATE_##NAME = Z_QUERY_TEMPLATE_CREATOR_##NAME(); \
 \
-std::shared_ptr<oatpp::orm::QueryResult> NAME( \
+std::shared_ptr<avena::orm::QueryResult> NAME( \
   OATPP_MACRO_FOREACH(OATPP_MACRO_DB_CLIENT_PARAM_PUT_DECL, __VA_ARGS__) \
-  const oatpp::provider::ResourceHandle<oatpp::orm::Connection>& connection = nullptr \
+  const avena::provider::ResourceHandle<avena::orm::Connection>& connection = nullptr \
 ) { \
-  std::unordered_map<oatpp::String, oatpp::Void> __params; \
+  std::unordered_map<avena::String, avena::Void> __params; \
   OATPP_MACRO_FOREACH(OATPP_MACRO_DB_CLIENT_PARAM_PUT, __VA_ARGS__) \
   return this->execute(Z_QUERY_TEMPLATE_##NAME, __params, connection); \
 }

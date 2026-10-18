@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,19 +26,19 @@
 
 #include "CommunicationError.hpp"
 
-namespace oatpp { namespace web { namespace protocol {
+namespace avena { namespace web { namespace protocol {
   
-CommunicationError::CommunicationError(oatpp::v_io_size ioStatus, const oatpp::String& message)
+CommunicationError::CommunicationError(avena::v_io_size ioStatus, const avena::String& message)
   :std::runtime_error(*message)
   , m_ioStatus(ioStatus)
   , m_message(message)
 {}
   
-oatpp::v_io_size CommunicationError::getIOStatus() {
+avena::v_io_size CommunicationError::getIOStatus() {
   return m_ioStatus;
 }
 
-oatpp::String& CommunicationError::getMessage(){
+avena::String& CommunicationError::getMessage(){
   return m_message;
 }
   

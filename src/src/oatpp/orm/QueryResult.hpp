@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/provider/Provider.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
 /**
  * Result of DB query.
@@ -58,7 +60,7 @@ public:
    * Get error message in case `isSuccess() == false`
    * @return
    */
-  virtual oatpp::String getErrorMessage() const = 0;
+  virtual avena::String getErrorMessage() const = 0;
 
   /**
    * Get result read position.
@@ -88,9 +90,9 @@ public:
    * Fetch result entries.
    * @param resultType - wanted output type.
    * @param count - how many entries to fetch. Use `-1` to fetch all.
-   * @return - `oatpp::Void`.
+   * @return - `avena::Void`.
    */
-  virtual oatpp::Void fetch(const oatpp::Type* const resultType, v_int64 count) = 0;
+  virtual avena::Void fetch(const avena::Type* const resultType, v_int64 count) = 0;
 
   /**
    * Fetch result entries.

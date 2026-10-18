@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,9 +30,9 @@
 #include "oatpp/web/client/ApiClient.hpp"
 #include "oatpp/macro/codegen.hpp"
 
-namespace oatpp { namespace test { namespace openssl { namespace app {
+namespace avena { namespace test { namespace openssl { namespace app {
   
-class Client : public oatpp::web::client::ApiClient {
+class Client : public avena::web::client::ApiClient {
 #include OATPP_CODEGEN_BEGIN(ApiClient)
   
   API_CLIENT_INIT(Client)

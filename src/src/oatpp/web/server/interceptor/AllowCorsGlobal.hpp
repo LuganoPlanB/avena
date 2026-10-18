@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/web/server/interceptor/ResponseInterceptor.hpp"
 #include "oatpp/web/server/interceptor/RequestInterceptor.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace interceptor {
+namespace avena { namespace web { namespace server { namespace interceptor {
 
 class AllowOptionsGlobal : public RequestInterceptor {
 public:
@@ -37,16 +39,16 @@ public:
 
 class AllowCorsGlobal : public ResponseInterceptor {
 private:
-  oatpp::String m_origin;
-  oatpp::String m_methods;
-  oatpp::String m_headers;
-  oatpp::String m_maxAge;
+  avena::String m_origin;
+  avena::String m_methods;
+  avena::String m_headers;
+  avena::String m_maxAge;
 public:
 
-  AllowCorsGlobal(const oatpp::String &origin = "*",
-                  const oatpp::String &methods = "GET, POST, OPTIONS",
-                  const oatpp::String &headers = "DNT, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Range, Authorization",
-                  const oatpp::String &maxAge = "1728000");
+  AllowCorsGlobal(const avena::String &origin = "*",
+                  const avena::String &methods = "GET, POST, OPTIONS",
+                  const avena::String &headers = "DNT, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Range, Authorization",
+                  const avena::String &maxAge = "1728000");
 
   std::shared_ptr<OutgoingResponse> intercept(const std::shared_ptr<IncomingRequest>& request,
                                               const std::shared_ptr<OutgoingResponse>& response) override;

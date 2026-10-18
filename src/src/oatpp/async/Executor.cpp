@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 
 #include "oatpp/concurrency/Utils.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Executor::SubmissionProcessor
@@ -42,7 +44,7 @@ Executor::SubmissionProcessor::SubmissionProcessor()
   m_thread = std::thread(&Executor::SubmissionProcessor::run, this);
 }
 
-oatpp::async::Processor& Executor::SubmissionProcessor::getProcessor() {
+avena::async::Processor& Executor::SubmissionProcessor::getProcessor() {
   return m_processor;
 }
 
@@ -57,12 +59,12 @@ void Executor::SubmissionProcessor::run() {
 
 void Executor::SubmissionProcessor::pushTasks(utils::FastQueue<CoroutineHandle>& tasks) {
   (void)tasks;
-  throw std::runtime_error("[oatpp::async::Executor::SubmissionProcessor::pushTasks]: Error. This method does nothing.");
+  throw std::runtime_error("[avena::async::Executor::SubmissionProcessor::pushTasks]: Error. This method does nothing.");
 }
 
 void Executor::SubmissionProcessor::pushOneTask(CoroutineHandle* task) {
   (void)task;
-  throw std::runtime_error("[oatpp::async::Executor::SubmissionProcessor::pushOneTask]: Error. This method does nothing.");
+  throw std::runtime_error("[avena::async::Executor::SubmissionProcessor::pushOneTask]: Error. This method does nothing.");
 }
 
 void Executor::SubmissionProcessor::stop() {
@@ -121,7 +123,7 @@ Executor::Executor(v_int32 processorWorkersCount, v_int32 ioWorkersCount, v_int3
     }
 
     default:
-      throw std::runtime_error("[oatpp::async::Executor::Executor()]: Error. Unknown IO worker type.");
+      throw std::runtime_error("[avena::async::Executor::Executor()]: Error. Unknown IO worker type.");
 
   }
 
@@ -142,9 +144,9 @@ v_int32 Executor::chooseProcessorWorkersCount(v_int32 processorWorkersCount) {
     return processorWorkersCount;
   }
   if(processorWorkersCount == VALUE_SUGGESTED) {
-    return oatpp::concurrency::Utils::getHardwareConcurrency();
+    return avena::concurrency::Utils::getHardwareConcurrency();
   }
-  throw std::runtime_error("[oatpp::async::Executor::chooseProcessorWorkersCount()]: Error. Invalid processor workers count specified.");
+  throw std::runtime_error("[avena::async::Executor::chooseProcessorWorkersCount()]: Error. Invalid processor workers count specified.");
 }
 
 v_int32 Executor::chooseIOWorkersCount(v_int32 processorWorkersCount, v_int32 ioWorkersCount) {
@@ -158,7 +160,7 @@ v_int32 Executor::chooseIOWorkersCount(v_int32 processorWorkersCount, v_int32 io
     }
     return count;
   }
-  throw std::runtime_error("[oatpp::async::Executor::chooseIOWorkersCount()]: Error. Invalid I/O workers count specified.");
+  throw std::runtime_error("[avena::async::Executor::chooseIOWorkersCount()]: Error. Invalid I/O workers count specified.");
 }
 
 v_int32 Executor::chooseTimerWorkersCount(v_int32 timerWorkersCount) {
@@ -168,7 +170,7 @@ v_int32 Executor::chooseTimerWorkersCount(v_int32 timerWorkersCount) {
   if(timerWorkersCount == VALUE_SUGGESTED) {
     return 1;
   }
-  throw std::runtime_error("[oatpp::async::Executor::chooseTimerWorkersCount()]: Error. Invalid timer workers count specified.");
+  throw std::runtime_error("[avena::async::Executor::chooseTimerWorkersCount()]: Error. Invalid timer workers count specified.");
 }
 
 v_int32 Executor::chooseIOWorkerType(v_int32 ioWorkerType) {

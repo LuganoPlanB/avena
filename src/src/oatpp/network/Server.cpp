@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include <thread>
 #include <chrono>
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 const v_int32 Server::STATUS_CREATED = 0;
 const v_int32 Server::STATUS_STARTING = 1;
@@ -48,7 +50,7 @@ Server::Server(const std::shared_ptr<ConnectionProvider> &connectionProvider,
 void Server::conditionalMainLoop() {
 
   setStatus(STATUS_STARTING, STATUS_RUNNING);
-  std::shared_ptr<const std::unordered_map<oatpp::String, oatpp::String>> params;
+  std::shared_ptr<const std::unordered_map<avena::String, avena::String>> params;
 
   while (getStatus() == STATUS_RUNNING) {
 
@@ -64,7 +66,7 @@ void Server::conditionalMainLoop() {
             setStatus(STATUS_STOPPING);
           }
         } else {
-          OATPP_LOGd("[oatpp::network::server::mainLoop()]", "Error. Server already stopped - closing connection...")
+          OATPP_LOGd("[avena::network::server::mainLoop()]", "Error. Server already stopped - closing connection...")
         }
       }
 
@@ -78,7 +80,7 @@ void Server::conditionalMainLoop() {
 void Server::mainLoop(Server *instance) {
 
   instance->setStatus(STATUS_STARTING, STATUS_RUNNING);
-  std::shared_ptr<const std::unordered_map<oatpp::String, oatpp::String>> params;
+  std::shared_ptr<const std::unordered_map<avena::String, avena::String>> params;
 
   while (instance->getStatus() == STATUS_RUNNING) {
 
@@ -88,7 +90,7 @@ void Server::mainLoop(Server *instance) {
       if (instance->getStatus() == STATUS_RUNNING) {
         instance->m_connectionHandler->handleConnection(connectionHandle, params /* null params */);
       } else {
-        OATPP_LOGd("[oatpp::network::server::mainLoop()]", "Error. Server already stopped - closing connection...")
+        OATPP_LOGd("[avena::network::server::mainLoop()]", "Error. Server already stopped - closing connection...")
       }
     }
   }
@@ -101,9 +103,9 @@ void Server::run(std::function<bool()> conditional) {
   std::unique_lock<std::mutex> ul(m_mutex);
   switch (getStatus()) {
     case STATUS_STARTING:
-      throw std::runtime_error("[oatpp::network::server::run()] Error. Server already starting");
+      throw std::runtime_error("[avena::network::server::run()] Error. Server already starting");
     case STATUS_RUNNING:
-      throw std::runtime_error("[oatpp::network::server::run()] Error. Server already started");
+      throw std::runtime_error("[avena::network::server::run()] Error. Server already started");
     default:
       break;
   }
@@ -123,12 +125,12 @@ void Server::run(std::function<bool()> conditional) {
 
 void Server::run(bool startAsNewThread) {
   std::unique_lock<std::mutex> ul(m_mutex);
-  OATPP_LOGw("[oatpp::network::server::run(bool)]", "Using oatpp::network::server::run(bool) is deprecated and will be removed in the next release. Please implement your own threading (See https://github.com/oatpp/oatpp-threaded-starter).")
+  OATPP_LOGw("[avena::network::server::run(bool)]", "Using avena::network::server::run(bool) is deprecated and will be removed in the next release. Please implement your own threading (See https://github.com/oatpp/oatpp-threaded-starter).")
   switch (getStatus()) {
     case STATUS_STARTING:
-      throw std::runtime_error("[oatpp::network::server::run()] Error. Server already starting");
+      throw std::runtime_error("[avena::network::server::run()] Error. Server already starting");
     case STATUS_RUNNING:
-      throw std::runtime_error("[oatpp::network::server::run()] Error. Server already started");
+      throw std::runtime_error("[avena::network::server::run()] Error. Server already started");
     default:
       break;
   }

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,13 +32,13 @@
 #include "oatpp/network/Address.hpp"
 #include "oatpp/network/ConnectionProvider.hpp"
 
-namespace oatpp { namespace openssl { namespace client {
+namespace avena { namespace openssl { namespace client {
 
 /**
  * Openssl client connection provider.
- * Extends &id:oatpp::base::Countable;, &id:oatpp::network::ClientConnectionProvider;.
+ * Extends &id:avena::base::Countable;, &id:avena::network::ClientConnectionProvider;.
  */
-class ConnectionProvider : public oatpp::network::ClientConnectionProvider {
+class ConnectionProvider : public avena::network::ClientConnectionProvider {
 private:
 
   class ConnectionInvalidator : public provider::Invalidator<data::stream::IOStream> {
@@ -47,7 +49,7 @@ private:
 private:
   std::shared_ptr<ConnectionInvalidator> m_connectionInvalidator;
   std::shared_ptr<Config> m_config;
-  std::shared_ptr<oatpp::network::ClientConnectionProvider> m_streamProvider;
+  std::shared_ptr<avena::network::ClientConnectionProvider> m_streamProvider;
 private:
   void initSSLClient();
 private:
@@ -55,27 +57,27 @@ private:
 public:
   /**
    * Constructor.
-   * @param config - &id:oatpp::openssl::Config;.
-   * @param streamProvider - provider of underlying transport stream. &id:oatpp::network::ClientConnectionProvider;.
+   * @param config - &id:avena::openssl::Config;.
+   * @param streamProvider - provider of underlying transport stream. &id:avena::network::ClientConnectionProvider;.
    */
-  ConnectionProvider(const std::shared_ptr<Config>& config, const std::shared_ptr<oatpp::network::ClientConnectionProvider>& streamProvider);
+  ConnectionProvider(const std::shared_ptr<Config>& config, const std::shared_ptr<avena::network::ClientConnectionProvider>& streamProvider);
 public:
 
   /**
    * Create shared ConnectionProvider.
-   * @param config - &id:oatpp::openssl::Config;.
-   * @param streamProvider - provider of underlying transport stream. &id:oatpp::network::ClientConnectionProvider;.
+   * @param config - &id:avena::openssl::Config;.
+   * @param streamProvider - provider of underlying transport stream. &id:avena::network::ClientConnectionProvider;.
    * @return - `std::shared_ptr` to ConnectionProvider.
    */
   static std::shared_ptr<ConnectionProvider> createShared(const std::shared_ptr<Config>& config,
-                                                          const std::shared_ptr<oatpp::network::ClientConnectionProvider>& streamProvider);
+                                                          const std::shared_ptr<avena::network::ClientConnectionProvider>& streamProvider);
 
   /**
    * Create shared ConnectionProvider.
-   * @param config - &id:oatpp::openssl::Config;.
-   * @param address - &id:oatpp::network::Address;.
+   * @param config - &id:avena::openssl::Config;.
+   * @param address - &id:avena::network::Address;.
    * @param useExtendedConnections - set `true` to use &l:ConnectionProvider::ExtendedConnection;.
-   * `false` to use &id:oatpp::network::tcp::Connection;.
+   * `false` to use &id:avena::network::tcp::Connection;.
    * @return - `std::shared_ptr` to ConnectionProvider.
    */
   static std::shared_ptr<ConnectionProvider> createShared(const std::shared_ptr<Config>& config,
@@ -93,15 +95,15 @@ public:
 
   /**
    * Get connection.
-   * @return - `std::shared_ptr` to &id:oatpp::data::stream::IOStream;.
+   * @return - `std::shared_ptr` to &id:avena::data::stream::IOStream;.
    */
   provider::ResourceHandle<data::stream::IOStream> get() override;
 
   /**
    * Get connection in asynchronous manner.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
-  oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override;
+  avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override;
 
 };
   

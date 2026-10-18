@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,15 +31,15 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
 /**
  * Context configurer for certificate file.
- * @extends &id:oatpp::openssl::configurer::ContextConfigurer;.
+ * @extends &id:avena::openssl::configurer::ContextConfigurer;.
  */
 class CertificateFile : public ContextConfigurer {
 private:
-  oatpp::String m_filename;
+  avena::String m_filename;
   int m_filetype;
 public:
 
@@ -46,7 +48,7 @@ public:
    * @param filename
    * @param filetype
    */
-  CertificateFile(const oatpp::String& filename, int filetype = SSL_FILETYPE_PEM);
+  CertificateFile(const avena::String& filename, int filetype = SSL_FILETYPE_PEM);
 
   void configure(SSL_CTX* ctx) override;
 

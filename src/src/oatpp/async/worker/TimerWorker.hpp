@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 #include <mutex>
 #include <condition_variable>
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 /**
  * Timer worker.
@@ -43,7 +45,7 @@ private:
   std::atomic<bool> m_running;
   utils::FastQueue<CoroutineHandle> m_backlog;
   utils::FastQueue<CoroutineHandle> m_queue;
-  oatpp::concurrency::SpinLock m_backlogLock;
+  avena::concurrency::SpinLock m_backlogLock;
   std::condition_variable_any m_backlogCondition;
 private:
   std::chrono::duration<v_int64, std::micro> m_granularity;
@@ -61,7 +63,7 @@ public:
 
   /**
    * Push list of tasks to worker.
-   * @param tasks - &id:oatpp::aysnc::utils::FastQueue; of &id:oatpp::async::CoroutineHandle;.
+   * @param tasks - &id:avena::aysnc::utils::FastQueue; of &id:avena::async::CoroutineHandle;.
    */
   void pushTasks(utils::FastQueue<CoroutineHandle>& tasks) override;
 

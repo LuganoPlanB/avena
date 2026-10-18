@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,9 +28,9 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
-Groups::Groups(const oatpp::List<oatpp::String>& groups)
+Groups::Groups(const avena::List<avena::String>& groups)
 {
   if(groups->empty()) {
     return;
@@ -45,7 +47,7 @@ void Groups::configure(SSL_CTX *ctx) {
     return;
   }
   if (!SSL_CTX_set1_groups_list(ctx, m_groupsColonSeparated->c_str())) {
-    throw std::runtime_error("[oatpp::openssl::configurer::Groups::configure()]: Error. SSL_CTX_set1_groups_list(): "
+    throw std::runtime_error("[avena::openssl::configurer::Groups::configure()]: Error. SSL_CTX_set1_groups_list(): "
                              + std::string(ERR_error_string(ERR_get_error(), nullptr)));
   }
 }

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,15 +30,15 @@
 #include "PartReader.hpp"
 #include "Reader.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 class TemporaryFileProvider : public PartReaderResourceProvider {
 private:
-  oatpp::String m_tmpDirectory;
+  avena::String m_tmpDirectory;
   v_int32 m_randomWordSizeBytes;
 public:
 
-  TemporaryFileProvider(const oatpp::String& tmpDirectory, v_int32 randomWordSizeBytes = 8);
+  TemporaryFileProvider(const avena::String& tmpDirectory, v_int32 randomWordSizeBytes = 8);
 
   std::shared_ptr<data::resource::Resource> getResource(const std::shared_ptr<Part>& part) override;
 
@@ -50,9 +52,9 @@ public:
  * @param tmpDirectory - directory for temporary files.
  * @param randomWordSizeBytes - number of random bytes to generate file name.
  * @param maxDataSize - max size of the received data. put `-1` for no-limit.
- * @return - `std::shared_ptr` to &id:oatpp::web::mime::multipart::PartReader;.
+ * @return - `std::shared_ptr` to &id:avena::web::mime::multipart::PartReader;.
  */
-std::shared_ptr<PartReader> createTemporaryFilePartReader(const oatpp::String& tmpDirectory,
+std::shared_ptr<PartReader> createTemporaryFilePartReader(const avena::String& tmpDirectory,
                                                           v_int32 randomWordSizeBytes = 8,
                                                           v_io_size maxDataSize = -1);
 
@@ -61,9 +63,9 @@ std::shared_ptr<PartReader> createTemporaryFilePartReader(const oatpp::String& t
  * @param tmpDirectory - directory for temporary files.
  * @param randomWordSizeBytes - number of random bytes to generate file name.
  * @param maxDataSize - max size of the received data. put `-1` for no-limit.
- * @return - `std::shared_ptr` to &id:oatpp::web::mime::multipart::AsyncPartReader;.
+ * @return - `std::shared_ptr` to &id:avena::web::mime::multipart::AsyncPartReader;.
  */
-std::shared_ptr<AsyncPartReader> createAsyncTemporaryFilePartReader(const oatpp::String& tmpDirectory,
+std::shared_ptr<AsyncPartReader> createAsyncTemporaryFilePartReader(const avena::String& tmpDirectory,
                                                                     v_int32 randomWordSizeBytes = 8,
                                                                     v_io_size maxDataSize = -1);
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,24 +29,24 @@
 #include "oatpp/web/protocol/http/encoding/Chunked.hpp"
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace test { namespace web { namespace protocol { namespace http { namespace encoding {
+namespace avena { namespace test { namespace web { namespace protocol { namespace http { namespace encoding {
 
 void ChunkedTest::onRun() {
 
-  oatpp::String data = "Hello World!!!";
-  oatpp::String encoded;
-  oatpp::String decoded;
+  avena::String data = "Hello World!!!";
+  avena::String encoded;
+  avena::String decoded;
 
   { // Empty string
-    oatpp::data::stream::BufferInputStream inStream(oatpp::String(""));
-    oatpp::data::stream::BufferOutputStream outStream;
+    avena::data::stream::BufferInputStream inStream(avena::String(""));
+    avena::data::stream::BufferOutputStream outStream;
 
-    oatpp::web::protocol::http::encoding::EncoderChunked encoder;
+    avena::web::protocol::http::encoding::EncoderChunked encoder;
 
     const v_int32 bufferSize = 5;
     v_char8 buffer[bufferSize];
 
-    auto count = oatpp::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &encoder);
+    auto count = avena::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &encoder);
     encoded = outStream.toString();
 
     OATPP_ASSERT(count == 0)
@@ -52,30 +54,30 @@ void ChunkedTest::onRun() {
   }
 
   { // Empty string
-    oatpp::data::stream::BufferInputStream inStream(encoded);
-    oatpp::data::stream::BufferOutputStream outStream;
+    avena::data::stream::BufferInputStream inStream(encoded);
+    avena::data::stream::BufferOutputStream outStream;
 
-    oatpp::web::protocol::http::encoding::DecoderChunked decoder;
+    avena::web::protocol::http::encoding::DecoderChunked decoder;
 
     const v_int32 bufferSize = 5;
     v_char8 buffer[bufferSize];
 
-    auto count = oatpp::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &decoder);
+    auto count = avena::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &decoder);
     decoded = outStream.toString();
     OATPP_ASSERT(count == static_cast<v_io_size>(encoded->size()))
     OATPP_ASSERT(decoded == "")
   }
 
   {
-    oatpp::data::stream::BufferInputStream inStream(data);
-    oatpp::data::stream::BufferOutputStream outStream;
+    avena::data::stream::BufferInputStream inStream(data);
+    avena::data::stream::BufferOutputStream outStream;
 
-    oatpp::web::protocol::http::encoding::EncoderChunked encoder;
+    avena::web::protocol::http::encoding::EncoderChunked encoder;
 
     const v_int32 bufferSize = 5;
     v_char8 buffer[bufferSize];
 
-    auto count = oatpp::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &encoder);
+    auto count = avena::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &encoder);
     encoded = outStream.toString();
 
     OATPP_ASSERT(count == static_cast<v_io_size>(data->size()))
@@ -83,15 +85,15 @@ void ChunkedTest::onRun() {
   }
 
   {
-    oatpp::data::stream::BufferInputStream inStream(encoded);
-    oatpp::data::stream::BufferOutputStream outStream;
+    avena::data::stream::BufferInputStream inStream(encoded);
+    avena::data::stream::BufferOutputStream outStream;
 
-    oatpp::web::protocol::http::encoding::DecoderChunked decoder;
+    avena::web::protocol::http::encoding::DecoderChunked decoder;
 
     const v_int32 bufferSize = 5;
     v_char8 buffer[bufferSize];
 
-    auto count = oatpp::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &decoder);
+    auto count = avena::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &decoder);
     decoded = outStream.toString();
     OATPP_ASSERT(count == static_cast<v_io_size>(encoded->size()))
     OATPP_LOGd(TAG, "decoded='{}'", decoded)
@@ -99,12 +101,12 @@ void ChunkedTest::onRun() {
   }
 
   {
-    oatpp::data::stream::BufferInputStream inStream(data);
-    oatpp::data::stream::BufferOutputStream outStream;
+    avena::data::stream::BufferInputStream inStream(data);
+    avena::data::stream::BufferOutputStream outStream;
 
-    oatpp::web::protocol::http::encoding::EncoderChunked encoder;
-    oatpp::web::protocol::http::encoding::DecoderChunked decoder;
-    oatpp::data::buffer::ProcessingPipeline pipeline({
+    avena::web::protocol::http::encoding::EncoderChunked encoder;
+    avena::web::protocol::http::encoding::DecoderChunked decoder;
+    avena::data::buffer::ProcessingPipeline pipeline({
       &encoder,
       &decoder
     });
@@ -112,7 +114,7 @@ void ChunkedTest::onRun() {
     const v_int32 bufferSize = 5;
     v_char8 buffer[bufferSize];
 
-    auto count = oatpp::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &pipeline);
+    auto count = avena::data::stream::transfer(&inStream, &outStream, 0, buffer, bufferSize, &pipeline);
     auto result = outStream.toString();
     OATPP_ASSERT(count == static_cast<v_io_size>(data->size()))
     OATPP_LOGd(TAG, "result='{}'", result)

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,34 +27,34 @@
 #include "Checker.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace test {
+namespace avena { namespace test {
 
 PerformanceChecker::PerformanceChecker(const char* tag)
   : m_tag(tag)
-  , m_ticks(oatpp::Environment::getMicroTickCount())
+  , m_ticks(avena::Environment::getMicroTickCount())
 {}
 
 PerformanceChecker::~PerformanceChecker(){
-  v_int64 elapsedTicks = oatpp::Environment::getMicroTickCount() - m_ticks;
+  v_int64 elapsedTicks = avena::Environment::getMicroTickCount() - m_ticks;
   OATPP_LOGd(m_tag, "{}(micro)", elapsedTicks)
 }
 
 v_int64 PerformanceChecker::getElapsedTicks(){
-  return oatpp::Environment::getMicroTickCount() - m_ticks;
+  return avena::Environment::getMicroTickCount() - m_ticks;
 }
 
 
 ThreadLocalObjectsChecker::ThreadLocalObjectsChecker(const char* tag)
   : m_tag(tag)
-  , m_objectsCount(oatpp::Environment::getThreadLocalObjectsCount())
-  , m_objectsCreated(oatpp::Environment::getThreadLocalObjectsCreated())
+  , m_objectsCount(avena::Environment::getThreadLocalObjectsCount())
+  , m_objectsCreated(avena::Environment::getThreadLocalObjectsCreated())
 {
 }
 
 ThreadLocalObjectsChecker::~ThreadLocalObjectsChecker(){
   
-  v_counter leakingObjects = oatpp::Environment::getThreadLocalObjectsCount() - m_objectsCount;
-  v_counter objectsCreatedPerTest = oatpp::Environment::getThreadLocalObjectsCreated() - m_objectsCreated;
+  v_counter leakingObjects = avena::Environment::getThreadLocalObjectsCount() - m_objectsCount;
+  v_counter objectsCreatedPerTest = avena::Environment::getThreadLocalObjectsCreated() - m_objectsCreated;
   
   if(leakingObjects == 0){
     OATPP_LOGe(m_tag, "OK:\n created(obj): {}", objectsCreatedPerTest)

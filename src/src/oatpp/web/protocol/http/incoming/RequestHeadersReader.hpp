@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 #include "oatpp/data/stream/StreamBufferedProxy.hpp"
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 /**
  * Helper class to read http headers of incoming request from stream.
@@ -38,9 +40,9 @@ namespace oatpp { namespace web { namespace protocol { namespace http { namespac
 class RequestHeadersReader {
 public:
   /**
-   * Convenience typedef for &id:oatpp::async::Action;.
+   * Convenience typedef for &id:avena::async::Action;.
    */
-  typedef oatpp::async::Action Action;
+  typedef avena::async::Action Action;
 private:
   static constexpr v_uint32 SECTION_END = ('\r' << 24) | ('\n' << 16) | ('\r' << 8) | ('\n');
 public:
@@ -50,12 +52,12 @@ public:
    */
   struct Result {
     /**
-     * &id:oatpp::web::protocol::http::RequestStartingLine;.
+     * &id:avena::web::protocol::http::RequestStartingLine;.
      */
     http::RequestStartingLine startingLine;
 
     /**
-     * &id:oatpp::web::protocol::http::Headers;.
+     * &id:avena::web::protocol::http::Headers;.
      */
     http::Headers headers;
 
@@ -73,7 +75,7 @@ private:
                                               data::stream::InputStreamBufferedProxy* stream,
                                               async::Action& action);
 private:
-  oatpp::data::stream::BufferOutputStream* m_bufferStream;
+  avena::data::stream::BufferOutputStream* m_bufferStream;
   v_buff_size m_readChunkSize;
   v_buff_size m_maxHeadersSize;
 public:
@@ -83,7 +85,7 @@ public:
    * @param readChunkSize
    * @param maxHeadersSize
    */
-  RequestHeadersReader(oatpp::data::stream::BufferOutputStream* bufferStream,
+  RequestHeadersReader(avena::data::stream::BufferOutputStream* bufferStream,
                        v_buff_size readChunkSize = 2048,
                        v_buff_size maxHeadersSize = 4096)
     : m_bufferStream(bufferStream)
@@ -93,18 +95,18 @@ public:
 
   /**
    * Read and parse http headers from stream.
-   * @param stream - &id:oatpp::data::stream::InputStreamBufferedProxy;.
-   * @param error - out parameter &id:oatpp::web::protocol::ProtocolError::Info;.
+   * @param stream - &id:avena::data::stream::InputStreamBufferedProxy;.
+   * @param error - out parameter &id:avena::web::protocol::ProtocolError::Info;.
    * @return - &l:RequestHeadersReader::Result;.
    */
   Result readHeaders(data::stream::InputStreamBufferedProxy* stream, http::HttpError::Info& error);
 
   /**
    * Read and parse http headers from stream in asynchronous manner.
-   * @param stream - `std::shared_ptr` to &id:oatpp::data::stream::InputStreamBufferedProxy;.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @param stream - `std::shared_ptr` to &id:avena::data::stream::InputStreamBufferedProxy;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
-  oatpp::async::CoroutineStarterForResult<const RequestHeadersReader::Result&> readHeadersAsync(const std::shared_ptr<data::stream::InputStreamBufferedProxy>& stream);
+  avena::async::CoroutineStarterForResult<const RequestHeadersReader::Result&> readHeadersAsync(const std::shared_ptr<data::stream::InputStreamBufferedProxy>& stream);
   
 };
   

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,38 +32,38 @@
 #include "oatpp/data/mapping/ObjectMapper.hpp"
 #include "oatpp/data/type/Type.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 /**
- * Helper class to create http outgoing responses (&id:oatpp::web::protocol::http::outgoing::Response).
+ * Helper class to create http outgoing responses (&id:avena::web::protocol::http::outgoing::Response).
  */
 class ResponseFactory {
 public:
   
   /**
-   * Create &id:oatpp::web::protocol::http::outgoing::Response; without a &id:oatpp::web::protocol::http::outgoing::Body;.
-   * @param status - &id:oatpp::web::protocol::http::Status;.
-   * @return - `std::shared_ptr` to &id:oatpp::web::protocol::http::outgoing::Response;.
+   * Create &id:avena::web::protocol::http::outgoing::Response; without a &id:avena::web::protocol::http::outgoing::Body;.
+   * @param status - &id:avena::web::protocol::http::Status;.
+   * @return - `std::shared_ptr` to &id:avena::web::protocol::http::outgoing::Response;.
    */
   static std::shared_ptr<Response> createResponse(const Status &status);
 
   /**
-   * Create &id:oatpp::web::protocol::http::outgoing::Response; with &id:oatpp::web::protocol::http::outgoing::BufferBody;.
-   * @param status - &id:oatpp::web::protocol::http::Status;.
-   * @param text - &id:oatpp::String;.
-   * @return - `std::shared_ptr` to &id:oatpp::web::protocol::http::outgoing::Response;.
+   * Create &id:avena::web::protocol::http::outgoing::Response; with &id:avena::web::protocol::http::outgoing::BufferBody;.
+   * @param status - &id:avena::web::protocol::http::Status;.
+   * @param text - &id:avena::String;.
+   * @return - `std::shared_ptr` to &id:avena::web::protocol::http::outgoing::Response;.
    */
-  static std::shared_ptr<Response> createResponse(const Status& status, const oatpp::String& text);
+  static std::shared_ptr<Response> createResponse(const Status& status, const avena::String& text);
 
   /**
-   * Create &id:oatpp::web::protocol::http::outgoing::Response; with &id:oatpp::web::protocol::http::outgoing::DtoBody;.
-   * @param status - &id:oatpp::web::protocol::http::Status;.
+   * Create &id:avena::web::protocol::http::outgoing::Response; with &id:avena::web::protocol::http::outgoing::DtoBody;.
+   * @param status - &id:avena::web::protocol::http::Status;.
    * @param dto - see [Data Transfer Object (DTO)](https://oatpp.io/docs/components/dto/).
-   * @param objectMapper - &id:oatpp::data::mapping::ObjectMapper;.
-   * @return - `std::shared_ptr` to &id:oatpp::web::protocol::http::outgoing::Response;.
+   * @param objectMapper - &id:avena::data::mapping::ObjectMapper;.
+   * @return - `std::shared_ptr` to &id:avena::web::protocol::http::outgoing::Response;.
    */
   static std::shared_ptr<Response> createResponse(const Status& status,
-                                                  const oatpp::Void& dto,
+                                                  const avena::Void& dto,
                                                   const std::shared_ptr<data::mapping::ObjectMapper>& objectMapper);
   
 };

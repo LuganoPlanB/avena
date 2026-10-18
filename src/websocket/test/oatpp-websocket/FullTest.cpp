@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 //
 // Created by Leonid  on 2019-03-25.
 //
@@ -23,7 +25,7 @@
 
 #include "oatpp/macro/component.hpp"
 
-namespace oatpp { namespace test { namespace websocket {
+namespace avena { namespace test { namespace websocket {
 
 namespace {
 
@@ -32,39 +34,39 @@ namespace {
 class TestComponent {
 public:
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, virtualInterface)([] {
-    return oatpp::network::virtual_::Interface::obtainShared("virtualhost");
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, virtualInterface)([] {
+    return avena::network::virtual_::Interface::obtainShared("virtualhost");
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ServerConnectionProvider>, serverConnectionProvider)([] {
 #ifdef OATPP_TEST_USE_PORT
-    return oatpp::network::server::SimpleTCPConnectionProvider::createShared(OATPP_TEST_USE_PORT);
+    return avena::network::server::SimpleTCPConnectionProvider::createShared(OATPP_TEST_USE_PORT);
 #else
-    OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, interface);
-    return oatpp::network::virtual_::server::ConnectionProvider::createShared(interface);
+    OATPP_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, interface);
+    return avena::network::virtual_::server::ConnectionProvider::createShared(interface);
 #endif
   }());
 
   /**
    *  Create Router component
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)([] {
-    return oatpp::web::server::HttpRouter::createShared();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, httpRouter)([] {
+    return avena::web::server::HttpRouter::createShared();
   }());
 
   /**
    *  Create ConnectionHandler component which uses Router component to route requests
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
-    OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
-    return oatpp::web::server::HttpConnectionHandler::createShared(router);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ConnectionHandler>, serverConnectionHandler)([] {
+    OATPP_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, router); // get Router component
+    return avena::web::server::HttpConnectionHandler::createShared(router);
   }());
 
   /**
    *  Create ObjectMapper component to serialize/deserialize DTOs in Contoller's API
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)([] {
-    auto objectMapper = std::make_shared<oatpp::json::ObjectMapper>();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::data::mapping::ObjectMapper>, apiObjectMapper)([] {
+    auto objectMapper = std::make_shared<avena::json::ObjectMapper>();
     objectMapper->deserializerConfig().mapper.allowUnknownFields = false;
     return objectMapper;
   }());
@@ -72,46 +74,46 @@ public:
   /**
    *  Create websocket connection handler
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::websocket::ConnectionHandler>, websocketConnectionHandler)([] {
-    auto connectionHandler = oatpp::websocket::ConnectionHandler::createShared();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::websocket::ConnectionHandler>, websocketConnectionHandler)([] {
+    auto connectionHandler = avena::websocket::ConnectionHandler::createShared();
     connectionHandler->setSocketInstanceListener(std::make_shared<app::WebSocketInstanceListener>());
     return connectionHandler;
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
 #ifdef OATPP_TEST_USE_PORT
-    return oatpp::network::client::SimpleTCPConnectionProvider::createShared("127.0.0.1", OATPP_TEST_USE_PORT);
+    return avena::network::client::SimpleTCPConnectionProvider::createShared("127.0.0.1", OATPP_TEST_USE_PORT);
 #else
-    OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, interface);
-    return oatpp::network::virtual_::client::ConnectionProvider::createShared(interface);
+    OATPP_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, interface);
+    return avena::network::virtual_::client::ConnectionProvider::createShared(interface);
 #endif
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::websocket::Connector>, connector)([] {
-    OATPP_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider);
-    return oatpp::websocket::Connector::createShared(clientConnectionProvider);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::websocket::Connector>, connector)([] {
+    OATPP_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider);
+    return avena::websocket::Connector::createShared(clientConnectionProvider);
   }());
 
 };
 
-class ClientWebSocketListener : public oatpp::websocket::WebSocket::Listener {
+class ClientWebSocketListener : public avena::websocket::WebSocket::Listener {
 private:
   static constexpr const char *const TAG = "ClientWebSocketListener";
 private:
-  oatpp::data::stream::BufferOutputStream m_messageBuffer;
+  avena::data::stream::BufferOutputStream m_messageBuffer;
 public:
 
-  void onPing(const WebSocket &socket, const oatpp::String &message) override {
+  void onPing(const WebSocket &socket, const avena::String &message) override {
     OATPP_LOGd(TAG, "Ping frame received. Sending Pong back.");
     socket.sendPong("");
   }
 
-  void onPong(const WebSocket &socket, const oatpp::String &message) override {
+  void onPong(const WebSocket &socket, const avena::String &message) override {
     OATPP_LOGd(TAG, "Pong frame received. Do nothing.");
     // DO NOTHING
   }
 
-  void onClose(const WebSocket &socket, v_uint16 code, const oatpp::String &message) override {
+  void onClose(const WebSocket &socket, v_uint16 code, const avena::String &message) override {
     OATPP_LOGd(TAG, "Close frame received. Code={}, Message='{}'", code, message);
   }
 
@@ -120,7 +122,7 @@ public:
    * When all data of message is read, readMessage is called again with size == 0 to
    * indicate end of the message
    */
-  void readMessage(const WebSocket &socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) override {
+  void readMessage(const WebSocket &socket, v_uint8 opcode, p_char8 data, avena::v_io_size size) override {
     if (size == 0) {
       auto wholeMessage = m_messageBuffer.toString();
       OATPP_LOGd(TAG, "Message='{}'", wholeMessage);
@@ -139,17 +141,17 @@ void FullTest::onRun() {
 
   TestComponent component;
 
-  oatpp::test::web::ClientServerTestRunner runner;
+  avena::test::web::ClientServerTestRunner runner;
 
   runner.addController(app::Controller::createShared());
 
   runner.run([] {
 
 
-    OATPP_COMPONENT(std::shared_ptr<oatpp::websocket::Connector>, connector);
+    OATPP_COMPONENT(std::shared_ptr<avena::websocket::Connector>, connector);
 
     auto connection = connector->connect("ws");
-    oatpp::websocket::WebSocket socket(connection, true);
+    avena::websocket::WebSocket socket(connection, true);
 
     socket.setListener(std::make_shared<ClientWebSocketListener>());
 

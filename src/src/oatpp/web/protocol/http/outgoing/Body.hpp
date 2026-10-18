@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 #include "oatpp/data/stream/Stream.hpp"
 #include "oatpp/async/Coroutine.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 /**
  * Abstract http outgoing body.
@@ -54,7 +56,7 @@ public:
   /**
    * Declare headers describing body.
    * **Note:** Do NOT declare the `Content-Length` header.
-   * @param headers - &id:oatpp::web::protocol::http::Headers;.
+   * @param headers - &id:avena::web::protocol::http::Headers;.
    */
   virtual void declareHeaders(Headers& headers) = 0;
 
@@ -67,7 +69,7 @@ public:
   /**
    * Should return the known size of the body (if known).
    * If body size is unknown then should return -1.
-   * @return - &id:oatpp::v_io_size;.
+   * @return - &id:avena::v_io_size;.
    */
   virtual v_int64 getKnownSize() = 0;
   

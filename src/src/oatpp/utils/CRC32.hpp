@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include "oatpp/encoding/Hex.hpp"
 
-namespace oatpp { namespace utils {
+namespace avena { namespace utils {
 
 /**
  * Implementation of CRC-32. Cyclic redundancy check algorithm.

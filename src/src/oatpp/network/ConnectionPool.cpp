@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "ConnectionPool.hpp"
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ConnectionAcquisitionProxy
@@ -37,27 +39,27 @@ v_io_size ConnectionAcquisitionProxy::read(void *buff, v_buff_size count, async:
   return _handle.object->read(buff, count, action);
 }
 
-void ConnectionAcquisitionProxy::setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void ConnectionAcquisitionProxy::setOutputStreamIOMode(avena::data::stream::IOMode ioMode) {
   return _handle.object->setOutputStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode ConnectionAcquisitionProxy::getOutputStreamIOMode() {
+avena::data::stream::IOMode ConnectionAcquisitionProxy::getOutputStreamIOMode() {
   return _handle.object->getOutputStreamIOMode();
 }
 
-void ConnectionAcquisitionProxy::setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void ConnectionAcquisitionProxy::setInputStreamIOMode(avena::data::stream::IOMode ioMode) {
   return _handle.object->setInputStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode ConnectionAcquisitionProxy::getInputStreamIOMode() {
+avena::data::stream::IOMode ConnectionAcquisitionProxy::getInputStreamIOMode() {
   return _handle.object->getInputStreamIOMode();
 }
 
-oatpp::data::stream::Context& ConnectionAcquisitionProxy::getOutputStreamContext() {
+avena::data::stream::Context& ConnectionAcquisitionProxy::getOutputStreamContext() {
   return _handle.object->getOutputStreamContext();
 }
 
-oatpp::data::stream::Context& ConnectionAcquisitionProxy::getInputStreamContext() {
+avena::data::stream::Context& ConnectionAcquisitionProxy::getInputStreamContext() {
   return _handle.object->getInputStreamContext();
 }
 

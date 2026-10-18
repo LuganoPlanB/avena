@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,12 +29,12 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
-class LockTest : public oatpp::test::UnitTest{
+class LockTest : public avena::test::UnitTest{
 public:
 
-  LockTest():UnitTest("TEST[oatpp::async::LockTest]"){}
+  LockTest():UnitTest("TEST[avena::async::LockTest]"){}
   void onRun() override;
 
 };

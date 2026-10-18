@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -37,26 +39,26 @@
 #include <mutex>
 #include <condition_variable>
 
-namespace oatpp { namespace network { namespace virtual_ {
+namespace avena { namespace network { namespace virtual_ {
 
 /**
  * Virtual pipe implementation. Can be used for unidirectional data transfer between different threads of the same process. <br>
- * Under the hood it uses &id:oatpp::data::buffer::SynchronizedFIFOBuffer; over the &id:oatpp::data::buffer::IOBuffer;.
+ * Under the hood it uses &id:avena::data::buffer::SynchronizedFIFOBuffer; over the &id:avena::data::buffer::IOBuffer;.
  */
-class Pipe : public oatpp::base::Countable {
+class Pipe : public avena::base::Countable {
 public:
 
   /**
-   * Pipe Reader. Extends &id:oatpp::data::stream::InputStream;.
+   * Pipe Reader. Extends &id:avena::data::stream::InputStream;.
    * Provides read interface for the pipe. Can work in both blocking and nonblocking regime.
    */
-  class Reader : public oatpp::data::stream::InputStream {
+  class Reader : public avena::data::stream::InputStream {
     friend Pipe;
   public:
     static data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
   private:
 
-    class WaitListListener : public oatpp::async::CoroutineWaitList::Listener {
+    class WaitListListener : public avena::async::CoroutineWaitList::Listener {
     private:
       Pipe* m_pipe;
     public:
@@ -65,7 +67,7 @@ public:
         : m_pipe(pipe)
       {}
 
-      void onNewItem(oatpp::async::CoroutineWaitList& list) override {
+      void onNewItem(avena::async::CoroutineWaitList& list) override {
         std::lock_guard<std::mutex> lock(m_pipe->m_mutex);
         if (m_pipe->m_fifo.availableToRead() > 0 || !m_pipe->m_open) {
           list.notifyAll();
@@ -76,18 +78,18 @@ public:
 
   private:
     Pipe* m_pipe;
-    oatpp::data::stream::IOMode m_ioMode;
+    avena::data::stream::IOMode m_ioMode;
     
     /*
      * this one used for testing purposes only
      */
     v_io_size m_maxAvailableToRead;
 
-    oatpp::async::CoroutineWaitList m_waitList;
+    avena::async::CoroutineWaitList m_waitList;
     WaitListListener m_waitListListener;
   protected:
     
-    Reader(Pipe* pipe, oatpp::data::stream::IOMode ioMode = oatpp::data::stream::IOMode::BLOCKING)
+    Reader(Pipe* pipe, avena::data::stream::IOMode ioMode = avena::data::stream::IOMode::BLOCKING)
       : m_pipe(pipe)
       , m_ioMode(ioMode)
       , m_maxAvailableToRead(-1)
@@ -107,13 +109,13 @@ public:
     void setMaxAvailableToRead(v_io_size maxAvailableToRead);
 
     /**
-     * Implements &id:oatpp::data::stream::InputStream::read; method.
+     * Implements &id:avena::data::stream::InputStream::read; method.
      * Read data from pipe.
      * @param data - buffer to read data to.
      * @param count - max count of bytes to read.
-     * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+     * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
      * caller MUST return this action on coroutine iteration.
-     * @return - &id:oatpp::v_io_size;.
+     * @return - &id:avena::v_io_size;.
      */
     v_io_size read(void *data, v_buff_size count, async::Action& action) override;
 
@@ -121,19 +123,19 @@ public:
      * Set InputStream I/O mode.
      * @param ioMode
      */
-    void setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+    void setInputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
     /**
      * Get InputStream I/O mode.
      * @return
      */
-    oatpp::data::stream::IOMode getInputStreamIOMode() override;
+    avena::data::stream::IOMode getInputStreamIOMode() override;
 
     /**
      * Get stream context.
      * @return
      */
-    oatpp::data::stream::Context& getInputStreamContext() override;
+    avena::data::stream::Context& getInputStreamContext() override;
 
     /**
      * Notify coroutine wait-list
@@ -143,15 +145,15 @@ public:
   };
 
   /**
-   * Pipe writer. Extends &id:oatpp::data::stream::OutputStream;.
+   * Pipe writer. Extends &id:avena::data::stream::OutputStream;.
    * Provides write interface for the pipe. Can work in both blocking and nonblocking regime.
    */
-  class Writer : public oatpp::data::stream::OutputStream {
+  class Writer : public avena::data::stream::OutputStream {
     friend Pipe;
   public:
     static data::stream::DefaultInitializedContext DEFAULT_CONTEXT;
   private:
-    class WaitListListener : public oatpp::async::CoroutineWaitList::Listener {
+    class WaitListListener : public avena::async::CoroutineWaitList::Listener {
     private:
       Pipe* m_pipe;
     public:
@@ -159,7 +161,7 @@ public:
         : m_pipe(pipe)
       {}
 
-      void onNewItem(oatpp::async::CoroutineWaitList& list) override {
+      void onNewItem(avena::async::CoroutineWaitList& list) override {
         std::lock_guard<std::mutex> lock(m_pipe->m_mutex);
         if (m_pipe->m_fifo.availableToWrite() > 0 || !m_pipe->m_open) {
           list.notifyAll();
@@ -168,18 +170,18 @@ public:
     };
   private:
     Pipe* m_pipe;
-    oatpp::data::stream::IOMode m_ioMode;
+    avena::data::stream::IOMode m_ioMode;
     
     /*
      * this one used for testing purposes only
      */
     v_io_size m_maxAvailableToWrtie;
 
-    oatpp::async::CoroutineWaitList m_waitList;
+    avena::async::CoroutineWaitList m_waitList;
     WaitListListener m_waitListListener;
   protected:
     
-    Writer(Pipe* pipe, oatpp::data::stream::IOMode ioMode = oatpp::data::stream::IOMode::BLOCKING)
+    Writer(Pipe* pipe, avena::data::stream::IOMode ioMode = avena::data::stream::IOMode::BLOCKING)
       : m_pipe(pipe)
       , m_ioMode(ioMode)
       , m_maxAvailableToWrtie(-1)
@@ -199,13 +201,13 @@ public:
     void setMaxAvailableToWrite(v_io_size maxAvailableToWrite);
 
     /**
-     * Implements &id:oatpp::data::stream::OutputStream::write; method.
+     * Implements &id:avena::data::stream::OutputStream::write; method.
      * Write data to pipe.
      * @param data - data to write to pipe.
      * @param count - data size.
-     * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+     * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
      * caller MUST return this action on coroutine iteration.
-     * @return - &id:oatpp::v_io_size;.
+     * @return - &id:avena::v_io_size;.
      */
     v_io_size write(const void *data, v_buff_size count, async::Action& action) override;
 
@@ -213,19 +215,19 @@ public:
      * Set OutputStream I/O mode.
      * @param ioMode
      */
-    void setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) override;
+    void setOutputStreamIOMode(avena::data::stream::IOMode ioMode) override;
 
     /**
      * Set OutputStream I/O mode.
      * @return
      */
-    oatpp::data::stream::IOMode getOutputStreamIOMode() override;
+    avena::data::stream::IOMode getOutputStreamIOMode() override;
 
     /**
      * Get stream context.
      * @return
      */
-    oatpp::data::stream::Context& getOutputStreamContext() override;
+    avena::data::stream::Context& getOutputStreamContext() override;
 
     /**
      * Notify coroutine wait-list
@@ -239,8 +241,8 @@ private:
   Writer m_writer;
   Reader m_reader;
 
-  oatpp::data::buffer::IOBuffer m_buffer;
-  oatpp::data::buffer::SynchronizedFIFOBuffer m_fifo;
+  avena::data::buffer::IOBuffer m_buffer;
+  avena::data::buffer::SynchronizedFIFOBuffer m_fifo;
 
   std::mutex m_mutex;
   std::condition_variable m_conditionRead;

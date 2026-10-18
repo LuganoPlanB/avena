@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,23 +31,23 @@
 #include "oatpp/web/protocol/http/Http.hpp"
 #include "oatpp/web/protocol/http/incoming/Request.hpp"
 
-namespace oatpp::web::mime {
+namespace avena::web::mime {
 
 namespace {
 
 class FakeMapper : public data::mapping::ObjectMapper {
 public:
 
-  FakeMapper(const oatpp::String& mimeType, const oatpp::String& mimeSubtype)
+  FakeMapper(const avena::String& mimeType, const avena::String& mimeSubtype)
     : ObjectMapper(Info(mimeType, mimeSubtype))
   {}
 
 
-  void write(data::stream::ConsistentOutputStream* stream, const oatpp::Void& variant, data::mapping::ErrorStack& errorStack) const override {
+  void write(data::stream::ConsistentOutputStream* stream, const avena::Void& variant, data::mapping::ErrorStack& errorStack) const override {
     // DO NOTHING
   }
 
-  oatpp::Void read(oatpp::utils::parser::Caret& caret, const oatpp::Type* type, data::mapping::ErrorStack& errorStack) const override {
+  avena::Void read(avena::utils::parser::Caret& caret, const avena::Type* type, data::mapping::ErrorStack& errorStack) const override {
     return nullptr;
   }
 
@@ -99,7 +101,7 @@ void ContentMappersTest::onRun() {
     ContentMappers mappers;
     mappers.putMapper(std::make_shared<FakeMapper>("application", "json"));
     mappers.putMapper(std::make_shared<FakeMapper>("text", "html"));
-    auto m= mappers.selectMapper(std::vector<oatpp::String>{
+    auto m= mappers.selectMapper(std::vector<avena::String>{
         "application/json",
         "text/html",
       }
@@ -112,7 +114,7 @@ void ContentMappersTest::onRun() {
     ContentMappers mappers;
     mappers.putMapper(std::make_shared<FakeMapper>("application", "json"));
     mappers.putMapper(std::make_shared<FakeMapper>("text", "html"));
-    auto m= mappers.selectMapper(std::vector<oatpp::String>{
+    auto m= mappers.selectMapper(std::vector<avena::String>{
         "application/json;q=0.9",
         "text/html;q=0.1",
       }
@@ -125,7 +127,7 @@ void ContentMappersTest::onRun() {
     ContentMappers mappers;
     mappers.putMapper(std::make_shared<FakeMapper>("application", "json"));
     mappers.putMapper(std::make_shared<FakeMapper>("text", "html"));
-    auto m= mappers.selectMapper(std::vector<oatpp::String>{
+    auto m= mappers.selectMapper(std::vector<avena::String>{
                                    "application/json;q=0.1",
                                    "text/html;q=0.9",
                                  }
@@ -138,7 +140,7 @@ void ContentMappersTest::onRun() {
     ContentMappers mappers;
     mappers.putMapper(std::make_shared<FakeMapper>("application", "json"));
     mappers.putMapper(std::make_shared<FakeMapper>("text", "html"));
-    auto m= mappers.selectMapper(std::vector<oatpp::String>{
+    auto m= mappers.selectMapper(std::vector<avena::String>{
                                    "application/json;<anything>=0.5",
                                    "text/html;q=",
                                  }

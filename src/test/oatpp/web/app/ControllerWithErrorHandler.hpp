@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,27 +35,27 @@
 
 #include <sstream>
 
-namespace oatpp { namespace test { namespace web { namespace app {
+namespace avena { namespace test { namespace web { namespace app {
 
-namespace http = oatpp::web::protocol::http;
+namespace http = avena::web::protocol::http;
 
-class CustomErrorHandler : public oatpp::web::server::handler::DefaultErrorHandler {
+class CustomErrorHandler : public avena::web::server::handler::DefaultErrorHandler {
 public:
 
   CustomErrorHandler() = default;
 
   std::shared_ptr<http::outgoing::Response> renderError(const HttpServerErrorStacktrace& stacktrace) override {
-    return oatpp::web::protocol::http::outgoing::ResponseFactory::createResponse(http::Status::CODE_418, stacktrace.stack.front());
+    return avena::web::protocol::http::outgoing::ResponseFactory::createResponse(http::Status::CODE_418, stacktrace.stack.front());
   }
 
 };
 
-class ControllerWithErrorHandler : public oatpp::web::server::api::ApiController {
+class ControllerWithErrorHandler : public avena::web::server::api::ApiController {
 private:
   static constexpr const char* TAG = "test::web::app::ControllerWithErrorHandler";
 public:
   explicit ControllerWithErrorHandler(const std::shared_ptr<ObjectMapper>& objectMapper)
-      : oatpp::web::server::api::ApiController(objectMapper)
+      : avena::web::server::api::ApiController(objectMapper)
   {
     setErrorHandler(std::make_shared<CustomErrorHandler>());
   }

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,9 +34,9 @@
   #include <arpa/inet.h>
 #endif
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
-AsyncWebSocket::AsyncWebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, const Config& config)
+AsyncWebSocket::AsyncWebSocket(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, const Config& config)
   : m_config(config)
   , m_connection(connection)
   , m_listener(nullptr)
@@ -42,7 +44,7 @@ AsyncWebSocket::AsyncWebSocket(const provider::ResourceHandle<oatpp::data::strea
   , m_listening(false)
 {}
 
-AsyncWebSocket::AsyncWebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, bool maskOutgoingMessages)
+AsyncWebSocket::AsyncWebSocket(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, bool maskOutgoingMessages)
   : m_connection(connection)
   , m_listener(nullptr)
   , m_lastOpcode(-1)
@@ -67,11 +69,11 @@ bool AsyncWebSocket::checkForContinuation(const Frame::Header& frameHeader) {
   return true;
 }
   
-oatpp::async::CoroutineStarter AsyncWebSocket::readFrameHeaderAsync(const std::shared_ptr<Frame::Header>& frameHeader) {
+avena::async::CoroutineStarter AsyncWebSocket::readFrameHeaderAsync(const std::shared_ptr<Frame::Header>& frameHeader) {
   
-  class ReadFrameCoroutine : public oatpp::async::Coroutine<ReadFrameCoroutine> {
+  class ReadFrameCoroutine : public avena::async::Coroutine<ReadFrameCoroutine> {
   private:
-    provider::ResourceHandle<oatpp::data::stream::IOStream> m_connection;
+    provider::ResourceHandle<avena::data::stream::IOStream> m_connection;
     std::shared_ptr<Frame::Header> m_frameHeader;
   private:
     v_int32 m_lenType;
@@ -79,10 +81,10 @@ oatpp::async::CoroutineStarter AsyncWebSocket::readFrameHeaderAsync(const std::s
     v_uint16 m_messageLen2;
     v_uint32 m_messageLen3 [2];
   private:
-    oatpp::data::buffer::InlineReadData m_inlineData;
+    avena::data::buffer::InlineReadData m_inlineData;
   public:
     
-    ReadFrameCoroutine(const provider::ResourceHandle<oatpp::data::stream::IOStream> connection,
+    ReadFrameCoroutine(const provider::ResourceHandle<avena::data::stream::IOStream> connection,
                        const std::shared_ptr<Frame::Header>& frameHeader)
       : m_connection(connection)
       , m_frameHeader(frameHeader)
@@ -113,7 +115,7 @@ oatpp::async::CoroutineStarter AsyncWebSocket::readFrameHeaderAsync(const std::s
         return yieldTo(&ReadFrameCoroutine::readLen);
       }
       
-      return error<Error>("[oatpp::web::protocol::websocket::AsyncWebSocket::readFrameHeaderAsync(){ReadFrameCoroutine}]: Invalid frame payload length.");
+      return error<Error>("[avena::web::protocol::websocket::AsyncWebSocket::readFrameHeaderAsync(){ReadFrameCoroutine}]: Invalid frame payload length.");
       
     }
     
@@ -148,12 +150,12 @@ oatpp::async::CoroutineStarter AsyncWebSocket::readFrameHeaderAsync(const std::s
   
 }
   
-oatpp::async::CoroutineStarter AsyncWebSocket::writeFrameHeaderAsync(const std::shared_ptr<Frame::Header>& frameHeader)
+avena::async::CoroutineStarter AsyncWebSocket::writeFrameHeaderAsync(const std::shared_ptr<Frame::Header>& frameHeader)
 {
   
-  class WriteFrameCoroutine : public oatpp::async::Coroutine<WriteFrameCoroutine> {
+  class WriteFrameCoroutine : public avena::async::Coroutine<WriteFrameCoroutine> {
   private:
-    provider::ResourceHandle<oatpp::data::stream::IOStream> m_connection;
+    provider::ResourceHandle<avena::data::stream::IOStream> m_connection;
     std::shared_ptr<Frame::Header> m_frameHeader;
   private:
     v_int32 m_lenType;
@@ -162,10 +164,10 @@ oatpp::async::CoroutineStarter AsyncWebSocket::writeFrameHeaderAsync(const std::
     v_uint32 m_messageLen3 [2];
     v_uint8 m_messageLengthScenario;
   private:
-    oatpp::data::buffer::InlineWriteData m_inlineData;
+    avena::data::buffer::InlineWriteData m_inlineData;
   public:
     
-    WriteFrameCoroutine(const provider::ResourceHandle<oatpp::data::stream::IOStream> connection,
+    WriteFrameCoroutine(const provider::ResourceHandle<avena::data::stream::IOStream> connection,
                         const std::shared_ptr<Frame::Header>& frameHeader)
       : m_connection(connection)
       , m_frameHeader(frameHeader)
@@ -216,27 +218,27 @@ oatpp::async::CoroutineStarter AsyncWebSocket::writeFrameHeaderAsync(const std::
   
 }
 
-oatpp::async::CoroutineStarter AsyncWebSocket::readPayloadAsync(const std::shared_ptr<Frame::Header>& frameHeader,
-                                                                const std::shared_ptr<oatpp::data::stream::BufferOutputStream>& shortMessageStream)
+avena::async::CoroutineStarter AsyncWebSocket::readPayloadAsync(const std::shared_ptr<Frame::Header>& frameHeader,
+                                                                const std::shared_ptr<avena::data::stream::BufferOutputStream>& shortMessageStream)
 {
   
-  class ReadPayloadCoroutine : public oatpp::async::Coroutine<ReadPayloadCoroutine> {
+  class ReadPayloadCoroutine : public avena::async::Coroutine<ReadPayloadCoroutine> {
   private:
     std::shared_ptr<AsyncWebSocket> m_socket;
-    provider::ResourceHandle<oatpp::data::stream::IOStream> m_connection;
+    provider::ResourceHandle<avena::data::stream::IOStream> m_connection;
     std::shared_ptr<Frame::Header> m_frameHeader;
-    std::shared_ptr<oatpp::data::stream::BufferOutputStream> m_shortMessageStream;
+    std::shared_ptr<avena::data::stream::BufferOutputStream> m_shortMessageStream;
     std::shared_ptr<Listener> m_listener;
   private:
     p_char8 m_buffer;
-    oatpp::v_io_size m_progress;
+    avena::v_io_size m_progress;
   private:
-    oatpp::data::buffer::InlineReadData m_inlineData;
+    avena::data::buffer::InlineReadData m_inlineData;
   public:
     ReadPayloadCoroutine(const std::shared_ptr<AsyncWebSocket>& socket,
-                         const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection,
+                         const provider::ResourceHandle<avena::data::stream::IOStream>& connection,
                          const std::shared_ptr<Frame::Header>& frameHeader,
-                         const std::shared_ptr<oatpp::data::stream::BufferOutputStream>& shortMessageStream,
+                         const std::shared_ptr<avena::data::stream::BufferOutputStream>& shortMessageStream,
                          const std::shared_ptr<Listener>& listener)
       : m_socket(socket)
       , m_connection(connection)
@@ -247,7 +249,7 @@ oatpp::async::CoroutineStarter AsyncWebSocket::readPayloadAsync(const std::share
       , m_progress(0)
     {
       if(m_shortMessageStream && m_frameHeader->payloadLength > 125) {
-        throw std::runtime_error("[oatpp::web::protocol::websocket::AsyncWebSocket::readPayloadAsync()]: Invalid payloadLength. See RFC-6455, section-5.5.");
+        throw std::runtime_error("[avena::web::protocol::websocket::AsyncWebSocket::readPayloadAsync()]: Invalid payloadLength. See RFC-6455, section-5.5.");
       }
     }
     
@@ -259,7 +261,7 @@ oatpp::async::CoroutineStarter AsyncWebSocket::readPayloadAsync(const std::share
       
       if(m_progress < m_frameHeader->payloadLength) {
         
-        oatpp::v_io_size desiredSize = m_socket->m_config.readBufferSize;
+        avena::v_io_size desiredSize = m_socket->m_config.readBufferSize;
         if(desiredSize > m_frameHeader->payloadLength - m_progress) {
           desiredSize = m_frameHeader->payloadLength - m_progress;
         }
@@ -318,29 +320,29 @@ oatpp::async::CoroutineStarter AsyncWebSocket::readPayloadAsync(const std::share
         
       }
       
-      throw std::runtime_error("[oatpp::web::protocol::websocket::AsyncWebSocket::readPayloadAsync(){ReadPayloadCoroutine}]: Invalid connection state.");
+      throw std::runtime_error("[avena::web::protocol::websocket::AsyncWebSocket::readPayloadAsync(){ReadPayloadCoroutine}]: Invalid connection state.");
       
     }
     
   };
   
   if(shortMessageStream && frameHeader->payloadLength > 125) {
-    throw std::runtime_error("[oatpp::web::protocol::websocket::AsyncWebSocket::readPayloadAsync()]: Invalid frame payload length. See RFC-6455, section-5.5.");
+    throw std::runtime_error("[avena::web::protocol::websocket::AsyncWebSocket::readPayloadAsync()]: Invalid frame payload length. See RFC-6455, section-5.5.");
   }
 
   return ReadPayloadCoroutine::start(shared_from_this(), m_connection, frameHeader, shortMessageStream, m_listener);
   
 }
   
-oatpp::async::CoroutineStarter AsyncWebSocket::handleFrameAsync(const std::shared_ptr<Frame::Header>& frameHeader) {
+avena::async::CoroutineStarter AsyncWebSocket::handleFrameAsync(const std::shared_ptr<Frame::Header>& frameHeader) {
   
-  class HandleFrameCoroutine : public oatpp::async::Coroutine<HandleFrameCoroutine> {
+  class HandleFrameCoroutine : public avena::async::Coroutine<HandleFrameCoroutine> {
   private:
     std::shared_ptr<AsyncWebSocket> m_socket;
     std::shared_ptr<Frame::Header> m_frameHeader;
     std::shared_ptr<Listener> m_listener;
   private:
-    std::shared_ptr<oatpp::data::stream::BufferOutputStream> m_shortMessageStream;
+    std::shared_ptr<avena::data::stream::BufferOutputStream> m_shortMessageStream;
   public:
     HandleFrameCoroutine(const std::shared_ptr<AsyncWebSocket>& socket,
                          const std::shared_ptr<Frame::Header>& frameHeader)
@@ -354,7 +356,7 @@ oatpp::async::CoroutineStarter AsyncWebSocket::handleFrameAsync(const std::share
       switch (m_frameHeader->opcode) {
         case Frame::OPCODE_CONTINUATION:
           if(m_socket->m_lastOpcode < 0) {
-            throw std::runtime_error("[oatpp::web::protocol::websocket::AsyncWebSocket::handleFrameAsync(){HandleFrameCoroutine}]: Invalid communication state.");
+            throw std::runtime_error("[avena::web::protocol::websocket::AsyncWebSocket::handleFrameAsync(){HandleFrameCoroutine}]: Invalid communication state.");
           }
           return m_socket->readPayloadAsync(m_frameHeader, nullptr).next(finish());
           
@@ -362,14 +364,14 @@ oatpp::async::CoroutineStarter AsyncWebSocket::handleFrameAsync(const std::share
           if(m_socket->checkForContinuation(*m_frameHeader)) {
             return m_socket->readPayloadAsync(m_frameHeader, nullptr).next(finish());
           } else {
-            throw std::runtime_error("[oatpp::web::protocol::websocket::AsyncWebSocket::handleFrameAsync(){HandleFrameCoroutine}]: Invalid communication state. OPCODE_CONTINUATION expected");
+            throw std::runtime_error("[avena::web::protocol::websocket::AsyncWebSocket::handleFrameAsync(){HandleFrameCoroutine}]: Invalid communication state. OPCODE_CONTINUATION expected");
           }
           
         case Frame::OPCODE_BINARY:
           if(m_socket->checkForContinuation(*m_frameHeader)) {
             return m_socket->readPayloadAsync(m_frameHeader, nullptr).next(finish());
           } else {
-            throw std::runtime_error("[oatpp::web::protocol::websocket::AsyncWebSocket::handleFrameAsync(){HandleFrameCoroutine}]: Invalid communication state. OPCODE_CONTINUATION expected");
+            throw std::runtime_error("[avena::web::protocol::websocket::AsyncWebSocket::handleFrameAsync(){HandleFrameCoroutine}]: Invalid communication state. OPCODE_CONTINUATION expected");
           }
           
         case Frame::OPCODE_CLOSE:
@@ -385,7 +387,7 @@ oatpp::async::CoroutineStarter AsyncWebSocket::handleFrameAsync(const std::share
           return m_socket->readPayloadAsync(m_frameHeader, m_shortMessageStream).next(yieldTo(&HandleFrameCoroutine::onPong));
           
         default:
-          throw std::runtime_error("[oatpp::web::protocol::websocket::AsyncWebSocket::handleFrameAsync(){HandleFrameCoroutine}]: Unknown frame");
+          throw std::runtime_error("[avena::web::protocol::websocket::AsyncWebSocket::handleFrameAsync(){HandleFrameCoroutine}]: Unknown frame");
           break;
       }
       
@@ -394,7 +396,7 @@ oatpp::async::CoroutineStarter AsyncWebSocket::handleFrameAsync(const std::share
     Action onClose() {
       if(m_listener) {
         v_uint16 code = 0;
-        oatpp::String message;
+        avena::String message;
         if(m_shortMessageStream->getCurrentPosition() >= 2) {
           code = ntohs(*((p_uint16) m_shortMessageStream->getData()));
           message = m_shortMessageStream->getSubstring(2, m_shortMessageStream->getCurrentPosition() - 2);
@@ -427,9 +429,9 @@ oatpp::async::CoroutineStarter AsyncWebSocket::handleFrameAsync(const std::share
   
 }
   
-oatpp::async::CoroutineStarter AsyncWebSocket::listenAsync() {
+avena::async::CoroutineStarter AsyncWebSocket::listenAsync() {
 
-  class ListenCoroutine : public oatpp::async::Coroutine<ListenCoroutine> {
+  class ListenCoroutine : public avena::async::Coroutine<ListenCoroutine> {
   private:
     std::shared_ptr<AsyncWebSocket> m_socket;
     std::shared_ptr<Frame::Header> m_frameHeader;
@@ -459,7 +461,7 @@ oatpp::async::CoroutineStarter AsyncWebSocket::listenAsync() {
   
 }
   
-oatpp::async::CoroutineStarter AsyncWebSocket::sendFrameHeaderAsync(const std::shared_ptr<Frame::Header>& frameHeader,
+avena::async::CoroutineStarter AsyncWebSocket::sendFrameHeaderAsync(const std::shared_ptr<Frame::Header>& frameHeader,
                                                                     bool fin, v_uint8 opcode, v_int64 messageSize)
 {
 
@@ -478,22 +480,22 @@ oatpp::async::CoroutineStarter AsyncWebSocket::sendFrameHeaderAsync(const std::s
   return writeFrameHeaderAsync(frameHeader);
 }
   
-oatpp::async::CoroutineStarter AsyncWebSocket::sendOneFrameAsync(bool fin, v_uint8 opcode, const oatpp::String& message) {
+avena::async::CoroutineStarter AsyncWebSocket::sendOneFrameAsync(bool fin, v_uint8 opcode, const avena::String& message) {
   
-  class SendFrameCoroutine : public oatpp::async::Coroutine<SendFrameCoroutine> {
+  class SendFrameCoroutine : public avena::async::Coroutine<SendFrameCoroutine> {
   private:
     std::shared_ptr<AsyncWebSocket> m_socket;
     bool m_fin;
     v_uint8 m_opcode;
-    oatpp::String m_message;
+    avena::String m_message;
     std::shared_ptr<Frame::Header> m_frameHeader;
   private:
     p_char8 m_encoded = nullptr;
   private:
-    oatpp::data::buffer::InlineWriteData m_inlineData;
+    avena::data::buffer::InlineWriteData m_inlineData;
   public:
     SendFrameCoroutine(const std::shared_ptr<AsyncWebSocket>& socket,
-                       bool fin, v_uint8 opcode, const oatpp::String& message)
+                       bool fin, v_uint8 opcode, const avena::String& message)
       : m_socket(socket)
       , m_fin(fin)
       , m_opcode(opcode)
@@ -538,11 +540,11 @@ oatpp::async::CoroutineStarter AsyncWebSocket::sendOneFrameAsync(bool fin, v_uin
   
 }
   
-oatpp::async::CoroutineStarter AsyncWebSocket::sendCloseAsync(v_uint16 code, const oatpp::String& message) {
+avena::async::CoroutineStarter AsyncWebSocket::sendCloseAsync(v_uint16 code, const avena::String& message) {
 
   code = htons(code);
   
-  oatpp::data::stream::BufferOutputStream buffer;
+  avena::data::stream::BufferOutputStream buffer;
   buffer.writeSimple(&code, 2);
   if(message) {
     buffer.writeSimple(message->data(), message->size());
@@ -552,23 +554,23 @@ oatpp::async::CoroutineStarter AsyncWebSocket::sendCloseAsync(v_uint16 code, con
   
 }
 
-oatpp::async::CoroutineStarter AsyncWebSocket::sendCloseAsync() {
+avena::async::CoroutineStarter AsyncWebSocket::sendCloseAsync() {
   return sendOneFrameAsync(true, Frame::OPCODE_CLOSE, nullptr);
 }
 
-oatpp::async::CoroutineStarter AsyncWebSocket::sendPingAsync(const oatpp::String& message) {
+avena::async::CoroutineStarter AsyncWebSocket::sendPingAsync(const avena::String& message) {
   return sendOneFrameAsync(true, Frame::OPCODE_PING, message);
 }
 
-oatpp::async::CoroutineStarter AsyncWebSocket::sendPongAsync(const oatpp::String& message) {
+avena::async::CoroutineStarter AsyncWebSocket::sendPongAsync(const avena::String& message) {
   return sendOneFrameAsync(true, Frame::OPCODE_PONG, message);
 }
 
-oatpp::async::CoroutineStarter AsyncWebSocket::sendOneFrameTextAsync(const oatpp::String& message) {
+avena::async::CoroutineStarter AsyncWebSocket::sendOneFrameTextAsync(const avena::String& message) {
   return sendOneFrameAsync(true, Frame::OPCODE_TEXT, message);
 }
 
-oatpp::async::CoroutineStarter AsyncWebSocket::sendOneFrameBinaryAsync(const oatpp::String& message) {
+avena::async::CoroutineStarter AsyncWebSocket::sendOneFrameBinaryAsync(const avena::String& message) {
   return sendOneFrameAsync(true, Frame::OPCODE_BINARY, message);
 }
   

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include <thread>
 
-namespace oatpp { namespace provider {
+namespace avena { namespace provider {
 
 namespace {
 
@@ -57,10 +59,10 @@ public:
 
 };
 
-class TestProvider : public oatpp::provider::Provider<Resource> {
+class TestProvider : public avena::provider::Provider<Resource> {
 private:
 
-  class ResourceInvalidator : public oatpp::provider::Invalidator<Resource> {
+  class ResourceInvalidator : public avena::provider::Invalidator<Resource> {
   public:
 
     void invalidate(const std::shared_ptr<Resource>& resource) override {
@@ -74,16 +76,16 @@ private:
   std::atomic<v_int64> m_id;
 public:
 
-  oatpp::provider::ResourceHandle<Resource> get() override {
-    return oatpp::provider::ResourceHandle<Resource>(
+  avena::provider::ResourceHandle<Resource> get() override {
+    return avena::provider::ResourceHandle<Resource>(
       std::make_shared<MyResource>(++m_id),
       m_invalidator
     );
   }
 
-  async::CoroutineStarterForResult<const oatpp::provider::ResourceHandle<Resource> &> getAsync() override {
+  async::CoroutineStarterForResult<const avena::provider::ResourceHandle<Resource> &> getAsync() override {
 
-    class GetCoroutine : public oatpp::async::CoroutineWithResult<GetCoroutine, const oatpp::provider::ResourceHandle<Resource>&> {
+    class GetCoroutine : public avena::async::CoroutineWithResult<GetCoroutine, const avena::provider::ResourceHandle<Resource>&> {
     private:
       TestProvider* m_provider;
     public:
@@ -93,7 +95,7 @@ public:
       {}
 
       Action act() override {
-        return _return(oatpp::provider::ResourceHandle<Resource>(
+        return _return(avena::provider::ResourceHandle<Resource>(
           std::make_shared<MyResource>(++ m_provider->m_id),
           m_provider->m_invalidator
         ));
@@ -115,11 +117,11 @@ public:
 };
 
 
-struct AcquisitionProxy : public oatpp::provider::AcquisitionProxy<Resource, AcquisitionProxy> {
+struct AcquisitionProxy : public avena::provider::AcquisitionProxy<Resource, AcquisitionProxy> {
 
-  AcquisitionProxy(const oatpp::provider::ResourceHandle<Resource>& resource,
+  AcquisitionProxy(const avena::provider::ResourceHandle<Resource>& resource,
                    const std::shared_ptr<PoolInstance>& pool)
-    : oatpp::provider::AcquisitionProxy<Resource, AcquisitionProxy>(resource, pool)
+    : avena::provider::AcquisitionProxy<Resource, AcquisitionProxy>(resource, pool)
   {}
 
   v_int64 myId() override {
@@ -128,13 +130,13 @@ struct AcquisitionProxy : public oatpp::provider::AcquisitionProxy<Resource, Acq
 
 };
 
-typedef oatpp::provider::Pool<oatpp::provider::Provider<Resource>, Resource, AcquisitionProxy> TestPool;
+typedef avena::provider::Pool<avena::provider::Provider<Resource>, Resource, AcquisitionProxy> TestPool;
 
 
-class ClientCoroutine : public oatpp::async::Coroutine<ClientCoroutine> {
+class ClientCoroutine : public avena::async::Coroutine<ClientCoroutine> {
 private:
   std::shared_ptr<TestPool> m_pool;
-  oatpp::provider::ResourceHandle<Resource> m_resource;
+  avena::provider::ResourceHandle<Resource> m_resource;
   bool m_invalidate;
 public:
 
@@ -147,7 +149,7 @@ public:
     return m_pool->getAsync().callbackTo(&ClientCoroutine::onGet);
   }
 
-  Action onGet(const oatpp::provider::ResourceHandle<Resource>& resource) {
+  Action onGet(const avena::provider::ResourceHandle<Resource>& resource) {
     m_resource = resource;
     return waitFor(std::chrono::milliseconds(100)).next(yieldTo(&ClientCoroutine::onUse));
   }
@@ -173,7 +175,7 @@ void clientMethod(std::shared_ptr<TestPool> pool, bool invalidate) {
 
 void PoolTest::onRun() {
 
-  oatpp::async::Executor executor(10, 1, 1);
+  avena::async::Executor executor(10, 1, 1);
 
   auto provider = std::make_shared<TestProvider>();
   auto pool = TestPool::createShared(provider, 10, std::chrono::seconds(2));

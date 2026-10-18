@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 
 #include <chrono>
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 IOWorker::IOWorker()
   : Worker(Type::IO)
@@ -39,7 +41,7 @@ IOWorker::IOWorker()
 
 void IOWorker::pushTasks(utils::FastQueue<CoroutineHandle>& tasks) {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> guard(m_backlogLock);
+    std::lock_guard<avena::concurrency::SpinLock> guard(m_backlogLock);
     utils::FastQueue<CoroutineHandle>::moveAll(tasks, m_backlog);
   }
   m_backlogCondition.notify_one();
@@ -47,7 +49,7 @@ void IOWorker::pushTasks(utils::FastQueue<CoroutineHandle>& tasks) {
 
 void IOWorker::pushOneTask(CoroutineHandle* task) {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> guard(m_backlogLock);
+    std::lock_guard<avena::concurrency::SpinLock> guard(m_backlogLock);
     m_backlog.pushBack(task);
   }
   m_backlogCondition.notify_one();
@@ -57,14 +59,14 @@ void IOWorker::consumeBacklog(bool blockToConsume) {
 
   if(blockToConsume) {
 
-    std::unique_lock<oatpp::concurrency::SpinLock> lock(m_backlogLock);
+    std::unique_lock<avena::concurrency::SpinLock> lock(m_backlogLock);
     while (m_backlog.first == nullptr && m_running) {
       m_backlogCondition.wait(lock);
     }
     utils::FastQueue<CoroutineHandle>::moveAll(m_backlog, m_queue);
   } else {
 
-    std::unique_lock<oatpp::concurrency::SpinLock> lock(m_backlogLock, std::try_to_lock);
+    std::unique_lock<avena::concurrency::SpinLock> lock(m_backlogLock, std::try_to_lock);
     if (lock.owns_lock()) {
       utils::FastQueue<CoroutineHandle>::moveAll(m_backlog, m_queue);
     }
@@ -109,7 +111,7 @@ void IOWorker::run() {
           //        case Action::TYPE_IO_WAIT: // schedule for timer
 //          roundIteration = 0;
 //          m_queue.popFront();
-//          setCoroutineScheduledAction(CP, oatpp::async::Action::createWaitRepeatAction(0));
+//          setCoroutineScheduledAction(CP, avena::async::Action::createWaitRepeatAction(0));
 //          getCoroutineProcessor(CP)->pushOneTask(CP);
 //          break;
 
@@ -118,13 +120,13 @@ void IOWorker::run() {
           if(schA.getType() == Action::TYPE_WAIT_REPEAT) {
             if(schA.getTimePointMicroseconds() < tick) {
               m_queue.popFront();
-              setCoroutineScheduledAction(CP, oatpp::async::Action::createWaitRepeatAction(0));
+              setCoroutineScheduledAction(CP, avena::async::Action::createWaitRepeatAction(0));
               getCoroutineProcessor(CP)->pushOneTask(CP);
             } else {
               m_queue.round();
             }
           } else {
-            setCoroutineScheduledAction(CP, oatpp::async::Action::createWaitRepeatAction(tick + 1000000));
+            setCoroutineScheduledAction(CP, avena::async::Action::createWaitRepeatAction(tick + 1000000));
             m_queue.round();
           }
           break;
@@ -158,7 +160,7 @@ void IOWorker::run() {
 
 void IOWorker::stop() {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> lock(m_backlogLock);
+    std::lock_guard<avena::concurrency::SpinLock> lock(m_backlogLock);
     m_running = false;
   }
   m_backlogCondition.notify_one();

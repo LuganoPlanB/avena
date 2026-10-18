@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 
 #include "Coroutine.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Action
@@ -146,7 +148,7 @@ v_int64 Action::getTimePointMicroseconds() const {
   return m_data.timePointMicroseconds;
 }
 
-oatpp::v_io_handle Action::getIOHandle() const {
+avena::v_io_handle Action::getIOHandle() const {
   return m_data.ioData.ioHandle;
 }
 
@@ -327,7 +329,7 @@ Action CoroutineHandle::takeAction(Action&& action) {
 
   }
 
-  return std::forward<oatpp::async::Action>(action);
+  return std::forward<avena::async::Action>(action);
 
 }
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,9 +29,9 @@
 
 #include "oatpp-test/UnitTest.hpp"
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
 
-class HexTest : public oatpp::test::UnitTest{
+class HexTest : public avena::test::UnitTest{
 public:
   HexTest() : UnitTest("TEST[encoding::HexTest]"){}
   void onRun() override;

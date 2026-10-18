@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Any.hpp"
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 namespace __class {
   const ClassId Any::CLASS_ID("Any");
@@ -71,7 +73,7 @@ const Type* Any::getStoredType() const {
 Void Any::retrieve(const Type* type) const {
   if(m_ptr) {
     if(!m_ptr->type->extends(type)) {
-      throw std::runtime_error("[oatpp::data::type::Any::retrieve()]: Error. The value type doesn't match.");
+      throw std::runtime_error("[avena::data::type::Any::retrieve()]: Error. The value type doesn't match.");
     }
     return Void(m_ptr->ptr, type);
   }

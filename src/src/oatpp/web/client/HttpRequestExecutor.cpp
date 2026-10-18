@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -36,7 +38,7 @@
 #include <io.h>
 #endif
 
-namespace oatpp { namespace web { namespace client {
+namespace avena { namespace web { namespace client {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // HttpRequestExecutor::ConnectionProxy
@@ -135,16 +137,16 @@ std::shared_ptr<HttpRequestExecutor::ConnectionHandle> HttpRequestExecutor::getC
   auto connection = m_connectionProvider->get();
   if(!connection){
     throw RequestExecutionError(RequestExecutionError::ERROR_CODE_CANT_CONNECT,
-                                "[oatpp::web::client::HttpRequestExecutor::getConnection()]: ConnectionProvider failed to provide Connection");
+                                "[avena::web::client::HttpRequestExecutor::getConnection()]: ConnectionProvider failed to provide Connection");
   }
   auto connectionProxy = std::make_shared<ConnectionProxy>(connection);
   return std::make_shared<HttpConnectionHandle>(connectionProxy);
 }
 
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<HttpRequestExecutor::ConnectionHandle>&>
+avena::async::CoroutineStarterForResult<const std::shared_ptr<HttpRequestExecutor::ConnectionHandle>&>
 HttpRequestExecutor::getConnectionAsync() {
   
-  class GetConnectionCoroutine : public oatpp::async::CoroutineWithResult<GetConnectionCoroutine, const std::shared_ptr<ConnectionHandle>&> {
+  class GetConnectionCoroutine : public avena::async::CoroutineWithResult<GetConnectionCoroutine, const std::shared_ptr<ConnectionHandle>&> {
   private:
     std::shared_ptr<ClientConnectionProvider> m_connectionProvider;
   public:
@@ -157,7 +159,7 @@ HttpRequestExecutor::getConnectionAsync() {
       return m_connectionProvider->getAsync().callbackTo(&GetConnectionCoroutine::onConnectionReady);
     }
     
-    Action onConnectionReady(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection) {
+    Action onConnectionReady(const provider::ResourceHandle<avena::data::stream::IOStream>& connection) {
       auto connectionProxy = std::make_shared<ConnectionProxy>(connection);
       return _return(std::make_shared<HttpConnectionHandle>(connectionProxy));
     }
@@ -192,50 +194,50 @@ HttpRequestExecutor::executeOnce(const String& method,
 
   if(!connection){
     throw RequestExecutionError(RequestExecutionError::ERROR_CODE_CANT_CONNECT,
-                                "[oatpp::web::client::HttpRequestExecutor::executeOnce()]: Connection is null");
+                                "[avena::web::client::HttpRequestExecutor::executeOnce()]: Connection is null");
   }
 
   connection->setInputStreamIOMode(data::stream::IOMode::BLOCKING);
   connection->setOutputStreamIOMode(data::stream::IOMode::BLOCKING);
   
-  auto request = oatpp::web::protocol::http::outgoing::Request::createShared(method, path, headers, body);
-  oatpp::data::stream::BufferOutputStream hostValue;
+  auto request = avena::web::protocol::http::outgoing::Request::createShared(method, path, headers, body);
+  avena::data::stream::BufferOutputStream hostValue;
   hostValue << m_connectionProvider->getProperty("host").toString();
   auto port = m_connectionProvider->getProperty("port");
   if(port) {
     hostValue << ":" << port.toString();
   }
-  request->putHeaderIfNotExists_Unsafe(oatpp::web::protocol::http::Header::HOST, hostValue.toString());
-  request->putHeaderIfNotExists_Unsafe(oatpp::web::protocol::http::Header::CONNECTION, oatpp::web::protocol::http::Header::Value::CONNECTION_KEEP_ALIVE);
+  request->putHeaderIfNotExists_Unsafe(avena::web::protocol::http::Header::HOST, hostValue.toString());
+  request->putHeaderIfNotExists_Unsafe(avena::web::protocol::http::Header::CONNECTION, avena::web::protocol::http::Header::Value::CONNECTION_KEEP_ALIVE);
 
-  oatpp::data::share::MemoryLabel buffer(std::make_shared<std::string>(oatpp::data::buffer::IOBuffer::BUFFER_SIZE, 0));
+  avena::data::share::MemoryLabel buffer(std::make_shared<std::string>(avena::data::buffer::IOBuffer::BUFFER_SIZE, 0));
 
-  oatpp::data::stream::OutputStreamBufferedProxy upStream(connection, buffer);
+  avena::data::stream::OutputStreamBufferedProxy upStream(connection, buffer);
   request->send(&upStream);
   upStream.flush();
   
-  oatpp::web::protocol::http::incoming::ResponseHeadersReader headerReader(buffer, 4096);
-  oatpp::web::protocol::http::HttpError::Info error;
+  avena::web::protocol::http::incoming::ResponseHeadersReader headerReader(buffer, 4096);
+  avena::web::protocol::http::HttpError::Info error;
   const auto& result = headerReader.readHeaders(connection, error);
   
   if(error.status.code != 0) {
     connection->invalidate();
     throw RequestExecutionError(RequestExecutionError::ERROR_CODE_CANT_PARSE_STARTING_LINE,
-                                "[oatpp::web::client::HttpRequestExecutor::executeOnce()]: Failed to parse response. Invalid response headers");
+                                "[avena::web::client::HttpRequestExecutor::executeOnce()]: Failed to parse response. Invalid response headers");
   }
   
   if(error.ioStatus < 0) {
     connection->invalidate();
     throw RequestExecutionError(RequestExecutionError::ERROR_CODE_CANT_PARSE_STARTING_LINE,
-                                "[oatpp::web::client::HttpRequestExecutor::executeOnce()]: Failed to read response.");
+                                "[avena::web::client::HttpRequestExecutor::executeOnce()]: Failed to read response.");
   }
                                                                                 
-  auto connectionHeader = result.headers.getAsMemoryLabel<oatpp::data::share::StringKeyLabelCI>(Header::CONNECTION);
+  auto connectionHeader = result.headers.getAsMemoryLabel<avena::data::share::StringKeyLabelCI>(Header::CONNECTION);
   if (connectionHeader == "close") {
     connection->setInvalidateOnDestroy(true);
   }
   
-  auto bodyStream = oatpp::data::stream::InputStreamBufferedProxy::createShared(connection,
+  auto bodyStream = avena::data::stream::InputStreamBufferedProxy::createShared(connection,
                                                                                 buffer,
                                                                                 result.bufferPosStart,
                                                                                 result.bufferPosEnd,
@@ -247,7 +249,7 @@ HttpRequestExecutor::executeOnce(const String& method,
   
 }
 
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<HttpRequestExecutor::Response>&>
+avena::async::CoroutineStarterForResult<const std::shared_ptr<HttpRequestExecutor::Response>&>
 HttpRequestExecutor::executeOnceAsync(const String& method,
                                       const String& path,
                                       const Headers& headers,
@@ -256,9 +258,9 @@ HttpRequestExecutor::executeOnceAsync(const String& method,
   
   typedef protocol::http::incoming::ResponseHeadersReader ResponseHeadersReader;
   
-  class ExecutorCoroutine : public oatpp::async::CoroutineWithResult<ExecutorCoroutine, const std::shared_ptr<HttpRequestExecutor::Response>&> {
+  class ExecutorCoroutine : public avena::async::CoroutineWithResult<ExecutorCoroutine, const std::shared_ptr<HttpRequestExecutor::Response>&> {
   private:
-    typedef oatpp::web::protocol::http::outgoing::Request OutgoingRequest;
+    typedef avena::web::protocol::http::outgoing::Request OutgoingRequest;
   private:
     HttpRequestExecutor* m_this;
     String m_method;
@@ -267,9 +269,9 @@ HttpRequestExecutor::executeOnceAsync(const String& method,
     std::shared_ptr<Body> m_body;
     std::shared_ptr<const BodyDecoder> m_bodyDecoder;
     std::shared_ptr<HttpConnectionHandle> m_connectionHandle;
-    oatpp::data::share::MemoryLabel m_buffer;
+    avena::data::share::MemoryLabel m_buffer;
     ResponseHeadersReader m_headersReader;
-    std::shared_ptr<oatpp::data::stream::OutputStreamBufferedProxy> m_upstream;
+    std::shared_ptr<avena::data::stream::OutputStreamBufferedProxy> m_upstream;
   private:
     std::shared_ptr<ConnectionProxy> m_connection;
   public:
@@ -288,7 +290,7 @@ HttpRequestExecutor::executeOnceAsync(const String& method,
       , m_body(body)
       , m_bodyDecoder(bodyDecoder)
       , m_connectionHandle(connectionHandle)
-      , m_buffer(std::make_shared<std::string>(oatpp::data::buffer::IOBuffer::BUFFER_SIZE, 0))
+      , m_buffer(std::make_shared<std::string>(avena::data::buffer::IOBuffer::BUFFER_SIZE, 0))
       , m_headersReader(m_buffer, 4096)
     {}
     
@@ -300,14 +302,14 @@ HttpRequestExecutor::executeOnceAsync(const String& method,
 
       if(!m_connection) {
         throw RequestExecutionError(RequestExecutionError::ERROR_CODE_CANT_CONNECT,
-                                    "[oatpp::web::client::HttpRequestExecutor::executeOnceAsync::ExecutorCoroutine{act()}]: Connection is null");
+                                    "[avena::web::client::HttpRequestExecutor::executeOnceAsync::ExecutorCoroutine{act()}]: Connection is null");
       }
 
       m_connection->setInputStreamIOMode(data::stream::IOMode::ASYNCHRONOUS);
       m_connection->setOutputStreamIOMode(data::stream::IOMode::ASYNCHRONOUS);
 
       auto request = OutgoingRequest::createShared(m_method, m_path, m_headers, m_body);
-      oatpp::data::stream::BufferOutputStream hostValue;
+      avena::data::stream::BufferOutputStream hostValue;
       hostValue << m_this->m_connectionProvider->getProperty("host").toString();
       auto port = m_this->m_connectionProvider->getProperty("port");
       if(port) {
@@ -315,7 +317,7 @@ HttpRequestExecutor::executeOnceAsync(const String& method,
       }
       request->putHeaderIfNotExists_Unsafe(Header::HOST, hostValue.toString());
       request->putHeaderIfNotExists_Unsafe(Header::CONNECTION, Header::Value::CONNECTION_KEEP_ALIVE);
-      m_upstream = oatpp::data::stream::OutputStreamBufferedProxy::createShared(m_connection, m_buffer);
+      m_upstream = avena::data::stream::OutputStreamBufferedProxy::createShared(m_connection, m_buffer);
       return OutgoingRequest::sendAsync(request, m_upstream).next(m_upstream->flushAsync()).next(yieldTo(&ExecutorCoroutine::readResponse));
 
     }
@@ -326,12 +328,12 @@ HttpRequestExecutor::executeOnceAsync(const String& method,
     
     Action onHeadersParsed(const ResponseHeadersReader::Result& result) {
 
-      auto connectionHeader = result.headers.getAsMemoryLabel<oatpp::data::share::StringKeyLabelCI>(Header::CONNECTION);
+      auto connectionHeader = result.headers.getAsMemoryLabel<avena::data::share::StringKeyLabelCI>(Header::CONNECTION);
       if (connectionHeader == "close") {
         m_connection->setInvalidateOnDestroy(true);
       }
 
-      auto bodyStream = oatpp::data::stream::InputStreamBufferedProxy::createShared(m_connection,
+      auto bodyStream = avena::data::stream::InputStreamBufferedProxy::createShared(m_connection,
                                                                                     m_buffer,
                                                                                     result.bufferPosStart,
                                                                                     result.bufferPosEnd,
@@ -343,7 +345,7 @@ HttpRequestExecutor::executeOnceAsync(const String& method,
       
     }
 
-    Action handleError(oatpp::async::Error* error) override {
+    Action handleError(avena::async::Error* error) override {
 
       if(m_connection) {
         m_connection->invalidate();

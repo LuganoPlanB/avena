@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/data/stream/BufferStream.hpp"
 #include "oatpp/utils/Conversion.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 void Serializer::serializeString(data::stream::ConsistentOutputStream* stream, const char* data, v_buff_size size, v_uint32 escapeFlags) {
   auto encodedValue = Utils::escapeString(data, size, escapeFlags);
@@ -69,7 +71,7 @@ void Serializer::serializeArray(State& state) {
 
       if(!nestedState.errorStack.empty()) {
         state.errorStack.splice(nestedState.errorStack);
-        state.errorStack.push("[oatpp::json::Serializer::serializeArray()]: index=" + utils::Conversion::int64ToStr(index));
+        state.errorStack.push("[avena::json::Serializer::serializeArray()]: index=" + utils::Conversion::int64ToStr(index));
         return;
       }
     }
@@ -111,7 +113,7 @@ void Serializer::serializeMap(State& state) {
 
       if(!nestedState.errorStack.empty()) {
         state.errorStack.splice(nestedState.errorStack);
-        state.errorStack.push("[oatpp::json::Serializer::serializeMap()]: key='" + pair.first + "'");
+        state.errorStack.push("[avena::json::Serializer::serializeMap()]: key='" + pair.first + "'");
         return;
       }
     }
@@ -151,7 +153,7 @@ void Serializer::serializePairs(State& state) {
 
       if(!nestedState.errorStack.empty()) {
         state.errorStack.splice(nestedState.errorStack);
-        state.errorStack.push("[oatpp::json::Serializer::serializePairs()]: key='" + pair.first + "'");
+        state.errorStack.push("[avena::json::Serializer::serializePairs()]: key='" + pair.first + "'");
         return;
       }
     }
@@ -167,7 +169,7 @@ void Serializer::serialize(State& state) {
   switch (state.tree->getType()) {
 
     case data::mapping::Tree::Type::UNDEFINED:
-      state.errorStack.push("[oatpp::json::Serializer::serialize()]: "
+      state.errorStack.push("[avena::json::Serializer::serialize()]: "
                             "UNDEFINED tree node is NOT serializable. To fix: set node value.");
       return;
     case data::mapping::Tree::Type::NULL_VALUE: serializeNull(state); return;
@@ -199,7 +201,7 @@ void Serializer::serialize(State& state) {
 
   }
 
-  state.errorStack.push("[oatpp::json::Serializer::serialize()]: Unknown node type");
+  state.errorStack.push("[avena::json::Serializer::serialize()]: Unknown node type");
 
 }
 

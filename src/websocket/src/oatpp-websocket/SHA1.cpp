@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 // [intaken src] https://github.com/vog/sha1
 /*
      sha1.cpp - source code of
@@ -32,7 +34,7 @@
   #include <arpa/inet.h>
 #endif
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 void SHA1::reset(uint32_t digest[], BufferOutputStream& buffer, uint64_t &transforms) {
   
@@ -231,8 +233,8 @@ SHA1::SHA1() {
 }
 
 
-void SHA1::update(const oatpp::String &s) {
-  oatpp::v_io_size progress = 0;
+void SHA1::update(const avena::String &s) {
+  avena::v_io_size progress = 0;
   while (true) {
     
     auto readSize = BLOCK_BYTES - buffer.getCurrentPosition();
@@ -281,7 +283,7 @@ void SHA1::update(std::istream &is) {
  * Add padding and return the message digest.
  */
 
-oatpp::String SHA1::finalBinary() {
+avena::String SHA1::finalBinary() {
   /* Total number of hashed bits */
   uint64_t total_bits = (transforms * BLOCK_BYTES + buffer.getCurrentPosition()) * 8;
   
@@ -308,7 +310,7 @@ oatpp::String SHA1::finalBinary() {
   block[BLOCK_INTS - 2] = (uint32_t)(total_bits >> 32);
   transform(digest, block, transforms);
   
-  oatpp::data::stream::BufferOutputStream resultStream;
+  avena::data::stream::BufferOutputStream resultStream;
   for (size_t i = 0; i < sizeof(digest) / sizeof(digest[0]); i++) {
     uint32_t b = htonl(digest[i]);
     resultStream.writeSimple(&b, 4);
@@ -321,7 +323,7 @@ oatpp::String SHA1::finalBinary() {
     
 }
     
-oatpp::String SHA1::fromFile(const oatpp::String& filename) {
+avena::String SHA1::fromFile(const avena::String& filename) {
   std::ifstream stream(filename->c_str(), std::ios::binary);
   SHA1 checksum;
   checksum.update(stream);

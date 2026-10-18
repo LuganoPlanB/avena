@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include <unordered_set>
 
-namespace oatpp { namespace web { namespace client {
+namespace avena { namespace web { namespace client {
 
 /**
  * Class to control retries in RequestExecutor.

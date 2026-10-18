@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 #include "oatpp/async/Coroutine.hpp"
 #include "oatpp/concurrency/SpinLock.hpp"
 
-namespace oatpp { namespace data { namespace buffer {
+namespace avena { namespace data { namespace buffer {
 
 /**
  * FIFO operations over the buffer
@@ -69,13 +71,13 @@ public:
 
   /**
    * Amount of bytes currently available to read from buffer.
-   * @return &id:oatpp::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
   v_io_size availableToRead() const;
 
   /**
    * Amount of buffer space currently available for data writes.
-   * @return &id:oatpp::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
   v_io_size availableToWrite() const;
 
@@ -157,7 +159,7 @@ public:
 class SynchronizedFIFOBuffer {
 private:
   FIFOBuffer m_fifo;
-  oatpp::concurrency::SpinLock m_lock;
+  avena::concurrency::SpinLock m_lock;
 public:
 
   /**
@@ -184,13 +186,13 @@ public:
 
   /**
    * Amount of bytes currently available to read from buffer.
-   * @return &id:oatpp::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
   v_io_size availableToRead();
 
   /**
    * Amount of buffer space currently available for data writes.
-   * @return &id:oatpp::v_io_size;.
+   * @return &id:avena::v_io_size;.
    */
   v_io_size availableToWrite();
 

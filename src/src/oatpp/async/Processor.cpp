@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 #include "./CoroutineWaitList.hpp"
 #include "oatpp/async/worker/Worker.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 void Processor::addWorker(const std::shared_ptr<worker::Worker>& worker) {
 
@@ -58,7 +60,7 @@ void Processor::popIOTask(CoroutineHandle* coroutine) {
     queue.pushBack(coroutine);
     //m_ioWorkers[(++m_ioBalancer) % m_ioWorkers.size()]->pushOneTask(coroutine);
   } else {
-    throw std::runtime_error("[oatpp::async::Processor::popIOTasks()]: Error. Processor has no I/O workers.");
+    throw std::runtime_error("[avena::async::Processor::popIOTasks()]: Error. Processor has no I/O workers.");
   }
 }
 
@@ -68,7 +70,7 @@ void Processor::popTimerTask(CoroutineHandle* coroutine) {
     queue.pushBack(coroutine);
     //m_timerWorkers[(++m_timerBalancer) % m_timerWorkers.size()]->pushOneTask(coroutine);
   } else {
-    throw std::runtime_error("[oatpp::async::Processor::popTimerTask()]: Error. Processor has no Timer workers.");
+    throw std::runtime_error("[avena::async::Processor::popTimerTask()]: Error. Processor has no Timer workers.");
   }
 }
 
@@ -107,14 +109,14 @@ void Processor::addCoroutine(CoroutineHandle* coroutine) {
     }
 
   } else {
-    throw std::runtime_error("[oatpp::async::processor::addTask()]: Error. Attempt to schedule coroutine to wrong processor.");
+    throw std::runtime_error("[avena::async::processor::addTask()]: Error. Attempt to schedule coroutine to wrong processor.");
   }
 
 }
 
 void Processor::pushOneTask(CoroutineHandle* coroutine) {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> lock(m_taskLock);
+    std::lock_guard<avena::concurrency::SpinLock> lock(m_taskLock);
     m_pushList.pushBack(coroutine);
   }
   m_taskCondition.notify_one();
@@ -122,7 +124,7 @@ void Processor::pushOneTask(CoroutineHandle* coroutine) {
 
 void Processor::pushTasks(utils::FastQueue<CoroutineHandle>& tasks) {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> lock(m_taskLock);
+    std::lock_guard<avena::concurrency::SpinLock> lock(m_taskLock);
     utils::FastQueue<CoroutineHandle>::moveAll(tasks, m_pushList);
   }
   m_taskCondition.notify_one();
@@ -130,7 +132,7 @@ void Processor::pushTasks(utils::FastQueue<CoroutineHandle>& tasks) {
 
 void Processor::waitForTasks() {
 
-  std::unique_lock<oatpp::concurrency::SpinLock> lock(m_taskLock);
+  std::unique_lock<avena::concurrency::SpinLock> lock(m_taskLock);
   while (m_pushList.first == nullptr && m_taskList.empty() && m_running) {
     m_taskCondition.wait(lock);
   }
@@ -165,7 +167,7 @@ void Processor::pushQueues() {
   utils::FastQueue<CoroutineHandle> tmpList;
 
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> lock(m_taskLock);
+    std::lock_guard<avena::concurrency::SpinLock> lock(m_taskLock);
     consumeAllTasks();
     utils::FastQueue<CoroutineHandle>::moveAll(m_pushList, tmpList);
   }
@@ -207,7 +209,7 @@ void Processor::checkCoroutinesSleep() {
         m_sleepCV.wait(lock);
       }
 
-      auto now = oatpp::Environment::getMicroTickCount();
+      auto now = avena::Environment::getMicroTickCount();
       for(auto it = m_sleepTimeSet.begin(); it != m_sleepTimeSet.end();) {
         auto ch = *it;
         if(ch->_SCH_A.m_data.waitListData.timePointMicroseconds < now) {
@@ -274,14 +276,14 @@ bool Processor::iterate(v_int32 numIterations) {
 
   popTasks();
 
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_taskLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_taskLock);
   return m_queue.first != nullptr || m_pushList.first != nullptr || !m_taskList.empty();
   
 }
 
 void Processor::stop() {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> lock(m_taskLock);
+    std::lock_guard<avena::concurrency::SpinLock> lock(m_taskLock);
     m_running = false;
   }
   m_taskCondition.notify_one();

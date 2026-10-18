@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,10 +32,10 @@
 
 #include <fstream>
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 String::String(const std::shared_ptr<std::string>& ptr, const type::Type* const valueType)
-  : oatpp::data::type::ObjectWrapper<std::string, __class::String>(ptr)
+  : avena::data::type::ObjectWrapper<std::string, __class::String>(ptr)
 {
   if(type::__class::String::getType() != valueType) {
     throw std::runtime_error("Value type does not match");

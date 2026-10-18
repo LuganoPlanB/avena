@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 #include "oatpp/encoding/Hex.hpp"
 #include "oatpp/utils/Random.hpp"
 
-namespace oatpp { namespace data { namespace resource {
+namespace avena { namespace data { namespace resource {
 
 TemporaryFile::FileHandle::~FileHandle() {
   if(fileName) {
@@ -39,7 +41,7 @@ TemporaryFile::FileHandle::~FileHandle() {
   }
 }
 
-oatpp::String TemporaryFile::constructRandomFilename(const oatpp::String &dir, v_int32 randomWordSizeBytes, const oatpp::String &extension) {
+avena::String TemporaryFile::constructRandomFilename(const avena::String &dir, v_int32 randomWordSizeBytes, const avena::String &extension) {
 
   std::unique_ptr<v_char8[]> buff(new v_char8[static_cast<unsigned long>(randomWordSizeBytes)]);
   utils::Random::randomBytes(buff.get(), randomWordSizeBytes);
@@ -54,15 +56,15 @@ oatpp::String TemporaryFile::constructRandomFilename(const oatpp::String &dir, v
 
 }
 
-TemporaryFile::TemporaryFile(const oatpp::String& tmpDirectory, v_int32 randomWordSizeBytes)
+TemporaryFile::TemporaryFile(const avena::String& tmpDirectory, v_int32 randomWordSizeBytes)
   : m_handle(std::make_shared<FileHandle>(constructRandomFilename(tmpDirectory, randomWordSizeBytes, "tmp")))
 {}
 
-TemporaryFile::TemporaryFile(const oatpp::String& tmpDirectory, const oatpp::String& tmpFileName)
+TemporaryFile::TemporaryFile(const avena::String& tmpDirectory, const avena::String& tmpFileName)
   : m_handle(std::make_shared<FileHandle>(File::concatDirAndName(tmpDirectory, tmpFileName)))
 {}
 
-TemporaryFile::TemporaryFile(const oatpp::String& tmpDirectory, v_int32 randomWordSizeBytes, const oatpp::String& extension)
+TemporaryFile::TemporaryFile(const avena::String& tmpDirectory, v_int32 randomWordSizeBytes, const avena::String& extension)
   : m_handle(std::make_shared<FileHandle>(constructRandomFilename(tmpDirectory, randomWordSizeBytes, extension)))
 {}
 
@@ -70,17 +72,17 @@ std::shared_ptr<data::stream::OutputStream> TemporaryFile::openOutputStream() {
   if(m_handle) {
     return std::make_shared<data::stream::FileOutputStream>(m_handle->fileName->c_str(), "wb", m_handle);
   }
-  throw std::runtime_error("[oatpp::data::resource::TemporaryFile::openOutputStream()]: Error. FileHandle is NOT initialized.");
+  throw std::runtime_error("[avena::data::resource::TemporaryFile::openOutputStream()]: Error. FileHandle is NOT initialized.");
 }
 
 std::shared_ptr<data::stream::InputStream> TemporaryFile::openInputStream() {
   if(m_handle) {
     return std::make_shared<data::stream::FileInputStream>(m_handle->fileName->c_str(), m_handle);
   }
-  throw std::runtime_error("[oatpp::data::resource::TemporaryFile::openInputStream()]: Error. FileHandle is NOT initialized.");
+  throw std::runtime_error("[avena::data::resource::TemporaryFile::openInputStream()]: Error. FileHandle is NOT initialized.");
 }
 
-oatpp::String TemporaryFile::getInMemoryData() {
+avena::String TemporaryFile::getInMemoryData() {
   return nullptr;
 }
 
@@ -88,14 +90,14 @@ v_int64 TemporaryFile::getKnownSize() {
   return -1;
 }
 
-oatpp::String TemporaryFile::getLocation() {
+avena::String TemporaryFile::getLocation() {
   if(m_handle) {
     return m_handle->fileName;
   }
   return nullptr;
 }
 
-bool TemporaryFile::moveFile(const oatpp::String& fullFileName) {
+bool TemporaryFile::moveFile(const avena::String& fullFileName) {
   if(m_handle) {
     return std::rename(m_handle->fileName->c_str(), fullFileName->c_str()) == 0;
   }

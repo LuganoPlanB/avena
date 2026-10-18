@@ -29,7 +29,7 @@
 #include "ErrorStack.hpp"
 #include <openssl/err.h>
 
-namespace oatpp { namespace openssl {
+namespace avena { namespace openssl {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ConnectionContext
@@ -61,7 +61,7 @@ void Connection::ConnectionContext::init() {
       res = SSL_do_handshake(m_connection->m_ssl);
 
       if(!m_connection->m_readAction.isNone() || !m_connection->m_writeAction.isNone()) {
-        throw std::runtime_error("[oatpp::openssl::Connection::ConnectionContext::init()]: "
+        throw std::runtime_error("[avena::openssl::Connection::ConnectionContext::init()]: "
                                  "Error. The async::Action is unexpectedly returned in a Simple-API method.");
       }
 
@@ -72,8 +72,8 @@ void Connection::ConnectionContext::init() {
         case SSL_ERROR_WANT_WRITE:
           break;
         default:
-//          ErrorStack::logErrors("[oatpp::openssl::Connection::ConnectionContext::init()]");
-//          throw std::runtime_error("[oatpp::openssl::Connection::ConnectionContext::init()]: Error. Handshake failed.");
+//          ErrorStack::logErrors("[avena::openssl::Connection::ConnectionContext::init()]");
+//          throw std::runtime_error("[avena::openssl::Connection::ConnectionContext::init()]: Error. Handshake failed.");
           return;
       }
 
@@ -85,7 +85,7 @@ void Connection::ConnectionContext::init() {
 
 async::CoroutineStarter Connection::ConnectionContext::initAsync() {
 
-  class HandshakeCoroutine : public oatpp::async::Coroutine<HandshakeCoroutine> {
+  class HandshakeCoroutine : public avena::async::Coroutine<HandshakeCoroutine> {
   private:
     Connection* m_connection;
   public:
@@ -120,8 +120,8 @@ async::CoroutineStarter Connection::ConnectionContext::initAsync() {
         case SSL_ERROR_WANT_WRITE:
           break;
         default:
-//          ErrorStack::logErrors("[oatpp::openssl::Connection::ConnectionContext::initAsync()]");
-//          return error<Error>("[oatpp::openssl::Connection::ConnectionContext::initAsync()]: Error. Handshake failed.");
+//          ErrorStack::logErrors("[avena::openssl::Connection::ConnectionContext::initAsync()]");
+//          return error<Error>("[avena::openssl::Connection::ConnectionContext::initAsync()]: Error. Handshake failed.");
           return finish();
       }
 
@@ -295,7 +295,7 @@ Connection::~Connection(){
   SSL_free(m_ssl);
 }
 
-oatpp::v_io_size Connection::write(const void* buff, v_buff_size count, async::Action& action) {
+avena::v_io_size Connection::write(const void* buff, v_buff_size count, async::Action& action) {
 
   m_writeAction = async::Action::createActionByType(async::Action::TYPE_NONE);
   // SSL_get_error also inspects this executor thread's error queue.
@@ -319,7 +319,7 @@ oatpp::v_io_size Connection::write(const void* buff, v_buff_size count, async::A
 
 }
 
-oatpp::v_io_size Connection::read(void *buff, v_buff_size count, async::Action& action){
+avena::v_io_size Connection::read(void *buff, v_buff_size count, async::Action& action){
 
   m_readAction = async::Action::createActionByType(async::Action::TYPE_NONE);
   ERR_clear_error();
@@ -343,27 +343,27 @@ oatpp::v_io_size Connection::read(void *buff, v_buff_size count, async::Action& 
 
 }
 
-void Connection::setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Connection::setOutputStreamIOMode(avena::data::stream::IOMode ioMode) {
   m_stream.object->setOutputStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode Connection::getOutputStreamIOMode() {
+avena::data::stream::IOMode Connection::getOutputStreamIOMode() {
   return m_stream.object->getOutputStreamIOMode();
 }
 
-oatpp::data::stream::Context& Connection::getOutputStreamContext() {
+avena::data::stream::Context& Connection::getOutputStreamContext() {
   return *m_outContext;
 }
 
-void Connection::setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Connection::setInputStreamIOMode(avena::data::stream::IOMode ioMode) {
   m_stream.object->setInputStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode Connection::getInputStreamIOMode() {
+avena::data::stream::IOMode Connection::getInputStreamIOMode() {
   return m_stream.object->getInputStreamIOMode();
 }
 
-oatpp::data::stream::Context& Connection::getInputStreamContext() {
+avena::data::stream::Context& Connection::getInputStreamContext() {
   return *m_inContext;
 }
 

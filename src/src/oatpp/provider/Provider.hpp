@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 #include "oatpp/async/Coroutine.hpp"
 #include "oatpp/data/share/MemoryLabel.hpp"
 
-namespace oatpp { namespace provider {
+namespace avena { namespace provider {
 
 /**
  * Resource handle template.
@@ -153,10 +155,10 @@ struct WeakResourceHandle : public ResourceHandleTemplate<T, std::weak_ptr<T>> {
  * @tparam T - resource class.
  */
 template <class T>
-class Provider : public oatpp::base::Countable {
+class Provider : public avena::base::Countable {
 protected:
 
-  void setProperty(const oatpp::String& key, const oatpp::String& value) {
+  void setProperty(const avena::String& key, const avena::String& value) {
     m_properties[key] = value;
   }
 
@@ -193,7 +195,7 @@ public:
   /**
    * Get optional property
    */
-  data::share::StringKeyLabel getProperty(const oatpp::String& key) const {
+  data::share::StringKeyLabel getProperty(const avena::String& key) const {
     auto it = m_properties.find(key);
     if(it == m_properties.end()) {
       return nullptr;
@@ -209,7 +211,7 @@ public:
 
   /**
    * Get resource in Async manner.
-   * @return - &id:oatpp::async::CoroutineStarterForResult; of `T`.
+   * @return - &id:avena::async::CoroutineStarterForResult; of `T`.
    */
   virtual async::CoroutineStarterForResult<const ResourceHandle<T>&> getAsync() = 0;
 

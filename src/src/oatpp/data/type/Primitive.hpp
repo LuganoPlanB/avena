@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,7 +35,7 @@
 #include <cctype>
 #include <iterator>
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 namespace __class {
 
@@ -123,9 +125,9 @@ public:
   {}
 
   /**
-   * Load data from file and store in &id:oatpp::String;.
+   * Load data from file and store in &id:avena::String;.
    * @param filename - name of the file.
-   * @return - &id:oatpp::String;.
+   * @return - &id:avena::String;.
    */
   static String loadFromFile(const char* filename);
 
@@ -139,7 +141,7 @@ public:
 
   operator std::string() const {
     if (this->m_ptr == nullptr) {
-      throw std::runtime_error("[oatpp::data::type::String::operator std::string() const]: "
+      throw std::runtime_error("[avena::data::type::String::operator std::string() const]: "
                                "Error. Null pointer.");
     }
     return this->m_ptr.operator*();
@@ -645,9 +647,9 @@ namespace __class {
 namespace std {
 
   template<>
-  struct hash<oatpp::data::type::String> {
+  struct hash<avena::data::type::String> {
 
-    typedef oatpp::data::type::String argument_type;
+    typedef avena::data::type::String argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& s) const noexcept {
@@ -658,9 +660,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::Boolean> {
+  struct hash<avena::data::type::Boolean> {
 
-    typedef oatpp::data::type::Boolean argument_type;
+    typedef avena::data::type::Boolean argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -671,9 +673,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::Int8> {
+  struct hash<avena::data::type::Int8> {
 
-    typedef oatpp::data::type::Int8 argument_type;
+    typedef avena::data::type::Int8 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -684,9 +686,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::UInt8> {
+  struct hash<avena::data::type::UInt8> {
 
-    typedef oatpp::data::type::UInt8 argument_type;
+    typedef avena::data::type::UInt8 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -697,9 +699,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::Int16> {
+  struct hash<avena::data::type::Int16> {
 
-    typedef oatpp::data::type::Int16 argument_type;
+    typedef avena::data::type::Int16 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -710,9 +712,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::UInt16> {
+  struct hash<avena::data::type::UInt16> {
 
-    typedef oatpp::data::type::UInt16 argument_type;
+    typedef avena::data::type::UInt16 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -723,9 +725,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::Int32> {
+  struct hash<avena::data::type::Int32> {
 
-    typedef oatpp::data::type::Int32 argument_type;
+    typedef avena::data::type::Int32 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -736,9 +738,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::UInt32> {
+  struct hash<avena::data::type::UInt32> {
 
-    typedef oatpp::data::type::UInt32 argument_type;
+    typedef avena::data::type::UInt32 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -749,9 +751,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::Int64> {
+  struct hash<avena::data::type::Int64> {
 
-    typedef oatpp::data::type::Int64 argument_type;
+    typedef avena::data::type::Int64 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -762,9 +764,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::UInt64> {
+  struct hash<avena::data::type::UInt64> {
 
-    typedef oatpp::data::type::UInt64 argument_type;
+    typedef avena::data::type::UInt64 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -775,9 +777,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::Float32> {
+  struct hash<avena::data::type::Float32> {
 
-    typedef oatpp::data::type::Float32 argument_type;
+    typedef avena::data::type::Float32 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {
@@ -788,9 +790,9 @@ namespace std {
   };
 
   template<>
-  struct hash<oatpp::data::type::Float64> {
+  struct hash<avena::data::type::Float64> {
 
-    typedef oatpp::data::type::Float64 argument_type;
+    typedef avena::data::type::Float64 argument_type;
     typedef v_uint64 result_type;
 
     result_type operator()(argument_type const& v) const noexcept {

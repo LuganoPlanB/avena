@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -30,7 +32,7 @@
 
 #include <iostream>
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 namespace {
 
@@ -41,7 +43,7 @@ ENUM(TestEnum, v_int32,
   VALUE(VALUE_2, 2, "value-2")
 )
 
-class TestDto1 : public oatpp::DTO {
+class TestDto1 : public avena::DTO {
 
   DTO_INIT(TestDto1, DTO)
 
@@ -59,8 +61,8 @@ class TestDto1 : public oatpp::DTO {
   DTO_FIELD(Int64, i64, "i64-q");
   DTO_FIELD(UInt64, ui64, "ui64-q");
 
-  DTO_FIELD(Vector<oatpp::Object<TestDto1>>, vector, "vector-q");
-  DTO_FIELD(UnorderedFields<oatpp::Object<TestDto1>>, map, "map-q");
+  DTO_FIELD(Vector<avena::Object<TestDto1>>, vector, "vector-q");
+  DTO_FIELD(UnorderedFields<avena::Object<TestDto1>>, map, "map-q");
   DTO_FIELD(Fields<String>, pairs, "pairs-q");
 
 };
@@ -81,7 +83,7 @@ void ObjectToTreeMapperTest::onRun() {
     state.tree = &tree;
     state.config = &config;
 
-    oatpp::String str = oatpp::String("Hello World");
+    avena::String str = avena::String("Hello World");
 
     mapper.map(state, str);
     OATPP_ASSERT(state.errorStack.empty())
@@ -98,8 +100,8 @@ void ObjectToTreeMapperTest::onRun() {
     state.tree = &tree;
     state.config = &config;
 
-    oatpp::String str = oatpp::String("Hello World");
-    oatpp::Any any = str;
+    avena::String str = avena::String("Hello World");
+    avena::Any any = str;
 
     mapper.map(state, any);
     OATPP_ASSERT(state.errorStack.empty())
@@ -258,7 +260,7 @@ void ObjectToTreeMapperTest::onRun() {
     state.tree = &tree;
     state.config = &config;
 
-    oatpp::Enum<TestEnum> enumObj(TestEnum::VALUE_1);
+    avena::Enum<TestEnum> enumObj(TestEnum::VALUE_1);
 
     mapper.map(state, enumObj);
 
@@ -276,7 +278,7 @@ void ObjectToTreeMapperTest::onRun() {
     state.tree = &tree;
     state.config = &config;
 
-    oatpp::Enum<TestEnum> enumObj = oatpp::Enum<TestEnum>::getEntryByUnqualifiedName("VALUE_2").value;
+    avena::Enum<TestEnum> enumObj = avena::Enum<TestEnum>::getEntryByUnqualifiedName("VALUE_2").value;
 
     mapper.map(state, enumObj);
 

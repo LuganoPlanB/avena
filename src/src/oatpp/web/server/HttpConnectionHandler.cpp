@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -35,11 +37,11 @@
 #include "oatpp/data/stream/StreamBufferedProxy.hpp"
 
 
-namespace oatpp { namespace web { namespace server {
+namespace avena { namespace web { namespace server {
 
 void HttpConnectionHandler::onTaskStart(const provider::ResourceHandle<data::stream::IOStream>& connection) {
 
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_connectionsLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_connectionsLock);
   m_connections.insert({reinterpret_cast<v_uint64>(connection.object.get()), connection});
 
   if(!m_continue.load()) {
@@ -49,12 +51,12 @@ void HttpConnectionHandler::onTaskStart(const provider::ResourceHandle<data::str
 }
 
 void HttpConnectionHandler::onTaskEnd(const provider::ResourceHandle<data::stream::IOStream>& connection) {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_connectionsLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_connectionsLock);
   m_connections.erase(reinterpret_cast<v_uint64>(connection.object.get()));
 }
 
 void HttpConnectionHandler::invalidateAllConnections() {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_connectionsLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_connectionsLock);
   for(auto& c : m_connections) {
     const auto& handle = c.second;
     handle.invalidator->invalidate(handle.object);
@@ -62,7 +64,7 @@ void HttpConnectionHandler::invalidateAllConnections() {
 }
 
 v_uint64 HttpConnectionHandler::getConnectionsCount() {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_connectionsLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_connectionsLock);
   return m_connections.size();
 }
 
@@ -98,20 +100,20 @@ void HttpConnectionHandler::handleConnection(const provider::ResourceHandle<data
 
   if (m_continue.load()) {
 
-    connection.object->setOutputStreamIOMode(oatpp::data::stream::IOMode::BLOCKING);
-    connection.object->setInputStreamIOMode(oatpp::data::stream::IOMode::BLOCKING);
+    connection.object->setOutputStreamIOMode(avena::data::stream::IOMode::BLOCKING);
+    connection.object->setInputStreamIOMode(avena::data::stream::IOMode::BLOCKING);
 
     /* Create working thread */
     std::thread thread(&HttpProcessor::Task::run, std::move(HttpProcessor::Task(m_components, connection, this)));
 
     /* Get hardware concurrency -1 in order to have 1cpu free of workers. */
-    v_int32 concurrency = oatpp::concurrency::Utils::getHardwareConcurrency();
+    v_int32 concurrency = avena::concurrency::Utils::getHardwareConcurrency();
     if (concurrency > 1) {
       concurrency -= 1;
     }
 
     /* Set thread affinity group CPUs [0..cpu_count - 1]. Leave one cpu free of workers */
-    oatpp::concurrency::Utils::setThreadAffinityToCpuRange(thread.native_handle(),
+    avena::concurrency::Utils::setThreadAffinityToCpuRange(thread.native_handle(),
                                                            0,
                                                            concurrency - 1 /* -1 because 0-based index */);
 

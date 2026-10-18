@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "Executor.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
 /**
  * Database transaction.
@@ -42,7 +44,7 @@ public:
 
   /**
    * Constructor.
-   * @param executor - &id:oatpp::orm::Executor;.
+   * @param executor - &id:avena::orm::Executor;.
    * @param connection - database connection.
    */
   Transaction(const base::ObjectHandle<Executor>& executor, const provider::ResourceHandle<Connection>& connection = nullptr);

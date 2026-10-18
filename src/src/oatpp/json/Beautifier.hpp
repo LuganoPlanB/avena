@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,20 +29,20 @@
 
 #include "oatpp/data/stream/Stream.hpp"
 
-namespace oatpp { namespace json {
+namespace avena { namespace json {
 
 /**
  * JSON output stream beautifier.
  */
-class Beautifier : public oatpp::data::stream::ConsistentOutputStream {
+class Beautifier : public avena::data::stream::ConsistentOutputStream {
 public:
-  typedef oatpp::data::stream::ConsistentOutputStream ConsistentOutputStream;
-  typedef oatpp::data::stream::IOMode IOMode;
-  typedef oatpp::data::stream::Context Context;
+  typedef avena::data::stream::ConsistentOutputStream ConsistentOutputStream;
+  typedef avena::data::stream::IOMode IOMode;
+  typedef avena::data::stream::Context Context;
 private:
   ConsistentOutputStream* m_outputStream;
-  oatpp::String m_indent;
-  oatpp::String m_newLine;
+  avena::String m_indent;
+  avena::String m_newLine;
 private:
   v_int32 m_level;
   bool m_wantIndent;
@@ -56,14 +58,14 @@ public:
    * @param indent
    * @param newLine
    */
-  Beautifier(ConsistentOutputStream* outputStream, const oatpp::String& indent, const oatpp::String& newLine);
+  Beautifier(ConsistentOutputStream* outputStream, const avena::String& indent, const avena::String& newLine);
 
   /**
    * Write `count` of bytes to stream.
    * @param data - data to write.
    * @param count - number of bytes to write.
    * @param action
-   * @return - actual number of bytes written. &id:oatpp::v_io_size;.
+   * @return - actual number of bytes written. &id:avena::v_io_size;.
    */
   v_io_size write(const void *data, v_buff_size count, async::Action& action) override;
 

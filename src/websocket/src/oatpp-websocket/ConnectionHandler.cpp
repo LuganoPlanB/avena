@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 #include "ConnectionHandler.hpp"
 #include "oatpp/concurrency/Utils.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 ConnectionHandler::ConnectionHandler()
   : m_listener(nullptr)
@@ -80,20 +82,20 @@ void ConnectionHandler::handleConnection(const provider::ResourceHandle<IOStream
     
   };
 
-  connection.object->setInputStreamIOMode(oatpp::data::stream::IOMode::BLOCKING);
-  connection.object->setOutputStreamIOMode(oatpp::data::stream::IOMode::BLOCKING);
+  connection.object->setInputStreamIOMode(avena::data::stream::IOMode::BLOCKING);
+  connection.object->setOutputStreamIOMode(avena::data::stream::IOMode::BLOCKING);
   
   /* Create working thread */
   std::thread thread(&Task::run, Task(connection, params, m_listener));
   
   /* Get hardware concurrency -1 in order to have 1cpu free of workers. */
-  v_int32 concurrency = oatpp::concurrency::Utils::getHardwareConcurrency();
+  v_int32 concurrency = avena::concurrency::Utils::getHardwareConcurrency();
   if(concurrency > 1) {
     concurrency -= 1;
   }
   
   /* Set thread affinity group CPUs [0..cpu_count - 1]. Leave one cpu free of workers */
-  oatpp::concurrency::Utils::setThreadAffinityToCpuRange(thread.native_handle(), 0, concurrency - 1 /* -1 because 0-based index */);
+  avena::concurrency::Utils::setThreadAffinityToCpuRange(thread.native_handle(), 0, concurrency - 1 /* -1 because 0-based index */);
   
   thread.detach();
   

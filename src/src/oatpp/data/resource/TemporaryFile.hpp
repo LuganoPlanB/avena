@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "./Resource.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace resource {
+namespace avena { namespace data { namespace resource {
 
 /**
  * Temporary file - the file which gets deleted when the destructor is called
@@ -37,7 +39,7 @@ namespace oatpp { namespace data { namespace resource {
  * When file handle deleted it also deletes the underlying file. <br>
  * Thus it's safe to copy `TemporaryFile` object and you may treat `TemporaryFile` object
  * as a shared_ptr to a temporary file. <br>
- * @extends - &id:oatpp::data::Resource;.
+ * @extends - &id:avena::data::Resource;.
  */
 class TemporaryFile : public Resource {
 private:
@@ -48,9 +50,9 @@ private:
    */
   struct FileHandle {
 
-    oatpp::String fileName;
+    avena::String fileName;
 
-    FileHandle(const oatpp::String& fullFileName)
+    FileHandle(const avena::String& fullFileName)
       : fileName(fullFileName)
     {}
 
@@ -58,7 +60,7 @@ private:
   };
 
 private:
-  static oatpp::String constructRandomFilename(const oatpp::String &dir, v_int32 randomWordSizeBytes, const oatpp::String &extension);
+  static avena::String constructRandomFilename(const avena::String &dir, v_int32 randomWordSizeBytes, const avena::String &extension);
 private:
   std::shared_ptr<FileHandle> m_handle;
 public:
@@ -76,7 +78,7 @@ public:
    * @param tmpDirectory - directory where to create a temporary file.
    * @param randomWordSizeBytes - number of random bytes to generate file name.
    */
-  TemporaryFile(const oatpp::String& tmpDirectory, v_int32 randomWordSizeBytes = 8);
+  TemporaryFile(const avena::String& tmpDirectory, v_int32 randomWordSizeBytes = 8);
 
   /**
    * Constructor.<br>
@@ -84,7 +86,7 @@ public:
    * @param tmpDirectory - directory where to create a temporary file.
    * @param tmpFileName - predefined name for the temporary file.
    */
-  TemporaryFile(const oatpp::String& tmpDirectory, const oatpp::String& tmpFileName);
+  TemporaryFile(const avena::String& tmpDirectory, const avena::String& tmpFileName);
 
   /**
    * Constructor. <br>
@@ -95,19 +97,19 @@ public:
    * @param randomWordSizeBytes - number of random bytes to generate file name.
    * @param extension - extension of the temporary file, e.g. txt or .txt
    */
-  TemporaryFile(const oatpp::String& tmpDirectory, v_int32 randomWordSizeBytes, const oatpp::String& extension);
+  TemporaryFile(const avena::String& tmpDirectory, v_int32 randomWordSizeBytes, const avena::String& extension);
 
   /**
    * Open output stream to a temporary file. <br>
    * *Note: stream also captures file-handle. The temporary file won't be deleted until the stream is deleted.*
-   * @return - `std::shared_ptr` to &id:oatpp::data::stream::OutputStream;.
+   * @return - `std::shared_ptr` to &id:avena::data::stream::OutputStream;.
    */
   std::shared_ptr<data::stream::OutputStream> openOutputStream() override;
 
   /**
    * Open input stream to a temporary file. <br>
    * *Note: stream also captures file-handle. The temporary file won't be deleted until the stream is deleted.*
-   * @return - `std::shared_ptr` &id:oatpp::data::stream::InputStream;.
+   * @return - `std::shared_ptr` &id:avena::data::stream::InputStream;.
    */
   std::shared_ptr<data::stream::InputStream> openInputStream() override;
 
@@ -115,7 +117,7 @@ public:
    * Not applicable.
    * @return - always returns `nullptr`.
    */
-  oatpp::String getInMemoryData() override;
+  avena::String getInMemoryData() override;
 
   /**
    * Not applicable.
@@ -125,16 +127,16 @@ public:
 
   /**
    * Get location where temporary data is stored.
-   * @return - `&id:oatpp::String;`.
+   * @return - `&id:avena::String;`.
    */
-  oatpp::String getLocation() override;
+  avena::String getLocation() override;
 
   /**
    * Move payload to a different file. <br>
    * @param fullFileName - full-file-name. Note: all the parent folders must exist.
    * @return - `true` - file was successfully moved, `false` - otherwise.
    */
-  bool moveFile(const oatpp::String& fullFileName);
+  bool moveFile(const avena::String& fullFileName);
 
 };
 

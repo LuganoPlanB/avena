@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 
 #include "oatpp-test/UnitTest.hpp"
 
@@ -13,41 +15,41 @@
 
 namespace {
 
-class Test : public oatpp::test::UnitTest {
+class Test : public avena::test::UnitTest {
 public:
-  Test() : oatpp::test::UnitTest("MyTag")
+  Test() : avena::test::UnitTest("MyTag")
   {}
 
   void onRun() override {
 
-    oatpp::websocket::Handshaker::Headers headers;
-    oatpp::websocket::Handshaker::clientsideHandshake(headers);
+    avena::websocket::Handshaker::Headers headers;
+    avena::websocket::Handshaker::clientsideHandshake(headers);
 
   }
 };
 
 void runTests() {
-  //OATPP_RUN_TEST(oatpp::test::websocket::FullTest);
-  OATPP_RUN_TEST(oatpp::test::websocket::FullAsyncTest);
+  //OATPP_RUN_TEST(avena::test::websocket::FullTest);
+  OATPP_RUN_TEST(avena::test::websocket::FullAsyncTest);
 }
 
 }
 
 int main() {
 
-  oatpp::Environment::init();
+  avena::Environment::init();
 
   runTests();
 
   /* Print how much objects were created during app running, and what have left-probably leaked */
   /* Disable object counting for release builds using '-D OATPP_DISABLE_ENV_OBJECT_COUNTERS' flag for better performance */
   std::cout << "\nEnvironment:\n";
-  std::cout << "objectsCount = " << oatpp::Environment::getObjectsCount() << "\n";
-  std::cout << "objectsCreated = " << oatpp::Environment::getObjectsCreated() << "\n\n";
+  std::cout << "objectsCount = " << avena::Environment::getObjectsCount() << "\n";
+  std::cout << "objectsCreated = " << avena::Environment::getObjectsCreated() << "\n\n";
 
-  OATPP_ASSERT(oatpp::Environment::getObjectsCount() == 0);
+  OATPP_ASSERT(avena::Environment::getObjectsCount() == 0);
 
-  oatpp::Environment::destroy();
+  avena::Environment::destroy();
 
   return 0;
 }

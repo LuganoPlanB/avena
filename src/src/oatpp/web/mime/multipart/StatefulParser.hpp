@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 
 #include <unordered_map>
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 /**
  * Stateful parser of multipart-data stream.
@@ -49,9 +51,9 @@ private:
 private:
   /**
    * Typedef for headers map. Headers map key is case-insensitive.
-   * For more info see &id:oatpp::data::share::LazyStringMap;.
+   * For more info see &id:avena::data::share::LazyStringMap;.
    */
-  typedef oatpp::data::share::LazyStringMultimap<oatpp::data::share::StringKeyLabelCI> Headers;
+  typedef avena::data::share::LazyStringMultimap<avena::data::share::StringKeyLabelCI> Headers;
 public:
 
   /**
@@ -61,9 +63,9 @@ public:
   public:
     /**
      * Typedef for headers map. Headers map key is case-insensitive.
-     * For more info see &id:oatpp::data::share::LazyStringMap;.
+     * For more info see &id:avena::data::share::LazyStringMap;.
      */
-    typedef oatpp::data::share::LazyStringMultimap<oatpp::data::share::StringKeyLabelCI> Headers;
+    typedef avena::data::share::LazyStringMultimap<avena::data::share::StringKeyLabelCI> Headers;
   public:
 
     /**
@@ -98,9 +100,9 @@ public:
   public:
     /**
      * Typedef for headers map. Headers map key is case-insensitive.
-     * For more info see &id:oatpp::data::share::LazyStringMap;.
+     * For more info see &id:avena::data::share::LazyStringMap;.
      */
-    typedef oatpp::data::share::LazyStringMultimap<oatpp::data::share::StringKeyLabelCI> Headers;
+    typedef avena::data::share::LazyStringMultimap<avena::data::share::StringKeyLabelCI> Headers;
   public:
 
     /**
@@ -168,8 +170,8 @@ private:
 
   v_uint32 m_headerSectionEndAccumulator;
 
-  oatpp::String m_firstBoundarySample;
-  oatpp::String m_nextBoundarySample;
+  avena::String m_firstBoundarySample;
+  avena::String m_nextBoundarySample;
 
   /*
    * Headers of the part are stored in the buffer and are parsed as one chunk.
@@ -204,7 +206,7 @@ public:
    * @param listener - &l:StatefulParser::Listener;.
    * @param asyncListener - &l:StatefulParser::AsyncListener;.
    */
-  StatefulParser(const oatpp::String& boundary,
+  StatefulParser(const avena::String& boundary,
                  const std::shared_ptr<Listener>& listener,
                  const std::shared_ptr<AsyncListener>& asyncListener);
 

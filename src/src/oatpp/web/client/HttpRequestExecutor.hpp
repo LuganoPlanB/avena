@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,16 +33,16 @@
 #include "oatpp/network/ConnectionPool.hpp"
 #include "oatpp/network/ConnectionProvider.hpp"
 
-namespace oatpp { namespace web { namespace client {
+namespace avena { namespace web { namespace client {
 
 /**
- * Default implementation of &id:oatpp::web::client::RequestExecutor; for making http request.
+ * Default implementation of &id:avena::web::client::RequestExecutor; for making http request.
  */
-class HttpRequestExecutor : public oatpp::base::Countable, public RequestExecutor {
+class HttpRequestExecutor : public avena::base::Countable, public RequestExecutor {
 private:
-  typedef oatpp::web::protocol::http::Header Header;
-  typedef oatpp::network::ClientConnectionProvider ClientConnectionProvider;
-  typedef oatpp::web::protocol::http::incoming::BodyDecoder BodyDecoder;
+  typedef avena::web::protocol::http::Header Header;
+  typedef avena::network::ClientConnectionProvider ClientConnectionProvider;
+  typedef avena::web::protocol::http::incoming::BodyDecoder BodyDecoder;
 protected:
   std::shared_ptr<ClientConnectionProvider> m_connectionProvider;
   std::shared_ptr<const BodyDecoder> m_bodyDecoder;
@@ -77,7 +79,7 @@ public:
 
   /**
    * Connection handle for &l:HttpRequestExecutor; <br>
-   * For more details see &id:oatpp::web::client::RequestExecutor::ConnectionHandle;.
+   * For more details see &id:avena::web::client::RequestExecutor::ConnectionHandle;.
    */
   class HttpConnectionHandle : public ConnectionHandle {
   private:
@@ -95,38 +97,38 @@ public:
 
   /**
    * Constructor.
-   * @param connectionProvider - &id:oatpp::network::ClientConnectionProvider;.
-   * @param bodyDecoder - &id:oatpp::web::protocol::http::incoming::BodyDecoder;.
+   * @param connectionProvider - &id:avena::network::ClientConnectionProvider;.
+   * @param bodyDecoder - &id:avena::web::protocol::http::incoming::BodyDecoder;.
    */
   HttpRequestExecutor(const std::shared_ptr<ClientConnectionProvider>& connectionProvider,
                       const std::shared_ptr<RetryPolicy>& retryPolicy = nullptr,
                       const std::shared_ptr<const BodyDecoder>& bodyDecoder =
-                      std::make_shared<oatpp::web::protocol::http::incoming::SimpleBodyDecoder>());
+                      std::make_shared<avena::web::protocol::http::incoming::SimpleBodyDecoder>());
 public:
 
   /**
    * Create shared HttpRequestExecutor.
-   * @param connectionProvider - &id:oatpp::network::ClientConnectionProvider;.
-   * @param bodyDecoder - &id:oatpp::web::protocol::http::incoming::BodyDecoder;.
+   * @param connectionProvider - &id:avena::network::ClientConnectionProvider;.
+   * @param bodyDecoder - &id:avena::web::protocol::http::incoming::BodyDecoder;.
    * @return - `std::shared_ptr` to `HttpRequestExecutor`.
    */
   static std::shared_ptr<HttpRequestExecutor>
   createShared(const std::shared_ptr<ClientConnectionProvider>& connectionProvider,
                const std::shared_ptr<RetryPolicy>& retryPolicy = nullptr,
                const std::shared_ptr<const BodyDecoder>& bodyDecoder =
-               std::make_shared<oatpp::web::protocol::http::incoming::SimpleBodyDecoder>());
+               std::make_shared<avena::web::protocol::http::incoming::SimpleBodyDecoder>());
 
   /**
-   * Get &id:oatpp::web::client::RequestExecutor::ConnectionHandle;
+   * Get &id:avena::web::client::RequestExecutor::ConnectionHandle;
    * @return - ConnectionHandle which is &l:HttpRequestExecutor::HttpConnectionHandle;.
    */
   std::shared_ptr<ConnectionHandle> getConnection() override;
 
   /**
    * Same as &l:HttpRequestExecutor::getConnection (); but async.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
-  oatpp::async::CoroutineStarterForResult<const std::shared_ptr<HttpRequestExecutor::ConnectionHandle>&> getConnectionAsync() override;
+  avena::async::CoroutineStarterForResult<const std::shared_ptr<HttpRequestExecutor::ConnectionHandle>&> getConnectionAsync() override;
 
   /**
    * Invalidate connection.
@@ -138,11 +140,11 @@ public:
    * Execute http request.
    * @param method - method ex: ["GET", "POST", "PUT", etc.].
    * @param path - path to resource.
-   * @param headers - headers map &id:oatpp::web::client::RequestExecutor::Headers;.
-   * @param body - `std::shared_ptr` to &id:oatpp::web::client::RequestExecutor::Body; object.
+   * @param headers - headers map &id:avena::web::client::RequestExecutor::Headers;.
+   * @param body - `std::shared_ptr` to &id:avena::web::client::RequestExecutor::Body; object.
    * @param connectionHandle - ConnectionHandle obtain in call to &l:HttpRequestExecutor::getConnection ();.
-   * @return - &id:oatpp::web::protocol::http::incoming::Response;.
-   * @throws - &id:oatpp::web::client::RequestExecutor::RequestExecutionError;
+   * @return - &id:avena::web::protocol::http::incoming::Response;.
+   * @throws - &id:avena::web::client::RequestExecutor::RequestExecutionError;
    */
   std::shared_ptr<Response> executeOnce(const String& method,
                                         const String& path,
@@ -154,12 +156,12 @@ public:
    * Same as &l:HttpRequestExecutor::execute (); but Async.
    * @param method - method ex: ["GET", "POST", "PUT", etc.].
    * @param path - path to resource.
-   * @param headers - headers map &id:oatpp::web::client::RequestExecutor::Headers;.
-   * @param body - `std::shared_ptr` to &id:oatpp::web::client::RequestExecutor::Body; object.
+   * @param headers - headers map &id:avena::web::client::RequestExecutor::Headers;.
+   * @param body - `std::shared_ptr` to &id:avena::web::client::RequestExecutor::Body; object.
    * @param connectionHandle - ConnectionHandle obtain in call to &l:HttpRequestExecutor::getConnection ();.
-   * @return - &id:oatpp::async::CoroutineStarterForResult;.
+   * @return - &id:avena::async::CoroutineStarterForResult;.
    */
-  oatpp::async::CoroutineStarterForResult<const std::shared_ptr<Response>&>
+  avena::async::CoroutineStarterForResult<const std::shared_ptr<Response>&>
   executeOnceAsync(const String& method,
                    const String& path,
                    const Headers& headers,

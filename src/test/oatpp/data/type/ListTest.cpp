@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,56 +28,56 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 void ListTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test default constructor...")
-    oatpp::List<oatpp::String> list;
+    avena::List<avena::String> list;
 
     OATPP_ASSERT(!list)
     OATPP_ASSERT(list == nullptr)
 
     OATPP_ASSERT(list.get() == nullptr)
-    OATPP_ASSERT(list.getValueType()->classId.id == oatpp::data::type::__class::AbstractList::CLASS_ID.id)
+    OATPP_ASSERT(list.getValueType()->classId.id == avena::data::type::__class::AbstractList::CLASS_ID.id)
     OATPP_ASSERT(list.getValueType()->params.size() == 1)
-    OATPP_ASSERT(list.getValueType()->params.front() == oatpp::String::Class::getType())
+    OATPP_ASSERT(list.getValueType()->params.front() == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test empty ilist constructor...")
-    oatpp::List<oatpp::String> list({});
+    avena::List<avena::String> list({});
 
     OATPP_ASSERT(list)
     OATPP_ASSERT(list != nullptr)
     OATPP_ASSERT(list->size() == 0)
 
     OATPP_ASSERT(list.get() != nullptr)
-    OATPP_ASSERT(list.getValueType()->classId.id == oatpp::data::type::__class::AbstractList::CLASS_ID.id)
+    OATPP_ASSERT(list.getValueType()->classId.id == avena::data::type::__class::AbstractList::CLASS_ID.id)
     OATPP_ASSERT(list.getValueType()->params.size() == 1)
-    OATPP_ASSERT(list.getValueType()->params.front() == oatpp::String::Class::getType())
+    OATPP_ASSERT(list.getValueType()->params.front() == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test createShared()...")
-    oatpp::List<oatpp::String> list = oatpp::List<oatpp::String>::createShared();
+    avena::List<avena::String> list = avena::List<avena::String>::createShared();
 
     OATPP_ASSERT(list)
     OATPP_ASSERT(list != nullptr)
     OATPP_ASSERT(list->size() == 0)
 
     OATPP_ASSERT(list.get() != nullptr)
-    OATPP_ASSERT(list.getValueType()->classId.id == oatpp::data::type::__class::AbstractList::CLASS_ID.id)
+    OATPP_ASSERT(list.getValueType()->classId.id == avena::data::type::__class::AbstractList::CLASS_ID.id)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test copy-assignment operator...")
-    oatpp::List<oatpp::String> list1({});
-    oatpp::List<oatpp::String> list2;
+    avena::List<avena::String> list1({});
+    avena::List<avena::String> list2;
 
     list2 = list1;
 
@@ -104,8 +106,8 @@ void ListTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test move-assignment operator...")
-    oatpp::List<oatpp::String> list1({});
-    oatpp::List<oatpp::String> list2;
+    avena::List<avena::String> list1({});
+    avena::List<avena::String> list2;
 
     list2 = std::move(list1);
 
@@ -116,7 +118,7 @@ void ListTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test get element by index...")
-    oatpp::List<oatpp::String> list = {"a", "b", "c"};
+    avena::List<avena::String> list = {"a", "b", "c"};
 
     OATPP_ASSERT(list)
     OATPP_ASSERT(list != nullptr)
@@ -138,13 +140,13 @@ void ListTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test polymorphicDispatcher...")
-    oatpp::List<oatpp::String> list = {"a", "b", "c"};
+    avena::List<avena::String> list = {"a", "b", "c"};
 
-    auto polymorphicDispatcher = static_cast<const oatpp::data::type::__class::Collection::PolymorphicDispatcher*>(
+    auto polymorphicDispatcher = static_cast<const avena::data::type::__class::Collection::PolymorphicDispatcher*>(
       list.getValueType()->polymorphicDispatcher
     );
 
-    polymorphicDispatcher->addItem(list, oatpp::String("d"));
+    polymorphicDispatcher->addItem(list, avena::String("d"));
 
     OATPP_ASSERT(list->size() == 4)
 

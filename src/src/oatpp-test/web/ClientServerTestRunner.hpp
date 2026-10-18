@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -39,26 +41,26 @@
 #include <condition_variable>
 #include <thread>
 
-namespace oatpp { namespace test { namespace web {
+namespace avena { namespace test { namespace web {
 
 /**
  * Helper class to run Client-Server tests
  */
 class ClientServerTestRunner {
 public:
-  typedef oatpp::web::server::HttpRouter HttpRouter;
-  typedef oatpp::web::server::api::ApiController ApiController;
+  typedef avena::web::server::HttpRouter HttpRouter;
+  typedef avena::web::server::api::ApiController ApiController;
 private:
-  std::shared_ptr<oatpp::network::Server> m_server;
+  std::shared_ptr<avena::network::Server> m_server;
   std::list<std::shared_ptr<ApiController>> m_controllers;
   std::shared_ptr<HttpRouter> m_router;
-  std::shared_ptr<oatpp::network::ServerConnectionProvider> m_connectionProvider;
-  std::shared_ptr<oatpp::network::ConnectionHandler> m_connectionHandler;
+  std::shared_ptr<avena::network::ServerConnectionProvider> m_connectionProvider;
+  std::shared_ptr<avena::network::ConnectionHandler> m_connectionHandler;
 
 public:
   ClientServerTestRunner(OATPP_COMPONENT(std::shared_ptr<HttpRouter>, router),
-                        OATPP_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, connectionProvider),
-                        OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler))
+                        OATPP_COMPONENT(std::shared_ptr<avena::network::ServerConnectionProvider>, connectionProvider),
+                        OATPP_COMPONENT(std::shared_ptr<avena::network::ConnectionHandler>, connectionHandler))
     : m_router(router)
     , m_connectionProvider(connectionProvider)
     , m_connectionHandler(connectionHandler)
@@ -77,7 +79,7 @@ public:
     m_controllers.push_back(controller);
   }
 
-  std::shared_ptr<oatpp::network::Server> getServer() {
+  std::shared_ptr<avena::network::Server> getServer() {
     return m_server;
   }
 
@@ -99,7 +101,7 @@ public:
     std::condition_variable timeoutCondition;
     bool runConditionForLambda = true;
 
-    m_server = std::make_shared<oatpp::network::Server>(m_connectionProvider, m_connectionHandler);
+    m_server = std::make_shared<avena::network::Server>(m_connectionProvider, m_connectionHandler);
     OATPP_LOGd("\033[1;34mClientServerTestRunner\033[0m", "\033[1;34mRunning server on port {}. Timeout {}(micro)\033[0m",
                m_connectionProvider->getProperty("port").toString()->c_str(),
                timeout.count())

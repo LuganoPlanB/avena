@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,11 +26,11 @@
 
 #include "./AsyncHttpConnectionHandler.hpp"
 
-namespace oatpp { namespace web { namespace server {
+namespace avena { namespace web { namespace server {
 
 void AsyncHttpConnectionHandler::onTaskStart(const provider::ResourceHandle<data::stream::IOStream>& connection) {
 
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_connectionsLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_connectionsLock);
   m_connections.insert({reinterpret_cast<v_uint64>(connection.object.get()), connection});
 
   if(!m_continue.load()) {
@@ -38,12 +40,12 @@ void AsyncHttpConnectionHandler::onTaskStart(const provider::ResourceHandle<data
 }
 
 void AsyncHttpConnectionHandler::onTaskEnd(const provider::ResourceHandle<data::stream::IOStream>& connection) {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_connectionsLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_connectionsLock);
   m_connections.erase(reinterpret_cast<v_uint64>(connection.object.get()));
 }
 
 void AsyncHttpConnectionHandler::invalidateAllConnections() {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_connectionsLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_connectionsLock);
   for(auto& c : m_connections) {
     const auto& handle = c.second;
     handle.invalidator->invalidate(handle.object);
@@ -51,13 +53,13 @@ void AsyncHttpConnectionHandler::invalidateAllConnections() {
 }
 
 v_uint64 AsyncHttpConnectionHandler::getConnectionsCount() {
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_connectionsLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_connectionsLock);
   return m_connections.size();
 }
 
 AsyncHttpConnectionHandler::AsyncHttpConnectionHandler(const std::shared_ptr<HttpProcessor::Components>& components,
                                                        v_int32 threadCount)
-  : m_executor(std::make_shared<oatpp::async::Executor>(threadCount))
+  : m_executor(std::make_shared<avena::async::Executor>(threadCount))
   , m_components(components)
   , m_continue(true)
 {
@@ -65,7 +67,7 @@ AsyncHttpConnectionHandler::AsyncHttpConnectionHandler(const std::shared_ptr<Htt
 }
 
 AsyncHttpConnectionHandler::AsyncHttpConnectionHandler(const std::shared_ptr<HttpProcessor::Components>& components,
-                                                       const std::shared_ptr<oatpp::async::Executor>& executor)
+                                                       const std::shared_ptr<avena::async::Executor>& executor)
   : m_executor(executor)
   , m_components(components)
   , m_continue(true)
@@ -75,11 +77,11 @@ std::shared_ptr<AsyncHttpConnectionHandler> AsyncHttpConnectionHandler::createSh
   return std::make_shared<AsyncHttpConnectionHandler>(router, threadCount);
 }
 
-std::shared_ptr<AsyncHttpConnectionHandler> AsyncHttpConnectionHandler::createShared(const std::shared_ptr<HttpRouter>& router, const std::shared_ptr<oatpp::async::Executor>& executor){
+std::shared_ptr<AsyncHttpConnectionHandler> AsyncHttpConnectionHandler::createShared(const std::shared_ptr<HttpRouter>& router, const std::shared_ptr<avena::async::Executor>& executor){
   return std::make_shared<AsyncHttpConnectionHandler>(router, executor);
 }
 
-std::shared_ptr<AsyncHttpConnectionHandler> AsyncHttpConnectionHandler::createShared(const std::shared_ptr<HttpProcessor::Components>& components, const std::shared_ptr<oatpp::async::Executor>& executor){
+std::shared_ptr<AsyncHttpConnectionHandler> AsyncHttpConnectionHandler::createShared(const std::shared_ptr<HttpProcessor::Components>& components, const std::shared_ptr<avena::async::Executor>& executor){
   return std::make_shared<AsyncHttpConnectionHandler>(components, executor);
 }
 
@@ -110,8 +112,8 @@ void AsyncHttpConnectionHandler::handleConnection(const provider::ResourceHandle
 
   if (m_continue.load()) {
 
-    connection.object->setOutputStreamIOMode(oatpp::data::stream::IOMode::ASYNCHRONOUS);
-    connection.object->setInputStreamIOMode(oatpp::data::stream::IOMode::ASYNCHRONOUS);
+    connection.object->setOutputStreamIOMode(avena::data::stream::IOMode::ASYNCHRONOUS);
+    connection.object->setInputStreamIOMode(avena::data::stream::IOMode::ASYNCHRONOUS);
 
     m_executor->execute<HttpProcessor::Coroutine>(m_components, connection, this);
 

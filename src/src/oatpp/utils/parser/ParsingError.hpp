@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,16 +29,16 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace utils { namespace parser {
+namespace avena { namespace utils { namespace parser {
 
 /**
  * Thrown when parsing error occurred and ParsingCaret object is not accessible for user.
- * If parsing was made via oatpp::utils::parser::ParsingCaret and ParsingCaret is accessible for user
+ * If parsing was made via avena::utils::parser::ParsingCaret and ParsingCaret is accessible for user
  * then do not throw this error.- User should read error from ParsingCaret::getError()
  */
 class ParsingError : public std::runtime_error {
 private:
-  oatpp::String m_message;
+  avena::String m_message;
   v_int64 m_code;
   v_buff_size m_position;
 public:
@@ -46,13 +48,13 @@ public:
    * @param message
    * @param position
    */
-  ParsingError(const oatpp::String &message, v_int64 code, v_buff_size position);
+  ParsingError(const avena::String &message, v_int64 code, v_buff_size position);
 
   /**
    * get error message
    * @return
    */
-  oatpp::String getMessage() const;
+  avena::String getMessage() const;
 
   /**
    * get error code

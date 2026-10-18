@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,11 +30,11 @@
 #include "MetricsChecker.hpp"
 #include "oatpp/base/Compiler.hpp"
 
-namespace oatpp { namespace network { namespace monitor {
+namespace avena { namespace network { namespace monitor {
 
 /**
  * ConnectionMaxAgeChecker - checks if connection is too old and should be closed.
- * Extends - &id:oatpp::network::monitor::MetricsChecker;.
+ * Extends - &id:avena::network::monitor::MetricsChecker;.
  */
 class ConnectionMaxAgeChecker : public MetricsChecker {
 private:
@@ -45,9 +47,9 @@ public:
    */
   ConnectionMaxAgeChecker(const std::chrono::duration<v_int64, std::micro>& maxAge);
 
-  std::vector<oatpp::String> getMetricsList() override;
+  std::vector<avena::String> getMetricsList() override;
 
-  std::shared_ptr<StatCollector> createStatCollector(const oatpp::String& metricName) override GPP_ATTRIBUTE(noreturn);
+  std::shared_ptr<StatCollector> createStatCollector(const avena::String& metricName) override GPP_ATTRIBUTE(noreturn);
 
   bool check(const ConnectionStats& stats, v_int64 currMicroTime) override;
 

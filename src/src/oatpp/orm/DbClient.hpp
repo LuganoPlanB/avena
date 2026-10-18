@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 #include "oatpp/data/stream/Stream.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace orm {
+namespace avena { namespace orm {
 
 /**
  * Database client.
@@ -45,7 +47,7 @@ public:
 
   /**
    * Constructor.
-   * @param executor - &id:oatpp::orm::Executor;.
+   * @param executor - &id:avena::orm::Executor;.
    */
   DbClient(const std::shared_ptr<Executor>& executor);
 
@@ -68,7 +70,7 @@ public:
 
   /**
    * Get type resolver.
-   * @return - &id:oatpp::data::mapping::TypeResolver;.
+   * @return - &id:avena::data::mapping::TypeResolver;.
    */
   std::shared_ptr<const data::mapping::TypeResolver> getTypeResolver();
 
@@ -78,10 +80,10 @@ public:
    * @param text - template text.
    * @param paramsTypeMap - template parameter types.
    * @param prepare - `true` if the query should use prepared statement, `false` otherwise.
-   * @return - &id:oatpp::data::share::StringTemplate;.
+   * @return - &id:avena::data::share::StringTemplate;.
    */
-  data::share::StringTemplate parseQueryTemplate(const oatpp::String& name,
-                                                 const oatpp::String& text,
+  data::share::StringTemplate parseQueryTemplate(const avena::String& name,
+                                                 const avena::String& text,
                                                  const Executor::ParamsTypeMap& paramsTypeMap,
                                                  bool prepare = false);
 
@@ -90,10 +92,10 @@ public:
    * @param queryTemplate - a query template obtained in a prior call to &l:DbClient::parseQueryTemplate (); method.
    * @param params - query parameters.
    * @param connection - database connection.
-   * @return - &id:oatpp::orm::QueryResult;.
+   * @return - &id:avena::orm::QueryResult;.
    */
   std::shared_ptr<QueryResult> execute(const data::share::StringTemplate& queryTemplate,
-                                       const std::unordered_map<oatpp::String, oatpp::Void>& params,
+                                       const std::unordered_map<avena::String, avena::Void>& params,
                                        const provider::ResourceHandle<Connection>& connection = nullptr);
 
   /**
@@ -101,16 +103,16 @@ public:
    * @param query - query text.
    * @param params - query parameters.
    * @param connection - database connection.
-   * @return - &id:oatpp::orm::QueryResult;.
+   * @return - &id:avena::orm::QueryResult;.
    */
-  std::shared_ptr<QueryResult> executeQuery(const oatpp::String& query,
-                                            const std::unordered_map<oatpp::String, oatpp::Void>& params,
+  std::shared_ptr<QueryResult> executeQuery(const avena::String& query,
+                                            const std::unordered_map<avena::String, avena::Void>& params,
                                             const provider::ResourceHandle<Connection>& connection = nullptr);
 
   /**
    * Begin database transaction.
    * @param connection - database connection.
-   * @return - &id:oatpp::orm::Transaction;.
+   * @return - &id:avena::orm::Transaction;.
    */
   Transaction beginTransaction(const provider::ResourceHandle<Connection>& connection = nullptr);
 

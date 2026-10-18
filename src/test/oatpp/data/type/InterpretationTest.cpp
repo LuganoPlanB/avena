@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/Types.hpp"
 #include "oatpp/macro/codegen.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 namespace {
 
@@ -51,15 +53,15 @@ namespace __class {
   class LineClass;
 }
 
-typedef oatpp::data::type::Primitive<VPoint, __class::PointClass> Point;
-typedef oatpp::data::type::Primitive<VLine, __class::LineClass> Line;
+typedef avena::data::type::Primitive<VPoint, __class::PointClass> Point;
+typedef avena::data::type::Primitive<VLine, __class::LineClass> Line;
 
 namespace __class {
 
   class PointClass {
   private:
 
-    class PointDto : public oatpp::DTO {
+    class PointDto : public avena::DTO {
 
       DTO_INIT(PointDto, DTO)
 
@@ -69,10 +71,10 @@ namespace __class {
 
     };
 
-    class Inter : public oatpp::Type::Interpretation<Point, oatpp::Object<PointDto>>  {
+    class Inter : public avena::Type::Interpretation<Point, avena::Object<PointDto>>  {
     public:
 
-      oatpp::Object<PointDto> interpret(const Point& value) const override {
+      avena::Object<PointDto> interpret(const Point& value) const override {
         OATPP_LOGd("Point::Interpretation", "interpret")
         auto dto = PointDto::createShared();
         dto->x = value->x;
@@ -81,7 +83,7 @@ namespace __class {
         return dto;
       }
 
-      Point reproduce(const oatpp::Object<PointDto>& value) const override {
+      Point reproduce(const avena::Object<PointDto>& value) const override {
         OATPP_LOGd("Point::Interpretation", "reproduce")
         return Point({value->x, value->y, value->z});
       }
@@ -90,8 +92,8 @@ namespace __class {
 
   private:
 
-    static oatpp::Type* createType() {
-      oatpp::Type::Info info;
+    static avena::Type* createType() {
+      avena::Type::Info info;
       info.interpretationMap = {
         {"test", new Inter()}
       };
@@ -100,21 +102,21 @@ namespace __class {
 
   public:
 
-    static const oatpp::ClassId CLASS_ID;
+    static const avena::ClassId CLASS_ID;
 
-    static oatpp::Type* getType(){
+    static avena::Type* getType(){
       static Type* type = createType();
       return type;
     }
 
   };
 
-  const oatpp::ClassId PointClass::CLASS_ID("test::Point");
+  const avena::ClassId PointClass::CLASS_ID("test::Point");
 
   class LineClass {
   private:
 
-    class LineDto : public oatpp::DTO {
+    class LineDto : public avena::DTO {
 
       DTO_INIT(LineDto, DTO)
 
@@ -123,10 +125,10 @@ namespace __class {
 
     };
 
-    class Inter : public oatpp::Type::Interpretation<Line, oatpp::Object<LineDto>>  {
+    class Inter : public avena::Type::Interpretation<Line, avena::Object<LineDto>>  {
     public:
 
-      oatpp::Object<LineDto> interpret(const Line& value) const override {
+      avena::Object<LineDto> interpret(const Line& value) const override {
         OATPP_LOGd("Line::Interpretation", "interpret")
         auto dto = LineDto::createShared();
         dto->p1 = {value->p1.x, value->p1.y, value->p1.z};
@@ -134,7 +136,7 @@ namespace __class {
         return dto;
       }
 
-      Line reproduce(const oatpp::Object<LineDto>& value) const override {
+      Line reproduce(const avena::Object<LineDto>& value) const override {
         OATPP_LOGd("Line::Interpretation", "reproduce")
         return Line({{value->p1->x, value->p1->y, value->p1->z},
                      {value->p2->x, value->p2->y, value->p2->z}});
@@ -144,26 +146,26 @@ namespace __class {
 
   private:
 
-    static oatpp::Type* createType() {
-      oatpp::Type::Info info;
+    static avena::Type* createType() {
+      avena::Type::Info info;
       info.interpretationMap = {
         {"test", new Inter()}
       };
-      return new oatpp::Type(CLASS_ID, info);
+      return new avena::Type(CLASS_ID, info);
     }
 
   public:
 
-    static const oatpp::ClassId CLASS_ID;
+    static const avena::ClassId CLASS_ID;
 
-    static oatpp::Type* getType(){
+    static avena::Type* getType(){
       static Type* type = createType();
       return type;
     }
 
   };
 
-  const oatpp::ClassId LineClass::CLASS_ID("test::Line");
+  const avena::ClassId LineClass::CLASS_ID("test::Line");
 
 }
 
@@ -173,7 +175,7 @@ namespace __class {
 
 void InterpretationTest::onRun() {
 
-  oatpp::json::ObjectMapper mapper;
+  avena::json::ObjectMapper mapper;
 
   {
     auto& config = mapper.serializerConfig();
@@ -203,42 +205,42 @@ void InterpretationTest::onRun() {
 
   OATPP_ASSERT(json1 == json2)
 
-  oatpp::data::mapping::TypeResolver::Cache cache;
+  avena::data::mapping::TypeResolver::Cache cache;
 
   {
-    oatpp::data::mapping::TypeResolver tr;
+    avena::data::mapping::TypeResolver tr;
     tr.setEnabledInterpretations({"test"});
 
-    //oatpp::data::mapping::TypeResolver::Cache cache;
+    //avena::data::mapping::TypeResolver::Cache cache;
 
     auto v = tr.resolveObjectPropertyValue(l, {"p1", "x"}, cache);
     OATPP_ASSERT(v)
-    OATPP_ASSERT(v.getValueType() == oatpp::Int32::Class::getType())
-    OATPP_ASSERT(v.cast<oatpp::Int32>() == 1)
+    OATPP_ASSERT(v.getValueType() == avena::Int32::Class::getType())
+    OATPP_ASSERT(v.cast<avena::Int32>() == 1)
   }
 
   {
-    oatpp::data::mapping::TypeResolver tr;
+    avena::data::mapping::TypeResolver tr;
     tr.setEnabledInterpretations({"test"});
 
-    //oatpp::data::mapping::TypeResolver::Cache cache;
+    //avena::data::mapping::TypeResolver::Cache cache;
 
     auto v = tr.resolveObjectPropertyValue(l, {"p1", "y"}, cache);
     OATPP_ASSERT(v)
-    OATPP_ASSERT(v.getValueType() == oatpp::Int32::Class::getType())
-    OATPP_ASSERT(v.cast<oatpp::Int32>() == 2)
+    OATPP_ASSERT(v.getValueType() == avena::Int32::Class::getType())
+    OATPP_ASSERT(v.cast<avena::Int32>() == 2)
   }
 
   {
-    oatpp::data::mapping::TypeResolver tr;
+    avena::data::mapping::TypeResolver tr;
     tr.setEnabledInterpretations({"test"});
 
-    //oatpp::data::mapping::TypeResolver::Cache cache;
+    //avena::data::mapping::TypeResolver::Cache cache;
 
     auto v = tr.resolveObjectPropertyValue(l, {"p1", "z"}, cache);
     OATPP_ASSERT(v)
-    OATPP_ASSERT(v.getValueType() == oatpp::Int32::Class::getType())
-    OATPP_ASSERT(v.cast<oatpp::Int32>() == 3)
+    OATPP_ASSERT(v.getValueType() == avena::Int32::Class::getType())
+    OATPP_ASSERT(v.cast<avena::Int32>() == 3)
   }
 
 }

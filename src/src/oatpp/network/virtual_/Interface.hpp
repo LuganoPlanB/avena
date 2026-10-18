@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,19 +33,19 @@
 #include <unordered_map>
 #include <chrono>
 
-namespace oatpp { namespace network { namespace virtual_ {
+namespace avena { namespace network { namespace virtual_ {
 
 /**
  * "Virtual" Interface provides functionality for accepting "virtual" connections.
- * "virtual" connection is represented by &id:oatpp::network::virtual_::Socket;.
+ * "virtual" connection is represented by &id:avena::network::virtual_::Socket;.
  */
-class Interface : public oatpp::base::Countable {
+class Interface : public avena::base::Countable {
 private:
   static std::recursive_mutex m_registryMutex;
-  static std::unordered_map<oatpp::String, std::weak_ptr<Interface>> m_registry;
+  static std::unordered_map<avena::String, std::weak_ptr<Interface>> m_registry;
 private:
   static void registerInterface(const std::shared_ptr<Interface>& _interface);
-  static void unregisterInterface(const oatpp::String& name);
+  static void unregisterInterface(const avena::String& name);
 public:
 
   /**
@@ -62,7 +64,7 @@ public:
 public:
 
   /**
-   * "Future" for &id:oatpp::network::virtual_::Socket;.
+   * "Future" for &id:avena::network::virtual_::Socket;.
    */
   class ConnectionSubmission {
     friend Interface;
@@ -82,20 +84,20 @@ public:
 
     /**
      * Set socket to be returned in call to &l:Interface::ConnectionSubmission::getSocket ();/&l:Interface::ConnectionSubmission::getSocketNonBlocking ();.
-     * @param socket - &id:oatpp::network::virtual_::Socket;.
+     * @param socket - &id:avena::network::virtual_::Socket;.
      */
     void setSocket(const std::shared_ptr<Socket>& socket);
 
     /**
      * Block and wait for socket.
-     * @return - `std::shared_ptr` to &id:oatpp::network::virtual_::Socket;.
+     * @return - `std::shared_ptr` to &id:avena::network::virtual_::Socket;.
      */
     std::shared_ptr<Socket> getSocket();
 
     /**
      * Check if socket already available.
      * User should repeat call if `(!socket && isPending())`.
-     * @return - `std::shared_ptr` to &id:oatpp::network::virtual_::Socket;.
+     * @return - `std::shared_ptr` to &id:avena::network::virtual_::Socket;.
      */
     std::shared_ptr<Socket> getSocketNonBlocking();
 
@@ -111,7 +113,7 @@ private:
   std::shared_ptr<Socket> acceptSubmission(const std::shared_ptr<ConnectionSubmission>& submission);
   void unbindListener(ListenerLock* listenerLock);
 private:
-  oatpp::String m_name;
+  avena::String m_name;
   std::atomic<ListenerLock*> m_listenerLock;
   std::mutex m_listenerMutex;
   std::mutex m_mutex;
@@ -119,7 +121,7 @@ private:
   std::list<std::shared_ptr<ConnectionSubmission>> m_submissions;
 private:
 
-  Interface(const oatpp::String& name);
+  Interface(const avena::String& name);
 
   Interface(const Interface& other) = delete;
   Interface(Interface&& other) = delete;
@@ -138,7 +140,7 @@ public:
    * @param name - name of the interface.
    * @return - `std::shared_ptr` to Interface.
    */
-  static std::shared_ptr<Interface> obtainShared(const oatpp::String& name);
+  static std::shared_ptr<Interface> obtainShared(const avena::String& name);
 
   /**
    * Aquire &l:Interface::ListenerLock ;.
@@ -163,14 +165,14 @@ public:
    * @param waitingHandle - reference to a boolean variable.
    * User may set waitingHandle = false and call &l:Interface::notifyAcceptors (); in order to break waiting loop. and exit accept() method.
    * @param timeout
-   * @return - `std::shared_ptr` to &id:oatpp::network::virtual_::Socket;.
+   * @return - `std::shared_ptr` to &id:avena::network::virtual_::Socket;.
    */
   std::shared_ptr<Socket> accept(const bool& waitingHandle = true,
                                  const std::chrono::duration<v_int64, std::micro>& timeout = std::chrono::minutes (10));
 
   /**
    * Check if incoming connection is available. NonBlocking.
-   * @return - `std::shared_ptr` to &id:oatpp::network::virtual_::Socket; if available.
+   * @return - `std::shared_ptr` to &id:avena::network::virtual_::Socket; if available.
    * Empty `std::shared_ptr` if no incoming connection is available at the moment.
    */
   std::shared_ptr<Socket> acceptNonBlocking();
@@ -188,9 +190,9 @@ public:
 
   /**
    * Get interface name.
-   * @return - &id:oatpp::String;.
+   * @return - &id:avena::String;.
    */
-  oatpp::String getName() {
+  avena::String getName() {
     return m_name;
   }
   

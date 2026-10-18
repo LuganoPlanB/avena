@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,10 +30,10 @@
 #include "BodyDecoder.hpp"
 #include "oatpp/web/protocol/http/encoding/ProviderCollection.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 /**
- * Default implementation of &id:oatpp::web::protocol::http::incoming::BodyDecoder;.
+ * Default implementation of &id:avena::web::protocol::http::incoming::BodyDecoder;.
  */
 class SimpleBodyDecoder : public BodyDecoder {
 private:
@@ -42,7 +44,7 @@ private:
   base::ObjectHandle<data::buffer::Processor> getStreamProcessor(const data::share::StringKeyLabelCI& transferEncoding,
                                                                  const data::share::StringKeyLabelCI& contentEncoding) const;
   void handleExpectHeader(const Headers& headers, data::stream::IOStream* connection) const;
-  oatpp::async::CoroutineStarter handleExpectHeaderAsync(const Headers& headers,
+  avena::async::CoroutineStarter handleExpectHeaderAsync(const Headers& headers,
                                                          const std::shared_ptr<data::stream::IOStream>& connection) const;
 public:
 
@@ -54,9 +56,9 @@ public:
 
   /**
    * Decode bodyStream and write decoded data to toStream.
-   * @param headers - Headers map. &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - pointer to &id:oatpp::data::stream::InputStream;.
-   * @param writeCallback - &id:oatpp::data::stream::WriteCallback;.
+   * @param headers - Headers map. &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - pointer to &id:avena::data::stream::InputStream;.
+   * @param writeCallback - &id:avena::data::stream::WriteCallback;.
    * @param connection
    */
   void decode(const Headers& headers,
@@ -66,13 +68,13 @@ public:
 
   /**
    * Same as &l:SimpleBodyDecoder::decode (); but Async.
-   * @param headers - Headers map. &id:oatpp::web::protocol::http::Headers;.
-   * @param bodyStream - `std::shared_ptr` to &id:oatpp::data::stream::InputStream;.
-   * @param writeCallback - `std::shared_ptr` to &id:oatpp::data::stream::WriteCallback;.
+   * @param headers - Headers map. &id:avena::web::protocol::http::Headers;.
+   * @param bodyStream - `std::shared_ptr` to &id:avena::data::stream::InputStream;.
+   * @param writeCallback - `std::shared_ptr` to &id:avena::data::stream::WriteCallback;.
    * @param connection
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  oatpp::async::CoroutineStarter decodeAsync(const Headers& headers,
+  avena::async::CoroutineStarter decodeAsync(const Headers& headers,
                                              const std::shared_ptr<data::stream::InputStream>& bodyStream,
                                              const std::shared_ptr<data::stream::WriteCallback>& writeCallback,
                                              const std::shared_ptr<data::stream::IOStream>& connection) const override;

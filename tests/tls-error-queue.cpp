@@ -8,8 +8,8 @@
 #include <memory>
 
 bool checkRetry(bool writing) {
-  using namespace oatpp;
-  using namespace oatpp::network::virtual_;
+  using namespace avena;
+  using namespace avena::network::virtual_;
   std::unique_ptr<SSL_CTX, decltype(&SSL_CTX_free)> context(
       SSL_CTX_new(TLS_server_method()), SSL_CTX_free);
   std::unique_ptr<SSL_CTX, decltype(&SSL_CTX_free)> clientContext(
@@ -74,10 +74,10 @@ bool checkRetry(bool writing) {
 }
 
 int main() {
-  oatpp::Environment::init();
+  avena::Environment::init();
   const bool readPassed = checkRetry(false);
   const bool writePassed = checkRetry(true);
-  const auto remaining = oatpp::Environment::getObjectsCount();
-  oatpp::Environment::destroy();
+  const auto remaining = avena::Environment::getObjectsCount();
+  avena::Environment::destroy();
   return readPassed && writePassed && remaining == 0 ? 0 : 1;
 }

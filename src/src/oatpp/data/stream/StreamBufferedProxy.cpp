@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "StreamBufferedProxy.hpp"
 
-namespace oatpp { namespace data{ namespace stream {
+namespace avena { namespace data{ namespace stream {
   
 v_io_size OutputStreamBufferedProxy::write(const void *data, v_buff_size count, async::Action& action) {
   if(m_buffer.availableToWrite() > 0) {
@@ -38,11 +40,11 @@ v_io_size OutputStreamBufferedProxy::write(const void *data, v_buff_size count, 
   }
 }
 
-void OutputStreamBufferedProxy::setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void OutputStreamBufferedProxy::setOutputStreamIOMode(avena::data::stream::IOMode ioMode) {
   m_outputStream->setOutputStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode OutputStreamBufferedProxy::getOutputStreamIOMode() {
+avena::data::stream::IOMode OutputStreamBufferedProxy::getOutputStreamIOMode() {
   return m_outputStream->getOutputStreamIOMode();
 }
 
@@ -54,7 +56,7 @@ v_io_size OutputStreamBufferedProxy::flush() {
   return m_buffer.flushToStream(m_outputStream.get());
 }
 
-oatpp::async::CoroutineStarter OutputStreamBufferedProxy::flushAsync() {
+avena::async::CoroutineStarter OutputStreamBufferedProxy::flushAsync() {
   return m_buffer.flushToStreamAsync(m_outputStream);
 }
   
@@ -90,11 +92,11 @@ v_io_size InputStreamBufferedProxy::commitReadOffset(v_buff_size count) {
   return m_buffer.commitReadOffset(count);
 }
 
-void InputStreamBufferedProxy::setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void InputStreamBufferedProxy::setInputStreamIOMode(avena::data::stream::IOMode ioMode) {
   m_inputStream->setInputStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode InputStreamBufferedProxy::getInputStreamIOMode() {
+avena::data::stream::IOMode InputStreamBufferedProxy::getInputStreamIOMode() {
   return m_inputStream->getInputStreamIOMode();
 }
 

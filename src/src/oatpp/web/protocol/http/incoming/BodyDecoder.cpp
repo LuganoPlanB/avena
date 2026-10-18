@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,18 +26,18 @@
 
 #include "BodyDecoder.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BodyDecoder
 
-oatpp::async::CoroutineStarterForResult<const oatpp::String&>
+avena::async::CoroutineStarterForResult<const avena::String&>
 BodyDecoder::decodeToStringAsync(const Headers& headers,
                                  const std::shared_ptr<data::stream::InputStream>& bodyStream,
                                  const std::shared_ptr<data::stream::IOStream>& connection) const
 {
 
-  class ToStringDecoder : public oatpp::async::CoroutineWithResult<ToStringDecoder, const oatpp::String&> {
+  class ToStringDecoder : public avena::async::CoroutineWithResult<ToStringDecoder, const avena::String&> {
   private:
     const BodyDecoder* m_decoder;
     Headers m_headers;

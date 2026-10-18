@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,13 +27,13 @@
 #include "FileStream.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace data{ namespace stream {
+namespace avena { namespace data{ namespace stream {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FileInputStream
 
-oatpp::data::stream::DefaultInitializedContext FileInputStream::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_FINITE);
+avena::data::stream::DefaultInitializedContext FileInputStream::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_FINITE);
 
 FileInputStream::FileInputStream(FileInputStream&& other)
   : m_file(other.m_file)
@@ -53,8 +55,8 @@ FileInputStream::FileInputStream(const char* filename, const std::shared_ptr<voi
   : FileInputStream(std::fopen(filename, "rb"), true, captureData)
 {
   if(!m_file) {
-    OATPP_LOGe("[oatpp::data::stream::FileInputStream::FileInputStream(filename)]", "Error. Can't open file '{}'.", filename)
-    throw std::runtime_error("[oatpp::data::stream::FileInputStream::FileInputStream(filename)]: Error. Can't open file.");
+    OATPP_LOGe("[avena::data::stream::FileInputStream::FileInputStream(filename)]", "Error. Can't open file '{}'.", filename)
+    throw std::runtime_error("[avena::data::stream::FileInputStream::FileInputStream(filename)]: Error. Can't open file.");
   }
 }
 
@@ -71,7 +73,7 @@ v_io_size FileInputStream::read(void *data, v_buff_size count, async::Action& ac
   if(m_file != nullptr) {
     return static_cast<v_io_size>(std::fread(data, 1, static_cast<size_t>(count), m_file));
   }
-  return oatpp::IOError::BROKEN_PIPE;
+  return avena::IOError::BROKEN_PIPE;
 }
 
 void FileInputStream::setInputStreamIOMode(IOMode ioMode) {
@@ -111,7 +113,7 @@ FileInputStream& FileInputStream::operator=(FileInputStream&& other) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FileOutputStream
 
-oatpp::data::stream::DefaultInitializedContext FileOutputStream::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_FINITE);
+avena::data::stream::DefaultInitializedContext FileOutputStream::DEFAULT_CONTEXT(data::stream::StreamType::STREAM_FINITE);
 
 FileOutputStream::FileOutputStream(FileOutputStream&& other)
   : m_file(other.m_file)
@@ -133,8 +135,8 @@ FileOutputStream::FileOutputStream(const char* filename, const char* mode, const
   : FileOutputStream(std::fopen(filename, mode), true, captureData)
 {
   if(!m_file) {
-    OATPP_LOGe("[oatpp::data::stream::FileOutputStream::FileOutputStream(filename, mode)]", "Error. Can't open file '{}'.", filename)
-    throw std::runtime_error("[oatpp::data::stream::FileOutputStream::FileOutputStream(filename, mode)]: Error. Can't open file.");
+    OATPP_LOGe("[avena::data::stream::FileOutputStream::FileOutputStream(filename, mode)]", "Error. Can't open file '{}'.", filename)
+    throw std::runtime_error("[avena::data::stream::FileOutputStream::FileOutputStream(filename, mode)]: Error. Can't open file.");
   }
 }
 

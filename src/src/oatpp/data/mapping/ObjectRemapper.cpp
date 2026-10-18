@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,9 +26,9 @@
 
 #include "ObjectRemapper.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
-oatpp::Void ObjectRemapper::remap(const Tree& tree, const oatpp::Type* toType, ErrorStack& errorStack) const {
+avena::Void ObjectRemapper::remap(const Tree& tree, const avena::Type* toType, ErrorStack& errorStack) const {
   TreeToObjectMapper::State state;
   state.tree = std::addressof(tree);
   state.config = &m_treeToObjectConfig;
@@ -38,14 +40,14 @@ oatpp::Void ObjectRemapper::remap(const Tree& tree, const oatpp::Type* toType, E
   return result;
 }
 
-oatpp::Void ObjectRemapper::remap(const oatpp::Void& polymorph, const oatpp::Type* toType, ErrorStack& errorStack) const {
+avena::Void ObjectRemapper::remap(const avena::Void& polymorph, const avena::Type* toType, ErrorStack& errorStack) const {
 
   if(polymorph == nullptr) {
     return nullptr;
   }
 
   /* if polymorph is a Tree - we can map it right away */
-  if(polymorph.getValueType() == oatpp::Tree::Class::getType()) {
+  if(polymorph.getValueType() == avena::Tree::Class::getType()) {
     auto tree = static_cast<const Tree*>(polymorph.get());
     return remap(*tree, toType, errorStack);
   }
@@ -65,7 +67,7 @@ oatpp::Void ObjectRemapper::remap(const oatpp::Void& polymorph, const oatpp::Typ
 
   /* if expected type is a Tree (root element is a Tree) - then we can just move mapped tree */
   if(toType == data::type::Tree::Class::getType()) {
-    return oatpp::Tree(std::move(tree));
+    return avena::Tree(std::move(tree));
   }
 
   return remap(tree, toType, errorStack);

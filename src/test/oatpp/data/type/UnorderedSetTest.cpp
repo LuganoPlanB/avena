@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,57 +29,57 @@
 #include "oatpp/Types.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 void UnorderedSetTest::onRun() {
 
 
   {
     OATPP_LOGi(TAG, "test default constructor...")
-    oatpp::UnorderedSet<oatpp::String> set;
+    avena::UnorderedSet<avena::String> set;
 
     OATPP_ASSERT(!set)
     OATPP_ASSERT(set == nullptr)
 
     OATPP_ASSERT(set.get() == nullptr)
-    OATPP_ASSERT(set.getValueType()->classId.id == oatpp::data::type::__class::AbstractUnorderedSet::CLASS_ID.id)
+    OATPP_ASSERT(set.getValueType()->classId.id == avena::data::type::__class::AbstractUnorderedSet::CLASS_ID.id)
     OATPP_ASSERT(set.getValueType()->params.size() == 1)
-    OATPP_ASSERT(set.getValueType()->params.front() == oatpp::String::Class::getType())
+    OATPP_ASSERT(set.getValueType()->params.front() == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test empty ilist constructor...")
-    oatpp::UnorderedSet<oatpp::String> set({});
+    avena::UnorderedSet<avena::String> set({});
 
     OATPP_ASSERT(set)
     OATPP_ASSERT(set != nullptr)
     OATPP_ASSERT(set->size() == 0)
 
     OATPP_ASSERT(set.get() != nullptr)
-    OATPP_ASSERT(set.getValueType()->classId.id == oatpp::data::type::__class::AbstractUnorderedSet::CLASS_ID.id)
+    OATPP_ASSERT(set.getValueType()->classId.id == avena::data::type::__class::AbstractUnorderedSet::CLASS_ID.id)
     OATPP_ASSERT(set.getValueType()->params.size() == 1)
-    OATPP_ASSERT(set.getValueType()->params.front() == oatpp::String::Class::getType())
+    OATPP_ASSERT(set.getValueType()->params.front() == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test createShared()...")
-    oatpp::UnorderedSet<oatpp::String> set = oatpp::UnorderedSet<oatpp::String>::createShared();
+    avena::UnorderedSet<avena::String> set = avena::UnorderedSet<avena::String>::createShared();
 
     OATPP_ASSERT(set)
     OATPP_ASSERT(set != nullptr)
     OATPP_ASSERT(set->size() == 0)
 
     OATPP_ASSERT(set.get() != nullptr)
-    OATPP_ASSERT(set.getValueType()->classId.id == oatpp::data::type::__class::AbstractUnorderedSet::CLASS_ID.id)
+    OATPP_ASSERT(set.getValueType()->classId.id == avena::data::type::__class::AbstractUnorderedSet::CLASS_ID.id)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test copy-assignment operator...")
-    oatpp::UnorderedSet<oatpp::String> set1({});
-    oatpp::UnorderedSet<oatpp::String> set2;
+    avena::UnorderedSet<avena::String> set1({});
+    avena::UnorderedSet<avena::String> set2;
 
     set2 = set1;
 
@@ -107,8 +109,8 @@ void UnorderedSetTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test move-assignment operator...")
-    oatpp::UnorderedSet<oatpp::String> set1({});
-    oatpp::UnorderedSet<oatpp::String> set2;
+    avena::UnorderedSet<avena::String> set1({});
+    avena::UnorderedSet<avena::String> set2;
 
     set2 = std::move(set1);
 
@@ -119,17 +121,17 @@ void UnorderedSetTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test polymorphicDispatcher...")
-    oatpp::UnorderedSet<oatpp::String> set = {"a", "b", "c"};
+    avena::UnorderedSet<avena::String> set = {"a", "b", "c"};
 
-    auto polymorphicDispatcher = static_cast<const typename oatpp::data::type::__class::Collection::PolymorphicDispatcher*>(
+    auto polymorphicDispatcher = static_cast<const typename avena::data::type::__class::Collection::PolymorphicDispatcher*>(
       set.getValueType()->polymorphicDispatcher
     );
 
-    polymorphicDispatcher->addItem(set, oatpp::String("a"));
-    polymorphicDispatcher->addItem(set, oatpp::String("b"));
-    polymorphicDispatcher->addItem(set, oatpp::String("c"));
+    polymorphicDispatcher->addItem(set, avena::String("a"));
+    polymorphicDispatcher->addItem(set, avena::String("b"));
+    polymorphicDispatcher->addItem(set, avena::String("c"));
 
-    polymorphicDispatcher->addItem(set, oatpp::String("d"));
+    polymorphicDispatcher->addItem(set, avena::String("d"));
 
     OATPP_ASSERT(set->size() == 4)
 

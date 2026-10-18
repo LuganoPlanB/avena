@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 //
 // Created by Leonid  on 2019-03-25.
 //
@@ -23,7 +25,7 @@
 
 #include "oatpp/macro/component.hpp"
 
-namespace oatpp { namespace test { namespace websocket {
+namespace avena { namespace test { namespace websocket {
 
 namespace {
 
@@ -32,52 +34,52 @@ namespace {
 class TestComponent {
 public:
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, httpServerExecutor)("http-server-exec", [] {
-    return std::make_shared<oatpp::async::Executor>(4, 2);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::async::Executor>, httpServerExecutor)("http-server-exec", [] {
+    return std::make_shared<avena::async::Executor>(4, 2);
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, wsServerExecutor)("ws-server-exec", [] {
-    return std::make_shared<oatpp::async::Executor>(4, 2);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::async::Executor>, wsServerExecutor)("ws-server-exec", [] {
+    return std::make_shared<avena::async::Executor>(4, 2);
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, wsClientExecutor)("ws-client-exec", [] {
-    return std::make_shared<oatpp::async::Executor>(4, 2);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::async::Executor>, wsClientExecutor)("ws-client-exec", [] {
+    return std::make_shared<avena::async::Executor>(4, 2);
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, virtualInterface)([] {
-    return oatpp::network::virtual_::Interface::obtainShared("virtualhost");
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, virtualInterface)([] {
+    return avena::network::virtual_::Interface::obtainShared("virtualhost");
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ServerConnectionProvider>, serverConnectionProvider)([] {
 #ifdef OATPP_TEST_USE_PORT
-    return oatpp::network::server::SimpleTCPConnectionProvider::createShared(OATPP_TEST_USE_PORT);
+    return avena::network::server::SimpleTCPConnectionProvider::createShared(OATPP_TEST_USE_PORT);
 #else
-    OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, interface);
-    return oatpp::network::virtual_::server::ConnectionProvider::createShared(interface);
+    OATPP_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, interface);
+    return avena::network::virtual_::server::ConnectionProvider::createShared(interface);
 #endif
   }());
 
   /**
    *  Create Router component
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)([] {
-    return oatpp::web::server::HttpRouter::createShared();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, httpRouter)([] {
+    return avena::web::server::HttpRouter::createShared();
   }());
 
   /**
    *  Create ConnectionHandler component which uses Router component to route requests
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
-    OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
-    OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor, "http-server-exec");
-    return oatpp::web::server::AsyncHttpConnectionHandler::createShared(router, executor);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ConnectionHandler>, serverConnectionHandler)([] {
+    OATPP_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, router); // get Router component
+    OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, executor, "http-server-exec");
+    return avena::web::server::AsyncHttpConnectionHandler::createShared(router, executor);
   }());
 
   /**
    *  Create ObjectMapper component to serialize/deserialize DTOs in Contoller's API
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)([] {
-    auto objectMapper = std::make_shared<oatpp::json::ObjectMapper>();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::data::mapping::ObjectMapper>, apiObjectMapper)([] {
+    auto objectMapper = std::make_shared<avena::json::ObjectMapper>();
     objectMapper->deserializerConfig().mapper.allowUnknownFields = false;
     return objectMapper;
   }());
@@ -85,60 +87,60 @@ public:
   /**
    *  Create websocket connection handler
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::websocket::AsyncConnectionHandler>, websocketConnectionHandler)([] {
-    OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor, "ws-server-exec");
-    auto connectionHandler = oatpp::websocket::AsyncConnectionHandler::createShared(executor);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::websocket::AsyncConnectionHandler>, websocketConnectionHandler)([] {
+    OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, executor, "ws-server-exec");
+    auto connectionHandler = avena::websocket::AsyncConnectionHandler::createShared(executor);
     connectionHandler->setSocketInstanceListener(std::make_shared<app::AsyncWebSocketInstanceListener>());
     return connectionHandler;
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
 #ifdef OATPP_TEST_USE_PORT
-    return oatpp::network::client::SimpleTCPConnectionProvider::createShared("127.0.0.1", OATPP_TEST_USE_PORT);
+    return avena::network::client::SimpleTCPConnectionProvider::createShared("127.0.0.1", OATPP_TEST_USE_PORT);
 #else
-    OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, interface);
-    return oatpp::network::virtual_::client::ConnectionProvider::createShared(interface);
+    OATPP_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, interface);
+    return avena::network::virtual_::client::ConnectionProvider::createShared(interface);
 #endif
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::websocket::Connector>, connector)([] {
-    OATPP_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider);
-    return oatpp::websocket::Connector::createShared(clientConnectionProvider);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::websocket::Connector>, connector)([] {
+    OATPP_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider);
+    return avena::websocket::Connector::createShared(clientConnectionProvider);
   }());
 
 };
 
-class ClientSocketListener : public oatpp::websocket::AsyncWebSocket::Listener{
+class ClientSocketListener : public avena::websocket::AsyncWebSocket::Listener{
 private:
   v_int64 m_lastTick = 0;
   v_int32 m_messageCounter = 0;
   bool m_printLog;
-  oatpp::data::stream::BufferOutputStream m_messageBuffer;
+  avena::data::stream::BufferOutputStream m_messageBuffer;
 public:
 
   ClientSocketListener(bool printLog)
     : m_printLog(printLog)
   {}
 
-  CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
+  CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const avena::String& message) override {
     return socket->sendPongAsync(message);
   }
 
-  CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
+  CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const avena::String& message) override {
     return nullptr;
   }
 
-  CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_uint16 code, const oatpp::String& message) override {
+  CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_uint16 code, const avena::String& message) override {
     return nullptr;
   }
 
-  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) override {
+  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_uint8 opcode, p_char8 data, avena::v_io_size size) override {
     if(size == 0) {
       m_messageCounter ++;
       auto wholeMessage = m_messageBuffer.toString();
       m_messageBuffer.setCurrentPosition(0);
       if(m_printLog) {
-        auto tick = oatpp::Environment::getMicroTickCount();
+        auto tick = avena::Environment::getMicroTickCount();
         OATPP_LOGd("client", "sid={}, received {}, latency={}, messageCount={}",
                    reinterpret_cast<v_uint64>(socket.get()),
                    wholeMessage, tick - m_lastTick,
@@ -153,14 +155,14 @@ public:
 
 };
 
-class ClientSenderCoroutine : public oatpp::async::Coroutine<ClientSenderCoroutine> {
+class ClientSenderCoroutine : public avena::async::Coroutine<ClientSenderCoroutine> {
 private:
-  std::shared_ptr<oatpp::websocket::AsyncWebSocket> m_socket;
+  std::shared_ptr<avena::websocket::AsyncWebSocket> m_socket;
   v_int32 m_messagesPerClient;
   v_int32 m_messagesCount;
 public:
 
-  ClientSenderCoroutine(const std::shared_ptr<oatpp::websocket::AsyncWebSocket>& socket, v_int32 messagesPerClient)
+  ClientSenderCoroutine(const std::shared_ptr<avena::websocket::AsyncWebSocket>& socket, v_int32 messagesPerClient)
     : m_socket(socket)
     , m_messagesPerClient(messagesPerClient)
     , m_messagesCount(0)
@@ -176,14 +178,14 @@ public:
 
 };
 
-class ClientCoroutine : public oatpp::async::Coroutine<ClientCoroutine> {
+class ClientCoroutine : public avena::async::Coroutine<ClientCoroutine> {
 public:
   static std::atomic<v_int32> CONNECTIONS;
   static std::atomic<v_int32> FINISHED_COUNTER;
 private:
-  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor, "ws-client-exec");
-  OATPP_COMPONENT(std::shared_ptr<oatpp::websocket::Connector>, connector);
-  std::shared_ptr<oatpp::websocket::AsyncWebSocket> socket;
+  OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, executor, "ws-client-exec");
+  OATPP_COMPONENT(std::shared_ptr<avena::websocket::Connector>, connector);
+  std::shared_ptr<avena::websocket::AsyncWebSocket> socket;
   bool m_printLog;
   v_int32 m_messagesPerClient;
 public:
@@ -197,9 +199,9 @@ public:
     return connector->connectAsync("ws").callbackTo(&ClientCoroutine::onConnected);
   }
 
-  Action onConnected(const oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream>& connection) {
+  Action onConnected(const avena::provider::ResourceHandle<avena::data::stream::IOStream>& connection) {
     ++ CONNECTIONS;
-    socket = oatpp::websocket::AsyncWebSocket::createShared(connection, true);
+    socket = avena::websocket::AsyncWebSocket::createShared(connection, true);
     socket->setListener(std::make_shared<ClientSocketListener>(m_printLog));
     executor->execute<ClientSenderCoroutine>(socket, m_messagesPerClient);
     return socket->listenAsync().next(yieldTo(&ClientCoroutine::onFinishListen));
@@ -230,17 +232,17 @@ void FullAsyncTest::onRun() {
 
   TestComponent component;
 
-  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, httpServerExecutor, "http-server-exec");
-  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, wsServerExecutor, "ws-server-exec");
-  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, wsClientExecutor, "ws-client-exec");
+  OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, httpServerExecutor, "http-server-exec");
+  OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, wsServerExecutor, "ws-server-exec");
+  OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, wsClientExecutor, "ws-client-exec");
 
-  oatpp::test::web::ClientServerTestRunner runner;
+  avena::test::web::ClientServerTestRunner runner;
 
   runner.addController(app::AsyncController::createShared());
 
   runner.run([] {
 
-    OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor, "ws-client-exec");
+    OATPP_COMPONENT(std::shared_ptr<avena::async::Executor>, executor, "ws-client-exec");
 
     /////////////////////////////////////////////////////////////////////////////////////
     // Create clients

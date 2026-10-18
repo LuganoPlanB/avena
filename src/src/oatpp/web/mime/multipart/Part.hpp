@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/data/share/LazyStringMap.hpp"
 #include "oatpp/data/resource/Resource.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 /**
  * One part of the multipart.
@@ -37,17 +39,17 @@ class Part {
 public:
   /**
    * Typedef for headers map. Headers map key is case-insensitive.
-   * For more info see &id:oatpp::data::share::LazyStringMap;.
+   * For more info see &id:avena::data::share::LazyStringMap;.
    */
-  typedef oatpp::data::share::LazyStringMultimap<oatpp::data::share::StringKeyLabelCI> Headers;
+  typedef avena::data::share::LazyStringMultimap<avena::data::share::StringKeyLabelCI> Headers;
 private:
-  oatpp::String m_name;
-  oatpp::String m_filename;
+  avena::String m_name;
+  avena::String m_filename;
   Headers m_headers;
   std::shared_ptr<data::resource::Resource> m_payload;
 private:
   const char* m_tagName;
-  std::shared_ptr<oatpp::base::Countable> m_tagObject;
+  std::shared_ptr<avena::base::Countable> m_tagObject;
 public:
 
   /**
@@ -78,13 +80,13 @@ public:
    * Get name of the part.
    * @return - name of the part.
    */
-  oatpp::String getName() const;
+  avena::String getName() const;
 
   /**
    * Get filename of the part (if applicable).
    * @return - filename.
    */
-  oatpp::String getFilename() const;
+  avena::String getFilename() const;
 
   /**
    * Get request's headers map.
@@ -97,31 +99,31 @@ public:
    * @param headerName
    * @return header value
    */
-  oatpp::String getHeader(const oatpp::data::share::StringKeyLabelCI& headerName) const;
+  avena::String getHeader(const avena::data::share::StringKeyLabelCI& headerName) const;
 
   /**
    * Add http header.
-   * @param key - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @param value - &id:oatpp::data::share::StringKeyLabel;.
+   * @param key - &id:avena::data::share::StringKeyLabelCI;.
+   * @param value - &id:avena::data::share::StringKeyLabel;.
    */
-  void putHeader(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value);
+  void putHeader(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value);
 
   /**
    * Add http header if not already exists.
-   * @param key - &id:oatpp::data::share::StringKeyLabelCI;.
-   * @param value - &id:oatpp::data::share::StringKeyLabel;.
+   * @param key - &id:avena::data::share::StringKeyLabelCI;.
+   * @param value - &id:avena::data::share::StringKeyLabel;.
    * @return - `true` if header was added.
    */
-  bool putHeaderIfNotExists(const oatpp::data::share::StringKeyLabelCI& key, const oatpp::data::share::StringKeyLabel& value);
+  bool putHeaderIfNotExists(const avena::data::share::StringKeyLabelCI& key, const avena::data::share::StringKeyLabel& value);
 
   /**
    * Tag-object - object used to associate some data with the Part. <br>
-   * Ex.: used by &id:oatpp::web::mime::multipart::InMemoryPartReader;. to
+   * Ex.: used by &id:avena::web::mime::multipart::InMemoryPartReader;. to
    * associate intermediate buffer with the part.
    * @param tagName
    * @param tagObject
    */
-  void setTag(const char* tagName, const std::shared_ptr<oatpp::base::Countable>& tagObject);
+  void setTag(const char* tagName, const std::shared_ptr<avena::base::Countable>& tagObject);
 
   /**
    * Get tag name.
@@ -133,7 +135,7 @@ public:
    * Get tag object.
    * @return
    */
-  std::shared_ptr<oatpp::base::Countable> getTagObject();
+  std::shared_ptr<avena::base::Countable> getTagObject();
 
   /**
    * Clear the tag.

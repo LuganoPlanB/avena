@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "./Tree.hpp"
 #include "./ObjectMapper.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 class ObjectToTreeMapper : public base::Countable {
 public:
@@ -58,11 +60,11 @@ public:
   };
 
 public:
-  typedef void (*MapperMethod)(const ObjectToTreeMapper*, State&, const oatpp::Void&);
+  typedef void (*MapperMethod)(const ObjectToTreeMapper*, State&, const avena::Void&);
 public:
 
   template<class T>
-  static void mapPrimitive(const ObjectToTreeMapper* mapper, State& state, const oatpp::Void& polymorph){
+  static void mapPrimitive(const ObjectToTreeMapper* mapper, State& state, const avena::Void& polymorph){
     (void) mapper;
     if(polymorph){
       state.tree->setPrimitive<typename T::ObjectType>(* static_cast<typename T::ObjectType*>(polymorph.get()));
@@ -71,15 +73,15 @@ public:
     }
   }
 
-  static void mapString(const ObjectToTreeMapper* mapper, State& state, const oatpp::Void& polymorph);
-  static void mapTree(const ObjectToTreeMapper* mapper, State& state, const oatpp::Void& polymorph);
-  static void mapAny(const ObjectToTreeMapper* mapper, State& state, const oatpp::Void& polymorph);
-  static void mapEnum(const ObjectToTreeMapper* mapper, State& state, const oatpp::Void& polymorph);
+  static void mapString(const ObjectToTreeMapper* mapper, State& state, const avena::Void& polymorph);
+  static void mapTree(const ObjectToTreeMapper* mapper, State& state, const avena::Void& polymorph);
+  static void mapAny(const ObjectToTreeMapper* mapper, State& state, const avena::Void& polymorph);
+  static void mapEnum(const ObjectToTreeMapper* mapper, State& state, const avena::Void& polymorph);
 
-  static void mapCollection(const ObjectToTreeMapper* mapper, State& state, const oatpp::Void& polymorph);
-  static void mapMap(const ObjectToTreeMapper* mapper, State& state, const oatpp::Void& polymorph);
+  static void mapCollection(const ObjectToTreeMapper* mapper, State& state, const avena::Void& polymorph);
+  static void mapMap(const ObjectToTreeMapper* mapper, State& state, const avena::Void& polymorph);
 
-  static void mapObject(const ObjectToTreeMapper* mapper, State& state, const oatpp::Void& polymorph);
+  static void mapObject(const ObjectToTreeMapper* mapper, State& state, const avena::Void& polymorph);
 
 private:
   std::vector<MapperMethod> m_methods;
@@ -89,7 +91,7 @@ public:
 
   void setMapperMethod(const data::type::ClassId& classId, MapperMethod method);
 
-  void map(State& state, const oatpp::Void& polymorph) const;
+  void map(State& state, const avena::Void& polymorph) const;
 
 };
 

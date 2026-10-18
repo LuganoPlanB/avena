@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,13 +29,13 @@
 #include "oatpp/macro/codegen.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
   
 namespace {
   
 #include OATPP_CODEGEN_BEGIN(DTO)
   
-  class TestDto : public oatpp::DTO {
+  class TestDto : public avena::DTO {
     
     DTO_INIT(TestDto, DTO)
 
@@ -68,56 +70,56 @@ void TypeTest::onRun() {
   auto obj = TestDto::createShared();
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_string.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_string.getValueType()->classId == oatpp::data::type::__class::String::CLASS_ID)
+  OATPP_ASSERT(obj->field_string.getValueType()->classId == avena::data::type::__class::String::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_int8.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_int8.getValueType()->classId == oatpp::data::type::__class::Int8::CLASS_ID)
+  OATPP_ASSERT(obj->field_int8.getValueType()->classId == avena::data::type::__class::Int8::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_int16.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_int16.getValueType()->classId == oatpp::data::type::__class::Int16::CLASS_ID)
+  OATPP_ASSERT(obj->field_int16.getValueType()->classId == avena::data::type::__class::Int16::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_int32.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_int32.getValueType()->classId == oatpp::data::type::__class::Int32::CLASS_ID)
+  OATPP_ASSERT(obj->field_int32.getValueType()->classId == avena::data::type::__class::Int32::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_int64.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_int64.getValueType()->classId == oatpp::data::type::__class::Int64::CLASS_ID)
+  OATPP_ASSERT(obj->field_int64.getValueType()->classId == avena::data::type::__class::Int64::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_float32.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_float32.getValueType()->classId == oatpp::data::type::__class::Float32::CLASS_ID)
+  OATPP_ASSERT(obj->field_float32.getValueType()->classId == avena::data::type::__class::Float32::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_float64.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_float64.getValueType()->classId == oatpp::data::type::__class::Float64::CLASS_ID)
+  OATPP_ASSERT(obj->field_float64.getValueType()->classId == avena::data::type::__class::Float64::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_boolean.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_boolean.getValueType()->classId == oatpp::data::type::__class::Boolean::CLASS_ID)
+  OATPP_ASSERT(obj->field_boolean.getValueType()->classId == avena::data::type::__class::Boolean::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_list_string.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_list_string.getValueType()->classId == oatpp::data::type::__class::AbstractList::CLASS_ID)
+  OATPP_ASSERT(obj->field_list_string.getValueType()->classId == avena::data::type::__class::AbstractList::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_list_int32.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_list_int32.getValueType()->classId == oatpp::data::type::__class::AbstractList::CLASS_ID)
+  OATPP_ASSERT(obj->field_list_int32.getValueType()->classId == avena::data::type::__class::AbstractList::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_list_int64.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_list_int64.getValueType()->classId == oatpp::data::type::__class::AbstractList::CLASS_ID)
+  OATPP_ASSERT(obj->field_list_int64.getValueType()->classId == avena::data::type::__class::AbstractList::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_list_float32.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_list_float32.getValueType()->classId == oatpp::data::type::__class::AbstractList::CLASS_ID)
+  OATPP_ASSERT(obj->field_list_float32.getValueType()->classId == avena::data::type::__class::AbstractList::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_list_float64.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_list_float64.getValueType()->classId == oatpp::data::type::__class::AbstractList::CLASS_ID)
+  OATPP_ASSERT(obj->field_list_float64.getValueType()->classId == avena::data::type::__class::AbstractList::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_list_boolean.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_list_boolean.getValueType()->classId == oatpp::data::type::__class::AbstractList::CLASS_ID)
+  OATPP_ASSERT(obj->field_list_boolean.getValueType()->classId == avena::data::type::__class::AbstractList::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->field_map_string_string.getValueType()->classId.name)
-  OATPP_ASSERT(obj->field_map_string_string.getValueType()->classId == oatpp::data::type::__class::AbstractPairList::CLASS_ID)
+  OATPP_ASSERT(obj->field_map_string_string.getValueType()->classId == avena::data::type::__class::AbstractPairList::CLASS_ID)
   
   OATPP_LOGv(TAG, "type: '{}'", obj->obj1.getValueType()->classId.name)
-  OATPP_ASSERT(obj->obj1.getValueType()->classId == oatpp::data::type::__class::AbstractObject::CLASS_ID)
+  OATPP_ASSERT(obj->obj1.getValueType()->classId == avena::data::type::__class::AbstractObject::CLASS_ID)
 
-  OATPP_ASSERT(oatpp::String::Class::getType()->extends(oatpp::String::Class::getType()))
-  OATPP_ASSERT(oatpp::Int32::Class::getType()->extends(oatpp::Int32::Class::getType()))
-  OATPP_ASSERT(!oatpp::String::Class::getType()->extends(oatpp::Int32::Class::getType()))
+  OATPP_ASSERT(avena::String::Class::getType()->extends(avena::String::Class::getType()))
+  OATPP_ASSERT(avena::Int32::Class::getType()->extends(avena::Int32::Class::getType()))
+  OATPP_ASSERT(!avena::String::Class::getType()->extends(avena::Int32::Class::getType()))
 
 }
   

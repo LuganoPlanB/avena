@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,13 +26,13 @@
 
 #include "Bundle.hpp"
 
-namespace oatpp { namespace data {
+namespace avena { namespace data {
 
-void Bundle::put(const oatpp::String& key, const oatpp::Void& polymorph) {
+void Bundle::put(const avena::String& key, const avena::Void& polymorph) {
   m_data.insert({key, polymorph});
 }
 
-const std::unordered_map<oatpp::String, oatpp::Void>& Bundle::getAll() const {
+const std::unordered_map<avena::String, avena::Void>& Bundle::getAll() const {
   return m_data;
 }
 

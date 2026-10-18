@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -52,7 +54,7 @@ OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_SELECTOR(MACRO, (__VA_ARGS__)) (NAME, __VA_
 
 #define OATPP_MACRO_DTO_ENUM_VALUE_1(NAME, VAL) \
 { \
-  oatpp::data::type::EnumValueInfo<EnumType> entry = {EnumType::NAME, index ++, #NAME, #NAME, nullptr}; \
+  avena::data::type::EnumValueInfo<EnumType> entry = {EnumType::NAME, index ++, #NAME, #NAME, nullptr}; \
   info.byName.insert({#NAME, entry}); \
   info.byUnqualifiedName.insert({#NAME, entry}); \
   info.byValue.insert({static_cast<v_uint64>(EnumType::NAME), entry}); \
@@ -61,7 +63,7 @@ OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_SELECTOR(MACRO, (__VA_ARGS__)) (NAME, __VA_
 
 #define OATPP_MACRO_DTO_ENUM_VALUE_2(NAME, VAL, QUALIFIER) \
 { \
-  oatpp::data::type::EnumValueInfo<EnumType> entry = {EnumType::NAME, index ++, QUALIFIER, #NAME, nullptr}; \
+  avena::data::type::EnumValueInfo<EnumType> entry = {EnumType::NAME, index ++, QUALIFIER, #NAME, nullptr}; \
   info.byName.insert({QUALIFIER, entry}); \
   info.byUnqualifiedName.insert({#NAME, entry}); \
   info.byValue.insert({static_cast<v_uint64>(EnumType::NAME), entry}); \
@@ -70,7 +72,7 @@ OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_SELECTOR(MACRO, (__VA_ARGS__)) (NAME, __VA_
 
 #define OATPP_MACRO_DTO_ENUM_VALUE_3(NAME, VAL, QUALIFIER, DESCRIPTION) \
 { \
-  oatpp::data::type::EnumValueInfo<EnumType> entry = {EnumType::NAME, index ++, QUALIFIER, #NAME, DESCRIPTION}; \
+  avena::data::type::EnumValueInfo<EnumType> entry = {EnumType::NAME, index ++, QUALIFIER, #NAME, DESCRIPTION}; \
   info.byName.insert({QUALIFIER, entry}); \
   info.byUnqualifiedName.insert({#NAME, entry}); \
   info.byValue.insert({static_cast<v_uint64>(EnumType::NAME), entry}); \
@@ -98,7 +100,7 @@ enum class NAME : ORDINAL_TYPE {}; \
 \
 namespace { \
 \
-class Z__OATPP_ENUM_META_##NAME : public oatpp::data::type::EnumMeta<NAME> { \
+class Z__OATPP_ENUM_META_##NAME : public avena::data::type::EnumMeta<NAME> { \
 private: \
 \
   static bool init() { \
@@ -131,7 +133,7 @@ enum class NAME : ORDINAL_TYPE { \
   ) \
 }; \
 \
-class Z__OATPP_ENUM_META_##NAME : public oatpp::data::type::EnumMeta<NAME> { \
+class Z__OATPP_ENUM_META_##NAME : public avena::data::type::EnumMeta<NAME> { \
 private: \
 \
   static bool init() { \

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,7 +35,7 @@
 #include <utility>
 #include <list>
 
-namespace oatpp { namespace web { namespace url { namespace mapping {
+namespace avena { namespace web { namespace url { namespace mapping {
 
 /**
  * Class responsible to map "Path" to "Route" by "Path-Pattern".
@@ -44,14 +46,14 @@ class Router : public base::Countable {
 private:
 
   /**
-   * Pair &id:oatpp::web::url::mapping::Pattern; to Endpoint.
+   * Pair &id:avena::web::url::mapping::Pattern; to Endpoint.
    */
   typedef std::pair<std::shared_ptr<Pattern>, Endpoint> Pair;
 
   /**
-   * Convenience typedef &id:oatpp::data::share::StringKeyLabel;.
+   * Convenience typedef &id:avena::data::share::StringKeyLabel;.
    */
-  typedef oatpp::data::share::StringKeyLabel StringKeyLabel;
+  typedef avena::data::share::StringKeyLabel StringKeyLabel;
 public:
 
   /**
@@ -123,7 +125,7 @@ public:
    * @param pathPattern - path pattern for endpoint.
    * @param endpoint - route endpoint.
    */
-  void route(const oatpp::String& pathPattern, const Endpoint& endpoint) {
+  void route(const avena::String& pathPattern, const Endpoint& endpoint) {
     auto pattern = Pattern::parse(pathPattern);
     m_endpointsByPattern.push_back({pattern, endpoint});
   }
@@ -145,7 +147,7 @@ public:
     return Route();
   }
   
-  void logRouterMappings(const oatpp::data::share::StringKeyLabel &branch) const {
+  void logRouterMappings(const avena::data::share::StringKeyLabel &branch) const {
 
     for(auto& pair : m_endpointsByPattern) {
       auto mapping = pair.first->toString();

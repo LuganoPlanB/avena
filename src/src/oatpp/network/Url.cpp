@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,9 +28,9 @@
 
 #include <cstdlib>
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
-oatpp::String Url::Parser::parseScheme(oatpp::utils::parser::Caret& caret) {
+avena::String Url::Parser::parseScheme(avena::utils::parser::Caret& caret) {
   v_buff_size pos0 = caret.getPosition();
   caret.findChar(':');
   v_buff_size size = caret.getPosition() - pos0;
@@ -36,12 +38,12 @@ oatpp::String Url::Parser::parseScheme(oatpp::utils::parser::Caret& caret) {
     std::unique_ptr<v_char8[]> buff(new v_char8[static_cast<unsigned long>(size)]);
     std::memcpy(buff.get(), &caret.getData()[pos0], static_cast<size_t>(size));
     utils::String::lowerCase_ASCII(buff.get(), size);
-    return oatpp::String(reinterpret_cast<const char*>(buff.get()), size);
+    return avena::String(reinterpret_cast<const char*>(buff.get()), size);
   }
   return nullptr;
 }
 
-Url::Authority Url::Parser::parseAuthority(oatpp::utils::parser::Caret& caret) {
+Url::Authority Url::Parser::parseAuthority(avena::utils::parser::Caret& caret) {
   
   const char* data = caret.getData();
   v_buff_size pos0 = caret.getPosition();
@@ -75,11 +77,11 @@ Url::Authority Url::Parser::parseAuthority(oatpp::utils::parser::Caret& caret) {
   Url::Authority result;
   
   if(atPos > -1) {
-    result.userInfo = oatpp::String(&data[pos0], atPos - pos0);
+    result.userInfo = avena::String(&data[pos0], atPos - pos0);
   }
   
   if(portPos > hostPos) {
-    result.host = oatpp::String(&data[hostPos], portPos - 1 - hostPos);
+    result.host = avena::String(&data[hostPos], portPos - 1 - hostPos);
     char* end;
     result.port = static_cast<v_int32>(std::strtol(&data[portPos], &end, 10));
     bool success = ((reinterpret_cast<v_buff_size>(end) - reinterpret_cast<v_buff_size>(&data[portPos])) == pos - portPos);
@@ -87,14 +89,14 @@ Url::Authority Url::Parser::parseAuthority(oatpp::utils::parser::Caret& caret) {
       caret.setError("Invalid port string");
     }
   } else {
-    result.host = oatpp::String(&data[hostPos], pos - pos0);
+    result.host = avena::String(&data[hostPos], pos - pos0);
   }
   
   return result;
   
 }
 
-oatpp::String Url::Parser::parsePath(oatpp::utils::parser::Caret& caret) {
+avena::String Url::Parser::parsePath(avena::utils::parser::Caret& caret) {
   auto label = caret.putLabel();
   caret.findCharFromSet("?#", 2);
   if(label.getSize() > 0) {
@@ -103,7 +105,7 @@ oatpp::String Url::Parser::parsePath(oatpp::utils::parser::Caret& caret) {
   return nullptr;
 }
 
-void Url::Parser::parseQueryParams(Url::Parameters& params, oatpp::utils::parser::Caret& caret) {
+void Url::Parser::parseQueryParams(Url::Parameters& params, avena::utils::parser::Caret& caret) {
 
   if(caret.findChar('?')) {
 
@@ -127,24 +129,24 @@ void Url::Parser::parseQueryParams(Url::Parameters& params, oatpp::utils::parser
   
 }
 
-void Url::Parser::parseQueryParams(Url::Parameters& params, const oatpp::String& str) {
-  oatpp::utils::parser::Caret caret(str.getPtr());
+void Url::Parser::parseQueryParams(Url::Parameters& params, const avena::String& str) {
+  avena::utils::parser::Caret caret(str.getPtr());
   parseQueryParams(params, caret);
 }
 
-Url::Parameters Url::Parser::parseQueryParams(oatpp::utils::parser::Caret& caret) {
+Url::Parameters Url::Parser::parseQueryParams(avena::utils::parser::Caret& caret) {
   Url::Parameters params;
   parseQueryParams(params, caret);
   return params;
 }
 
-Url::Parameters Url::Parser::parseQueryParams(const oatpp::String& str) {
+Url::Parameters Url::Parser::parseQueryParams(const avena::String& str) {
   Url::Parameters params;
   parseQueryParams(params, str);
   return params;
 }
 
-Url Url::Parser::parseUrl(oatpp::utils::parser::Caret& caret) {
+Url Url::Parser::parseUrl(avena::utils::parser::Caret& caret) {
 
   Url result;
 
@@ -172,8 +174,8 @@ Url Url::Parser::parseUrl(oatpp::utils::parser::Caret& caret) {
   return result;
 }
 
-Url Url::Parser::parseUrl(const oatpp::String& str) {
-  oatpp::utils::parser::Caret caret(str);
+Url Url::Parser::parseUrl(const avena::String& str) {
+  avena::utils::parser::Caret caret(str);
   return parseUrl(caret);
 }
   

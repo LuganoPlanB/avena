@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,15 +29,15 @@
 #include "openssl/ssl.h"
 #include "oatpp-openssl/ErrorStack.hpp"
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
-TrustStore::TrustStore(const oatpp::String &file, const oatpp::String &dir)
+TrustStore::TrustStore(const avena::String &file, const avena::String &dir)
   : m_cafile(file), m_cadir(dir)
 {}
 
 void TrustStore::configure(SSL_CTX *ctx) {
   if (SSL_CTX_load_verify_locations(ctx, m_cafile?m_cafile->c_str():nullptr, m_cadir?m_cadir->c_str():nullptr) <= 0) {
-    ErrorStack::logErrors("[oatpp::openssl::configurer::TrustStore::configure()]");
+    ErrorStack::logErrors("[avena::openssl::configurer::TrustStore::configure()]");
     throw std::runtime_error("Call to 'SSL_CTX_load_verify_locations' failed.");
   }
   SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, nullptr);

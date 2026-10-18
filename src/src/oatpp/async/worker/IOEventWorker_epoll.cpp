@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -36,7 +38,7 @@
 #include <sys/epoll.h>
 #include <sys/eventfd.h>
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 void IOEventWorker::initEventQueue() {
 
@@ -47,23 +49,23 @@ void IOEventWorker::initEventQueue() {
 #endif
 
   if(m_eventQueueHandle == -1) {
-    OATPP_LOGe("[oatpp::async::worker::IOEventWorker::initEventQueue()]", "Error. Call to ::epoll_create1() failed. errno={}", errno)
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::initEventQueue()]: Error. Call to ::epoll_create1() failed.");
+    OATPP_LOGe("[avena::async::worker::IOEventWorker::initEventQueue()]", "Error. Call to ::epoll_create1() failed. errno={}", errno)
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::initEventQueue()]: Error. Call to ::epoll_create1() failed.");
   }
 
   m_outEvents = std::unique_ptr<v_char8[]>(new (std::nothrow) v_char8[MAX_EVENTS * sizeof(epoll_event)]);
 
   if(!m_outEvents) {
-    OATPP_LOGe("[oatpp::async::worker::IOEventWorker::initEventQueue()]",
+    OATPP_LOGe("[avena::async::worker::IOEventWorker::initEventQueue()]",
                "Error. Unable to allocate {} bytes for events.", MAX_EVENTS * sizeof(epoll_event))
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::initEventQueue()]: Error. Unable to allocate memory for events.");
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::initEventQueue()]: Error. Unable to allocate memory for events.");
   }
 
   m_wakeupTrigger = ::eventfd(0, EFD_NONBLOCK);
 
   if(m_wakeupTrigger == -1) {
-    OATPP_LOGe("[oatpp::async::worker::IOEventWorker::initEventQueue()]", "Error. Call to ::eventfd() failed. errno={}", errno)
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::initEventQueue()]: Error. Call to ::eventfd() failed.");
+    OATPP_LOGe("[avena::async::worker::IOEventWorker::initEventQueue()]", "Error. Call to ::eventfd() failed. errno={}", errno)
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::initEventQueue()]: Error. Call to ::eventfd() failed.");
   }
 
   epoll_event event;
@@ -79,8 +81,8 @@ void IOEventWorker::initEventQueue() {
 
   auto res = ::epoll_ctl(m_eventQueueHandle, EPOLL_CTL_ADD, m_wakeupTrigger, &event);
   if(res == -1) {
-    OATPP_LOGe("[oatpp::async::worker::IOEventWorker::initEventQueue()]", "Error. Call to ::epoll_ctl failed. errno={}", errno)
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::initEventQueue()]: Error. Call to ::epoll_ctl() failed.");
+    OATPP_LOGe("[avena::async::worker::IOEventWorker::initEventQueue()]", "Error. Call to ::epoll_ctl failed. errno={}", errno)
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::initEventQueue()]: Error. Call to ::epoll_ctl() failed.");
   }
 
 }
@@ -105,8 +107,8 @@ void IOEventWorker::setCoroutineEvent(CoroutineHandle* coroutine, int operation,
     case Action::TYPE_IO_REPEAT: break;
 
     default:
-      OATPP_LOGe("[oatpp::async::worker::IOEventWorker::pushCoroutineToQueue()]", "Error. Unknown Action. action.getType()=={}", action.getType())
-      throw std::runtime_error("[oatpp::async::worker::IOEventWorker::pushCoroutineToQueue()]: Error. Unknown Action.");
+      OATPP_LOGe("[avena::async::worker::IOEventWorker::pushCoroutineToQueue()]", "Error. Unknown Action. action.getType()=={}", action.getType())
+      throw std::runtime_error("[avena::async::worker::IOEventWorker::pushCoroutineToQueue()]: Error. Unknown Action.");
 
   }
 
@@ -126,21 +128,21 @@ void IOEventWorker::setCoroutineEvent(CoroutineHandle* coroutine, int operation,
       break;
 
     default:
-      throw std::runtime_error("[oatpp::async::worker::IOEventWorker::pushCoroutineToQueue()]: Error. Unknown Action Event Type.");
+      throw std::runtime_error("[avena::async::worker::IOEventWorker::pushCoroutineToQueue()]: Error. Unknown Action Event Type.");
 
   }
 
   auto res = epoll_ctl(m_eventQueueHandle, operation, action.getIOHandle(), &event);
   if(res == -1) {
-    OATPP_LOGe("[oatpp::async::worker::IOEventWorker::setEpollEvent()]", "Error. Call to epoll_ctl failed. operation={}, errno={}", operation, errno)
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::setEpollEvent()]: Error. Call to epoll_ctl failed.");
+    OATPP_LOGe("[avena::async::worker::IOEventWorker::setEpollEvent()]", "Error. Call to epoll_ctl failed. operation={}, errno={}", operation, errno)
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::setEpollEvent()]: Error. Call to epoll_ctl failed.");
   }
 
 }
 
 void IOEventWorker::consumeBacklog() {
 
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_backlogLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_backlogLock);
 
   auto curr = m_backlog.first;
   while(curr != nullptr) {
@@ -160,7 +162,7 @@ void IOEventWorker::waitEvents() {
   auto eventsCount = epoll_wait(m_eventQueueHandle, outEvents, MAX_EVENTS, -1);
 
   if((eventsCount < 0) && (errno != EINTR)) {
-    OATPP_LOGe("[oatpp::async::worker::IOEventWorker::waitEvents()]", "Error:\n"
+    OATPP_LOGe("[avena::async::worker::IOEventWorker::waitEvents()]", "Error:\n"
                "errno={}\n"
                "in-events={}\n"
                "foreman={}\n"
@@ -169,7 +171,7 @@ void IOEventWorker::waitEvents() {
                errno, m_inEventsCount,
                reinterpret_cast<v_buff_usize>(m_foreman), reinterpret_cast<v_buff_usize>(this),
                static_cast<v_int32>(m_specialization))
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::waitEvents()]: Error. Event loop failed.");
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::waitEvents()]: Error. Event loop failed.");
   }
 
   utils::FastQueue<CoroutineHandle> popQueue;
@@ -220,11 +222,11 @@ void IOEventWorker::waitEvents() {
             res = epoll_ctl(m_eventQueueHandle, EPOLL_CTL_DEL, action.getIOHandle(), nullptr);
             if(res == -1) {
               OATPP_LOGe(
-                "[oatpp::async::worker::IOEventWorker::waitEvents()]",
+                "[avena::async::worker::IOEventWorker::waitEvents()]",
                 "Error. Call to epoll_ctl failed. operation={}, errno={}. action_code={}, worker_specialization={}",
                 EPOLL_CTL_DEL, errno, action.getIOEventCode(), static_cast<v_int32>(m_specialization)
               )
-              throw std::runtime_error("[oatpp::async::worker::IOEventWorker::waitEvents()]: Error. Call to epoll_ctl failed.");
+              throw std::runtime_error("[avena::async::worker::IOEventWorker::waitEvents()]: Error. Call to epoll_ctl failed.");
             }
 
             setCoroutineScheduledAction(coroutine, std::move(action));
@@ -237,11 +239,11 @@ void IOEventWorker::waitEvents() {
             res = epoll_ctl(m_eventQueueHandle, EPOLL_CTL_DEL, action.getIOHandle(), nullptr);
             if(res == -1) {
               OATPP_LOGe(
-                "[oatpp::async::worker::IOEventWorker::waitEvents()]",
+                "[avena::async::worker::IOEventWorker::waitEvents()]",
                 "Error. Call to epoll_ctl failed. operation={}, errno={}. action_code={}, worker_specialization={}",
                 EPOLL_CTL_DEL, errno, action.getIOEventCode(), static_cast<v_int32>(m_specialization)
               )
-              throw std::runtime_error("[oatpp::async::worker::IOEventWorker::waitEvents()]: Error. Call to epoll_ctl failed.");
+              throw std::runtime_error("[avena::async::worker::IOEventWorker::waitEvents()]: Error. Call to epoll_ctl failed.");
             }
 
             setCoroutineScheduledAction(coroutine, std::move(action));
@@ -256,8 +258,8 @@ void IOEventWorker::waitEvents() {
 
             res = epoll_ctl(m_eventQueueHandle, EPOLL_CTL_DEL, prevAction.getIOHandle(), nullptr);
             if(res == -1) {
-              OATPP_LOGe("[oatpp::async::worker::IOEventWorker::waitEvents()]", "Error. Call to epoll_ctl failed. operation={}, errno={}", EPOLL_CTL_DEL, errno)
-              throw std::runtime_error("[oatpp::async::worker::IOEventWorker::waitEvents()]: Error. Call to epoll_ctl failed.");
+              OATPP_LOGe("[avena::async::worker::IOEventWorker::waitEvents()]", "Error. Call to epoll_ctl failed. operation={}, errno={}", EPOLL_CTL_DEL, errno)
+              throw std::runtime_error("[avena::async::worker::IOEventWorker::waitEvents()]: Error. Call to epoll_ctl failed.");
             }
 
             setCoroutineScheduledAction(coroutine, std::move(action));

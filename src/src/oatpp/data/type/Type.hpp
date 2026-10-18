@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,7 +35,7 @@
 #include <vector>
 #include <string>
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 class Type; // FWD
 
@@ -472,12 +474,12 @@ public:
     const Type* parent = nullptr;
 
     /**
-     * polymorphicDispatcher extends &id:oatpp::data::type::__class::Collection::PolymorphicDispatcher;.
+     * polymorphicDispatcher extends &id:avena::data::type::__class::Collection::PolymorphicDispatcher;.
      */
      bool isCollection = false;
 
     /**
-     * polymorphicDispatcher extends &id:oatpp::data::type::__class::Map::PolymorphicDispatcher;.
+     * polymorphicDispatcher extends &id:avena::data::type::__class::Map::PolymorphicDispatcher;.
      */
      bool isMap = false;
   };
@@ -525,12 +527,12 @@ public:
   const Type* const parent;
 
   /**
-   * polymorphicDispatcher extends &id:oatpp::data::type::__class::Collection::PolymorphicDispatcher;.
+   * polymorphicDispatcher extends &id:avena::data::type::__class::Collection::PolymorphicDispatcher;.
    */
   const bool isCollection;
 
   /**
-   * polymorphicDispatcher extends &id:oatpp::data::type::__class::Map::PolymorphicDispatcher;.
+   * polymorphicDispatcher extends &id:avena::data::type::__class::Map::PolymorphicDispatcher;.
    */
   const bool isMap;
 
@@ -558,7 +560,7 @@ template<class Wrapper>
 Wrapper ObjectWrapper<T, Clazz>::cast() const {
   if(!Wrapper::Class::getType()->extends(m_valueType)) {
     if(Wrapper::Class::getType() != __class::Void::getType() && m_valueType != __class::Void::getType()) {
-      throw std::runtime_error("[oatpp::data::type::ObjectWrapper::cast()]: Error. Invalid cast "
+      throw std::runtime_error("[avena::data::type::ObjectWrapper::cast()]: Error. Invalid cast "
                                "from '" + std::string(m_valueType->classId.name) + "' to '" +
                                std::string(Wrapper::Class::getType()->classId.name) + "'.");
     }
@@ -569,7 +571,7 @@ Wrapper ObjectWrapper<T, Clazz>::cast() const {
 template <class T, class Clazz>
 void ObjectWrapper<T, Clazz>::checkType(const Type* _this, const Type* other) {
   if(!_this->extends(other)) {
-    throw std::runtime_error("[oatpp::data::type::ObjectWrapper::checkType()]: Error. "
+    throw std::runtime_error("[avena::data::type::ObjectWrapper::checkType()]: Error. "
                              "Type mismatch: stored '" + std::string(_this->classId.name) + "' vs "
                              "assigned '" + std::string(other->classId.name) + "'.");
   }
@@ -623,9 +625,9 @@ public: \
 namespace std {
 
 template<>
-struct hash<oatpp::data::type::ClassId> {
+struct hash<avena::data::type::ClassId> {
 
-  typedef oatpp::data::type::ClassId argument_type;
+  typedef avena::data::type::ClassId argument_type;
   typedef v_uint64 result_type;
 
   result_type operator()(argument_type const& v) const noexcept {
@@ -635,9 +637,9 @@ struct hash<oatpp::data::type::ClassId> {
 };
 
 template<>
-struct hash<oatpp::data::type::Void> {
+struct hash<avena::data::type::Void> {
 
-  typedef oatpp::data::type::Void argument_type;
+  typedef avena::data::type::Void argument_type;
   typedef v_uint64 result_type;
 
   result_type operator()(argument_type const& v) const noexcept {

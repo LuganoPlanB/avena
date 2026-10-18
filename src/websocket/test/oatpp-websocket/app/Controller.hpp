@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 //
 //  Controller.hpp
 //  web-starter-project
@@ -19,16 +21,16 @@
 #include "oatpp/macro/component.hpp"
 
 
-namespace oatpp { namespace test { namespace websocket { namespace app {
+namespace avena { namespace test { namespace websocket { namespace app {
 
-class Controller : public oatpp::web::server::api::ApiController {
+class Controller : public avena::web::server::api::ApiController {
 protected:
   Controller(const std::shared_ptr<ObjectMapper> &objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 
 private:
-  OATPP_COMPONENT(std::shared_ptr<oatpp::websocket::ConnectionHandler>, websocketConnectionHandler);
+  OATPP_COMPONENT(std::shared_ptr<avena::websocket::ConnectionHandler>, websocketConnectionHandler);
 public:
 
   /**
@@ -45,7 +47,7 @@ public:
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
   ENDPOINT("GET", "/ws", websocketConnect, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
-    return oatpp::websocket::Handshaker::serversideHandshake(request->getHeaders(), websocketConnectionHandler);
+    return avena::websocket::Handshaker::serversideHandshake(request->getHeaders(), websocketConnectionHandler);
   }
 
   /**

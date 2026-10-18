@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 #include "oatpp/data/stream/BufferStream.hpp"
 #include "oatpp/utils/Conversion.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http {
+namespace avena { namespace web { namespace protocol { namespace http {
   
 const Status Status::CODE_100(100, "Continue");
 const Status Status::CODE_101(101, "Switching");
@@ -138,7 +140,7 @@ const char* const Header::EXPECT = "Expect";
 const char* const Range::UNIT_BYTES = "bytes";
 const char* const ContentRange::UNIT_BYTES = "bytes";
   
-oatpp::String Range::toString() const {
+avena::String Range::toString() const {
   data::stream::BufferOutputStream stream(256);
   stream.writeSimple(units->data(), static_cast<v_buff_size>(units->size()));
   stream.writeSimple("=", 1);
@@ -148,7 +150,7 @@ oatpp::String Range::toString() const {
   return stream.toString();
 }
 
-Range Range::parse(oatpp::utils::parser::Caret& caret) {
+Range Range::parse(avena::utils::parser::Caret& caret) {
 
   auto unitsLabel = caret.putLabel();
   if(caret.findChar('=')) {
@@ -163,12 +165,12 @@ Range Range::parse(oatpp::utils::parser::Caret& caret) {
   
 }
 
-Range Range::parse(const oatpp::String& str) {
-  oatpp::utils::parser::Caret caret(str);
+Range Range::parse(const avena::String& str) {
+  avena::utils::parser::Caret caret(str);
   return parse(caret);
 }
 
-Range Range::parseNextRemaining(oatpp::utils::parser::Caret& caret, const oatpp::String& units) {
+Range Range::parseNextRemaining(avena::utils::parser::Caret& caret, const avena::String& units) {
 
   if(!caret.canContinueAtChar('-', 1)) return Range();
 
@@ -178,12 +180,12 @@ Range Range::parseNextRemaining(oatpp::utils::parser::Caret& caret, const oatpp:
 
   bool success;
   auto start = -1;
-  auto end = oatpp::utils::Conversion::strToInt64(endLabel.toString(), success);
+  auto end = avena::utils::Conversion::strToInt64(endLabel.toString(), success);
   if(!success) return Range();
   return Range(units, start, end);
 }
 
-Range Range::parseNext(oatpp::utils::parser::Caret& caret, const oatpp::String& units) {
+Range Range::parseNext(avena::utils::parser::Caret& caret, const avena::String& units) {
 
   if(caret.canContinueAtChar('-')) return parseNextRemaining(caret, units);
 
@@ -201,17 +203,17 @@ Range Range::parseNext(oatpp::utils::parser::Caret& caret, const oatpp::String& 
   endLabel.end();
 
   bool success;
-  auto start = oatpp::utils::Conversion::strToInt64(startLabel.toString(), success);
+  auto start = avena::utils::Conversion::strToInt64(startLabel.toString(), success);
   if(!success) return Range();
   v_int64 end = -1;
   if(endLabel.getSize() > 0) {
-    end = oatpp::utils::Conversion::strToInt64(endLabel.toString(), success);
+    end = avena::utils::Conversion::strToInt64(endLabel.toString(), success);
     if(!success) return Range();
   }
   return Range(units, start, end);
 }
 
-void Range::parseAll(std::vector<Range>& ranges, oatpp::utils::parser::Caret& caret) {
+void Range::parseAll(std::vector<Range>& ranges, avena::utils::parser::Caret& caret) {
   caret.skipBlankChars();
   auto range = parse(caret);
   while(range.valid) {
@@ -225,12 +227,12 @@ void Range::parseAll(std::vector<Range>& ranges, oatpp::utils::parser::Caret& ca
   }
 }
 
-void Range::parseAll(std::vector<Range>& ranges, const oatpp::String& str) {
-  oatpp::utils::parser::Caret caret(str);
+void Range::parseAll(std::vector<Range>& ranges, const avena::String& str) {
+  avena::utils::parser::Caret caret(str);
   return parseAll(ranges, caret);
 }
 
-oatpp::String ContentRange::toString() const {
+avena::String ContentRange::toString() const {
   data::stream::BufferOutputStream stream(256);
   stream.writeSimple(units->data(), static_cast<v_buff_size>(units->size()));
   stream.writeSimple(" ", 1);
@@ -246,7 +248,7 @@ oatpp::String ContentRange::toString() const {
   return stream.toString();
 }
 
-ContentRange ContentRange::parse(oatpp::utils::parser::Caret& caret) {
+ContentRange ContentRange::parse(avena::utils::parser::Caret& caret) {
 
   auto unitsLabel = caret.putLabel();
   if(caret.findChar(' ')) {
@@ -279,26 +281,26 @@ ContentRange ContentRange::parse(oatpp::utils::parser::Caret& caret) {
   caret.findRN();
   sizeLabel.end();
   
-  v_int64 start = oatpp::utils::Conversion::strToInt64(startLabel.getData());
-  v_int64 end = oatpp::utils::Conversion::strToInt64(endLabel.getData());
+  v_int64 start = avena::utils::Conversion::strToInt64(startLabel.getData());
+  v_int64 end = avena::utils::Conversion::strToInt64(endLabel.getData());
   v_int64 size = 0;
   bool isSizeKnown = false;
   if(sizeLabel.getData()[0] != '*') {
     isSizeKnown = true;
-    size = oatpp::utils::Conversion::strToInt64(sizeLabel.getData());
+    size = avena::utils::Conversion::strToInt64(sizeLabel.getData());
   }
   
   return ContentRange(unitsLabel.toString(), start, end, size, isSizeKnown);
   
 }
 
-ContentRange ContentRange::parse(const oatpp::String& str) {
-  oatpp::utils::parser::Caret caret(str);
+ContentRange ContentRange::parse(const avena::String& str) {
+  avena::utils::parser::Caret caret(str);
   return parse(caret);
 }
 
 
-oatpp::String HeaderValueData::getTitleParamValue(const data::share::StringKeyLabelCI& key) const {
+avena::String HeaderValueData::getTitleParamValue(const data::share::StringKeyLabelCI& key) const {
   auto it = titleParams.find(key);
   if(it != titleParams.end()) {
     return it->second.toString();
@@ -309,29 +311,29 @@ oatpp::String HeaderValueData::getTitleParamValue(const data::share::StringKeyLa
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Parser
   
-oatpp::data::share::StringKeyLabelCI Parser::parseHeaderNameLabel(const std::shared_ptr<std::string>& headersText,
-                                                                  oatpp::utils::parser::Caret& caret) {
+avena::data::share::StringKeyLabelCI Parser::parseHeaderNameLabel(const std::shared_ptr<std::string>& headersText,
+                                                                  avena::utils::parser::Caret& caret) {
   const char* data = caret.getData();
   for(v_buff_size i = caret.getPosition(); i < caret.getDataSize(); i++) {
     v_char8 a = static_cast<v_char8>(data[i]);
     if(a == ':' || a == ' '){
-      oatpp::data::share::StringKeyLabelCI label(headersText, &data[caret.getPosition()], i - caret.getPosition());
+      avena::data::share::StringKeyLabelCI label(headersText, &data[caret.getPosition()], i - caret.getPosition());
       caret.setPosition(i);
       return label;
       
     }
   }
-  return oatpp::data::share::StringKeyLabelCI(nullptr, nullptr, 0);
+  return avena::data::share::StringKeyLabelCI(nullptr, nullptr, 0);
 }
   
 void Parser::parseRequestStartingLine(RequestStartingLine& line,
                                       const std::shared_ptr<std::string>& headersText,
-                                      oatpp::utils::parser::Caret& caret,
+                                      avena::utils::parser::Caret& caret,
                                       Status& error) {
 
   auto methodLabel = caret.putLabel();
   if(caret.findChar(' ')){
-    line.method = oatpp::data::share::StringKeyLabel(headersText, methodLabel.getData(), methodLabel.getSize());
+    line.method = avena::data::share::StringKeyLabel(headersText, methodLabel.getData(), methodLabel.getSize());
     caret.inc();
   } else {
     error = Status::CODE_400;
@@ -340,7 +342,7 @@ void Parser::parseRequestStartingLine(RequestStartingLine& line,
 
   auto pathLabel = caret.putLabel();
   if(caret.findChar(' ')){
-    line.path = oatpp::data::share::StringKeyLabel(headersText, pathLabel.getData(), pathLabel.getSize());
+    line.path = avena::data::share::StringKeyLabel(headersText, pathLabel.getData(), pathLabel.getSize());
     caret.inc();
   } else {
     error = Status::CODE_400;
@@ -349,7 +351,7 @@ void Parser::parseRequestStartingLine(RequestStartingLine& line,
 
   auto protocolLabel = caret.putLabel();
   if(caret.findRN()){
-    line.protocol = oatpp::data::share::StringKeyLabel(headersText, protocolLabel.getData(), protocolLabel.getSize());
+    line.protocol = avena::data::share::StringKeyLabel(headersText, protocolLabel.getData(), protocolLabel.getSize());
     caret.skipRN();
   } else {
     error = Status::CODE_400;
@@ -360,12 +362,12 @@ void Parser::parseRequestStartingLine(RequestStartingLine& line,
   
 void Parser::parseResponseStartingLine(ResponseStartingLine& line,
                                        const std::shared_ptr<std::string>& headersText,
-                                       oatpp::utils::parser::Caret& caret,
+                                       avena::utils::parser::Caret& caret,
                                        Status& error) {
 
   auto protocolLabel = caret.putLabel();
   if(caret.findChar(' ')){
-    line.protocol = oatpp::data::share::StringKeyLabel(headersText, protocolLabel.getData(), protocolLabel.getSize());
+    line.protocol = avena::data::share::StringKeyLabel(headersText, protocolLabel.getData(), protocolLabel.getSize());
     caret.inc();
   } else {
     error = Status::CODE_400;
@@ -376,7 +378,7 @@ void Parser::parseResponseStartingLine(ResponseStartingLine& line,
 
   auto descriptionLabel = caret.putLabel();
   if(caret.findRN()){
-    line.description = oatpp::data::share::StringKeyLabel(headersText, descriptionLabel.getData(), descriptionLabel.getSize());
+    line.description = avena::data::share::StringKeyLabel(headersText, descriptionLabel.getData(), descriptionLabel.getSize());
     caret.skipRN();
   } else {
     error = Status::CODE_400;
@@ -387,7 +389,7 @@ void Parser::parseResponseStartingLine(ResponseStartingLine& line,
   
 void Parser::parseOneHeader(Headers& headers,
                             const std::shared_ptr<std::string>& headersText,
-                            oatpp::utils::parser::Caret& caret,
+                            avena::utils::parser::Caret& caret,
                             Status& error)
 {
   caret.skipChar(' ');
@@ -401,7 +403,7 @@ void Parser::parseOneHeader(Headers& headers,
     caret.skipChar(' ');
     v_buff_size valuePos0 = caret.getPosition();
     caret.findRN();
-    headers.put_LockFree(name, oatpp::data::share::StringKeyLabel(headersText, &caret.getData()[valuePos0], caret.getPosition() - valuePos0));
+    headers.put_LockFree(name, avena::data::share::StringKeyLabel(headersText, &caret.getData()[valuePos0], caret.getPosition() - valuePos0));
     caret.skipRN();
   } else {
     error = Status::CODE_431;
@@ -411,7 +413,7 @@ void Parser::parseOneHeader(Headers& headers,
 
 void Parser::parseHeaders(Headers& headers,
                           const std::shared_ptr<std::string>& headersText,
-                          oatpp::utils::parser::Caret& caret,
+                          avena::utils::parser::Caret& caret,
                           Status& error)
 {
   
@@ -426,9 +428,9 @@ void Parser::parseHeaders(Headers& headers,
   
 }
 
-void Parser::parseHeaderValueData(HeaderValueData& data, const oatpp::data::share::StringKeyLabel& headerValue, char separator) {
+void Parser::parseHeaderValueData(HeaderValueData& data, const avena::data::share::StringKeyLabel& headerValue, char separator) {
 
-  oatpp::utils::parser::Caret caret(reinterpret_cast<const char*>(headerValue.getData()), headerValue.getSize());
+  avena::utils::parser::Caret caret(reinterpret_cast<const char*>(headerValue.getData()), headerValue.getSize());
 
   const char charSet[5] = {' ', '=', separator, '\r', '\n'};
   const char charSet2[4] = {' ', separator, '\r', '\n'};

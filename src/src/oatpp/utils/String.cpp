@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 #include "String.hpp"
 #include <cstring>
 
-namespace oatpp { namespace utils {
+namespace avena { namespace utils {
 
 v_buff_size String::compare(const void* data1, v_buff_size size1, const void* data2, v_buff_size size2) {
 

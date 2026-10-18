@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,14 +28,14 @@
 
 #include <cstdlib>
 
-namespace oatpp { namespace utils {
+namespace avena { namespace utils {
   
 v_int32 Conversion::strToInt32(const char* str){
   char* end;
   return static_cast<v_int32>(std::strtol(str, &end, 10));
 }
 
-v_int32 Conversion::strToInt32(const oatpp::String& str, bool& success){
+v_int32 Conversion::strToInt32(const avena::String& str, bool& success){
   if(str == nullptr || str->empty()) {
     success = false;
     return 0;
@@ -49,7 +51,7 @@ v_uint32 Conversion::strToUInt32(const char* str){
   return static_cast<v_uint32>(std::strtoul(str, &end, 10));
 }
 
-v_uint32 Conversion::strToUInt32(const oatpp::String& str, bool& success){
+v_uint32 Conversion::strToUInt32(const avena::String& str, bool& success){
   if(str == nullptr || str->empty()) {
     success = false;
     return 0;
@@ -65,7 +67,7 @@ v_int64 Conversion::strToInt64(const char* str){
   return std::strtoll(str, &end, 10);
 }
 
-v_int64 Conversion::strToInt64(const oatpp::String& str, bool& success){
+v_int64 Conversion::strToInt64(const avena::String& str, bool& success){
   if(str == nullptr || str->empty()) {
     success = false;
     return 0;
@@ -81,7 +83,7 @@ v_uint64 Conversion::strToUInt64(const char* str){
   return std::strtoull(str, &end, 10);
 }
 
-v_uint64 Conversion::strToUInt64(const oatpp::String& str, bool& success){
+v_uint64 Conversion::strToUInt64(const avena::String& str, bool& success){
   if(str == nullptr || str->empty()) {
     success = false;
     return 0;
@@ -108,38 +110,38 @@ v_buff_size Conversion::uint64ToCharSequence(v_uint64 value, p_char8 data, v_buf
   return snprintf(reinterpret_cast<char*>(data), static_cast<size_t>(n), "%llu", static_cast<long long unsigned int>(value));
 }
 
-oatpp::String Conversion::int32ToStr(v_int32 value){
+avena::String Conversion::int32ToStr(v_int32 value){
   v_char8 buff [16]; // Max 10 digits with 1 sign. 16 is plenty enough.
   auto size = int32ToCharSequence(value, &buff[0], 16);
   if(size > 0){
-    return oatpp::String(reinterpret_cast<const char*>(&buff[0]), size);
+    return avena::String(reinterpret_cast<const char*>(&buff[0]), size);
   }
   return nullptr;
 }
 
-oatpp::String Conversion::uint32ToStr(v_uint32 value){
+avena::String Conversion::uint32ToStr(v_uint32 value){
   v_char8 buff [16]; // Max 10 digits. 16 is plenty enough.
   auto size = uint32ToCharSequence(value, &buff[0], 16);
   if(size > 0){
-    return oatpp::String(reinterpret_cast<const char*>(&buff[0]), size);
+    return avena::String(reinterpret_cast<const char*>(&buff[0]), size);
   }
   return nullptr;
 }
 
-oatpp::String Conversion::int64ToStr(v_int64 value){
+avena::String Conversion::int64ToStr(v_int64 value){
   v_char8 buff [32]; // Max 20 digits unsigned, 19 digits +1 sign signed.
   auto size = int64ToCharSequence(value, &buff[0], 32);
   if(size > 0){
-    return oatpp::String(reinterpret_cast<const char*>(&buff[0]), size);
+    return avena::String(reinterpret_cast<const char*>(&buff[0]), size);
   }
   return nullptr;
 }
 
-oatpp::String Conversion::uint64ToStr(v_uint64 value){
+avena::String Conversion::uint64ToStr(v_uint64 value){
   v_char8 buff [32]; // Max 20 digits.
   auto size = uint64ToCharSequence(value, &buff[0], 32);
   if(size > 0){
-    return oatpp::String(reinterpret_cast<const char*>(&buff[0]), size);
+    return avena::String(reinterpret_cast<const char*>(&buff[0]), size);
   }
   return nullptr;
 }
@@ -185,7 +187,7 @@ v_float32 Conversion::strToFloat32(const char* str){
   return std::strtof(str, &end);
 }
 
-v_float32 Conversion::strToFloat32(const oatpp::String& str, bool& success) {
+v_float32 Conversion::strToFloat32(const avena::String& str, bool& success) {
   if(str == nullptr || str->empty()) {
     success = false;
     return 0;
@@ -201,7 +203,7 @@ v_float64 Conversion::strToFloat64(const char* str){
   return std::strtod(str, &end);
 }
 
-v_float64 Conversion::strToFloat64(const oatpp::String& str, bool& success) {
+v_float64 Conversion::strToFloat64(const avena::String& str, bool& success) {
   if(str == nullptr || str->empty()) {
     success = false;
     return 0;
@@ -220,33 +222,33 @@ v_buff_size Conversion::float64ToCharSequence(v_float64 value, p_char8 data, v_b
   return snprintf(reinterpret_cast<char*>(data), static_cast<size_t>(n), format, value);
 }
 
-oatpp::String Conversion::float32ToStr(v_float32 value, const char* format) {
+avena::String Conversion::float32ToStr(v_float32 value, const char* format) {
   v_char8 buff [100];
   auto size = float32ToCharSequence(value, &buff[0], 100, format);
   if(size > 0){
-    return oatpp::String(reinterpret_cast<const char*>(&buff[0]), size);
+    return avena::String(reinterpret_cast<const char*>(&buff[0]), size);
   }
   return nullptr;
 }
 
-oatpp::String Conversion::float64ToStr(v_float64 value, const char* format) {
+avena::String Conversion::float64ToStr(v_float64 value, const char* format) {
   v_char8 buff [100];
   auto size = float64ToCharSequence(value, &buff[0], 100, format);
   if(size > 0){
-    return oatpp::String(reinterpret_cast<const char*>(&buff[0]), size);
+    return avena::String(reinterpret_cast<const char*>(&buff[0]), size);
   }
   return nullptr;
 }
 
-oatpp::String Conversion::boolToStr(bool value) {
+avena::String Conversion::boolToStr(bool value) {
   if(value){
-    return oatpp::String("true", 4);
+    return avena::String("true", 4);
   } else {
-    return oatpp::String("false", 5);
+    return avena::String("false", 5);
   }
 }
 
-bool Conversion::strToBool(const oatpp::String& str, bool& success) {
+bool Conversion::strToBool(const avena::String& str, bool& success) {
   if(str == "true"){
     success = true;
     return true;

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 #include <thread>
 #include <list>
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 namespace {
 
@@ -40,11 +42,11 @@ static constexpr v_int32 NUM_SYMBOLS = 20;
 
 class Buff {
 private:
-  oatpp::data::stream::BufferOutputStream *m_buffer;
+  avena::data::stream::BufferOutputStream *m_buffer;
   std::mutex m_mutex;
 public:
 
-  Buff(oatpp::data::stream::BufferOutputStream *buffer)
+  Buff(avena::data::stream::BufferOutputStream *buffer)
     : m_buffer(buffer) {}
 
   void writeChar(char c) {
@@ -54,15 +56,15 @@ public:
 
 };
 
-class TestCoroutine : public oatpp::async::Coroutine<TestCoroutine> {
+class TestCoroutine : public avena::async::Coroutine<TestCoroutine> {
 private:
   char m_symbol;
   Buff *m_buff;
-  oatpp::async::LockGuard m_lockGuard;
+  avena::async::LockGuard m_lockGuard;
   v_int32 m_counter;
 public:
 
-  TestCoroutine(char symbol, Buff *buff, oatpp::async::Lock *lock)
+  TestCoroutine(char symbol, Buff *buff, avena::async::Lock *lock)
     : m_symbol(symbol), m_buff(buff), m_lockGuard(lock), m_counter(0) {}
 
   Action act() override {
@@ -82,7 +84,7 @@ public:
 
 };
 
-class NotSynchronizedCoroutine : public oatpp::async::Coroutine<NotSynchronizedCoroutine> {
+class NotSynchronizedCoroutine : public avena::async::Coroutine<NotSynchronizedCoroutine> {
 private:
   char m_symbol;
   Buff *m_buff;
@@ -104,28 +106,28 @@ public:
 
 };
 
-class TestCoroutine2 : public oatpp::async::Coroutine<TestCoroutine2> {
+class TestCoroutine2 : public avena::async::Coroutine<TestCoroutine2> {
 private:
   char m_symbol;
   Buff *m_buff;
-  oatpp::async::Lock *m_lock;
+  avena::async::Lock *m_lock;
 public:
 
-  TestCoroutine2(char symbol, Buff *buff, oatpp::async::Lock *lock)
+  TestCoroutine2(char symbol, Buff *buff, avena::async::Lock *lock)
     : m_symbol(symbol)
     , m_buff(buff)
     , m_lock(lock)
   {}
 
   Action act() override {
-    return oatpp::async::synchronize(m_lock, NotSynchronizedCoroutine::start(m_symbol, m_buff)).next(finish());
+    return avena::async::synchronize(m_lock, NotSynchronizedCoroutine::start(m_symbol, m_buff)).next(finish());
   }
 
 };
 
-void testMethod(char symbol, Buff *buff, oatpp::async::Lock *lock) {
+void testMethod(char symbol, Buff *buff, avena::async::Lock *lock) {
 
-  std::lock_guard<oatpp::async::Lock> lockGuard(*lock);
+  std::lock_guard<avena::async::Lock> lockGuard(*lock);
   for (v_int32 i = 0; i < NUM_SYMBOLS; i++) {
     buff->writeChar(symbol);
   }
@@ -158,7 +160,7 @@ bool checkSymbol(char symbol, const char* data, v_buff_size size) {
 
 }
 
-bool checkSymbol(char symbol, const oatpp::String& str) {
+bool checkSymbol(char symbol, const avena::String& str) {
   return checkSymbol(symbol, str->data(), static_cast<v_buff_size>(str->size()));
 }
 
@@ -167,11 +169,11 @@ bool checkSymbol(char symbol, const oatpp::String& str) {
 
 void LockTest::onRun() {
 
-  oatpp::async::Lock lock;
-  oatpp::data::stream::BufferOutputStream buffer;
+  avena::async::Lock lock;
+  avena::data::stream::BufferOutputStream buffer;
   Buff buff(&buffer);
 
-  oatpp::async::Executor executor(10, 1, 1);
+  avena::async::Executor executor(10, 1, 1);
 
   for (v_int32 c = 0; c <= 127; c++) {
     executor.execute<TestCoroutine>(static_cast<char>(c), &buff, &lock);
@@ -201,7 +203,7 @@ void LockTest::onRun() {
     bool check = checkSymbol(static_cast<char>(c), result);
     if(!check) {
       v_int32 code = c;
-      auto str = oatpp::String(reinterpret_cast<const char*>(&c), 1);
+      auto str = avena::String(reinterpret_cast<const char*>(&c), 1);
       OATPP_LOGe(TAG, "Failed for symbol {}, '{}'", code, str->data())
     }
     OATPP_ASSERT(check)

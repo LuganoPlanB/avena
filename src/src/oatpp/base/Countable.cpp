@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Countable.hpp"
 
-namespace oatpp { namespace base{
+namespace avena { namespace base{
   
 Countable::Countable() {
 #ifndef OATPP_DISABLE_ENV_OBJECT_COUNTERS

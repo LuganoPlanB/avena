@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include <chrono>
 
-namespace oatpp { namespace network { namespace virtual_ { namespace server {
+namespace avena { namespace network { namespace virtual_ { namespace server {
 
 void ConnectionProvider::ConnectionInvalidator::invalidate(const std::shared_ptr<data::stream::IOStream>& connection) {
   auto socket = std::static_pointer_cast<Socket>(connection);

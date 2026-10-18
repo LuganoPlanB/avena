@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Base64.hpp"
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
   
 const char* const Base64::ALPHABET_BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 const char* const Base64::ALPHABET_BASE64_URL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=";
@@ -103,11 +105,11 @@ bool Base64::isBase64String(const char* data, v_buff_size size, const char* auxi
   return (calcDecodedStringSize(data, size, base64StrLength, auxiliaryChars) >= 0);
 }
   
-oatpp::String Base64::encode(const void* data, v_buff_size size, const char* alphabet) {
+avena::String Base64::encode(const void* data, v_buff_size size, const char* alphabet) {
   
   auto resultSize = calcEncodedStringSize(size);
   
-  auto result = oatpp::String(resultSize);
+  auto result = avena::String(resultSize);
   
   auto bdata = reinterpret_cast<const v_char8*>(data);
   auto resultData = reinterpret_cast<p_char8>(result->data());
@@ -146,11 +148,11 @@ oatpp::String Base64::encode(const void* data, v_buff_size size, const char* alp
   
 }
   
-oatpp::String Base64::encode(const oatpp::String& data, const char* alphabet) {
+avena::String Base64::encode(const avena::String& data, const char* alphabet) {
   return encode(data->data(), static_cast<v_buff_size>(data->size()), alphabet);
 }
   
-oatpp::String Base64::decode(const char* data, v_buff_size size, const char* auxiliaryChars) {
+avena::String Base64::decode(const char* data, v_buff_size size, const char* auxiliaryChars) {
   
   v_buff_size base64StrLength;
   auto resultSize = calcDecodedStringSize(data, size, base64StrLength, auxiliaryChars);
@@ -158,7 +160,7 @@ oatpp::String Base64::decode(const char* data, v_buff_size size, const char* aux
     throw DecodingError("Data is no base64 string. Make sure that auxiliaryChars match with encoder alphabet");
   }
   
-  auto result = oatpp::String(resultSize);
+  auto result = avena::String(resultSize);
   auto resultData = reinterpret_cast<p_char8>(result->data());
   v_buff_size pos = 0;
   while (pos + 3 < base64StrLength) {
@@ -192,7 +194,7 @@ oatpp::String Base64::decode(const char* data, v_buff_size size, const char* aux
   
 }
   
-oatpp::String Base64::decode(const oatpp::String& data, const char* auxiliaryChars) {
+avena::String Base64::decode(const avena::String& data, const char* auxiliaryChars) {
   return decode(data->data(), static_cast<v_buff_size>(data->size()), auxiliaryChars);
 }
   

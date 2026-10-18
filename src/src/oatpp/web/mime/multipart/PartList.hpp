@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,14 +30,14 @@
 
 #include "Multipart.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
 /**
  * Structure that holds Multipart parts in the `std::list`.
  */
 class PartList : public Multipart {
 private:
-  std::unordered_map<oatpp::String, std::list<std::shared_ptr<Part>>> m_namedParts;
+  std::unordered_map<avena::String, std::list<std::shared_ptr<Part>>> m_namedParts;
   bool m_readIteratorInitialized;
   std::list<std::shared_ptr<Part>> m_parts;
   std::list<std::shared_ptr<Part>>::const_iterator m_iterator;
@@ -45,7 +47,7 @@ public:
    * Constructor.
    * @param boundary - multipart boundary value.
    */
-  PartList(const oatpp::String& boundary);
+  PartList(const avena::String& boundary);
 
   /**
    * Constructor.
@@ -77,22 +79,22 @@ public:
    * Get part by name <br>
    * Returns the first part if multiple parts with same name exist.
    * Applicable to named parts only.
-   * @param name - &id:oatpp::String;.
-   * @return - `std::shared_ptr` to &id:oatpp::web::mime::multipart::Part;.
+   * @param name - &id:avena::String;.
+   * @return - `std::shared_ptr` to &id:avena::web::mime::multipart::Part;.
    */
-  std::shared_ptr<Part> getNamedPart(const oatpp::String& name);
+  std::shared_ptr<Part> getNamedPart(const avena::String& name);
 
   /**
    * Get all parts by name <br>
    * Applicable to named parts only.
-   * @param name - &id:oatpp::String;.
-   * @return - `std::list` of `std::shared_ptr` to &id:oatpp::web::mime::multipart::Part;.
+   * @param name - &id:avena::String;.
+   * @return - `std::list` of `std::shared_ptr` to &id:avena::web::mime::multipart::Part;.
    */
-  std::list<std::shared_ptr<Part>> getNamedParts(const oatpp::String& name);
+  std::list<std::shared_ptr<Part>> getNamedParts(const avena::String& name);
 
   /**
    * Get list of all parts.
-   * @return - `std::list` of `std::shared_ptr` to &id:oatpp::web::mime::multipart::Part;.
+   * @return - `std::list` of `std::shared_ptr` to &id:avena::web::mime::multipart::Part;.
    */
   const std::list<std::shared_ptr<Part>>& getAllParts();
 

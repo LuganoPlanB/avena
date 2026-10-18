@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,11 +33,11 @@
 #include <list>
 #include <unordered_map>
 
-namespace oatpp { namespace web { namespace url { namespace mapping {
+namespace avena { namespace web { namespace url { namespace mapping {
   
 class Pattern : public base::Countable{
 private:
-  typedef oatpp::data::share::StringKeyLabel StringKeyLabel;
+  typedef avena::data::share::StringKeyLabel StringKeyLabel;
 public:
   
   class MatchMap {
@@ -54,7 +56,7 @@ public:
       , m_tail(urlTail)
     {}
     
-    oatpp::String getVariable(const StringKeyLabel& key) const {
+    avena::String getVariable(const StringKeyLabel& key) const {
       auto it = m_variables.find(key);
       if(it != m_variables.end()) {
         return it->second.toString();
@@ -62,7 +64,7 @@ public:
       return nullptr;
     }
     
-    oatpp::String getTail() const {
+    avena::String getTail() const {
       return m_tail.toString();
     }
 
@@ -76,7 +78,7 @@ private:
   
   class Part : public base::Countable{
   public:
-    Part(const char* pFunction, const oatpp::String& pText)
+    Part(const char* pFunction, const avena::String& pText)
       : function(pFunction)
       , text(pText)
     {}
@@ -86,19 +88,19 @@ private:
     static const char* FUNCTION_VAR;
     static const char* FUNCTION_ANY_END;
     
-    static std::shared_ptr<Part> createShared(const char* function, const oatpp::String& text){
+    static std::shared_ptr<Part> createShared(const char* function, const avena::String& text){
       return std::make_shared<Part>(function, text);
     }
     
     const char* function;
-    const oatpp::String text;
+    const avena::String text;
     
   };
   
 private:
   std::shared_ptr<std::list<std::shared_ptr<Part>>> m_parts{std::make_shared<std::list<std::shared_ptr<Part>>>()};
 private:
-  v_char8 findSysChar(oatpp::utils::parser::Caret& caret) const;
+  v_char8 findSysChar(avena::utils::parser::Caret& caret) const;
 public:
   
   static std::shared_ptr<Pattern> createShared(){
@@ -107,12 +109,12 @@ public:
   
   static std::shared_ptr<Pattern> parse(p_char8 data, v_buff_size size);
   static std::shared_ptr<Pattern> parse(const char* data);
-  static std::shared_ptr<Pattern> parse(const oatpp::String& data);
+  static std::shared_ptr<Pattern> parse(const avena::String& data);
   
   bool match(const StringKeyLabel& url, MatchMap& matchMap) const;
 
-  oatpp::String reconstruct(const std::unordered_map<oatpp::String, oatpp::String>& params, const oatpp::String& tail) const;
-  oatpp::String toString() const;
+  avena::String reconstruct(const std::unordered_map<avena::String, avena::String>& params, const avena::String& tail) const;
+  avena::String toString() const;
   
 };
   

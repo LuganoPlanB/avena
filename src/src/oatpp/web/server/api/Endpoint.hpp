@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,25 +33,25 @@
 #include <unordered_map>
 #include <functional>
 
-namespace oatpp { namespace web { namespace server { namespace api {
+namespace avena { namespace web { namespace server { namespace api {
 
 /**
  * Endpoint - class which holds information about endpoint.
  * It holds API documentation info, and pointer to RequestHandler
  */
-class Endpoint : public oatpp::base::Countable {
+class Endpoint : public avena::base::Countable {
 public:
 
   /**
-   * Convenience typedef for &id:oatpp::web::server::HttpRequestHandler;.
+   * Convenience typedef for &id:avena::web::server::HttpRequestHandler;.
    */
-  typedef oatpp::web::server::HttpRequestHandler RequestHandler;
+  typedef avena::web::server::HttpRequestHandler RequestHandler;
 public:
 
   /**
    * Info holds API documentation information about endpoint
    */
-  class Info : public oatpp::base::Countable {
+  class Info : public avena::base::Countable {
   public:
 
     /**
@@ -58,18 +60,18 @@ public:
     struct Param {
       
       Param();
-      Param(const oatpp::String& pName, oatpp::data::type::Type* pType);
+      Param(const avena::String& pName, avena::data::type::Type* pType);
 
-      oatpp::String name;
-      oatpp::data::type::Type* type;
+      avena::String name;
+      avena::data::type::Type* type;
 
-      oatpp::String description;
-      oatpp::Boolean required = true;
-      oatpp::Boolean deprecated = false;
-      oatpp::Boolean allowEmptyValue;
-      std::list<std::pair<oatpp::String, oatpp::Any>> examples;
+      avena::String description;
+      avena::Boolean required = true;
+      avena::Boolean deprecated = false;
+      avena::Boolean allowEmptyValue;
+      std::list<std::pair<avena::String, avena::Any>> examples;
 
-      Param& addExample(const oatpp::String& title, const oatpp::Any& example) {
+      Param& addExample(const avena::String& title, const avena::Any& example) {
         examples.push_back({title, example});
         return *this;
       }
@@ -81,18 +83,18 @@ public:
      */
     class Params {
     private:
-      std::list<oatpp::String> m_order;
-      std::unordered_map<oatpp::String, Param> m_params;
+      std::list<avena::String> m_order;
+      std::unordered_map<avena::String, Param> m_params;
     public:
 
-      const std::list<oatpp::String>& getOrder() const;
+      const std::list<avena::String>& getOrder() const;
 
       /**
        * Add parameter name to list order
        * @param name
        * @return new or existing parameter
        */
-      Param& add(const oatpp::String& name, oatpp::data::type::Type* type);
+      Param& add(const avena::String& name, avena::data::type::Type* type);
 
       /**
        * Add parameter name to list order
@@ -101,7 +103,7 @@ public:
        * @return new or existing parameter
        */
       template<class T>
-      Param& add(const oatpp::String& aname) {
+      Param& add(const avena::String& aname) {
         return add(aname, T::Class::getType());
       }
 
@@ -110,7 +112,7 @@ public:
        * @param name
        * @return
        */
-      Param& operator [](const oatpp::String& name);
+      Param& operator [](const avena::String& name);
 
     };
 
@@ -118,12 +120,12 @@ public:
      * Hints about the response (content-type, schema, description, ...)
      */
     struct ContentHints {
-      oatpp::String contentType;
-      oatpp::data::type::Type* schema;
-      oatpp::String description;
-      std::list<std::pair<oatpp::String, oatpp::Any>> examples;
+      avena::String contentType;
+      avena::data::type::Type* schema;
+      avena::String description;
+      std::list<std::pair<avena::String, avena::Any>> examples;
 
-      ContentHints& addExample(const oatpp::String& title, const oatpp::Any& example) {
+      ContentHints& addExample(const avena::String& title, const avena::Any& example) {
         examples.push_back({title, example});
         return *this;
       }
@@ -145,42 +147,42 @@ public:
     /**
      * Endpoint name.
      */
-    oatpp::String name;
+    avena::String name;
 
     /**
      * Endpoint summary.
      */
-    oatpp::String summary;
+    avena::String summary;
 
     /**
      * Endpoint description.
      */
-    oatpp::String description;
+    avena::String description;
 
     /**
      * Endpoint path.
      */
-    oatpp::String path;
+    avena::String path;
 
     /**
      * HTTP method.
      */
-    oatpp::String method;
+    avena::String method;
 
     /**
      * Authorization.
      */
-    oatpp::String authorization;
+    avena::String authorization;
 
     /**
      * Hide endpoint from the documentation.
      */
-    oatpp::Boolean hide;
+    avena::Boolean hide;
 
     /**
      * Tags to group endpoints in the documentation.
      */
-    std::list<oatpp::String> tags;
+    std::list<avena::String> tags;
 
     /**
      * Body info.
@@ -190,7 +192,7 @@ public:
     /**
      * Body content type.
      */
-    oatpp::String bodyContentType;
+    avena::String bodyContentType;
 
     /**
      * Consumes.
@@ -200,7 +202,7 @@ public:
     /**
      * Security Requirements
      */
-    std::unordered_map<oatpp::String, std::shared_ptr<std::list<oatpp::String>>> securityRequirements;
+    std::unordered_map<avena::String, std::shared_ptr<std::list<avena::String>>> securityRequirements;
 
     /**
      * Headers.
@@ -221,9 +223,9 @@ public:
      *  ResponseCode to {ContentType, Type} mapping.
      *  Example responses[Status::CODE_200] = {"application/json", MyDto::ObjectWrapper::Class::getType()};
      */
-    std::unordered_map<oatpp::web::protocol::http::Status, ContentHints> responses;
+    std::unordered_map<avena::web::protocol::http::Status, ContentHints> responses;
     
-    oatpp::String toString();
+    avena::String toString();
 
     /**
      * Add "consumes" info to endpoint.
@@ -231,7 +233,7 @@ public:
      * @param contentType
      */
     template<class Wrapper>
-    ContentHints& addConsumes(const oatpp::String& contentType, const oatpp::String& desc = oatpp::String()) {
+    ContentHints& addConsumes(const avena::String& contentType, const avena::String& desc = avena::String()) {
       consumes.push_back({contentType, Wrapper::Class::getType(), desc});
       return consumes.back();
     }
@@ -244,7 +246,7 @@ public:
      * @param responseDescription
      */
     template<class Wrapper>
-    ContentHints& addResponse(const oatpp::web::protocol::http::Status& status, const oatpp::String& contentType, const oatpp::String& responseDescription = oatpp::String()) {
+    ContentHints& addResponse(const avena::web::protocol::http::Status& status, const avena::String& contentType, const avena::String& responseDescription = avena::String()) {
       auto& hint = responses[status];
       hint.contentType = contentType;
       hint.description = responseDescription.get() == nullptr ? status.description : responseDescription;
@@ -257,7 +259,7 @@ public:
      * @param status
      * @param responseDescription
      */
-    ContentHints& addResponse(const oatpp::web::protocol::http::Status& status, const oatpp::String& responseDescription = oatpp::String()) {
+    ContentHints& addResponse(const avena::web::protocol::http::Status& status, const avena::String& responseDescription = avena::String()) {
       auto& hint = responses[status];
       hint.description = responseDescription.get() == nullptr ? status.description : responseDescription;
       return hint;
@@ -268,7 +270,7 @@ public:
      * @param requirement
      * @param scopes
      */
-    void addSecurityRequirement(const oatpp::String &requirement, const std::shared_ptr<std::list<oatpp::String>> &scopes = nullptr) {
+    void addSecurityRequirement(const avena::String &requirement, const std::shared_ptr<std::list<avena::String>> &scopes = nullptr) {
       securityRequirements[requirement] = scopes;
     }
 
@@ -276,7 +278,7 @@ public:
      * Add tag.
      * @param tag
      */
-    void addTag(const oatpp::String& tag) {
+    void addTag(const avena::String& tag) {
       tags.push_back(tag);
     }
 

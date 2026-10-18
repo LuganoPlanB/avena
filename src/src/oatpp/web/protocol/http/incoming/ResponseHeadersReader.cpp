@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,10 +28,10 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 v_io_size ResponseHeadersReader::readHeadersSectionIterative(ReadHeadersIteration& iteration,
-                                                                   const std::shared_ptr<oatpp::data::stream::IOStream>& connection,
+                                                                   const std::shared_ptr<avena::data::stream::IOStream>& connection,
                                                                    data::stream::ConsistentOutputStream* bufferStream,
                                                                    Result& result,
                                                                    async::Action& action)
@@ -66,21 +68,21 @@ v_io_size ResponseHeadersReader::readHeadersSectionIterative(ReadHeadersIteratio
 
 }
 
-ResponseHeadersReader::Result ResponseHeadersReader::readHeaders(const std::shared_ptr<oatpp::data::stream::IOStream>& connection,
+ResponseHeadersReader::Result ResponseHeadersReader::readHeaders(const std::shared_ptr<avena::data::stream::IOStream>& connection,
                                                                  http::HttpError::Info& error) {
   
   Result result;
   ReadHeadersIteration iteration;
   async::Action action;
   
-  oatpp::data::stream::BufferOutputStream buffer;
+  avena::data::stream::BufferOutputStream buffer;
 
   while(!iteration.done) {
 
     error.ioStatus = readHeadersSectionIterative(iteration, connection, &buffer, result, action);
 
     if(!action.isNone()) {
-      throw std::runtime_error("[oatpp::web::protocol::http::incoming::ResponseHeadersReader::readHeaders]: Error. Async action is unexpected.");
+      throw std::runtime_error("[avena::web::protocol::http::incoming::ResponseHeadersReader::readHeaders]: Error. Async action is unexpected.");
     }
 
     if(error.ioStatus > 0) {
@@ -95,7 +97,7 @@ ResponseHeadersReader::Result ResponseHeadersReader::readHeaders(const std::shar
 
   if(error.ioStatus > 0) {
     auto headersText = buffer.toString();
-    oatpp::utils::parser::Caret caret (headersText);
+    avena::utils::parser::Caret caret (headersText);
     http::Status status;
     http::Parser::parseResponseStartingLine(result.startingLine, headersText.getPtr(), caret, status);
     if(status.code == 0) {
@@ -107,21 +109,21 @@ ResponseHeadersReader::Result ResponseHeadersReader::readHeaders(const std::shar
   
 }
 
-oatpp::async::CoroutineStarterForResult<const ResponseHeadersReader::Result&>
-ResponseHeadersReader::readHeadersAsync(const std::shared_ptr<oatpp::data::stream::IOStream>& connection)
+avena::async::CoroutineStarterForResult<const ResponseHeadersReader::Result&>
+ResponseHeadersReader::readHeadersAsync(const std::shared_ptr<avena::data::stream::IOStream>& connection)
 {
   
-  class ReaderCoroutine : public oatpp::async::CoroutineWithResult<ReaderCoroutine, const Result&> {
+  class ReaderCoroutine : public avena::async::CoroutineWithResult<ReaderCoroutine, const Result&> {
   private:
     ResponseHeadersReader* m_this;
-    std::shared_ptr<oatpp::data::stream::IOStream> m_connection;
+    std::shared_ptr<avena::data::stream::IOStream> m_connection;
     ReadHeadersIteration m_iteration;
     ResponseHeadersReader::Result m_result;
-    oatpp::data::stream::BufferOutputStream m_bufferStream;
+    avena::data::stream::BufferOutputStream m_bufferStream;
   public:
     
     ReaderCoroutine(ResponseHeadersReader* _this,
-                    const std::shared_ptr<oatpp::data::stream::IOStream>& connection)
+                    const std::shared_ptr<avena::data::stream::IOStream>& connection)
       : m_this(_this)
       , m_connection(connection)
     {}
@@ -147,14 +149,14 @@ ResponseHeadersReader::readHeadersAsync(const std::shared_ptr<oatpp::data::strea
 
       }
 
-      return error<Error>("[oatpp::web::protocol::http::incoming::RequestHeadersReader::readHeadersAsync()]: Error. Error reading connection stream.");
+      return error<Error>("[avena::web::protocol::http::incoming::RequestHeadersReader::readHeadersAsync()]: Error. Error reading connection stream.");
 
     }
     
     Action parseHeaders() {
       
       auto headersText = m_bufferStream.toString();
-      oatpp::utils::parser::Caret caret (headersText);
+      avena::utils::parser::Caret caret (headersText);
       http::Status status;
       http::Parser::parseResponseStartingLine(m_result.startingLine, headersText.getPtr(), caret, status);
       if(status.code == 0) {
@@ -162,10 +164,10 @@ ResponseHeadersReader::readHeadersAsync(const std::shared_ptr<oatpp::data::strea
         if(status.code == 0) {
           return _return(m_result);
         } else {
-          return error<Error>("[oatpp::web::protocol::http::incoming::ResponseHeadersReader::readHeadersAsync()]: Error. Error occurred while parsing headers.");
+          return error<Error>("[avena::web::protocol::http::incoming::ResponseHeadersReader::readHeadersAsync()]: Error. Error occurred while parsing headers.");
         }
       } else {
-        return error<Error>("[oatpp::web::protocol::http::incoming::ResponseHeadersReader::readHeadersAsync()]: Error. Can't parse starting line.");
+        return error<Error>("[avena::web::protocol::http::incoming::ResponseHeadersReader::readHeadersAsync()]: Error. Can't parse starting line.");
       }
       
     }

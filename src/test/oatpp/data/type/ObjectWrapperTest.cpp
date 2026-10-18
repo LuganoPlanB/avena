@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,12 +27,12 @@
 #include "ObjectWrapperTest.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 namespace {
 
-  template<class T, class Clazz = oatpp::data::type::__class::Void>
-  using TestWrapper = oatpp::data::type::ObjectWrapper<T, Clazz>;
+  template<class T, class Clazz = avena::data::type::__class::Void>
+  using TestWrapper = avena::data::type::ObjectWrapper<T, Clazz>;
 
 }
 
@@ -41,47 +43,47 @@ void ObjectWrapperTest::onRun() {
     TestWrapper<std::string> pw;
     OATPP_ASSERT(!pw)
     OATPP_ASSERT(pw == nullptr)
-    OATPP_ASSERT(pw.getValueType() == oatpp::data::type::__class::Void::getType())
+    OATPP_ASSERT(pw.getValueType() == avena::data::type::__class::Void::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Check default valueType is assigned (specified tparam Clazz)...")
-    TestWrapper<std::string, oatpp::data::type::__class::String> pw;
+    TestWrapper<std::string, avena::data::type::__class::String> pw;
     OATPP_ASSERT(!pw)
     OATPP_ASSERT(pw == nullptr)
-    OATPP_ASSERT(pw.getValueType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(pw.getValueType() == avena::data::type::__class::String::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Check valueType is assigned from constructor...")
-    TestWrapper<std::string> pw(oatpp::data::type::__class::String::getType());
+    TestWrapper<std::string> pw(avena::data::type::__class::String::getType());
     OATPP_ASSERT(!pw)
     OATPP_ASSERT(pw == nullptr)
-    OATPP_ASSERT(pw.getValueType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(pw.getValueType() == avena::data::type::__class::String::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Check valueType is assigned from copy constructor...")
-    TestWrapper<std::string> pw1(oatpp::data::type::__class::String::getType());
+    TestWrapper<std::string> pw1(avena::data::type::__class::String::getType());
     TestWrapper<std::string> pw2(pw1);
-    OATPP_ASSERT(pw2.getValueType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(pw2.getValueType() == avena::data::type::__class::String::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Check valueType is assigned from move constructor...")
-    TestWrapper<std::string> pw1(oatpp::data::type::__class::String::getType());
+    TestWrapper<std::string> pw1(avena::data::type::__class::String::getType());
     TestWrapper<std::string> pw2(std::move(pw1));
-    OATPP_ASSERT(pw2.getValueType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(pw2.getValueType() == avena::data::type::__class::String::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Check valueType is NOT assigned from copy-assign operator...")
-    TestWrapper<std::string> pw1(oatpp::data::type::__class::String::getType());
+    TestWrapper<std::string> pw1(avena::data::type::__class::String::getType());
     TestWrapper<std::string> pw2;
     bool throws = false;
     try {
@@ -89,14 +91,14 @@ void ObjectWrapperTest::onRun() {
     } catch (std::runtime_error&) {
       throws = true;
     }
-    OATPP_ASSERT(pw2.getValueType() == oatpp::data::type::__class::Void::getType())
+    OATPP_ASSERT(pw2.getValueType() == avena::data::type::__class::Void::getType())
     OATPP_ASSERT(throws)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Check valueType is NOT assigned from move-assign operator...")
-    TestWrapper<std::string> pw1(oatpp::data::type::__class::String::getType());
+    TestWrapper<std::string> pw1(avena::data::type::__class::String::getType());
     TestWrapper<std::string> pw2;
     bool throws = false;
     try {
@@ -104,7 +106,7 @@ void ObjectWrapperTest::onRun() {
     } catch (std::runtime_error&) {
       throws = true;
     }
-    OATPP_ASSERT(pw2.getValueType() == oatpp::data::type::__class::Void::getType())
+    OATPP_ASSERT(pw2.getValueType() == avena::data::type::__class::Void::getType())
     OATPP_ASSERT(throws)
     OATPP_LOGi(TAG, "OK")
   }
@@ -114,12 +116,12 @@ void ObjectWrapperTest::onRun() {
     TestWrapper<std::string> pw1;
     OATPP_ASSERT(!pw1)
     OATPP_ASSERT(pw1 == nullptr)
-    OATPP_ASSERT(pw1.getValueType() == oatpp::data::type::__class::Void::getType())
+    OATPP_ASSERT(pw1.getValueType() == avena::data::type::__class::Void::getType())
 
     TestWrapper<std::string> pw2 = std::make_shared<std::string>("Hello!");
     OATPP_ASSERT(pw2)
     OATPP_ASSERT(pw2 != nullptr)
-    OATPP_ASSERT(pw2.getValueType() == oatpp::data::type::__class::Void::getType())
+    OATPP_ASSERT(pw2.getValueType() == avena::data::type::__class::Void::getType())
 
     pw1 = pw2;
 
@@ -136,15 +138,15 @@ void ObjectWrapperTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Check != operator...")
-    TestWrapper<std::string, oatpp::data::type::__class::String> pw1(std::make_shared<std::string>("Hello!"));
+    TestWrapper<std::string, avena::data::type::__class::String> pw1(std::make_shared<std::string>("Hello!"));
     OATPP_ASSERT(pw1)
     OATPP_ASSERT(pw1 != nullptr)
-    OATPP_ASSERT(pw1.getValueType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(pw1.getValueType() == avena::data::type::__class::String::getType())
 
-    TestWrapper<std::string, oatpp::data::type::__class::String> pw2(std::make_shared<std::string>("Hello!"));
+    TestWrapper<std::string, avena::data::type::__class::String> pw2(std::make_shared<std::string>("Hello!"));
     OATPP_ASSERT(pw2)
     OATPP_ASSERT(pw2 != nullptr)
-    OATPP_ASSERT(pw2.getValueType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(pw2.getValueType() == avena::data::type::__class::String::getType())
 
     OATPP_ASSERT(pw1 != pw2)
     OATPP_ASSERT(pw1.get() != pw2.get())
@@ -156,12 +158,12 @@ void ObjectWrapperTest::onRun() {
     TestWrapper<std::string> pw1;
     OATPP_ASSERT(!pw1)
     OATPP_ASSERT(pw1 == nullptr)
-    OATPP_ASSERT(pw1.getValueType() == oatpp::data::type::__class::Void::getType())
+    OATPP_ASSERT(pw1.getValueType() == avena::data::type::__class::Void::getType())
 
     TestWrapper<std::string> pw2 = std::make_shared<std::string>("Hello!");
     OATPP_ASSERT(pw2)
     OATPP_ASSERT(pw2 != nullptr)
-    OATPP_ASSERT(pw2.getValueType() == oatpp::data::type::__class::Void::getType())
+    OATPP_ASSERT(pw2.getValueType() == avena::data::type::__class::Void::getType())
 
     pw1 = std::move(pw2);
 
@@ -177,20 +179,20 @@ void ObjectWrapperTest::onRun() {
   }
 
   {
-    OATPP_LOGi(TAG, "Check oatpp::Void type reassigned")
+    OATPP_LOGi(TAG, "Check avena::Void type reassigned")
 
-    oatpp::Void v;
-    v = oatpp::String("test");
+    avena::Void v;
+    v = avena::String("test");
 
-    OATPP_ASSERT(v.getValueType() == oatpp::String::Class::getType())
+    OATPP_ASSERT(v.getValueType() == avena::String::Class::getType())
 
-    v = oatpp::Int32(32);
+    v = avena::Int32(32);
 
-    OATPP_ASSERT(v.getValueType() == oatpp::Int32::Class::getType())
+    OATPP_ASSERT(v.getValueType() == avena::Int32::Class::getType())
 
-    oatpp::Int32 i = v.cast<oatpp::Int32>();
+    avena::Int32 i = v.cast<avena::Int32>();
 
-    OATPP_ASSERT(i.getValueType() == oatpp::Int32::Class::getType())
+    OATPP_ASSERT(i.getValueType() == avena::Int32::Class::getType())
     OATPP_ASSERT(i == 32)
 
   }

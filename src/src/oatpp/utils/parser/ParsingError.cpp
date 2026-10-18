@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,16 +26,16 @@
 
 #include "ParsingError.hpp"
 
-namespace oatpp { namespace utils { namespace parser {
+namespace avena { namespace utils { namespace parser {
 
-ParsingError::ParsingError(const oatpp::String &message, v_int64 code, v_buff_size position)
+ParsingError::ParsingError(const avena::String &message, v_int64 code, v_buff_size position)
   :std::runtime_error(*message)
   , m_message(message)
   , m_code(code)
   , m_position(position)
 {}
 
-oatpp::String ParsingError::getMessage() const {
+avena::String ParsingError::getMessage() const {
   return m_message;
 }
 

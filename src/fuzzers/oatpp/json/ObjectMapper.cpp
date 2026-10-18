@@ -1,9 +1,11 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 #include "oatpp/json/ObjectMapper.hpp"
 #include "oatpp/macro/codegen.hpp"
 
-typedef oatpp::utils::parser::Caret ParsingCaret;
-typedef oatpp::json::Serializer Serializer;
-typedef oatpp::json::Deserializer Deserializer;
+typedef avena::utils::parser::Caret ParsingCaret;
+typedef avena::json::Serializer Serializer;
+typedef avena::json::Deserializer Deserializer;
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -13,11 +15,11 @@ ENUM(TestEnum, v_int32,
   VALUE(C, 2, "c")
 )
 
-class Empty : public oatpp::DTO {
+class Empty : public avena::DTO {
   DTO_INIT(Empty, DTO)
 };
 
-class Test1 : public oatpp::DTO {
+class Test1 : public avena::DTO {
   DTO_INIT(Test1, DTO)
   DTO_FIELD(Int8, i8);
   DTO_FIELD(UInt8, u8);
@@ -42,16 +44,16 @@ class Test1 : public oatpp::DTO {
 };
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-  oatpp::String input(reinterpret_cast<const char*>(data), size);
+  avena::String input(reinterpret_cast<const char*>(data), size);
 
-  oatpp::json::ObjectMapper mapper;
+  avena::json::ObjectMapper mapper;
   mapper.deserializerConfig().mapper.allowUnknownFields = size & 0x01;
   mapper.deserializerConfig().mapper.allowLexicalCasting = size & 0x02;
   mapper.deserializerConfig().mapper.useUnqualifiedFieldNames = size & 0x04;
   mapper.deserializerConfig().mapper.useUnqualifiedEnumNames = size & 0x08;
 
   try {
-    const auto dto = mapper.readFromString<oatpp::Object<Test1>>(input);
+    const auto dto = mapper.readFromString<avena::Object<Test1>>(input);
     mapper.writeToString(dto);
   } catch(...) {}
 

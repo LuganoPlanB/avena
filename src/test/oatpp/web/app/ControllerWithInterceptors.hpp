@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,16 +35,16 @@
 
 #include <sstream>
 
-namespace oatpp { namespace test { namespace web { namespace app {
+namespace avena { namespace test { namespace web { namespace app {
 
-namespace multipart = oatpp::web::mime::multipart;
+namespace multipart = avena::web::mime::multipart;
 
-class ControllerWithInterceptors : public oatpp::web::server::api::ApiController {
+class ControllerWithInterceptors : public avena::web::server::api::ApiController {
 private:
   static constexpr const char* TAG = "test::web::app::ControllerWithInterceptors";
 public:
   ControllerWithInterceptors(const std::shared_ptr<ObjectMapper>& objectMapper)
-    : oatpp::web::server::api::ApiController(objectMapper)
+    : avena::web::server::api::ApiController(objectMapper)
   {}
 public:
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,24 +26,24 @@
 
 #include "Endpoint.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace api {
+namespace avena { namespace web { namespace server { namespace api {
 
 Endpoint::Info::Param::Param()
   : name(nullptr)
   , type(nullptr)
 {}
 
-Endpoint::Info::Param::Param(const oatpp::String& pName,
-                             oatpp::data::type::Type* pType)
+Endpoint::Info::Param::Param(const avena::String& pName,
+                             avena::data::type::Type* pType)
   : name(pName)
   , type(pType)
 {}
 
-const std::list<oatpp::String>& Endpoint::Info::Params::getOrder() const {
+const std::list<avena::String>& Endpoint::Info::Params::getOrder() const {
   return m_order;
 }
 
-Endpoint::Info::Param& Endpoint::Info::Params::add(const oatpp::String& aname, oatpp::data::type::Type* type) {
+Endpoint::Info::Param& Endpoint::Info::Params::add(const avena::String& aname, avena::data::type::Type* type) {
   m_order.push_back(aname);
   Endpoint::Info::Param& param = operator [](aname);
   param.name = aname;
@@ -49,7 +51,7 @@ Endpoint::Info::Param& Endpoint::Info::Params::add(const oatpp::String& aname, o
   return param;
 }
 
-Endpoint::Info::Param& Endpoint::Info::Params::operator [](const oatpp::String& aname) {
+Endpoint::Info::Param& Endpoint::Info::Params::operator [](const avena::String& aname) {
   return m_params[aname];
 }
 
@@ -60,8 +62,8 @@ std::shared_ptr<Endpoint::Info> Endpoint::Info::createShared(){
   return std::make_shared<Info>();
 }
 
-oatpp::String Endpoint::Info::toString() {
-  oatpp::data::stream::BufferOutputStream stream;
+avena::String Endpoint::Info::toString() {
+  avena::data::stream::BufferOutputStream stream;
   
   stream << "\nEndpoint\n";
   

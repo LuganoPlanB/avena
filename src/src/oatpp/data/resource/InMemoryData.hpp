@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,16 +30,16 @@
 #include "./Resource.hpp"
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace data { namespace resource {
+namespace avena { namespace data { namespace resource {
 
 class InMemoryData : public Resource {
 private:
 
   struct DataHandle {
 
-    oatpp::String data;
+    avena::String data;
 
-    DataHandle(const oatpp::String& pData)
+    DataHandle(const avena::String& pData)
       : data(pData)
     {}
 
@@ -46,7 +48,7 @@ private:
   struct OutputDataHandle {
 
     std::shared_ptr<DataHandle> dataHandle;
-    oatpp::String data;
+    avena::String data;
     data::stream::BufferOutputStream* stream;
 
     ~OutputDataHandle();
@@ -66,14 +68,14 @@ public:
    * Constructor.
    * @param fullInMemoryDataname
    */
-  InMemoryData(const oatpp::String& data);
+  InMemoryData(const avena::String& data);
 
   /**
    * Open output stream to an InMemoryData. <br>
    * NOT thread-safe. <br>
    * *Note: data is committed once stream is closed.* <br>
    * *Note: stream also captures data-handle. The data won't be deleted until the stream is deleted.*
-   * @return - `std::shared_ptr` to &id:oatpp::data::stream::OutputStream;.
+   * @return - `std::shared_ptr` to &id:avena::data::stream::OutputStream;.
    */
   std::shared_ptr<data::stream::OutputStream> openOutputStream() override;
 
@@ -82,7 +84,7 @@ public:
    * NOT thread-safe. <br>
    * *Note: once the stream is open no subsequent writes through the output stream won't affect currently opened input streams.* <br>
    * *Note: stream also captures file-handle. The data won't be deleted until the stream is deleted.*
-   * @return - `std::shared_ptr` &id:oatpp::data::stream::InputStream;.
+   * @return - `std::shared_ptr` &id:avena::data::stream::InputStream;.
    */
   std::shared_ptr<data::stream::InputStream> openInputStream() override;
 
@@ -90,7 +92,7 @@ public:
    * Get in-memory-data.
    * @return - always returns `nullptr`.
    */
-  oatpp::String getInMemoryData() override;
+  avena::String getInMemoryData() override;
 
   /**
    * Get size of an in-memory-data.
@@ -102,7 +104,7 @@ public:
    * Not applicable.
    * @return - always returns `nullptr`.
    */
-  oatpp::String getLocation() override;
+  avena::String getLocation() override;
 
 };
 

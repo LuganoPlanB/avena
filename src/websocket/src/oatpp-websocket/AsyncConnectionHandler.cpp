@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,16 +26,16 @@
 
 #include "AsyncConnectionHandler.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 AsyncConnectionHandler::AsyncConnectionHandler(v_int32 threadCount)
-  : m_executor(std::make_shared<oatpp::async::Executor>(threadCount))
+  : m_executor(std::make_shared<avena::async::Executor>(threadCount))
   , m_listener(nullptr)
 {
   m_executor->detach();
 }
 
-AsyncConnectionHandler::AsyncConnectionHandler(const std::shared_ptr<oatpp::async::Executor>& executor)
+AsyncConnectionHandler::AsyncConnectionHandler(const std::shared_ptr<avena::async::Executor>& executor)
   : m_executor(executor)
   , m_listener(nullptr)
 {}
@@ -42,7 +44,7 @@ std::shared_ptr<AsyncConnectionHandler> AsyncConnectionHandler::createShared(v_i
   return std::make_shared<AsyncConnectionHandler>(threadCount);
 }
 
-std::shared_ptr<AsyncConnectionHandler> AsyncConnectionHandler::createShared(const std::shared_ptr<oatpp::async::Executor>& executor){
+std::shared_ptr<AsyncConnectionHandler> AsyncConnectionHandler::createShared(const std::shared_ptr<avena::async::Executor>& executor){
   return std::make_shared<AsyncConnectionHandler>(executor);
 }
 
@@ -54,7 +56,7 @@ void AsyncConnectionHandler::handleConnection(const provider::ResourceHandle<IOS
                                               const std::shared_ptr<const ParameterMap>& params)
 {
   
-  class SocketCoroutine : public oatpp::async::Coroutine<SocketCoroutine> {
+  class SocketCoroutine : public avena::async::Coroutine<SocketCoroutine> {
   private:
     provider::ResourceHandle<IOStream> m_connection;
     std::shared_ptr<const ParameterMap> m_params;
@@ -87,8 +89,8 @@ void AsyncConnectionHandler::handleConnection(const provider::ResourceHandle<IOS
     
   };
 
-  connection.object->setInputStreamIOMode(oatpp::data::stream::IOMode::ASYNCHRONOUS);
-  connection.object->setOutputStreamIOMode(oatpp::data::stream::IOMode::ASYNCHRONOUS);
+  connection.object->setInputStreamIOMode(avena::data::stream::IOMode::ASYNCHRONOUS);
+  connection.object->setOutputStreamIOMode(avena::data::stream::IOMode::ASYNCHRONOUS);
 
   m_executor->execute<SocketCoroutine>(connection, params, m_listener);
   

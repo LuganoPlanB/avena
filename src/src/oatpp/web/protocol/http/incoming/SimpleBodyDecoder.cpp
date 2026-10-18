@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include <vector>
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 const std::string SimpleBodyDecoder::RESPONSE_100_CONTINUE = "HTTP/1.1 100 Continue\r\n\r\n";
 
@@ -47,14 +49,14 @@ SimpleBodyDecoder::getStreamProcessor (const data::share::StringKeyLabelCI& tran
   }
 
   if(contentEncoding && !m_contentDecoders) {
-    throw std::runtime_error("[oatpp::web::protocol::http::incoming::SimpleBodyDecoder::getStreamProcessor()]: "
+    throw std::runtime_error("[avena::web::protocol::http::incoming::SimpleBodyDecoder::getStreamProcessor()]: "
                              "Error. Server content decoders are NOT configured.");
   }
 
   std::vector<base::ObjectHandle<data::buffer::Processor>> processors;
   if(transferEncoding) {
     if(transferEncoding != Header::Value::TRANSFER_ENCODING_CHUNKED) {
-      throw std::runtime_error("[oatpp::web::protocol::http::incoming::SimpleBodyDecoder::getStreamProcessor()]: "
+      throw std::runtime_error("[avena::web::protocol::http::incoming::SimpleBodyDecoder::getStreamProcessor()]: "
                                "Error. Unsupported Transfer-Encoding. '" + transferEncoding.std_str() + "'.");
     }
     processors.push_back(std::make_shared<http::encoding::DecoderChunked>());
@@ -63,7 +65,7 @@ SimpleBodyDecoder::getStreamProcessor (const data::share::StringKeyLabelCI& tran
   if(contentEncoding) {
     auto provider = m_contentDecoders->get(contentEncoding);
     if(!provider) {
-      throw std::runtime_error("[oatpp::web::protocol::http::incoming::SimpleBodyDecoder::getStreamProcessor()]: "
+      throw std::runtime_error("[avena::web::protocol::http::incoming::SimpleBodyDecoder::getStreamProcessor()]: "
                                "Error. Unsupported Content-Encoding. '" + contentEncoding.std_str() + "'.");
     }
     processors.push_back(provider->getProcessor());
@@ -85,14 +87,14 @@ void SimpleBodyDecoder::handleExpectHeader(const Headers& headers, data::stream:
   if(expect == Header::Value::EXPECT_100_CONTINUE) {
     auto res = connection->writeExactSizeDataSimple(RESPONSE_100_CONTINUE.data(), static_cast<v_buff_size>(RESPONSE_100_CONTINUE.size()));
     if(res != static_cast<v_io_size>(RESPONSE_100_CONTINUE.size())) {
-      throw std::runtime_error("[oatpp::web::protocol::http::incoming::SimpleBodyDecoder::handleExpectHeader()]: "
+      throw std::runtime_error("[avena::web::protocol::http::incoming::SimpleBodyDecoder::handleExpectHeader()]: "
                                "Error. Unable to send 100-continue response.");
     }
   }
 
 }
 
-oatpp::async::CoroutineStarter SimpleBodyDecoder::handleExpectHeaderAsync(const Headers& headers,
+avena::async::CoroutineStarter SimpleBodyDecoder::handleExpectHeaderAsync(const Headers& headers,
                                                                           const std::shared_ptr<data::stream::IOStream>& connection) const
 {
   auto expect = headers.getAsMemoryLabel<data::share::StringKeyLabelCI>(Header::EXPECT);
@@ -148,7 +150,7 @@ void SimpleBodyDecoder::decode(const Headers& headers,
         data::stream::transfer(bodyStream, writeCallback,  0 /* read until error */, buffer.getData(), buffer.getSize(), processor);
 
       } else {
-        throw std::runtime_error("[oatpp::web::protocol::http::incoming::SimpleBodyDecoder::decode()]: Error. Invalid Request.");
+        throw std::runtime_error("[avena::web::protocol::http::incoming::SimpleBodyDecoder::decode()]: Error. Invalid Request.");
       }
 
     }

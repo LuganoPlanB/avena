@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,9 +28,9 @@
 
 #include "oatpp/data/stream/FileStream.hpp"
 
-namespace oatpp { namespace data { namespace resource {
+namespace avena { namespace data { namespace resource {
 
-oatpp::String File::concatDirAndName(const oatpp::String& dir, const oatpp::String& filename) {
+avena::String File::concatDirAndName(const avena::String& dir, const avena::String& filename) {
   if(dir && dir->size() > 0) {
     auto lastChar = dir->data()[dir->size() - 1];
     if(lastChar != '/' && lastChar != '\\') {
@@ -39,11 +41,11 @@ oatpp::String File::concatDirAndName(const oatpp::String& dir, const oatpp::Stri
   return filename;
 }
 
-File::File(const oatpp::String& fullFileName)
+File::File(const avena::String& fullFileName)
   : m_handle(std::make_shared<FileHandle>(fullFileName))
 {}
 
-File::File(const oatpp::String& tmpDirectory, const oatpp::String& tmpFileName)
+File::File(const avena::String& tmpDirectory, const avena::String& tmpFileName)
   : m_handle(std::make_shared<FileHandle>(concatDirAndName(tmpDirectory, tmpFileName)))
 {}
 
@@ -51,17 +53,17 @@ std::shared_ptr<data::stream::OutputStream> File::openOutputStream() {
   if(m_handle) {
     return std::make_shared<data::stream::FileOutputStream>(m_handle->fileName->c_str(), "wb", m_handle);
   }
-  throw std::runtime_error("[oatpp::data::resource::File::openOutputStream()]: Error. FileHandle is NOT initialized.");
+  throw std::runtime_error("[avena::data::resource::File::openOutputStream()]: Error. FileHandle is NOT initialized.");
 }
 
 std::shared_ptr<data::stream::InputStream> File::openInputStream() {
   if(m_handle) {
     return std::make_shared<data::stream::FileInputStream>(m_handle->fileName->c_str(), m_handle);
   }
-  throw std::runtime_error("[oatpp::data::resource::File::openInputStream()]: Error. FileHandle is NOT initialized.");
+  throw std::runtime_error("[avena::data::resource::File::openInputStream()]: Error. FileHandle is NOT initialized.");
 }
 
-oatpp::String File::getInMemoryData() {
+avena::String File::getInMemoryData() {
   return nullptr;
 }
 
@@ -69,7 +71,7 @@ v_int64 File::getKnownSize() {
   return -1;
 }
 
-oatpp::String File::getLocation() {
+avena::String File::getLocation() {
   if(m_handle) {
     return m_handle->fileName;
   }

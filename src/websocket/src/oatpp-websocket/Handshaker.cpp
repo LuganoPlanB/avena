@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,36 +31,36 @@
 
 #include "oatpp/encoding/Base64.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
   
 const char* const Handshaker::MAGIC_UUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
   
 std::shared_ptr<Handshaker::OutgoingResponse> Handshaker::serversideHandshake(const Headers& requestHeaders, const std::shared_ptr<ConnectionHandler>& connectionUpgradeHandler) {
   
-  auto version = requestHeaders.getAsMemoryLabel<oatpp::data::share::StringKeyLabel>("Sec-WebSocket-Version");
-  auto upgrade = requestHeaders.getAsMemoryLabel<oatpp::data::share::StringKeyLabelCI>(oatpp::web::protocol::http::Header::UPGRADE);
-  auto connection = requestHeaders.get(oatpp::web::protocol::http::Header::CONNECTION);
+  auto version = requestHeaders.getAsMemoryLabel<avena::data::share::StringKeyLabel>("Sec-WebSocket-Version");
+  auto upgrade = requestHeaders.getAsMemoryLabel<avena::data::share::StringKeyLabelCI>(avena::web::protocol::http::Header::UPGRADE);
+  auto connection = requestHeaders.get(avena::web::protocol::http::Header::CONNECTION);
   auto key = requestHeaders.get("Sec-WebSocket-Key");
   
   if(upgrade && connection && version && key && key->size() > 0 && upgrade == "websocket") {
 
-    oatpp::web::protocol::http::HeaderValueData connectionValueSet;
-    oatpp::web::protocol::http::Parser::parseHeaderValueData(connectionValueSet, connection, ',');
+    avena::web::protocol::http::HeaderValueData connectionValueSet;
+    avena::web::protocol::http::Parser::parseHeaderValueData(connectionValueSet, connection, ',');
 
-    if(connectionValueSet.tokens.find(oatpp::web::protocol::http::Header::Value::CONNECTION_UPGRADE) != connectionValueSet.tokens.end()) {
+    if(connectionValueSet.tokens.find(avena::web::protocol::http::Header::Value::CONNECTION_UPGRADE) != connectionValueSet.tokens.end()) {
 
       if (version == "13") {
 
         auto websocketKey = key + MAGIC_UUID;
         SHA1 sha1;
         sha1.update(websocketKey);
-        auto websocketAccept = oatpp::encoding::Base64::encode(sha1.finalBinary());
+        auto websocketAccept = avena::encoding::Base64::encode(sha1.finalBinary());
 
-        auto response = OutgoingResponse::createShared(oatpp::web::protocol::http::Status::CODE_101, nullptr);
+        auto response = OutgoingResponse::createShared(avena::web::protocol::http::Status::CODE_101, nullptr);
 
-        response->putHeader(oatpp::web::protocol::http::Header::UPGRADE, "websocket");
-        response->putHeader(oatpp::web::protocol::http::Header::CONNECTION,
-                            oatpp::web::protocol::http::Header::Value::CONNECTION_UPGRADE);
+        response->putHeader(avena::web::protocol::http::Header::UPGRADE, "websocket");
+        response->putHeader(avena::web::protocol::http::Header::CONNECTION,
+                            avena::web::protocol::http::Header::Value::CONNECTION_UPGRADE);
         response->putHeader("Sec-WebSocket-Accept", websocketAccept);
         response->setConnectionUpgradeHandler(connectionUpgradeHandler);
 
@@ -66,22 +68,22 @@ std::shared_ptr<Handshaker::OutgoingResponse> Handshaker::serversideHandshake(co
 
       }
 
-      throw oatpp::web::protocol::http::HttpError(oatpp::web::protocol::http::Status::CODE_400,
+      throw avena::web::protocol::http::HttpError(avena::web::protocol::http::Status::CODE_400,
                                                   "Websocket upgrade unsupported protocol version. Supported websocket versions: [13]");
 
     }
 
-    throw oatpp::web::protocol::http::HttpError(oatpp::web::protocol::http::Status::CODE_400, "Websocket upgrade 'Upgrade' header missing");
+    throw avena::web::protocol::http::HttpError(avena::web::protocol::http::Status::CODE_400, "Websocket upgrade 'Upgrade' header missing");
     
   }
   
-  throw oatpp::web::protocol::http::HttpError(oatpp::web::protocol::http::Status::CODE_400, "Websocket upgrade invalid headers.");
+  throw avena::web::protocol::http::HttpError(avena::web::protocol::http::Status::CODE_400, "Websocket upgrade invalid headers.");
   
 }
   
 void Handshaker::clientsideHandshake(Headers& requestHeaders) {
-  requestHeaders.put(oatpp::web::protocol::http::Header::UPGRADE, "websocket");
-  requestHeaders.put(oatpp::web::protocol::http::Header::CONNECTION, oatpp::web::protocol::http::Header::Value::CONNECTION_UPGRADE);
+  requestHeaders.put(avena::web::protocol::http::Header::UPGRADE, "websocket");
+  requestHeaders.put(avena::web::protocol::http::Header::CONNECTION, avena::web::protocol::http::Header::Value::CONNECTION_UPGRADE);
   requestHeaders.put("Sec-WebSocket-Version", "13");
   requestHeaders.put("Sec-WebSocket-Key", Utils::generateKey());
 }
@@ -92,9 +94,9 @@ v_int32 Handshaker::clientsideConfirmHandshake(const Headers& clientHandshakeHea
     
     auto& responseHeaders = serverResponse->getHeaders();
     
-    auto version = responseHeaders.getAsMemoryLabel<oatpp::data::share::StringKeyLabel>("Sec-WebSocket-Version");
-    auto upgrade = responseHeaders.getAsMemoryLabel<oatpp::data::share::StringKeyLabelCI>(oatpp::web::protocol::http::Header::UPGRADE);
-    auto connection = responseHeaders.getAsMemoryLabel<oatpp::data::share::StringKeyLabelCI>(oatpp::web::protocol::http::Header::CONNECTION);
+    auto version = responseHeaders.getAsMemoryLabel<avena::data::share::StringKeyLabel>("Sec-WebSocket-Version");
+    auto upgrade = responseHeaders.getAsMemoryLabel<avena::data::share::StringKeyLabelCI>(avena::web::protocol::http::Header::UPGRADE);
+    auto connection = responseHeaders.getAsMemoryLabel<avena::data::share::StringKeyLabelCI>(avena::web::protocol::http::Header::CONNECTION);
     auto websocketAccept = responseHeaders.get("Sec-WebSocket-Accept");
     
     auto clientKey = clientHandshakeHeaders.get("Sec-WebSocket-Key");
@@ -104,7 +106,7 @@ v_int32 Handshaker::clientsideConfirmHandshake(const Headers& clientHandshakeHea
       auto websocketKey = clientKey + MAGIC_UUID;
       SHA1 sha1;
       sha1.update(websocketKey);
-      auto clientWebsocketAccept = oatpp::encoding::Base64::encode(sha1.finalBinary());
+      auto clientWebsocketAccept = avena::encoding::Base64::encode(sha1.finalBinary());
       
       if(clientWebsocketAccept == websocketAccept) {
         return STATUS_OK;

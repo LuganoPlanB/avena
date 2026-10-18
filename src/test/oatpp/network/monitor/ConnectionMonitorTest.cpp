@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -39,11 +41,11 @@
 
 #include <thread>
 
-namespace oatpp { namespace test { namespace network { namespace monitor {
+namespace avena { namespace test { namespace network { namespace monitor {
 
 namespace {
 
-class ReadCallback : public oatpp::data::stream::ReadCallback {
+class ReadCallback : public avena::data::stream::ReadCallback {
 public:
 
   v_io_size read(void *buffer, v_buff_size count, async::Action &action) override {
@@ -56,28 +58,28 @@ public:
 
 };
 
-class StreamingHandler : public oatpp::web::server::HttpRequestHandler {
+class StreamingHandler : public avena::web::server::HttpRequestHandler {
 public:
 
   std::shared_ptr<OutgoingResponse> handle(const std::shared_ptr<IncomingRequest>& request) override {
-    auto body = std::make_shared<oatpp::web::protocol::http::outgoing::StreamingBody>
+    auto body = std::make_shared<avena::web::protocol::http::outgoing::StreamingBody>
       (std::make_shared<ReadCallback>());
     return OutgoingResponse::createShared(Status::CODE_200, body);
   }
 
 };
 
-class AsyncStreamingHandler : public oatpp::web::server::HttpRequestHandler {
+class AsyncStreamingHandler : public avena::web::server::HttpRequestHandler {
 public:
 
-  oatpp::async::CoroutineStarterForResult<const std::shared_ptr<OutgoingResponse>&>
+  avena::async::CoroutineStarterForResult<const std::shared_ptr<OutgoingResponse>&>
   handleAsync(const std::shared_ptr<IncomingRequest>& request) override {
 
-    class StreamCoroutine : public oatpp::async::CoroutineWithResult<StreamCoroutine, const std::shared_ptr<OutgoingResponse>&> {
+    class StreamCoroutine : public avena::async::CoroutineWithResult<StreamCoroutine, const std::shared_ptr<OutgoingResponse>&> {
     public:
 
       Action act() override {
-        auto body = std::make_shared<oatpp::web::protocol::http::outgoing::StreamingBody>
+        auto body = std::make_shared<avena::web::protocol::http::outgoing::StreamingBody>
           (std::make_shared<ReadCallback>());
         return _return(OutgoingResponse::createShared(Status::CODE_200, body));
       }
@@ -90,14 +92,14 @@ public:
 
 };
 
-std::shared_ptr<oatpp::network::Server> runServer(const std::shared_ptr<oatpp::network::monitor::ConnectionMonitor>& monitor) {
+std::shared_ptr<avena::network::Server> runServer(const std::shared_ptr<avena::network::monitor::ConnectionMonitor>& monitor) {
 
-  auto router = oatpp::web::server::HttpRouter::createShared();
+  auto router = avena::web::server::HttpRouter::createShared();
   router->route("GET", "/stream", std::make_shared<StreamingHandler>());
 
-  auto connectionHandler = oatpp::web::server::HttpConnectionHandler::createShared(router);
+  auto connectionHandler = avena::web::server::HttpConnectionHandler::createShared(router);
 
-  auto server = std::make_shared<oatpp::network::Server>(monitor, connectionHandler);
+  auto server = std::make_shared<avena::network::Server>(monitor, connectionHandler);
 
   std::thread t([server, connectionHandler]{
     server->run();
@@ -111,16 +113,16 @@ std::shared_ptr<oatpp::network::Server> runServer(const std::shared_ptr<oatpp::n
 
 }
 
-std::shared_ptr<oatpp::network::Server> runAsyncServer(const std::shared_ptr<oatpp::network::monitor::ConnectionMonitor>& monitor) {
+std::shared_ptr<avena::network::Server> runAsyncServer(const std::shared_ptr<avena::network::monitor::ConnectionMonitor>& monitor) {
 
-  auto router = oatpp::web::server::HttpRouter::createShared();
+  auto router = avena::web::server::HttpRouter::createShared();
   router->route("GET", "/stream", std::make_shared<AsyncStreamingHandler>());
 
-  auto executor = std::make_shared<oatpp::async::Executor>();
+  auto executor = std::make_shared<avena::async::Executor>();
 
-  auto connectionHandler = oatpp::web::server::AsyncHttpConnectionHandler::createShared(router, executor);
+  auto connectionHandler = avena::web::server::AsyncHttpConnectionHandler::createShared(router, executor);
 
-  auto server = std::make_shared<oatpp::network::Server>(monitor, connectionHandler);
+  auto server = std::make_shared<avena::network::Server>(monitor, connectionHandler);
 
   std::thread t([server, connectionHandler, executor]{
     server->run();
@@ -140,11 +142,11 @@ std::shared_ptr<oatpp::network::Server> runAsyncServer(const std::shared_ptr<oat
 
 void runClient() {
 
-  auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared(
+  auto connectionProvider = avena::network::tcp::client::ConnectionProvider::createShared(
     {"localhost", 8000});
-  oatpp::web::client::HttpRequestExecutor executor(connectionProvider);
+  avena::web::client::HttpRequestExecutor executor(connectionProvider);
 
-  auto response = executor.execute("GET", "/stream", oatpp::web::protocol::http::Headers({}), nullptr, nullptr);
+  auto response = executor.execute("GET", "/stream", avena::web::protocol::http::Headers({}), nullptr, nullptr);
 
   OATPP_ASSERT(response->getStatusCode() == 200)
   auto data = response->readBodyToString();
@@ -157,38 +159,38 @@ void runClient() {
 
 void runAsyncClient() {
 
-  class ClientCoroutine : public oatpp::async::Coroutine<ClientCoroutine> {
+  class ClientCoroutine : public avena::async::Coroutine<ClientCoroutine> {
   private:
-    std::shared_ptr<oatpp::web::client::HttpRequestExecutor> m_executor;
-    std::shared_ptr<oatpp::network::monitor::ConnectionMonitor> m_monitor;
+    std::shared_ptr<avena::web::client::HttpRequestExecutor> m_executor;
+    std::shared_ptr<avena::network::monitor::ConnectionMonitor> m_monitor;
   public:
 
     ClientCoroutine() {
-      auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared(
+      auto connectionProvider = avena::network::tcp::client::ConnectionProvider::createShared(
         {"localhost", 8000});
 
-      m_monitor = std::make_shared<oatpp::network::monitor::ConnectionMonitor>(connectionProvider);
+      m_monitor = std::make_shared<avena::network::monitor::ConnectionMonitor>(connectionProvider);
 
       m_monitor->addMetricsChecker(
-        std::make_shared<oatpp::network::monitor::ConnectionMaxAgeChecker>(
+        std::make_shared<avena::network::monitor::ConnectionMaxAgeChecker>(
           std::chrono::seconds(5)
         )
       );
 
-      m_executor = oatpp::web::client::HttpRequestExecutor::createShared(m_monitor);
+      m_executor = avena::web::client::HttpRequestExecutor::createShared(m_monitor);
     }
 
     Action act() override {
-      return m_executor->executeAsync("GET", "/stream", oatpp::web::protocol::http::Headers({}), nullptr, nullptr)
+      return m_executor->executeAsync("GET", "/stream", avena::web::protocol::http::Headers({}), nullptr, nullptr)
         .callbackTo(&ClientCoroutine::onResponse);
     }
 
-    Action onResponse(const std::shared_ptr<oatpp::web::protocol::http::incoming::Response>& response) {
+    Action onResponse(const std::shared_ptr<avena::web::protocol::http::incoming::Response>& response) {
       OATPP_ASSERT(response->getStatusCode() == 200)
       return response->readBodyToStringAsync().callbackTo(&ClientCoroutine::onBody);
     }
 
-    Action onBody(const oatpp::String& data) {
+    Action onBody(const avena::String& data) {
       OATPP_ASSERT(data)
       OATPP_LOGd("TEST", "data->size() == {}", data->size())
       OATPP_ASSERT(data->size() < 60) // it should be less than 50. But we put 60 for redundancy
@@ -198,7 +200,7 @@ void runAsyncClient() {
 
   };
 
-  auto executor = std::make_shared<oatpp::async::Executor>();
+  auto executor = std::make_shared<avena::async::Executor>();
 
   executor->execute<ClientCoroutine>();
 
@@ -215,12 +217,12 @@ void runAsyncClient() {
 
 void ConnectionMonitorTest::onRun() {
 
-  auto connectionProvider = oatpp::network::tcp::server::ConnectionProvider::createShared(
+  auto connectionProvider = avena::network::tcp::server::ConnectionProvider::createShared(
     {"localhost", 8000});
-  auto monitor = std::make_shared<oatpp::network::monitor::ConnectionMonitor>(connectionProvider);
+  auto monitor = std::make_shared<avena::network::monitor::ConnectionMonitor>(connectionProvider);
 
   monitor->addMetricsChecker(
-    std::make_shared<oatpp::network::monitor::ConnectionMaxAgeChecker>(
+    std::make_shared<avena::network::monitor::ConnectionMaxAgeChecker>(
         std::chrono::seconds(10)
       )
   );

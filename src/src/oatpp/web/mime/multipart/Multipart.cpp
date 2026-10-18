@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,13 +30,13 @@
 #include "oatpp/encoding/Base64.hpp"
 #include "oatpp/utils/Random.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
-Multipart::Multipart(const oatpp::String& boundary)
+Multipart::Multipart(const avena::String& boundary)
   : m_boundary(boundary)
 {}
 
-oatpp::String Multipart::getBoundary() {
+avena::String Multipart::getBoundary() {
   return m_boundary;
 }
 
@@ -42,7 +44,7 @@ std::shared_ptr<Part> Multipart::readNextPartSimple() {
   async::Action action;
   auto result = readNextPart(action);
   if(!action.isNone()) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::Multipart::readNextPartSimple()]. Error."
+    throw std::runtime_error("[avena::web::mime::multipart::Multipart::readNextPartSimple()]. Error."
                              "Async method is called for non-async API.");
   }
   return result;
@@ -52,25 +54,25 @@ void Multipart::writeNextPartSimple(const std::shared_ptr<Part>& part) {
   async::Action action;
   writeNextPart(part, action);
   if(!action.isNone()) {
-    throw std::runtime_error("[oatpp::web::mime::multipart::Multipart::writeNextPartSimple()]. Error."
+    throw std::runtime_error("[avena::web::mime::multipart::Multipart::writeNextPartSimple()]. Error."
                              "Async method is called for non-async API.");
   }
 }
 
-oatpp::String Multipart::generateRandomBoundary(v_int32 boundarySize) {
+avena::String Multipart::generateRandomBoundary(v_int32 boundarySize) {
   std::unique_ptr<v_char8[]> buffer(new v_char8[static_cast<unsigned long>(boundarySize)]);
   utils::Random::randomBytes(buffer.get(), boundarySize);
   return encoding::Base64::encode(buffer.get(), boundarySize, encoding::Base64::ALPHABET_BASE64_URL_SAFE);
 }
 
-oatpp::String Multipart::parseBoundaryFromHeaders(const Headers& requestHeaders) {
+avena::String Multipart::parseBoundaryFromHeaders(const Headers& requestHeaders) {
 
-  oatpp::String boundary;
-  auto contentType = requestHeaders.getAsMemoryLabel<oatpp::data::share::StringKeyLabel>("Content-Type");
+  avena::String boundary;
+  auto contentType = requestHeaders.getAsMemoryLabel<avena::data::share::StringKeyLabel>("Content-Type");
 
   if(contentType) {
-    oatpp::web::protocol::http::HeaderValueData valueData;
-    oatpp::web::protocol::http::Parser::parseHeaderValueData(valueData, contentType, ';');
+    avena::web::protocol::http::HeaderValueData valueData;
+    avena::web::protocol::http::Parser::parseHeaderValueData(valueData, contentType, ';');
     boundary = valueData.getTitleParamValue("boundary");
   }
 

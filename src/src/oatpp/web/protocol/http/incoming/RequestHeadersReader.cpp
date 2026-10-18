@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -25,7 +27,7 @@
 #include "RequestHeadersReader.hpp"
 #include "oatpp/base/Log.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace incoming {
+namespace avena { namespace web { namespace protocol { namespace http { namespace incoming {
 
 v_io_size RequestHeadersReader::readHeadersSectionIterative(ReadHeadersIteration& iteration,
                                                                   data::stream::InputStreamBufferedProxy* stream,
@@ -79,8 +81,8 @@ RequestHeadersReader::Result RequestHeadersReader::readHeaders(data::stream::Inp
     error.ioStatus = readHeadersSectionIterative(iteration, stream, action);
 
     if(!action.isNone()) {
-      OATPP_LOGe("[oatpp::web::protocol::http::incoming::RequestHeadersReader::readHeaders]", "Error. Async action is unexpected.")
-      throw std::runtime_error("[oatpp::web::protocol::http::incoming::RequestHeadersReader::readHeaders]: Error. Async action is unexpected.");
+      OATPP_LOGe("[avena::web::protocol::http::incoming::RequestHeadersReader::readHeaders]", "Error. Async action is unexpected.")
+      throw std::runtime_error("[avena::web::protocol::http::incoming::RequestHeadersReader::readHeaders]: Error. Async action is unexpected.");
     }
 
     if(error.ioStatus > 0) {
@@ -94,7 +96,7 @@ RequestHeadersReader::Result RequestHeadersReader::readHeaders(data::stream::Inp
   }
   
   if(error.ioStatus > 0) {
-    oatpp::utils::parser::Caret caret (reinterpret_cast<const char*>(m_bufferStream->getData()), m_bufferStream->getCurrentPosition());
+    avena::utils::parser::Caret caret (reinterpret_cast<const char*>(m_bufferStream->getData()), m_bufferStream->getCurrentPosition());
     http::Status status;
     http::Parser::parseRequestStartingLine(result.startingLine, nullptr, caret, status);
     if(status.code == 0) {
@@ -107,11 +109,11 @@ RequestHeadersReader::Result RequestHeadersReader::readHeaders(data::stream::Inp
 }
   
   
-oatpp::async::CoroutineStarterForResult<const RequestHeadersReader::Result&>
+avena::async::CoroutineStarterForResult<const RequestHeadersReader::Result&>
 RequestHeadersReader::readHeadersAsync(const std::shared_ptr<data::stream::InputStreamBufferedProxy>& stream)
 {
   
-  class ReaderCoroutine : public oatpp::async::CoroutineWithResult<ReaderCoroutine, const Result&> {
+  class ReaderCoroutine : public avena::async::CoroutineWithResult<ReaderCoroutine, const Result&> {
   private:
     std::shared_ptr<data::stream::InputStreamBufferedProxy> m_stream;
     RequestHeadersReader* m_this;
@@ -148,13 +150,13 @@ RequestHeadersReader::readHeadersAsync(const std::shared_ptr<data::stream::Input
 
       }
 
-      return error<Error>("[oatpp::web::protocol::http::incoming::RequestHeadersReader::readHeadersAsync()]: Error. Error reading connection stream.");
+      return error<Error>("[avena::web::protocol::http::incoming::RequestHeadersReader::readHeadersAsync()]: Error. Error reading connection stream.");
 
     }
     
     Action parseHeaders() {
 
-      oatpp::utils::parser::Caret caret (reinterpret_cast<const char*>(m_this->m_bufferStream->getData()), m_this->m_bufferStream->getCurrentPosition());
+      avena::utils::parser::Caret caret (reinterpret_cast<const char*>(m_this->m_bufferStream->getData()), m_this->m_bufferStream->getCurrentPosition());
       http::Status status;
       http::Parser::parseRequestStartingLine(m_result.startingLine, nullptr, caret, status);
       if(status.code == 0) {
@@ -162,10 +164,10 @@ RequestHeadersReader::readHeadersAsync(const std::shared_ptr<data::stream::Input
         if(status.code == 0) {
           return _return(m_result);
         } else {
-          return error<Error>("[oatpp::web::protocol::http::incoming::RequestHeadersReader::readHeadersAsync()]: Error. Error occurred while parsing headers.");
+          return error<Error>("[avena::web::protocol::http::incoming::RequestHeadersReader::readHeadersAsync()]: Error. Error occurred while parsing headers.");
         }
       } else {
-        return error<Error>("[oatpp::web::protocol::http::incoming::RequestHeadersReader::readHeadersAsync()]: Error. Can't parse starting line.");
+        return error<Error>("[avena::web::protocol::http::incoming::RequestHeadersReader::readHeadersAsync()]: Error. Can't parse starting line.");
       }
 
     }

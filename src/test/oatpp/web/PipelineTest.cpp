@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -43,7 +45,7 @@
 
 #include "oatpp-test/web/ClientServerTestRunner.hpp"
 
-namespace oatpp { namespace test { namespace web {
+namespace avena { namespace test { namespace web {
 
 namespace {
 
@@ -56,49 +58,49 @@ public:
     : m_port(port)
   {}
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, virtualInterface)([] {
-    return oatpp::network::virtual_::Interface::obtainShared("virtualhost");
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, virtualInterface)([] {
+    return avena::network::virtual_::Interface::obtainShared("virtualhost");
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([this] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ServerConnectionProvider>, serverConnectionProvider)([this] {
 
     if(m_port == 0) { // Use oatpp virtual interface
-      OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, _interface);
-      return std::static_pointer_cast<oatpp::network::ServerConnectionProvider>(
-        oatpp::network::virtual_::server::ConnectionProvider::createShared(_interface)
+      OATPP_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, _interface);
+      return std::static_pointer_cast<avena::network::ServerConnectionProvider>(
+        avena::network::virtual_::server::ConnectionProvider::createShared(_interface)
       );
     }
 
-    return std::static_pointer_cast<oatpp::network::ServerConnectionProvider>(
-      oatpp::network::tcp::server::ConnectionProvider::createShared({"localhost", m_port})
+    return std::static_pointer_cast<avena::network::ServerConnectionProvider>(
+      avena::network::tcp::server::ConnectionProvider::createShared({"localhost", m_port})
     );
 
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)([] {
-    return oatpp::web::server::HttpRouter::createShared();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, httpRouter)([] {
+    return avena::web::server::HttpRouter::createShared();
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
-    OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
-    return oatpp::web::server::HttpConnectionHandler::createShared(router);
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ConnectionHandler>, serverConnectionHandler)([] {
+    OATPP_COMPONENT(std::shared_ptr<avena::web::server::HttpRouter>, router);
+    return avena::web::server::HttpConnectionHandler::createShared(router);
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper)([] {
-    return std::make_shared<oatpp::json::ObjectMapper>();
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::data::mapping::ObjectMapper>, objectMapper)([] {
+    return std::make_shared<avena::json::ObjectMapper>();
   }());
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
 
     if(m_port == 0) {
-      OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, _interface);
-      return std::static_pointer_cast<oatpp::network::ClientConnectionProvider>(
-        oatpp::network::virtual_::client::ConnectionProvider::createShared(_interface)
+      OATPP_COMPONENT(std::shared_ptr<avena::network::virtual_::Interface>, _interface);
+      return std::static_pointer_cast<avena::network::ClientConnectionProvider>(
+        avena::network::virtual_::client::ConnectionProvider::createShared(_interface)
       );
     }
 
-    return std::static_pointer_cast<oatpp::network::ClientConnectionProvider>(
-      oatpp::network::tcp::client::ConnectionProvider::createShared({"localhost", m_port})
+    return std::static_pointer_cast<avena::network::ClientConnectionProvider>(
+      avena::network::tcp::client::ConnectionProvider::createShared({"localhost", m_port})
     );
 
   }());
@@ -125,20 +127,20 @@ void PipelineTest::onRun() {
 
   TestComponent component(m_port);
 
-  oatpp::test::web::ClientServerTestRunner runner;
+  avena::test::web::ClientServerTestRunner runner;
 
   runner.addController(app::Controller::createShared());
 
   runner.run([this] {
 
-    OATPP_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider);
+    OATPP_COMPONENT(std::shared_ptr<avena::network::ClientConnectionProvider>, clientConnectionProvider);
 
     auto connection = clientConnectionProvider->get();
-    connection.object->setInputStreamIOMode(oatpp::data::stream::IOMode::BLOCKING);
+    connection.object->setInputStreamIOMode(avena::data::stream::IOMode::BLOCKING);
 
     std::thread pipeInThread([this, connection] {
 
-      oatpp::data::stream::BufferOutputStream pipelineStream;
+      avena::data::stream::BufferOutputStream pipelineStream;
 
       for (v_int32 i = 0; i < m_pipelineSize; i++) {
         pipelineStream << SAMPLE_IN;
@@ -147,24 +149,24 @@ void PipelineTest::onRun() {
       auto dataToSend = pipelineStream.toString();
       OATPP_LOGd(TAG, "Sending {} bytes", dataToSend->size())
 
-      oatpp::data::stream::BufferInputStream inputStream(dataToSend);
+      avena::data::stream::BufferInputStream inputStream(dataToSend);
 
-      oatpp::data::buffer::IOBuffer ioBuffer;
+      avena::data::buffer::IOBuffer ioBuffer;
 
-      oatpp::data::stream::transfer(&inputStream, connection.object.get(), 0, ioBuffer.getData(), ioBuffer.getSize());
+      avena::data::stream::transfer(&inputStream, connection.object.get(), 0, ioBuffer.getData(), ioBuffer.getSize());
 
     });
 
     std::thread pipeOutThread([this, connection] {
 
-      oatpp::String sample = SAMPLE_OUT;
-      oatpp::data::stream::BufferOutputStream receiveStream;
-      oatpp::data::buffer::IOBuffer ioBuffer;
+      avena::String sample = SAMPLE_OUT;
+      avena::data::stream::BufferOutputStream receiveStream;
+      avena::data::buffer::IOBuffer ioBuffer;
 
       v_io_size transferSize = static_cast<v_io_size>(sample->size() * static_cast<size_t>(m_pipelineSize));
 
       OATPP_LOGd(TAG, "want to Receive {} bytes", transferSize)
-      oatpp::data::stream::transfer(connection.object.get(), &receiveStream, transferSize, ioBuffer.getData(), ioBuffer.getSize());
+      avena::data::stream::transfer(connection.object.get(), &receiveStream, transferSize, ioBuffer.getData(), ioBuffer.getSize());
 
       auto result = receiveStream.toString();
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace oatpp { namespace data { namespace share {
+namespace avena { namespace data { namespace share {
 
 /**
  * String template.
@@ -57,7 +59,7 @@ public:
     /**
      * Name of the template variable.
      */
-    oatpp::String name;
+    avena::String name;
 
     /**
      * Some auxiliary data.
@@ -83,7 +85,7 @@ public:
      * @param index - index of the variable in the template.
      * @return - value for the given variable.
      */
-    virtual oatpp::String getValue(const Variable& variable, v_uint32 index) = 0;
+    virtual avena::String getValue(const Variable& variable, v_uint32 index) = 0;
   };
 
   /**
@@ -91,10 +93,10 @@ public:
    */
   class VectorValueProvider : public ValueProvider {
   private:
-    const std::vector<oatpp::String>* m_params;
+    const std::vector<avena::String>* m_params;
   public:
-    VectorValueProvider(const std::vector<oatpp::String>* params);
-    oatpp::String getValue(const Variable& variable, v_uint32 index) override;
+    VectorValueProvider(const std::vector<avena::String>* params);
+    avena::String getValue(const Variable& variable, v_uint32 index) override;
   };
 
   /**
@@ -102,10 +104,10 @@ public:
    */
   class MapValueProvider : public ValueProvider {
   private:
-    const std::unordered_map<oatpp::String, oatpp::String>* m_params;
+    const std::unordered_map<avena::String, avena::String>* m_params;
   public:
-    MapValueProvider(const std::unordered_map<oatpp::String, oatpp::String>* params);
-    oatpp::String getValue(const Variable& variable, v_uint32 index) override;
+    MapValueProvider(const std::unordered_map<avena::String, avena::String>* params);
+    avena::String getValue(const Variable& variable, v_uint32 index) override;
   };
 
   /**
@@ -113,14 +115,14 @@ public:
    */
   class SingleValueProvider : public ValueProvider {
   private:
-    oatpp::String m_value;
+    avena::String m_value;
   public:
-    SingleValueProvider(const oatpp::String& value);
-    oatpp::String getValue(const Variable& variable, v_uint32 index) override;
+    SingleValueProvider(const avena::String& value);
+    avena::String getValue(const Variable& variable, v_uint32 index) override;
   };
 
 private:
-  oatpp::String m_text;
+  avena::String m_text;
   std::vector<Variable> m_variables;
   std::shared_ptr<void> m_extra;
 public:
@@ -130,7 +132,7 @@ public:
    * @param text - original template text.
    * @param variables - template variables.
    */
-  StringTemplate(const oatpp::String& text, std::vector<Variable>&& variables);
+  StringTemplate(const avena::String& text, std::vector<Variable>&& variables);
 
   /**
    * Format template.
@@ -142,51 +144,51 @@ public:
   /**
    * Format template using &l:StringTemplate::VectorValueProvider;.
    * @param stream - stream to write result to.
-   * @param params - `std::vector<oatpp::String>`.
+   * @param params - `std::vector<avena::String>`.
    */
-  void format(stream::ConsistentOutputStream* stream, const std::vector<oatpp::String>& params) const;
+  void format(stream::ConsistentOutputStream* stream, const std::vector<avena::String>& params) const;
 
   /**
    * Format template using &l:StringTemplate::MapValueProvider;.
    * @param stream - stream to write result to.
-   * @param params - `std::unordered_map<oatpp::String, oatpp::String>`.
+   * @param params - `std::unordered_map<avena::String, avena::String>`.
    */
-  void format(stream::ConsistentOutputStream* stream, const std::unordered_map<oatpp::String, oatpp::String>& params) const;
+  void format(stream::ConsistentOutputStream* stream, const std::unordered_map<avena::String, avena::String>& params) const;
 
   /**
    * Format template using &l:StringTemplate::SingleValueProvider;.
    * @param stream - stream to write result to.
    * @param singleValue - value.
    */
-  void format(stream::ConsistentOutputStream* stream, const oatpp::String& singleValue) const;
+  void format(stream::ConsistentOutputStream* stream, const avena::String& singleValue) const;
 
   /**
    * Format template.
    * @param valueProvider - &l:StringTemplate::ValueProvider;.
-   * @return - &id:oatpp::String;.
+   * @return - &id:avena::String;.
    */
-  oatpp::String format(ValueProvider* valueProvider) const;
+  avena::String format(ValueProvider* valueProvider) const;
 
   /**
    * Format template using &l:StringTemplate::VectorValueProvider;.
-   * @param params - `std::vector<oatpp::String>`.
+   * @param params - `std::vector<avena::String>`.
    * @return - resultant string.
    */
-  oatpp::String format(const std::vector<oatpp::String>& params) const;
+  avena::String format(const std::vector<avena::String>& params) const;
 
   /**
    * Format template using &l:StringTemplate::MapValueProvider;.
-   * @param params - `std::unordered_map<oatpp::String, oatpp::String>`.
+   * @param params - `std::unordered_map<avena::String, avena::String>`.
    * @return - resultant string.
    */
-  oatpp::String format(const std::unordered_map<oatpp::String, oatpp::String>& params) const;
+  avena::String format(const std::unordered_map<avena::String, avena::String>& params) const;
 
   /**
    * Format template using &l:StringTemplate::SingleValueProvider;.
    * @param singleValue - value.
    * @return - resultant string.
    */
-  oatpp::String format(const oatpp::String& singleValue) const;
+  avena::String format(const avena::String& singleValue) const;
 
   /**
    * Get all template variables.

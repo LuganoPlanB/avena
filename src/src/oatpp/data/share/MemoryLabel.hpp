@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,7 +33,7 @@
 #include <cstring>
 #include <memory>
 
-namespace oatpp { namespace data { namespace share {
+namespace avena { namespace data { namespace share {
   
 /**
  * MemoryLabel represent a part of the whole memory buffer refered by handle.
@@ -40,7 +42,7 @@ namespace oatpp { namespace data { namespace share {
  */
 class MemoryLabel {
 public:
-  typedef oatpp::data::type::String String;
+  typedef avena::data::type::String String;
 protected:
   mutable std::shared_ptr<std::string> m_memoryHandle;
   mutable const void* m_data;
@@ -121,7 +123,7 @@ public:
 
   /**
    * Check if labeled data equals to data specified.
-   * Data is compared using &id:oatpp::urils::String::compare;.
+   * Data is compared using &id:avena::urils::String::compare;.
    * @param data - data to compare with labeled data.
    * @return - `true` if equals.
    */
@@ -132,7 +134,7 @@ public:
 
   /**
    * Check if labeled data equals to data specified.
-   * Data is compared using &id:oatpp::urils::String::compare;.
+   * Data is compared using &id:avena::urils::String::compare;.
    * @param data - data to compare with labeled data.
    * @param size - data size.
    * @return - `true` if equals.
@@ -142,8 +144,8 @@ public:
   }
 
   /**
-   * Create oatpp::String from memory label
-   * @return oatpp::String(data, size)
+   * Create avena::String from memory label
+   * @return avena::String(data, size)
    */
   String toString() const {
     return String(reinterpret_cast<const char*>(m_data), m_size);
@@ -301,12 +303,12 @@ public:
 namespace std {
   
   template<>
-  struct hash<oatpp::data::share::StringKeyLabel> {
+  struct hash<avena::data::share::StringKeyLabel> {
     
-    typedef oatpp::data::share::StringKeyLabel argument_type;
+    typedef avena::data::share::StringKeyLabel argument_type;
     typedef v_uint64 result_type;
     
-    result_type operator()(oatpp::data::share::StringKeyLabel const& s) const noexcept {
+    result_type operator()(avena::data::share::StringKeyLabel const& s) const noexcept {
 
       auto data = reinterpret_cast<const char*>(s.getData());
       result_type result = 0;
@@ -321,12 +323,12 @@ namespace std {
   };
   
   template<>
-  struct hash<oatpp::data::share::StringKeyLabelCI> {
+  struct hash<avena::data::share::StringKeyLabelCI> {
     
-    typedef oatpp::data::share::StringKeyLabelCI argument_type;
+    typedef avena::data::share::StringKeyLabelCI argument_type;
     typedef v_uint64 result_type;
     
-    result_type operator()(oatpp::data::share::StringKeyLabelCI const& s) const noexcept {
+    result_type operator()(avena::data::share::StringKeyLabelCI const& s) const noexcept {
 
       auto data = reinterpret_cast<const char*>(s.getData());
       result_type result = 0;

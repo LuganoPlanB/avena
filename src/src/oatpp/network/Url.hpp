@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/utils/parser/Caret.hpp"
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 
 /**
@@ -38,14 +40,14 @@ namespace oatpp { namespace network {
 class Url {
 public:
   /**
-   * Convenience typedef for &id:oatpp::data::share::StringKeyLabel;.
+   * Convenience typedef for &id:avena::data::share::StringKeyLabel;.
    */
-  typedef oatpp::data::share::StringKeyLabel StringKeyLabel;
+  typedef avena::data::share::StringKeyLabel StringKeyLabel;
 public:
   /**
-   * Parameters - map string to string. &id:oatpp::data::share::LazyStringMultimap;.
+   * Parameters - map string to string. &id:avena::data::share::LazyStringMultimap;.
    */
-  typedef oatpp::data::share::LazyStringMultimap<oatpp::data::share::StringKeyLabel> Parameters;
+  typedef avena::data::share::LazyStringMultimap<avena::data::share::StringKeyLabel> Parameters;
 
 public:
 
@@ -56,12 +58,12 @@ public:
     /**
      * User info.
      */
-    oatpp::String userInfo;
+    avena::String userInfo;
 
     /**
      * Host.
      */
-    oatpp::String host;
+    avena::String host;
 
     /**
      * Port. Treat -1 as undefined or as default.
@@ -83,7 +85,7 @@ public:
      * returns lowercase string before ':' char
      * caret should be at the first char of the scheme
      */
-    static oatpp::String parseScheme(oatpp::utils::parser::Caret& caret);
+    static avena::String parseScheme(avena::utils::parser::Caret& caret);
     
     /**
      * parse url authority components.
@@ -91,49 +93,49 @@ public:
      * inclusion of password in userinfo is deprecated and ignored here
      * caret should be at the first char of the authority (not at "//")
      */
-    static Url::Authority parseAuthority(oatpp::utils::parser::Caret& caret);
+    static Url::Authority parseAuthority(avena::utils::parser::Caret& caret);
     
     /**
      * parse path of the url
      * caret should be at the first char of the path
      */
-    static oatpp::String parsePath(oatpp::utils::parser::Caret& caret);
+    static avena::String parsePath(avena::utils::parser::Caret& caret);
     
     /**
      * parse query params in form of `"?<paramName>=<paramValue>&<paramName>=<paramValue>..."` referred by ParsingCaret
      * and put that params to Parameters map
      */
-    static void parseQueryParams(Url::Parameters& params, oatpp::utils::parser::Caret& caret);
+    static void parseQueryParams(Url::Parameters& params, avena::utils::parser::Caret& caret);
     
     /**
      * parse query params in form of `"?<paramName>=<paramValue>&<paramName>=<paramValue>..."` referred by str
      * and put that params to Parameters map
      */
-    static void parseQueryParams(Url::Parameters& params, const oatpp::String& str);
+    static void parseQueryParams(Url::Parameters& params, const avena::String& str);
     
     /**
      * parse query params in form of `"?<paramName>=<paramValue>&<paramName>=<paramValue>..."` referred by ParsingCaret
      */
-    static Url::Parameters parseQueryParams(oatpp::utils::parser::Caret& caret);
+    static Url::Parameters parseQueryParams(avena::utils::parser::Caret& caret);
     
     /**
      * parse query params in form of `"?<paramName>=<paramValue>&<paramName>=<paramValue>..."` referred by str
      */
-    static Url::Parameters parseQueryParams(const oatpp::String& str);
+    static Url::Parameters parseQueryParams(const avena::String& str);
 
     /**
      * Parse Url
      * @param caret
      * @return parsed URL structure
      */
-    static Url parseUrl(oatpp::utils::parser::Caret& caret);
+    static Url parseUrl(avena::utils::parser::Caret& caret);
 
     /**
      * Parse Url
      * @param str
      * @return parsed URL structure
      */
-    static Url parseUrl(const oatpp::String& str);
+    static Url parseUrl(const avena::String& str);
     
   };
   
@@ -142,7 +144,7 @@ public:
   /**
    * Url scheme. Ex.: [http, https, ftp, etc.]
    */
-  oatpp::String scheme;
+  avena::String scheme;
 
   /**
    * Utl authority.
@@ -152,7 +154,7 @@ public:
   /**
    * Path to resource.
    */
-  oatpp::String path;
+  avena::String path;
 
   /**
    * Query params.

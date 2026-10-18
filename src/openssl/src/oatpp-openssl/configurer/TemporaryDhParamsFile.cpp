@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,27 +26,27 @@
 
 #include "TemporaryDhParamsFile.hpp"
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
-TemporaryDhParamsFile::TemporaryDhParamsFile(const oatpp::String &filename)
+TemporaryDhParamsFile::TemporaryDhParamsFile(const avena::String &filename)
     : m_filename(filename)
 {}
 
 void TemporaryDhParamsFile::configure(SSL_CTX *ctx) {
     std::shared_ptr<BIO> bio(BIO_new_file(m_filename->c_str(), "r"), BIO_free);
     if (!bio) {
-        throw std::runtime_error("[oatpp::openssl::configurer::TemporaryDhParamsFile::configure()]: Error. "
+        throw std::runtime_error("[avena::openssl::configurer::TemporaryDhParamsFile::configure()]: Error. "
                                  "Call to 'BIO_new_file' failed.");
     }
 
     std::shared_ptr<DH> dh(PEM_read_bio_DHparams(bio.get(), 0, 0, 0), DH_free);
     if (!dh) {
-        throw std::runtime_error("[oatpp::openssl::configurer::TemporaryDhParamsFile::configure()]: Error. "
+        throw std::runtime_error("[avena::openssl::configurer::TemporaryDhParamsFile::configure()]: Error. "
                                  "Call to 'PEM_read_bio_DHparams' failed.");
     }
 
     if (SSL_CTX_set_tmp_dh(ctx, dh.get()) <= 0) {
-        throw std::runtime_error("[oatpp::openssl::configurer::TemporaryDhParamsFile::configure()]: Error. "
+        throw std::runtime_error("[avena::openssl::configurer::TemporaryDhParamsFile::configure()]: Error. "
                                  "Call to 'SSL_CTX_set_tmp_dh' failed.");
     }
 }

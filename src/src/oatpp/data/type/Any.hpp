@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include "oatpp/base/Countable.hpp"
 
-namespace oatpp { namespace data { namespace type {
+namespace avena { namespace data { namespace type {
 
 namespace __class {
 
@@ -108,7 +110,7 @@ public:
    * Store any ObjectWrapper in Any.
    * @tparam T
    * @tparam C
-   * @param polymorph - ObjectWrapper. Ex.: `oatpp::String`, `oatpp::List<...>`, etc.
+   * @param polymorph - ObjectWrapper. Ex.: `avena::String`, `avena::List<...>`, etc.
    */
   template<class T, class C>
   void store(const ObjectWrapper<T, C>& polymorph) {
@@ -117,14 +119,14 @@ public:
 
   /**
    * Get `Type` of the stored object.
-   * @return - &id:oatpp::data::type::Type;.
+   * @return - &id:avena::data::type::Type;.
    */
   const Type* getStoredType() const;
 
   /**
    * Retrieve stored object of type `type`.
-   * @param type - &id:oatpp::Type;
-   * @return - &id:oatpp::Void;.
+   * @param type - &id:avena::Type;
+   * @return - &id:avena::Void;.
    * @throws - `std::runtime_error` - if stored type and type requested do not match.
    */
   Void retrieve(const Type* type) const;

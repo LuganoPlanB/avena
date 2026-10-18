@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,14 +30,14 @@
 #include "oatpp/network/virtual_/Interface.hpp"
 #include "oatpp/network/ConnectionProvider.hpp"
 
-namespace oatpp { namespace network { namespace virtual_ { namespace server {
+namespace avena { namespace network { namespace virtual_ { namespace server {
 
 /**
  * TestProvider of "virtual" connections.
- * See &id:oatpp::network::virtual_::Interface;, &id:oatpp::network::virtual_::Socket; <br>
- * Extends &id:oatpp::network::ServerConnectionProvider;.
+ * See &id:avena::network::virtual_::Interface;, &id:avena::network::virtual_::Socket; <br>
+ * Extends &id:avena::network::ServerConnectionProvider;.
  */
-class ConnectionProvider : public oatpp::network::ServerConnectionProvider {
+class ConnectionProvider : public avena::network::ServerConnectionProvider {
 private:
 
   class ConnectionInvalidator : public provider::Invalidator<data::stream::IOStream> {
@@ -56,13 +58,13 @@ public:
 
   /**
    * Constructor.
-   * @param interface - &id:oatpp::network::virtual_::Interface;.
+   * @param interface - &id:avena::network::virtual_::Interface;.
    */
   ConnectionProvider(const std::shared_ptr<virtual_::Interface>& _interface);
 
   /**
    * Create shared ConnectionProvider.
-   * @param interface - &id:oatpp::network::virtual_::Interface;.
+   * @param interface - &id:avena::network::virtual_::Interface;.
    * @return - `std::shared_ptr` to ConnectionProvider.
    */
   static std::shared_ptr<ConnectionProvider> createShared(const std::shared_ptr<virtual_::Interface>& _interface);
@@ -82,7 +84,7 @@ public:
 
   /**
    * Get incoming connection.
-   * @return &id:oatpp::data::stream::IOStream;.
+   * @return &id:avena::data::stream::IOStream;.
    */
   provider::ResourceHandle<data::stream::IOStream> get() override;
 
@@ -95,7 +97,7 @@ public:
    * <br>
    * *It may be implemented later.*
    */
-  oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override {
+  avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&> getAsync() override {
     /*
      *  No need to implement this.
      *  For Asynchronous IO in oatpp it is considered to be a good practice
@@ -104,7 +106,7 @@ public:
      *
      *  It may be implemented later
      */
-    throw std::runtime_error("[oatpp::network::virtual_::server::ConnectionProvider::getConnectionAsync()]: Error. Not implemented.");
+    throw std::runtime_error("[avena::network::virtual_::server::ConnectionProvider::getConnectionAsync()]: Error. Not implemented.");
   }
   
 };

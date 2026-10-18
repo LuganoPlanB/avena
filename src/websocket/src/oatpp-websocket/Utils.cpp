@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,16 +28,16 @@
 #include "oatpp/encoding/Base64.hpp"
 #include "oatpp/utils/Random.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 void Utils::generateMaskForFrame(Frame::Header& frameHeader) {
-  oatpp::utils::Random::randomBytes(frameHeader.mask, 4);
+  avena::utils::Random::randomBytes(frameHeader.mask, 4);
 }
 
-oatpp::String Utils::generateKey() {
-  oatpp::String key(16);
-  oatpp::utils::Random::randomBytes((p_char8) key->data(), key->size());
-  return oatpp::encoding::Base64::encode(key);
+avena::String Utils::generateKey() {
+  avena::String key(16);
+  avena::utils::Random::randomBytes((p_char8) key->data(), key->size());
+  return avena::encoding::Base64::encode(key);
 }
 
 }}

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,25 +31,25 @@
 #include "oatpp/json/ObjectMapper.hpp"
 #include "oatpp/macro/codegen.hpp"
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 namespace {
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class Dto1 : public oatpp::DTO {
+class Dto1 : public avena::DTO {
   DTO_INIT(Dto1, DTO)
 };
 
-class Dto2 : public oatpp::DTO {
+class Dto2 : public avena::DTO {
   DTO_INIT(Dto2, DTO)
 };
 
-class Test : public oatpp::DTO {
+class Test : public avena::DTO {
 
   DTO_INIT(Test, DTO)
 
-  DTO_FIELD(oatpp::Any, any);
+  DTO_FIELD(avena::Any, any);
 
 };
 
@@ -59,63 +61,63 @@ void AnyTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test default constructor...")
-    oatpp::Any any;
+    avena::Any any;
     OATPP_ASSERT(!any)
-    OATPP_ASSERT(any.getValueType() == oatpp::data::type::__class::Any::getType())
+    OATPP_ASSERT(any.getValueType() == avena::data::type::__class::Any::getType())
     OATPP_ASSERT(any.getStoredType() == nullptr)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Test nullptr constructor...")
-    oatpp::Any any(nullptr);
+    avena::Any any(nullptr);
     OATPP_ASSERT(!any)
-    OATPP_ASSERT(any.getValueType() == oatpp::data::type::__class::Any::getType())
+    OATPP_ASSERT(any.getValueType() == avena::data::type::__class::Any::getType())
     OATPP_ASSERT(any.getStoredType() == nullptr)
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Test retrieve()...")
-    oatpp::Any any(oatpp::String("Hello Any!"));
+    avena::Any any(avena::String("Hello Any!"));
     OATPP_ASSERT(any)
-    OATPP_ASSERT(any.getValueType() == oatpp::data::type::__class::Any::getType())
-    OATPP_ASSERT(any.getStoredType() == oatpp::data::type::__class::String::getType())
-    auto str = any.retrieve<oatpp::String>();
+    OATPP_ASSERT(any.getValueType() == avena::data::type::__class::Any::getType())
+    OATPP_ASSERT(any.getStoredType() == avena::data::type::__class::String::getType())
+    auto str = any.retrieve<avena::String>();
     OATPP_ASSERT(str == "Hello Any!")
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Test store()...")
-    oatpp::Any any(oatpp::Int32(32));
+    avena::Any any(avena::Int32(32));
 
     OATPP_ASSERT(any)
-    OATPP_ASSERT(any.getValueType() == oatpp::data::type::__class::Any::getType())
-    OATPP_ASSERT(any.getStoredType() == oatpp::data::type::__class::Int32::getType())
+    OATPP_ASSERT(any.getValueType() == avena::data::type::__class::Any::getType())
+    OATPP_ASSERT(any.getStoredType() == avena::data::type::__class::Int32::getType())
 
-    any.store(oatpp::String("Hello Any!"));
+    any.store(avena::String("Hello Any!"));
 
     OATPP_ASSERT(any)
-    OATPP_ASSERT(any.getValueType() == oatpp::data::type::__class::Any::getType())
-    OATPP_ASSERT(any.getStoredType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(any.getValueType() == avena::data::type::__class::Any::getType())
+    OATPP_ASSERT(any.getStoredType() == avena::data::type::__class::String::getType())
 
-    auto str = any.retrieve<oatpp::String>();
+    auto str = any.retrieve<avena::String>();
     OATPP_ASSERT(str == "Hello Any!")
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "Test retrieve() class check...")
-    oatpp::Any any(Dto1::createShared());
+    avena::Any any(Dto1::createShared());
     OATPP_ASSERT(any)
-    OATPP_ASSERT(any.getValueType() == oatpp::data::type::__class::Any::getType())
+    OATPP_ASSERT(any.getValueType() == avena::data::type::__class::Any::getType())
     OATPP_ASSERT(any.getStoredType() == Object<Dto1>::Class::getType())
 
     bool wasError = false;
 
     try {
-      auto obj = any.retrieve<oatpp::Object<Dto2>>(); // wrong object
+      auto obj = any.retrieve<avena::Object<Dto2>>(); // wrong object
     } catch (std::runtime_error&) {
       wasError = true;
     }
@@ -126,25 +128,25 @@ void AnyTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test copy-assign operator...")
-    oatpp::Any any1(oatpp::String("Hello!"));
-    oatpp::Any any2;
+    avena::Any any1(avena::String("Hello!"));
+    avena::Any any2;
 
     any2 = any1;
 
     OATPP_ASSERT(any1)
     OATPP_ASSERT(any2)
 
-    OATPP_ASSERT(any1.getValueType() == oatpp::data::type::__class::Any::getType())
-    OATPP_ASSERT(any2.getValueType() == oatpp::data::type::__class::Any::getType())
+    OATPP_ASSERT(any1.getValueType() == avena::data::type::__class::Any::getType())
+    OATPP_ASSERT(any2.getValueType() == avena::data::type::__class::Any::getType())
 
-    OATPP_ASSERT(any1.getStoredType() == oatpp::data::type::__class::String::getType())
-    OATPP_ASSERT(any2.getStoredType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(any1.getStoredType() == avena::data::type::__class::String::getType())
+    OATPP_ASSERT(any2.getStoredType() == avena::data::type::__class::String::getType())
 
     OATPP_ASSERT(any1 == any2)
     OATPP_ASSERT(any1.getPtr().get() != any2.getPtr().get())
 
-    auto str1 = any1.retrieve<oatpp::String>();
-    auto str2 = any2.retrieve<oatpp::String>();
+    auto str1 = any1.retrieve<avena::String>();
+    auto str2 = any2.retrieve<avena::String>();
 
     OATPP_ASSERT(str1 == str2)
     OATPP_ASSERT(str1.get() == str2.get() && str1 == "Hello!")
@@ -153,25 +155,25 @@ void AnyTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "Test move-assign operator...")
-    oatpp::Any any1(oatpp::String("Hello!"));
-    oatpp::Any any2;
+    avena::Any any1(avena::String("Hello!"));
+    avena::Any any2;
 
     any2 = std::move(any1);
 
     OATPP_ASSERT(!any1)
     OATPP_ASSERT(any2)
 
-    OATPP_ASSERT(any1.getValueType() == oatpp::data::type::__class::Any::getType())
-    OATPP_ASSERT(any2.getValueType() == oatpp::data::type::__class::Any::getType())
+    OATPP_ASSERT(any1.getValueType() == avena::data::type::__class::Any::getType())
+    OATPP_ASSERT(any2.getValueType() == avena::data::type::__class::Any::getType())
 
     OATPP_ASSERT(any1.getStoredType() == nullptr)
-    OATPP_ASSERT(any2.getStoredType() == oatpp::data::type::__class::String::getType())
+    OATPP_ASSERT(any2.getStoredType() == avena::data::type::__class::String::getType())
 
     OATPP_ASSERT(any1 != any2)
     OATPP_ASSERT(any1.getPtr().get() != any2.getPtr().get())
 
-    auto str1 = any1.retrieve<oatpp::String>();
-    auto str2 = any2.retrieve<oatpp::String>();
+    auto str1 = any1.retrieve<avena::String>();
+    auto str2 = any2.retrieve<avena::String>();
 
     OATPP_ASSERT(str1 != str2)
     OATPP_ASSERT(str2 == "Hello!")

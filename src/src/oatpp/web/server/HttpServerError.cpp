@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "HttpServerError.hpp"
 
-namespace oatpp { namespace web { namespace server {
+namespace avena { namespace web { namespace server {
 
 HttpServerError::HttpServerError(const std::shared_ptr<protocol::http::incoming::Request>& request, const std::string& message)
   : std::runtime_error(message)

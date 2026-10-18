@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 TreeToObjectMapper::TreeToObjectMapper() {
 
@@ -37,21 +39,21 @@ TreeToObjectMapper::TreeToObjectMapper() {
   setMapperMethod(data::type::__class::Tree::CLASS_ID, &TreeToObjectMapper::mapTree);
   setMapperMethod(data::type::__class::Any::CLASS_ID, &TreeToObjectMapper::mapAny);
 
-  setMapperMethod(data::type::__class::Int8::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::Int8>);
-  setMapperMethod(data::type::__class::UInt8::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::UInt8>);
+  setMapperMethod(data::type::__class::Int8::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::Int8>);
+  setMapperMethod(data::type::__class::UInt8::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::UInt8>);
 
-  setMapperMethod(data::type::__class::Int16::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::Int16>);
-  setMapperMethod(data::type::__class::UInt16::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::UInt16>);
+  setMapperMethod(data::type::__class::Int16::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::Int16>);
+  setMapperMethod(data::type::__class::UInt16::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::UInt16>);
 
-  setMapperMethod(data::type::__class::Int32::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::Int32>);
-  setMapperMethod(data::type::__class::UInt32::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::UInt32>);
+  setMapperMethod(data::type::__class::Int32::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::Int32>);
+  setMapperMethod(data::type::__class::UInt32::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::UInt32>);
 
-  setMapperMethod(data::type::__class::Int64::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::Int64>);
-  setMapperMethod(data::type::__class::UInt64::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::UInt64>);
+  setMapperMethod(data::type::__class::Int64::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::Int64>);
+  setMapperMethod(data::type::__class::UInt64::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::UInt64>);
 
-  setMapperMethod(data::type::__class::Float32::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::Float32>);
-  setMapperMethod(data::type::__class::Float64::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::Float64>);
-  setMapperMethod(data::type::__class::Boolean::CLASS_ID, &TreeToObjectMapper::mapPrimitive<oatpp::Boolean>);
+  setMapperMethod(data::type::__class::Float32::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::Float32>);
+  setMapperMethod(data::type::__class::Float64::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::Float64>);
+  setMapperMethod(data::type::__class::Boolean::CLASS_ID, &TreeToObjectMapper::mapPrimitive<avena::Boolean>);
 
   setMapperMethod(data::type::__class::AbstractObject::CLASS_ID, &TreeToObjectMapper::mapObject);
   setMapperMethod(data::type::__class::AbstractEnum::CLASS_ID, &TreeToObjectMapper::mapEnum);
@@ -73,7 +75,7 @@ void TreeToObjectMapper::setMapperMethod(const data::type::ClassId& classId, Map
   m_methods[id] = method;
 }
 
-TreeToObjectMapper::GuessedPrimitiveType TreeToObjectMapper::guessedPrimitiveType(const oatpp::String& text) {
+TreeToObjectMapper::GuessedPrimitiveType TreeToObjectMapper::guessedPrimitiveType(const avena::String& text) {
 
   if(text->empty()) {
     return GuessedPrimitiveType::NOT_PRIMITIVE;
@@ -125,7 +127,7 @@ TreeToObjectMapper::GuessedPrimitiveType TreeToObjectMapper::guessedPrimitiveTyp
 
 }
 
-oatpp::Void TreeToObjectMapper::map(State& state, const Type* type) const {
+avena::Void TreeToObjectMapper::map(State& state, const Type* type) const {
   auto id = static_cast<v_uint32>(type->classId.id);
   auto& method = m_methods[id];
   if(method) {
@@ -137,7 +139,7 @@ oatpp::Void TreeToObjectMapper::map(State& state, const Type* type) const {
       return interpretation->fromInterpretation(map(state, interpretation->getInterpretationType()));
     }
 
-    state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::map()]: "
+    state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::map()]: "
                           "Error. No map method for type '" + std::string(type->classId.name) + "'");
     return nullptr;
 
@@ -167,9 +169,9 @@ const Type* TreeToObjectMapper::guessType(const Tree& node) {
     case Tree::Type::FLOAT_64: return Float64::Class::getType();
 
     case Tree::Type::STRING: return String::Class::getType();
-    case Tree::Type::VECTOR: return Vector<oatpp::Any>::Class::getType();
-    case Tree::Type::MAP: return Fields<oatpp::Any>::Class::getType();
-    case Tree::Type::PAIRS: return Fields<oatpp::Any>::Class::getType();
+    case Tree::Type::VECTOR: return Vector<avena::Any>::Class::getType();
+    case Tree::Type::MAP: return Fields<avena::Any>::Class::getType();
+    case Tree::Type::PAIRS: return Fields<avena::Any>::Class::getType();
 
     default: return nullptr;
 
@@ -177,7 +179,7 @@ const Type* TreeToObjectMapper::guessType(const Tree& node) {
 
 }
 
-oatpp::Void TreeToObjectMapper::mapString(const TreeToObjectMapper* mapper, State& state, const Type* type) {
+avena::Void TreeToObjectMapper::mapString(const TreeToObjectMapper* mapper, State& state, const Type* type) {
 
   (void) mapper;
   (void) type;
@@ -187,7 +189,7 @@ oatpp::Void TreeToObjectMapper::mapString(const TreeToObjectMapper* mapper, Stat
   }
 
   if(state.tree->isNull()){
-    return oatpp::Void(String::Class::getType());
+    return avena::Void(String::Class::getType());
   }
 
   if(state.config->allowLexicalCasting) {
@@ -266,33 +268,33 @@ oatpp::Void TreeToObjectMapper::mapString(const TreeToObjectMapper* mapper, Stat
 
   }
 
-  state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapString()]: Node is NOT a STRING");
+  state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapString()]: Node is NOT a STRING");
   return nullptr;
 
 }
 
-oatpp::Void TreeToObjectMapper::mapTree(const TreeToObjectMapper* mapper, State& state, const Type* type) {
+avena::Void TreeToObjectMapper::mapTree(const TreeToObjectMapper* mapper, State& state, const Type* type) {
   (void) type;
   (void) mapper;
-  return oatpp::Tree(std::make_shared<mapping::Tree>(*state.tree), oatpp::Tree::Class::getType());
+  return avena::Tree(std::make_shared<mapping::Tree>(*state.tree), avena::Tree::Class::getType());
 }
 
-oatpp::Void TreeToObjectMapper::mapAny(const TreeToObjectMapper* mapper, State& state, const Type* type) {
+avena::Void TreeToObjectMapper::mapAny(const TreeToObjectMapper* mapper, State& state, const Type* type) {
   (void) type;
   if(state.tree->isNull()){
-    return oatpp::Void(Any::Class::getType());
+    return avena::Void(Any::Class::getType());
   } else {
     const Type* const fieldType = guessType(*state.tree);
     if(fieldType != nullptr) {
       auto fieldValue = mapper->map(state, fieldType);
       auto anyHandle = std::make_shared<data::type::AnyHandle>(fieldValue.getPtr(), fieldValue.getValueType());
-      return oatpp::Void(anyHandle, Any::Class::getType());
+      return avena::Void(anyHandle, Any::Class::getType());
     }
   }
-  return oatpp::Void(Any::Class::getType());
+  return avena::Void(Any::Class::getType());
 }
 
-oatpp::Void TreeToObjectMapper::mapEnum(const TreeToObjectMapper* mapper, State& state, const Type* type) {
+avena::Void TreeToObjectMapper::mapEnum(const TreeToObjectMapper* mapper, State& state, const Type* type) {
 
   auto polymorphicDispatcher = static_cast<const data::type::__class::AbstractEnum::PolymorphicDispatcher*>(
     type->polymorphicDispatcher
@@ -301,7 +303,7 @@ oatpp::Void TreeToObjectMapper::mapEnum(const TreeToObjectMapper* mapper, State&
   data::type::EnumInterpreterError e = data::type::EnumInterpreterError::OK;
   const auto& value = mapper->map(state, polymorphicDispatcher->getInterpretationType());
   if(!state.errorStack.empty()) {
-    state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapEnum()]");
+    state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapEnum()]");
     return nullptr;
   }
   const auto& result = polymorphicDispatcher->fromInterpretation(value, state.config->useUnqualifiedEnumNames, e);
@@ -312,24 +314,24 @@ oatpp::Void TreeToObjectMapper::mapEnum(const TreeToObjectMapper* mapper, State&
 
   switch(e) {
     case data::type::EnumInterpreterError::CONSTRAINT_NOT_NULL:
-      state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapEnum()]: Error. Enum constraint violated - 'NotNull'.");
+      state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapEnum()]: Error. Enum constraint violated - 'NotNull'.");
       break;
     case data::type::EnumInterpreterError::OK:
     case data::type::EnumInterpreterError::TYPE_MISMATCH_ENUM:
     case data::type::EnumInterpreterError::TYPE_MISMATCH_ENUM_VALUE:
     case data::type::EnumInterpreterError::ENTRY_NOT_FOUND:
     default:
-      state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapEnum()]: Error. Can't map Enum.");
+      state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapEnum()]: Error. Can't map Enum.");
   }
 
   return nullptr;
 
 }
 
-oatpp::Void TreeToObjectMapper::mapCollection(const TreeToObjectMapper* mapper, State& state, const Type* type) {
+avena::Void TreeToObjectMapper::mapCollection(const TreeToObjectMapper* mapper, State& state, const Type* type) {
 
   if(state.tree->isNull()){
-    return oatpp::Void(type);
+    return avena::Void(type);
   }
 
   auto dispatcher = static_cast<const data::type::__class::Collection::PolymorphicDispatcher*>(type->polymorphicDispatcher);
@@ -350,7 +352,7 @@ oatpp::Void TreeToObjectMapper::mapCollection(const TreeToObjectMapper* mapper, 
 
     if(!nestedState.errorStack.empty()) {
       state.errorStack.splice(nestedState.errorStack);
-      state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapCollection()]: index=" + utils::Conversion::uint64ToStr(index));
+      state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapCollection()]: index=" + utils::Conversion::uint64ToStr(index));
       return nullptr;
     }
 
@@ -362,18 +364,18 @@ oatpp::Void TreeToObjectMapper::mapCollection(const TreeToObjectMapper* mapper, 
 
 }
 
-oatpp::Void TreeToObjectMapper::mapMap(const TreeToObjectMapper* mapper, State& state, const Type* type) {
+avena::Void TreeToObjectMapper::mapMap(const TreeToObjectMapper* mapper, State& state, const Type* type) {
 
   if(state.tree->isNull()){
-    return oatpp::Void(type);
+    return avena::Void(type);
   }
 
   auto dispatcher = static_cast<const data::type::__class::Map::PolymorphicDispatcher*>(type->polymorphicDispatcher);
   auto map = dispatcher->createObject();
 
   auto keyType = dispatcher->getKeyType();
-  if(keyType->classId != oatpp::String::Class::CLASS_ID){
-    state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapMap()]: Invalid map key. Key should be String");
+  if(keyType->classId != avena::String::Class::CLASS_ID){
+    state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapMap()]: Invalid map key. Key should be String");
     return nullptr;
   }
   auto valueType = dispatcher->getValueType();
@@ -394,7 +396,7 @@ oatpp::Void TreeToObjectMapper::mapMap(const TreeToObjectMapper* mapper, State& 
 
     if(!nestedState.errorStack.empty()) {
       state.errorStack.splice(nestedState.errorStack);
-      state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapMap()]: key='" + pair.first + "'");
+      state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapMap()]: key='" + pair.first + "'");
       return nullptr;
     }
 
@@ -406,13 +408,13 @@ oatpp::Void TreeToObjectMapper::mapMap(const TreeToObjectMapper* mapper, State& 
 
 }
 
-oatpp::Void TreeToObjectMapper::mapObject(const TreeToObjectMapper* mapper, State& state, const Type* type) {
+avena::Void TreeToObjectMapper::mapObject(const TreeToObjectMapper* mapper, State& state, const Type* type) {
 
   if(state.tree->isNull()){
-    return oatpp::Void(type);
+    return avena::Void(type);
   }
 
-  auto dispatcher = static_cast<const oatpp::data::type::__class::AbstractObject::PolymorphicDispatcher*>(type->polymorphicDispatcher);
+  auto dispatcher = static_cast<const avena::data::type::__class::AbstractObject::PolymorphicDispatcher*>(type->polymorphicDispatcher);
   auto object = dispatcher->createObject();
   const std::unordered_map<std::string, BaseObject::Property*>* fieldsMap;
 
@@ -422,7 +424,7 @@ oatpp::Void TreeToObjectMapper::mapObject(const TreeToObjectMapper* mapper, Stat
     fieldsMap = std::addressof(dispatcher->getProperties()->getMap());
   }
 
-  std::vector<std::pair<oatpp::BaseObject::Property*, const Tree*>> polymorphs;
+  std::vector<std::pair<avena::BaseObject::Property*, const Tree*>> polymorphs;
 
   const TreeChildrenOperator childrenOperator(*state.tree);
   v_uint64 childrenCount = childrenOperator.size();
@@ -436,7 +438,7 @@ oatpp::Void TreeToObjectMapper::mapObject(const TreeToObjectMapper* mapper, Stat
 
       auto field = fieldIterator->second;
 
-      if(field->info.typeSelector && field->type == oatpp::Any::Class::getType()) {
+      if(field->info.typeSelector && field->type == avena::Any::Class::getType()) {
         polymorphs.emplace_back(field, pair.second); // store polymorphs for later processing.
       } else {
 
@@ -448,28 +450,28 @@ oatpp::Void TreeToObjectMapper::mapObject(const TreeToObjectMapper* mapper, Stat
 
         if(!nestedState.errorStack.empty()) {
           state.errorStack.splice(nestedState.errorStack);
-          state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapObject()]: field='" + pair.first + "'");
+          state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapObject()]: field='" + pair.first + "'");
           return nullptr;
         }
 
         if(field->info.required && value == nullptr) {
-          state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapObject()]: Error. " +
-                                oatpp::String(type->nameQualifier) + "::" +
-                                oatpp::String(field->name) + " is required!");
+          state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapObject()]: Error. " +
+                                avena::String(type->nameQualifier) + "::" +
+                                avena::String(field->name) + " is required!");
           return nullptr;
         }
-        field->set(static_cast<oatpp::BaseObject *>(object.get()), value);
+        field->set(static_cast<avena::BaseObject *>(object.get()), value);
       }
 
     } else if (!state.config->allowUnknownFields) {
-      state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapObject()]: Error. Unknown field '" + pair.first + "'");
+      state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapObject()]: Error. Unknown field '" + pair.first + "'");
       return nullptr;
     }
 
   }
 
   for(auto& p : polymorphs) {
-    auto selectedType = p.first->info.typeSelector->selectType(static_cast<oatpp::BaseObject *>(object.get()));
+    auto selectedType = p.first->info.typeSelector->selectType(static_cast<avena::BaseObject *>(object.get()));
 
     State nestedState;
     nestedState.tree = p.second;
@@ -479,19 +481,19 @@ oatpp::Void TreeToObjectMapper::mapObject(const TreeToObjectMapper* mapper, Stat
 
     if(!nestedState.errorStack.empty()) {
       state.errorStack.splice(nestedState.errorStack);
-      state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapObject()]: field='" + oatpp::String(p.first->name) + "'");
+      state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapObject()]: field='" + avena::String(p.first->name) + "'");
       return nullptr;
     }
 
     if(p.first->info.required && value == nullptr) {
-      state.errorStack.push("[oatpp::data::mapping::TreeToObjectMapper::mapObject()]: Error. " +
-                            oatpp::String(type->nameQualifier) + "::" +
-                            oatpp::String(p.first->name) + " is required!");
+      state.errorStack.push("[avena::data::mapping::TreeToObjectMapper::mapObject()]: Error. " +
+                            avena::String(type->nameQualifier) + "::" +
+                            avena::String(p.first->name) + " is required!");
       return nullptr;
     }
 
-    oatpp::Any any(value);
-    p.first->set(static_cast<oatpp::BaseObject *>(object.get()), oatpp::Void(any.getPtr(), p.first->type));
+    avena::Any any(value);
+    p.first->set(static_cast<avena::BaseObject *>(object.get()), avena::Void(any.getPtr(), p.first->type));
 
   }
 

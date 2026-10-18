@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include <cstring>
 
-namespace oatpp { namespace data { namespace share {
+namespace avena { namespace data { namespace share {
 
 MemoryLabel::MemoryLabel(const std::shared_ptr<std::string>& memHandle, const void* data, v_buff_size size)
   : m_memoryHandle(memHandle)
@@ -35,27 +37,27 @@ MemoryLabel::MemoryLabel(const std::shared_ptr<std::string>& memHandle, const vo
 {}
   
 StringKeyLabel::StringKeyLabel(const std::shared_ptr<std::string>& memHandle, const char* data, v_buff_size size)
-  : oatpp::data::share::MemoryLabel(memHandle, data, size)
+  : avena::data::share::MemoryLabel(memHandle, data, size)
 {}
   
 StringKeyLabel::StringKeyLabel(const char* constText)
-  : oatpp::data::share::MemoryLabel(nullptr, constText, static_cast<v_buff_size>(std::strlen(constText)))
+  : avena::data::share::MemoryLabel(nullptr, constText, static_cast<v_buff_size>(std::strlen(constText)))
 {}
   
 StringKeyLabel::StringKeyLabel(const String& str)
-  : oatpp::data::share::MemoryLabel(str.getPtr(), str->data(), static_cast<v_buff_size>(str->size()))
+  : avena::data::share::MemoryLabel(str.getPtr(), str->data(), static_cast<v_buff_size>(str->size()))
 {}
   
 StringKeyLabelCI::StringKeyLabelCI(const std::shared_ptr<std::string>& memHandle, const char* data, v_buff_size size)
-  : oatpp::data::share::MemoryLabel(memHandle, data, size)
+  : avena::data::share::MemoryLabel(memHandle, data, size)
 {}
 
 StringKeyLabelCI::StringKeyLabelCI(const char* constText)
-  : oatpp::data::share::MemoryLabel(nullptr, constText, static_cast<v_buff_size>(std::strlen(constText)))
+  : avena::data::share::MemoryLabel(nullptr, constText, static_cast<v_buff_size>(std::strlen(constText)))
 {}
 
 StringKeyLabelCI::StringKeyLabelCI(const String& str)
-  : oatpp::data::share::MemoryLabel(str.getPtr(), str->data(), static_cast<v_buff_size>(str->size()))
+  : avena::data::share::MemoryLabel(str.getPtr(), str->data(), static_cast<v_buff_size>(str->size()))
 {}
   
 }}}

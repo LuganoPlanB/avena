@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/web/server/handler/ErrorHandler.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace api {
+namespace avena { namespace web { namespace server { namespace api {
 
 const Endpoints& ApiController::getEndpoints() {
   return m_endpoints;
@@ -65,7 +67,7 @@ std::shared_ptr<ApiController::OutgoingResponse> ApiController::handleError(cons
     std::rethrow_exception(exceptionPtr);
   }
 
-  throw std::runtime_error("[oatpp::web::server::api::ApiController::handleError()]: Error. 'exceptionPtr' is not set.");
+  throw std::runtime_error("[avena::web::server::api::ApiController::handleError()]: Error. 'exceptionPtr' is not set.");
 
 }
 
@@ -82,7 +84,7 @@ std::shared_ptr<handler::AuthorizationObject> ApiController::handleDefaultAuthor
     return m_defaultAuthorizationHandler->handleAuthorization(authHeader);
   }
   // If Authorization is not setup on the server then it's 500
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_500, "Authorization is not setup.", {});
+  throw avena::web::protocol::http::HttpError(Status::CODE_500, "Authorization is not setup.", {});
 }
 
 const std::shared_ptr<mime::ContentMappers>& ApiController::getContentMappers() const {
@@ -91,7 +93,7 @@ const std::shared_ptr<mime::ContentMappers>& ApiController::getContentMappers() 
 
 // Helper methods
 
-std::shared_ptr<ApiController::OutgoingResponse> ApiController::createResponse(const Status& status, const oatpp::String& str) const {
+std::shared_ptr<ApiController::OutgoingResponse> ApiController::createResponse(const Status& status, const avena::String& str) const {
   return ResponseFactory::createResponse(status, str);
 }
 
@@ -100,18 +102,18 @@ std::shared_ptr<ApiController::OutgoingResponse> ApiController::createResponse(c
 }
 
 std::shared_ptr<ApiController::OutgoingResponse> ApiController::createDtoResponse(const Status& status,
-                                                                                  const oatpp::Void& dto,
-                                                                                  const std::shared_ptr<oatpp::data::mapping::ObjectMapper>& objectMapper) const {
+                                                                                  const avena::Void& dto,
+                                                                                  const std::shared_ptr<avena::data::mapping::ObjectMapper>& objectMapper) const {
   return ResponseFactory::createResponse(status, dto, objectMapper);
 }
 
-std::shared_ptr<ApiController::OutgoingResponse> ApiController::createDtoResponse(const Status& status, const oatpp::Void& dto) const {
+std::shared_ptr<ApiController::OutgoingResponse> ApiController::createDtoResponse(const Status& status, const avena::Void& dto) const {
   return ResponseFactory::createResponse(status, dto, m_contentMappers->getDefaultMapper());
 }
 
 std::shared_ptr<ApiController::OutgoingResponse> ApiController::createDtoResponse(const Status& status,
-                                                                                  const oatpp::Void& dto,
-                                                                                  const std::vector<oatpp::String>& acceptableContentTypes) const
+                                                                                  const avena::Void& dto,
+                                                                                  const std::vector<avena::String>& acceptableContentTypes) const
 {
   auto mapper = m_contentMappers->selectMapper(acceptableContentTypes);
   if(mapper) {

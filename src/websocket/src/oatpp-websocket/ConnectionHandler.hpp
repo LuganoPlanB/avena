@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,13 +31,13 @@
 
 #include "oatpp/network/ConnectionHandler.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 /**
- * Websocket connection handler. Extends &id:oatpp::network::ConnectionHandler;. <br>
+ * Websocket connection handler. Extends &id:avena::network::ConnectionHandler;. <br>
  * Will create one thread per each connection to handle communication.
  */
-class ConnectionHandler : public oatpp::base::Countable, public network::ConnectionHandler {
+class ConnectionHandler : public avena::base::Countable, public network::ConnectionHandler {
 public:
 
   /**
@@ -44,26 +46,26 @@ public:
   class SocketInstanceListener {
   public:
     /**
-     * Convenience typedef fo &id:oatpp::websocket::WebSocket;.
+     * Convenience typedef fo &id:avena::websocket::WebSocket;.
      */
-    typedef oatpp::websocket::WebSocket WebSocket;
+    typedef avena::websocket::WebSocket WebSocket;
 
     /**
-     * Convenience typedef for &id:oatpp::network::ConnectionHandler::ParameterMap;.
+     * Convenience typedef for &id:avena::network::ConnectionHandler::ParameterMap;.
      */
-    typedef oatpp::network::ConnectionHandler::ParameterMap ParameterMap;
+    typedef avena::network::ConnectionHandler::ParameterMap ParameterMap;
   public:
 
     /**
      * Called when socket is created
-     * @param socket - &id:oatpp::websocket::WebSocket;.
-     * @param params - `std::shared_ptr` to const &id:oatpp::network::ConnectionHandler::ParameterMap;.
+     * @param socket - &id:avena::websocket::WebSocket;.
+     * @param params - `std::shared_ptr` to const &id:avena::network::ConnectionHandler::ParameterMap;.
      */
     virtual void onAfterCreate(const WebSocket& socket, const std::shared_ptr<const ParameterMap>& params) = 0;
 
     /**
      * Called before socket instance is destroyed.
-     * @param socket - &id:oatpp::websocket::WebSocket;.
+     * @param socket - &id:avena::websocket::WebSocket;.
      */
     virtual void onBeforeDestroy(const WebSocket& socket) = 0;
   };
@@ -94,13 +96,13 @@ public:
   }
 
   /**
-   * Implementation of &id:oatpp::network::ConnectionHandler::handleConnection;.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
+   * Implementation of &id:avena::network::ConnectionHandler::handleConnection;.
+   * @param connection - &id:avena::data::stream::IOStream;.
    */
   void handleConnection(const provider::ResourceHandle<IOStream>& connection, const std::shared_ptr<const ParameterMap>& params) override;
 
   /**
-   * Implementation of &id:oatpp::network::ConnectionHandler::stop;.
+   * Implementation of &id:avena::network::ConnectionHandler::stop;.
    * Here does nothing.
    */
   void stop() override {

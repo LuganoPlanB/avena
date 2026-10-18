@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 #include "oatpp/Types.hpp"
 #include "oatpp/IODefinitions.hpp"
 
-namespace oatpp { namespace network { namespace monitor {
+namespace avena { namespace network { namespace monitor {
 
 /**
  * ConnectionStats.
@@ -76,14 +78,14 @@ struct ConnectionStats {
   /**
    * Data collected by stat-collectors - &l:StatCollector;
    */
-  std::unordered_map<oatpp::String, void*> metricsData;
+  std::unordered_map<avena::String, void*> metricsData;
 
 };
 
 /**
  * StatCollector collects metrics data of the connection.
  */
-class StatCollector : public oatpp::base::Countable {
+class StatCollector : public avena::base::Countable {
 public:
 
   /**
@@ -93,9 +95,9 @@ public:
 
   /**
    * Unique metric name that is collected by this `StatCollector`.
-   * @return - metricName. &id:oatpp::String;.
+   * @return - metricName. &id:avena::String;.
    */
-  virtual oatpp::String metricName() = 0;
+  virtual avena::String metricName() = 0;
 
   /**
    * Metric data constructor.

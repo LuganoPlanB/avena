@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include <limits>
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
 namespace {
 
@@ -76,7 +78,7 @@ void TreeTest::onRun() {
   {
     OATPP_LOGd(TAG, "Case 1")
     Tree node;
-    oatpp::String original = "Hello World!";
+    avena::String original = "Hello World!";
     node.setString(original);
     auto stored = node.getString();
     OATPP_ASSERT(stored == original)
@@ -167,7 +169,7 @@ void TreeTest::onRun() {
   {
     OATPP_LOGd(TAG, "Case 6")
     Tree article;
-    oatpp::Tree ot;
+    avena::Tree ot;
 
 
     article["name"] = "Hello World!";
@@ -178,7 +180,7 @@ void TreeTest::onRun() {
     article["references"][1]["author"] = "Leonid";
 
     v_int32 value = article["pages"];
-    oatpp::String author = article["references"][0]["author"];
+    avena::String author = article["references"][0]["author"];
 
     OATPP_LOGd(TAG, "pages={}', refs='{}', node_type={}", value, author, static_cast<v_int32>(article.getType()))
 

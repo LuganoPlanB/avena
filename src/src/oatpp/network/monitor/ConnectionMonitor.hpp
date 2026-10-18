@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -33,7 +35,7 @@
 #include <unordered_set>
 #include <condition_variable>
 
-namespace oatpp { namespace network { namespace monitor {
+namespace avena { namespace network { namespace monitor {
 
 /**
  * ConnectionMonitor is a middleman who's able to manage provided connections
@@ -84,7 +86,7 @@ private:
 
 private:
 
-  class Monitor : public oatpp::base::Countable {
+  class Monitor : public avena::base::Countable {
   private:
 
     std::mutex m_runMutex;
@@ -97,7 +99,7 @@ private:
 
     std::mutex m_checkMutex;
     std::vector<std::shared_ptr<MetricsChecker>> m_metricsCheckers;
-    std::unordered_map<oatpp::String, std::shared_ptr<StatCollector>> m_statCollectors;
+    std::unordered_map<avena::String, std::shared_ptr<StatCollector>> m_statCollectors;
 
   private:
     static void monitorTask(std::shared_ptr<Monitor> monitor);
@@ -114,7 +116,7 @@ private:
     void invalidateAll();
 
     void addStatCollector(const std::shared_ptr<StatCollector>& collector);
-    void removeStatCollector(const oatpp::String& metricName);
+    void removeStatCollector(const avena::String& metricName);
 
     void addMetricsChecker(const std::shared_ptr<MetricsChecker>& checker);
 
@@ -145,7 +147,7 @@ public:
 
   /**
    * Add metrics checker.
-   * @param checker - &id:oatpp::network::monitor::MetricsChecker;.
+   * @param checker - &id:avena::network::monitor::MetricsChecker;.
    */
   void addMetricsChecker(const std::shared_ptr<MetricsChecker>& checker);
 

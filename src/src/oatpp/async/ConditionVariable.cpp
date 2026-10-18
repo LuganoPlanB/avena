@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "ConditionVariable.hpp"
 
-namespace oatpp { namespace async {
+namespace avena { namespace async {
 
 ConditionVariable::ConditionVariable()
   : m_notified(false)
@@ -43,7 +45,7 @@ CoroutineStarter ConditionVariable::wait(LockGuard& lockGuard, std::function<boo
   class WaitCoroutine : public Coroutine<WaitCoroutine> {
   private:
     ConditionVariable* m_cv;
-    oatpp::async::LockGuard* m_lockGuard;
+    avena::async::LockGuard* m_lockGuard;
     std::function<bool()> m_condition;
   public:
 
@@ -81,7 +83,7 @@ CoroutineStarter ConditionVariable::waitUntil(LockGuard& lockGuard, std::functio
   class WaitCoroutine : public Coroutine<WaitCoroutine> {
   private:
     ConditionVariable* m_cv;
-    oatpp::async::LockGuard* m_lockGuard;
+    avena::async::LockGuard* m_lockGuard;
     std::function<bool()> m_condition;
     std::chrono::system_clock::time_point m_timeoutTime;
   public:

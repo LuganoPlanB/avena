@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/Environment.hpp"
 
-namespace oatpp { namespace base {
+namespace avena { namespace base {
 
 template<class T>
 class ObjectHandle {

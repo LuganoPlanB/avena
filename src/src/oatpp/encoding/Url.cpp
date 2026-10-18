@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,7 +28,7 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
 
 Url::Config::Config() {
 
@@ -108,14 +110,14 @@ void Url::decode(data::stream::ConsistentOutputStream* stream, const void* data,
 
 }
 
-oatpp::String Url::encode(const oatpp::String& data, const Config& config) {
+avena::String Url::encode(const avena::String& data, const Config& config) {
   if(!data) return nullptr;
   data::stream::BufferOutputStream stream(static_cast<v_buff_size>(data->size() * 3));
   encode(&stream, data->data(), static_cast<v_buff_size>(data->size()), config);
   return stream.toString();
 }
 
-oatpp::String Url::decode(const oatpp::String& data) {
+avena::String Url::decode(const avena::String& data) {
   if(!data) return nullptr;
   data::stream::BufferOutputStream stream(static_cast<v_buff_size>(data->size()));
   decode(&stream, data->data(), static_cast<v_buff_size>(data->size()));

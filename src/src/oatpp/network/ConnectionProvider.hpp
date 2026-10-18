@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -31,11 +33,11 @@
 
 #include <unordered_map>
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 /**
  * Abstract ConnectionProvider. <br>
- * Basically it returns whatever stream (&id:oatpp::data::stream::IOStream;). <br>
+ * Basically it returns whatever stream (&id:avena::data::stream::IOStream;). <br>
  * User of ConnectionProvider should care about IOStream only.
  * All other properties are optional.
  */

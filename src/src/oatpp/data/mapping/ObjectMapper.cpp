@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,9 +28,9 @@
 
 #include "oatpp/data/stream/BufferStream.hpp"
 
-namespace oatpp { namespace data { namespace mapping {
+namespace avena { namespace data { namespace mapping {
 
-void ErrorStack::push(const oatpp::String& error) {
+void ErrorStack::push(const avena::String& error) {
   stack.emplace_back(error);
 }
 
@@ -36,7 +38,7 @@ void ErrorStack::splice(ErrorStack& errorStack) {
   stack.splice(stack.end(), errorStack.stack);
 }
 
-oatpp::String ErrorStack::stacktrace() const {
+avena::String ErrorStack::stacktrace() const {
   stream::BufferOutputStream ss;
   for(auto& s : stack) {
     ss << s << "\n";
@@ -52,13 +54,13 @@ bool ErrorStack::empty() const {
 // MappingError
 
 MappingError::MappingError(const ErrorStack& errorStack)
-  : std::runtime_error(errorStack.empty() ? "[oatpp::data::mapping::MappingError]"
+  : std::runtime_error(errorStack.empty() ? "[avena::data::mapping::MappingError]"
                                           : errorStack.stack.front().getValue("<empty-error-stack>"))
   , m_stack(errorStack)
 {}
 
 MappingError::MappingError(ErrorStack&& errorStack)
-  : std::runtime_error(errorStack.empty() ? "[oatpp::data::mapping::MappingError]"
+  : std::runtime_error(errorStack.empty() ? "[avena::data::mapping::MappingError]"
                                           : errorStack.stack.front().getValue("<empty-error-stack>"))
   , m_stack(std::move(errorStack))
 {}
@@ -82,7 +84,7 @@ const ObjectMapper::Info& ObjectMapper::getInfo() const {
   return m_info;
 }
 
-oatpp::String ObjectMapper::writeToString(const type::Void& variant) const {
+avena::String ObjectMapper::writeToString(const type::Void& variant) const {
   stream::BufferOutputStream stream;
   ErrorStack errorStack;
   write(&stream, variant, errorStack);

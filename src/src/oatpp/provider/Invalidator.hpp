@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,14 +30,14 @@
 #include "oatpp/base/Countable.hpp"
 #include <memory>
 
-namespace oatpp { namespace provider {
+namespace avena { namespace provider {
 
 /**
  * Abstract resource invalidator.
  * @tparam T - resource class.
  */
 template<class T>
-class Invalidator : public oatpp::base::Countable {
+class Invalidator : public avena::base::Countable {
 public:
 
   /**

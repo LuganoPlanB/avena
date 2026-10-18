@@ -1,3 +1,5 @@
+<!-- Copyright (C) 2026 Plan-B Foundation -->
+<!-- Updated C++ namespace examples for avena. -->
 
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://vshymanskyy.github.io/StandWithUkraine/)
 
@@ -94,9 +96,9 @@ See [Oat++ ORM](https://oatpp.io/docs/components/orm/) for more details.
 ```cpp
 QUERY(createUser,
       "INSERT INTO users (username, email, role) VALUES (:username, :email, :role);",
-      PARAM(oatpp::String, username), 
-      PARAM(oatpp::String, email), 
-      PARAM(oatpp::Enum<UserRoles>::AsString, role))
+      PARAM(avena::String, username),
+      PARAM(avena::String, email),
+      PARAM(avena::Enum<UserRoles>::AsString, role))
 ```
 
 ## Join Our Community
@@ -140,7 +142,7 @@ QUERY(createUser,
 
 ### Microservices
 
-- [Consul Integration](https://github.com/oatpp/example-consul) - Example project on how to use [oatpp::consul::Client](https://oatpp.io/api/latest/oatpp-consul/rest/Client/). Consul integration.
+- [Consul Integration](https://github.com/oatpp/example-consul) - Example project on how to use [avena::consul::Client](https://oatpp.io/api/latest/oatpp-consul/rest/Client/). Consul integration.
 - [Microservices](https://github.com/oatpp/example-microservices) - Example project on how to build microservices with Oat++, 
 and example on how to consolidate those microservices using [monolithization](https://oatpp.io/docs/monolithization/) technique.
 

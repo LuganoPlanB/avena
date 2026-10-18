@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
   #include <winsock2.h>
 #endif
 
-namespace oatpp {
+namespace avena {
 
 bool isValidIOHandle(v_io_handle handle) {
 

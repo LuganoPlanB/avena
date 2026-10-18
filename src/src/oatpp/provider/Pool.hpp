@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,7 +34,7 @@
 #include <thread>
 #include <condition_variable>
 
-namespace oatpp { namespace provider {
+namespace avena { namespace provider {
 
 template<class TResource, class AcquisitionProxyImpl>
 class PoolTemplate; // FWD
@@ -88,7 +90,7 @@ public:
 };
 
 template<class TResource, class AcquisitionProxyImpl>
-class PoolTemplate : public oatpp::base::Countable, public async::CoroutineWaitList::Listener {
+class PoolTemplate : public avena::base::Countable, public async::CoroutineWaitList::Listener {
   friend AcquisitionProxy<TResource, AcquisitionProxyImpl>;
 private:
 
@@ -145,7 +147,7 @@ private:
       }
 
       if(canReuse) {
-        m_bench.push_back({resource, oatpp::Environment::getMicroTickCount()});
+        m_bench.push_back({resource, avena::Environment::getMicroTickCount()});
       } else {
         -- m_counter;
       }
@@ -165,7 +167,7 @@ private:
 
       {
         std::lock_guard<std::mutex> guard(pool->m_lock);
-        auto ticks = oatpp::Environment::getMicroTickCount();
+        auto ticks = avena::Environment::getMicroTickCount();
 
         auto i = pool->m_bench.begin();
         while (i != pool->m_bench.end()) {
@@ -278,7 +280,7 @@ protected:
 
   static async::CoroutineStarterForResult<const provider::ResourceHandle<TResource>&> getAsync(const std::shared_ptr<PoolTemplate>& _this) {
 
-    class GetCoroutine : public oatpp::async::CoroutineWithResult<GetCoroutine, const provider::ResourceHandle<TResource>&> {
+    class GetCoroutine : public avena::async::CoroutineWithResult<GetCoroutine, const provider::ResourceHandle<TResource>&> {
     private:
       std::shared_ptr<PoolTemplate> m_pool;
       std::chrono::system_clock::time_point m_startTime{std::chrono::system_clock::now()};
@@ -337,7 +339,7 @@ protected:
         ));
       }
 
-      async::Action handleError(oatpp::async::Error* error) override {
+      async::Action handleError(avena::async::Error* error) override {
         {
           /* Careful!!! Using non-async lock */
           std::lock_guard<std::mutex> guard(m_pool->m_lock);

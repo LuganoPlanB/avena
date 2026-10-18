@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -22,7 +24,7 @@
  *
  ***************************************************************************/
 
-namespace oatpp { namespace openssl {
+namespace avena { namespace openssl {
 
 /**
  * Log all errors from the OpenSSL Error stack. <br>

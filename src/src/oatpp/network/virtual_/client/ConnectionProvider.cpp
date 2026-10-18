@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "ConnectionProvider.hpp"
 
-namespace oatpp { namespace network { namespace virtual_ { namespace client {
+namespace avena { namespace network { namespace virtual_ { namespace client {
 
 void ConnectionProvider::ConnectionInvalidator::invalidate(const std::shared_ptr<data::stream::IOStream>& connection) {
   auto socket = std::static_pointer_cast<Socket>(connection);
@@ -54,19 +56,19 @@ provider::ResourceHandle<data::stream::IOStream> ConnectionProvider::get() {
   if(submission->isValid()) {
     auto socket = submission->getSocket();
     if (socket) {
-      socket->setOutputStreamIOMode(oatpp::data::stream::IOMode::BLOCKING);
-      socket->setInputStreamIOMode(oatpp::data::stream::IOMode::BLOCKING);
+      socket->setOutputStreamIOMode(avena::data::stream::IOMode::BLOCKING);
+      socket->setInputStreamIOMode(avena::data::stream::IOMode::BLOCKING);
       socket->setMaxAvailableToReadWrtie(m_maxAvailableToRead, m_maxAvailableToWrite);
       return provider::ResourceHandle<data::stream::IOStream>(socket, m_invalidator);
     }
   }
-  throw std::runtime_error("[oatpp::network::virtual_::client::getConnection()]: Error. Can't connect. " + *m_interface->getName());
+  throw std::runtime_error("[avena::network::virtual_::client::getConnection()]: Error. Can't connect. " + *m_interface->getName());
 }
   
-oatpp::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&>
+avena::async::CoroutineStarterForResult<const provider::ResourceHandle<data::stream::IOStream>&>
 ConnectionProvider::getAsync() {
   
-  class ConnectCoroutine : public oatpp::async::CoroutineWithResult<ConnectCoroutine, const provider::ResourceHandle<oatpp::data::stream::IOStream>&> {
+  class ConnectCoroutine : public avena::async::CoroutineWithResult<ConnectCoroutine, const provider::ResourceHandle<avena::data::stream::IOStream>&> {
   private:
     std::shared_ptr<ConnectionInvalidator> m_invalidator;
     std::shared_ptr<virtual_::Interface> m_interface;
@@ -100,8 +102,8 @@ ConnectionProvider::getAsync() {
         auto socket = m_submission->getSocketNonBlocking();
 
         if(socket) {
-          socket->setOutputStreamIOMode(oatpp::data::stream::IOMode::ASYNCHRONOUS);
-          socket->setInputStreamIOMode(oatpp::data::stream::IOMode::ASYNCHRONOUS);
+          socket->setOutputStreamIOMode(avena::data::stream::IOMode::ASYNCHRONOUS);
+          socket->setInputStreamIOMode(avena::data::stream::IOMode::ASYNCHRONOUS);
           socket->setMaxAvailableToReadWrtie(m_maxAvailableToRead, m_maxAvailableToWrite);
           return _return(provider::ResourceHandle<data::stream::IOStream>(socket, m_invalidator));
         }
@@ -109,7 +111,7 @@ ConnectionProvider::getAsync() {
         return waitRepeat(std::chrono::milliseconds(100));
       }
 
-      return error<Error>("[oatpp::network::virtual_::client::ConnectionProvider::getConnectionAsync()]: Error. Can't connect.");
+      return error<Error>("[avena::network::virtual_::client::ConnectionProvider::getConnectionAsync()]: Error. Can't connect.");
 
     }
     

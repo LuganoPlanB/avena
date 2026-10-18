@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,37 +30,37 @@
 
 #include <functional>
 
-namespace oatpp { namespace data { namespace  type {
+namespace avena { namespace data { namespace  type {
 
 void StringTest::onRun() {
 
   {
-    oatpp::String s = "hello"; // check hash function exists
-    std::hash<oatpp::String>{}(s);
+    avena::String s = "hello"; // check hash function exists
+    std::hash<avena::String>{}(s);
   }
 
   {
     OATPP_LOGi(TAG, "test default constructor")
-    oatpp::String s;
+    avena::String s;
     OATPP_ASSERT(!s)
     OATPP_ASSERT(s == nullptr)
     OATPP_ASSERT(s == static_cast<const char*>(nullptr))
-    OATPP_ASSERT(s.getValueType() == oatpp::String::Class::getType())
+    OATPP_ASSERT(s.getValueType() == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test nullptr constructor")
-    oatpp::String s(nullptr);
+    avena::String s(nullptr);
     OATPP_ASSERT(!s)
     OATPP_ASSERT(s == nullptr)
-    OATPP_ASSERT(s.getValueType() == oatpp::String::Class::getType())
+    OATPP_ASSERT(s.getValueType() == avena::String::Class::getType())
     OATPP_LOGi(TAG, "OK")
   }
 
   {
     OATPP_LOGi(TAG, "test const char* constructor")
-    oatpp::String s("abc\0xyz");
+    avena::String s("abc\0xyz");
     OATPP_ASSERT(s)
     OATPP_ASSERT(s != nullptr)
     OATPP_ASSERT(s->size() == 3)
@@ -70,7 +72,7 @@ void StringTest::onRun() {
   {
     OATPP_LOGi(TAG, "test std::string constructor")
     std::string a("abc\0xyz", 7);
-    oatpp::String s(a);
+    avena::String s(a);
     OATPP_ASSERT(s)
     OATPP_ASSERT(s != nullptr)
     OATPP_ASSERT(s->size() == 7)
@@ -84,7 +86,7 @@ void StringTest::onRun() {
   {
     OATPP_LOGi(TAG, "test std::string move constructor")
     std::string a("abc\0xyz", 7);
-    oatpp::String s(std::move(a));
+    avena::String s(std::move(a));
     OATPP_ASSERT(s)
     OATPP_ASSERT(s != nullptr)
     OATPP_ASSERT(s->size() == 7)
@@ -97,7 +99,7 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test const char* assign operator")
-    oatpp::String s;
+    avena::String s;
     s = "abc\0xyz";
     OATPP_ASSERT(s)
     OATPP_ASSERT(s != nullptr)
@@ -109,7 +111,7 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test std::string assign operator")
-    oatpp::String s;
+    avena::String s;
     std::string a = std::string("abc\0xyz", 7);
     s = a;
     OATPP_ASSERT(s)
@@ -124,7 +126,7 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test std::string move assign operator")
-    oatpp::String s;
+    avena::String s;
     std::string a = std::string("abc\0xyz", 7);
     s = std::move(a);
     OATPP_ASSERT(s)
@@ -139,7 +141,7 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test const char* implicit constructor")
-    oatpp::String s = "";
+    avena::String s = "";
     OATPP_ASSERT(s)
     OATPP_ASSERT(s != nullptr)
     OATPP_ASSERT(s->size() == 0)
@@ -148,8 +150,8 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test '==', '!=' operators")
-    oatpp::String s1 = "a";
-    oatpp::String s2;
+    avena::String s1 = "a";
+    avena::String s2;
 
     OATPP_ASSERT(s1 != s2)
     OATPP_ASSERT(s2 != s1)
@@ -167,8 +169,8 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test copy-asssign operator")
-    oatpp::String s1 = "s1";
-    oatpp::String s2;
+    avena::String s1 = "s1";
+    avena::String s2;
 
     s2 = s1;
 
@@ -184,8 +186,8 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test const char* assign operator")
-    oatpp::String s1 = "s1";
-    oatpp::String s2(s1);
+    avena::String s1 = "s1";
+    avena::String s2(s1);
 
     OATPP_ASSERT(s1 == s2)
     OATPP_ASSERT(s1.get() == s2.get())
@@ -199,8 +201,8 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "test move assign operator")
-    oatpp::String s1 = "s1";
-    oatpp::String s2;
+    avena::String s1 = "s1";
+    avena::String s2;
 
     s2 = std::move(s1);
 
@@ -216,10 +218,10 @@ void StringTest::onRun() {
   {
     OATPP_LOGi(TAG, "test compareCI_ASCII methods 1")
 
-    oatpp::String s1 = "hello";
+    avena::String s1 = "hello";
 
     {
-      oatpp::String s2;
+      avena::String s2;
       OATPP_ASSERT(!s1.equalsCI_ASCII(s2))
     }
 
@@ -233,10 +235,10 @@ void StringTest::onRun() {
   {
     OATPP_LOGi(TAG, "test compareCI_ASCII methods 2")
 
-    oatpp::String s1;
+    avena::String s1;
 
     {
-      oatpp::String s2 = "hello";
+      avena::String s2 = "hello";
       OATPP_ASSERT(!s1.equalsCI_ASCII(s2))
     }
 
@@ -251,7 +253,7 @@ void StringTest::onRun() {
     }
 
     {
-      oatpp::String s2;
+      avena::String s2;
       OATPP_ASSERT(s1.equalsCI_ASCII(s2))
     }
 
@@ -283,10 +285,10 @@ void StringTest::onRun() {
   {
     OATPP_LOGi(TAG, "test compareCI_ASCII methods 3")
 
-    oatpp::String s1 = "hello";
+    avena::String s1 = "hello";
 
     {
-      oatpp::String s2 = "HELLO";
+      avena::String s2 = "HELLO";
       OATPP_ASSERT(s1.equalsCI_ASCII(s2))
     }
 
@@ -308,8 +310,8 @@ void StringTest::onRun() {
 
   {
     OATPP_LOGi(TAG, "check default value")
-    oatpp::String s0;
-    oatpp::String s1 = "hello";
+    avena::String s0;
+    avena::String s1 = "hello";
     OATPP_ASSERT(s0.getValue("def") == "def")
     OATPP_ASSERT(s1.getValue("def") == "hello")
   }

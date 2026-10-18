@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/web/protocol/http/outgoing/Response.hpp"
 #include "oatpp/web/protocol/http/encoding/ProviderCollection.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace utils {
+namespace avena { namespace web { namespace protocol { namespace http { namespace utils {
 
 /**
  * Helper class for communication utils.
@@ -49,8 +51,8 @@ public:
   /**
    * Consider keep connection alive taking into account request headers, response headers and protocol version.<br>
    * Corresponding header will be set to response if not existed before. <br>
-   * @param request - `std::shared_ptr` to &id:oatpp::web::protocol::http::incoming::Request;
-   * @param response - `std::shared_ptr` to &id:oatpp::web::protocol::http::outgoing::Response;
+   * @param request - `std::shared_ptr` to &id:avena::web::protocol::http::incoming::Request;
+   * @param response - `std::shared_ptr` to &id:avena::web::protocol::http::outgoing::Response;
    * @param connectionState
    */
   static void considerConnectionState(const std::shared_ptr<protocol::http::incoming::Request>& request,

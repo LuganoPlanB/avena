@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -34,20 +36,20 @@
 
 #include <sys/event.h>
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 void IOEventWorker::initEventQueue() {
 
   m_eventQueueHandle = ::kqueue();
   if(m_eventQueueHandle == -1) {
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::initEventQueue()]: Error. Call to ::kqueue() failed.");
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::initEventQueue()]: Error. Call to ::kqueue() failed.");
   }
 
   m_outEvents = std::unique_ptr<v_char8[]>(new (std::nothrow) v_char8[MAX_EVENTS * sizeof(struct kevent)]);
   if(!m_outEvents) {
-    OATPP_LOGe("[oatpp::async::worker::IOEventWorker::initEventQueue()]",
+    OATPP_LOGe("[avena::async::worker::IOEventWorker::initEventQueue()]",
                "Error. Unable to allocate {} bytes for events.", v_int32(MAX_EVENTS * sizeof(struct kevent)))
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::initEventQueue()]: Error. Unable to allocate memory for events.");
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::initEventQueue()]: Error. Unable to allocate memory for events.");
   }
 
 }
@@ -63,7 +65,7 @@ void IOEventWorker::triggerWakeup() {
   auto res = kevent(m_eventQueueHandle, &event, 1, nullptr, 0, nullptr);
 
   if(res < 0) {
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::triggerWakeup()]: Error. trigger wakeup failed.");
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::triggerWakeup()]: Error. trigger wakeup failed.");
   }
 
 }
@@ -91,7 +93,7 @@ void IOEventWorker::setCoroutineEvent(CoroutineHandle* coroutine, int operation,
     case Action::TYPE_IO_REPEAT: break;
 
     default:
-      throw std::runtime_error("[oatpp::async::worker::IOEventWorker::pushCoroutineToQueue()]: Error. Unknown Action.");
+      throw std::runtime_error("[avena::async::worker::IOEventWorker::pushCoroutineToQueue()]: Error. Unknown Action.");
 
   }
 
@@ -113,7 +115,7 @@ void IOEventWorker::setCoroutineEvent(CoroutineHandle* coroutine, int operation,
       break;
 
     default:
-      throw std::runtime_error("[oatpp::async::worker::IOEventWorker::pushCoroutineToQueue()]: Error. Unknown Action Event Type.");
+      throw std::runtime_error("[avena::async::worker::IOEventWorker::pushCoroutineToQueue()]: Error. Unknown Action Event Type.");
 
   }
 
@@ -121,7 +123,7 @@ void IOEventWorker::setCoroutineEvent(CoroutineHandle* coroutine, int operation,
 
 void IOEventWorker::consumeBacklog() {
 
-  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_backlogLock);
+  std::lock_guard<avena::concurrency::SpinLock> lock(m_backlogLock);
 
   m_inEventsCount = m_backlog.count + 1;
 
@@ -131,9 +133,9 @@ void IOEventWorker::consumeBacklog() {
 
     m_inEvents = std::unique_ptr<v_char8[]>(new (std::nothrow) v_char8[static_cast<unsigned long>(m_inEventsCapacity) * sizeof(struct kevent)]);
     if(!m_inEvents) {
-      OATPP_LOGe("[oatpp::async::worker::IOEventWorker::consumeBacklog()]",
+      OATPP_LOGe("[avena::async::worker::IOEventWorker::consumeBacklog()]",
                  "Error. Unable to allocate {} bytes for events.", v_uint64(static_cast<unsigned long>(m_inEventsCapacity) * sizeof(struct kevent)))
-      throw std::runtime_error("[oatpp::async::worker::IOEventWorker::consumeBacklog()]: Error. Unable to allocate memory for events.");
+      throw std::runtime_error("[avena::async::worker::IOEventWorker::consumeBacklog()]: Error. Unable to allocate memory for events.");
     }
 
   }
@@ -164,14 +166,14 @@ void IOEventWorker::waitEvents() {
                             nullptr);
 
   if((eventsCount < 0) && (errno != EINTR)) {
-    OATPP_LOGe("[oatpp::async::worker::IOEventWorker::waitEvents()]", "Error:\n"
+    OATPP_LOGe("[avena::async::worker::IOEventWorker::waitEvents()]", "Error:\n"
                "errno={}\n"
                "in-events={}\n"
                "foreman={}\n"
                "this={}\n"
                "specialization={}",
                errno, m_inEventsCount, m_foreman, this, m_specialization)
-    throw std::runtime_error("[oatpp::async::worker::IOEventWorker::waitEvents()]: Error. Event loop failed.");
+    throw std::runtime_error("[avena::async::worker::IOEventWorker::waitEvents()]: Error. Event loop failed.");
   }
 
   utils::FastQueue<CoroutineHandle> repeatQueue;
@@ -235,7 +237,7 @@ void IOEventWorker::waitEvents() {
 
   if(repeatQueue.count > 0) {
     {
-      std::lock_guard<oatpp::concurrency::SpinLock> lock(m_backlogLock);
+      std::lock_guard<avena::concurrency::SpinLock> lock(m_backlogLock);
       utils::FastQueue<CoroutineHandle>::moveAll(repeatQueue, m_backlog);
     }
   }

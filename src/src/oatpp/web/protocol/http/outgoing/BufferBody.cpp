@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,15 +26,15 @@
 
 #include "BufferBody.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
-BufferBody::BufferBody(const oatpp::String &buffer, const data::share::StringKeyLabel &contentType)
+BufferBody::BufferBody(const avena::String &buffer, const data::share::StringKeyLabel &contentType)
   : m_buffer(buffer ? buffer : "")
   , m_contentType(contentType)
   , m_inlineData(reinterpret_cast<void*>(m_buffer->data()), static_cast<v_buff_size>(m_buffer->size()))
 {}
 
-std::shared_ptr<BufferBody> BufferBody::createShared(const oatpp::String &buffer,
+std::shared_ptr<BufferBody> BufferBody::createShared(const avena::String &buffer,
                                                      const data::share::StringKeyLabel &contentType) {
   return std::make_shared<BufferBody>(buffer, contentType);
 }

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,10 +28,10 @@
 
 #include "oatpp/encoding/Hex.hpp"
 
-namespace oatpp { namespace encoding {
+namespace avena { namespace encoding {
 
 void HexTest::onRun() {
-  oatpp::String original = "Light and powerful C++ web framework for highly scalable and resource-efficient web application. It's zero-dependency and easy-portable.";
+  avena::String original = "Light and powerful C++ web framework for highly scalable and resource-efficient web application. It's zero-dependency and easy-portable.";
   auto encoded = Hex::encode(original);
   auto decoded = Hex::decode(encoded);
   OATPP_LOGd(TAG, "original='{}'", original)

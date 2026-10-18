@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,7 +29,7 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 /**
  * Network address.
@@ -64,12 +66,12 @@ public:
    * @param pPort
    * @param pFamily
    */
-  Address(const oatpp::String& pHost, v_uint16 pPort, Family pFamily = UNSPEC);
+  Address(const avena::String& pHost, v_uint16 pPort, Family pFamily = UNSPEC);
 
   /**
    * Host name without schema and port. Ex.: "oatpp.io", "127.0.0.1", "localhost".
    */
-  oatpp::String host;
+  avena::String host;
 
   /**
    * Port.

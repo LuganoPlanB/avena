@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -26,9 +28,9 @@
 
 #include "oatpp/data/resource/TemporaryFile.hpp"
 
-namespace oatpp { namespace web { namespace mime { namespace multipart {
+namespace avena { namespace web { namespace mime { namespace multipart {
 
-TemporaryFileProvider::TemporaryFileProvider(const oatpp::String& tmpDirectory, v_int32 randomWordSizeBytes)
+TemporaryFileProvider::TemporaryFileProvider(const avena::String& tmpDirectory, v_int32 randomWordSizeBytes)
   : m_tmpDirectory(tmpDirectory)
   , m_randomWordSizeBytes(randomWordSizeBytes)
 {}
@@ -49,7 +51,7 @@ async::CoroutineStarter TemporaryFileProvider::getResourceAsync(const std::share
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
 
-std::shared_ptr<PartReader> createTemporaryFilePartReader(const oatpp::String& tmpDirectory,
+std::shared_ptr<PartReader> createTemporaryFilePartReader(const avena::String& tmpDirectory,
                                                           v_int32 randomWordSizeBytes,
                                                           v_io_size maxDataSize)
 {
@@ -58,7 +60,7 @@ std::shared_ptr<PartReader> createTemporaryFilePartReader(const oatpp::String& t
   return reader;
 }
 
-std::shared_ptr<AsyncPartReader> createAsyncTemporaryFilePartReader(const oatpp::String& tmpDirectory,
+std::shared_ptr<AsyncPartReader> createAsyncTemporaryFilePartReader(const avena::String& tmpDirectory,
                                                                     v_int32 randomWordSizeBytes,
                                                                     v_io_size maxDataSize)
 {

@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/data/stream/Stream.hpp"
 #include <unordered_map>
 
-namespace oatpp { namespace network {
+namespace avena { namespace network {
 
 /**
  * Abstract ConnectionHandler.
@@ -37,14 +39,14 @@ namespace oatpp { namespace network {
 class ConnectionHandler {
 public:
   /**
-   * Convenience typedef for &id:oatpp::data::stream::IOStream;.
+   * Convenience typedef for &id:avena::data::stream::IOStream;.
    */
-  typedef oatpp::data::stream::IOStream IOStream;
+  typedef avena::data::stream::IOStream IOStream;
 
   /**
    * Convenience typedef for accompanying parameters of connection handling.
    */
-  typedef std::unordered_map<oatpp::String, oatpp::String> ParameterMap;
+  typedef std::unordered_map<avena::String, avena::String> ParameterMap;
 public:
 
   /**
@@ -54,7 +56,7 @@ public:
 
   /**
    * Handle provided connection.
-   * @param connectionData - see &id:oatpp::data::stream::IOStream;.
+   * @param connectionData - see &id:avena::data::stream::IOStream;.
    * @param params - accompanying parameters.
    */
   virtual void handleConnection(const provider::ResourceHandle<IOStream>& connectionData,

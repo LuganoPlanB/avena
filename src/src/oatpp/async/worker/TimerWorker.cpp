@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,7 +30,7 @@
 
 #include <chrono>
 
-namespace oatpp { namespace async { namespace worker {
+namespace avena { namespace async { namespace worker {
 
 TimerWorker::TimerWorker(const std::chrono::duration<v_int64, std::micro>& granularity)
   : Worker(Type::TIMER)
@@ -40,7 +42,7 @@ TimerWorker::TimerWorker(const std::chrono::duration<v_int64, std::micro>& granu
 
 void TimerWorker::pushTasks(utils::FastQueue<CoroutineHandle>& tasks) {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> guard(m_backlogLock);
+    std::lock_guard<avena::concurrency::SpinLock> guard(m_backlogLock);
     utils::FastQueue<CoroutineHandle>::moveAll(tasks, m_backlog);
   }
   m_backlogCondition.notify_one();
@@ -48,7 +50,7 @@ void TimerWorker::pushTasks(utils::FastQueue<CoroutineHandle>& tasks) {
 
 void TimerWorker::consumeBacklog() {
 
-  std::unique_lock<oatpp::concurrency::SpinLock> lock(m_backlogLock);
+  std::unique_lock<avena::concurrency::SpinLock> lock(m_backlogLock);
   while (m_backlog.first == nullptr && m_queue.first == nullptr && m_running) {
     m_backlogCondition.wait(lock);
   }
@@ -58,7 +60,7 @@ void TimerWorker::consumeBacklog() {
 
 void TimerWorker::pushOneTask(CoroutineHandle* task) {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> guard(m_backlogLock);
+    std::lock_guard<avena::concurrency::SpinLock> guard(m_backlogLock);
     m_backlog.pushBack(task);
   }
   m_backlogCondition.notify_one();
@@ -93,7 +95,7 @@ void TimerWorker::run() {
             break;
 
           case Action::TYPE_IO_WAIT:
-            setCoroutineScheduledAction(curr, oatpp::async::Action::createWaitRepeatAction(0));
+            setCoroutineScheduledAction(curr, avena::async::Action::createWaitRepeatAction(0));
             break;
 
           default:
@@ -122,7 +124,7 @@ void TimerWorker::run() {
 
 void TimerWorker::stop() {
   {
-    std::lock_guard<oatpp::concurrency::SpinLock> lock(m_backlogLock);
+    std::lock_guard<avena::concurrency::SpinLock> lock(m_backlogLock);
     m_running = false;
   }
   m_backlogCondition.notify_one();

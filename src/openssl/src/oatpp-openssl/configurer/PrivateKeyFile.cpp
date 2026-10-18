@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,16 +26,16 @@
 
 #include "PrivateKeyFile.hpp"
 
-namespace oatpp { namespace openssl { namespace configurer {
+namespace avena { namespace openssl { namespace configurer {
 
-PrivateKeyFile::PrivateKeyFile(const oatpp::String &filename, int filetype)
+PrivateKeyFile::PrivateKeyFile(const avena::String &filename, int filetype)
   : m_filename(filename)
   , m_filetype(filetype)
 {}
 
 void PrivateKeyFile::configure(SSL_CTX *ctx) {
   if (SSL_CTX_use_PrivateKey_file(ctx, m_filename->c_str(), m_filetype) <= 0) {
-    throw std::runtime_error("[oatpp::openssl::configurer::PrivateKeyFile::configure()]: Error. "
+    throw std::runtime_error("[avena::openssl::configurer::PrivateKeyFile::configure()]: Error. "
                              "Call to 'SSL_CTX_use_PrivateKey_file' failed.");
   }
 }

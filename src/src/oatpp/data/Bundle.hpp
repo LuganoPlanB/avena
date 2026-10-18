@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -27,14 +29,14 @@
 
 #include "oatpp/Types.hpp"
 
-namespace oatpp { namespace data {
+namespace avena { namespace data {
 
 /**
  * Bundle of auxiliary data.
  */
 class Bundle {
 private:
-  std::unordered_map<oatpp::String, oatpp::Void> m_data;
+  std::unordered_map<avena::String, avena::Void> m_data;
 public:
 
   /**
@@ -52,7 +54,7 @@ public:
    * @param key
    * @param polymorph
    */
-  void put(const oatpp::String& key, const oatpp::Void& polymorph);
+  void put(const avena::String& key, const avena::Void& polymorph);
 
   /**
    * Get data by key.
@@ -61,15 +63,15 @@ public:
    * @return
    */
   template<typename WrapperType>
-  WrapperType get(const oatpp::String& key) const {
+  WrapperType get(const avena::String& key) const {
     auto it = m_data.find(key);
     if(it == m_data.end()) {
-      throw std::runtime_error("[oatpp::data::Bundle::get()]: "
+      throw std::runtime_error("[avena::data::Bundle::get()]: "
                                "Error. Data not found for key '" + *key + "'.");
     }
 
     if(!WrapperType::Class::getType()->extends(it->second.getValueType())) {
-      throw std::runtime_error("[oatpp::data::Bundle::get()]: Error. Type mismatch for key '" + *key +
+      throw std::runtime_error("[avena::data::Bundle::get()]: Error. Type mismatch for key '" + *key +
                                "'. Stored '" +
                                std::string(it->second.getValueType()->classId.name) +
                                "' vs requested '" + std::string(WrapperType::Class::getType()->classId.name) + "'.");
@@ -81,7 +83,7 @@ public:
    * Get map of data stored in the bundle.
    * @return
    */
-  const std::unordered_map<oatpp::String, oatpp::Void>& getAll() const;
+  const std::unordered_map<avena::String, avena::Void>& getAll() const;
 
 };
 

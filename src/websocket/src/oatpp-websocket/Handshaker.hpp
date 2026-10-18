@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -34,7 +36,7 @@
 
 #include <random>
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 /**
  * Helper class providing WebSocket handshake functionality.
@@ -65,38 +67,38 @@ public:
 
 public:
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::outgoing::Response;.
+   * Convenience typedef for &id:avena::web::protocol::http::outgoing::Response;.
    */
-  typedef oatpp::web::protocol::http::outgoing::Response OutgoingResponse;
+  typedef avena::web::protocol::http::outgoing::Response OutgoingResponse;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::incoming::Response;.
+   * Convenience typedef for &id:avena::web::protocol::http::incoming::Response;.
    */
-  typedef oatpp::web::protocol::http::incoming::Response IncomingResponse;
-  typedef oatpp::web::protocol::http::Headers Headers;
-  typedef oatpp::network::ConnectionHandler ConnectionHandler;
+  typedef avena::web::protocol::http::incoming::Response IncomingResponse;
+  typedef avena::web::protocol::http::Headers Headers;
+  typedef avena::network::ConnectionHandler ConnectionHandler;
 public:
 
   /**
    * Prepare OutgoingResponse as for websocket-handshake based on requestHeaders.
-   * @param requestHeaders - request headers. &id:oatpp::web::protocol::http::Headers;.
-   * @param connectionUpgradeHandler - &id:oatpp::network::ConnectionHandler;.
-   * @return - `std::shared_ptr` to &id:oatpp::web::protocol::http::outgoing::Response;.
+   * @param requestHeaders - request headers. &id:avena::web::protocol::http::Headers;.
+   * @param connectionUpgradeHandler - &id:avena::network::ConnectionHandler;.
+   * @return - `std::shared_ptr` to &id:avena::web::protocol::http::outgoing::Response;.
    */
   static std::shared_ptr<OutgoingResponse> serversideHandshake(const Headers& requestHeaders, const std::shared_ptr<ConnectionHandler>& connectionUpgradeHandler);
 
   /**
    * Set client request headers as for websocket-handshake.
-   * @param requestHeaders - headers map. &id:oatpp::web::protocol::http::Headers;.
+   * @param requestHeaders - headers map. &id:avena::web::protocol::http::Headers;.
    */
   static void clientsideHandshake(Headers& requestHeaders);
 
   /**
    * Check if client's handshake corresponds to server's handshake
    * @param clientHandshakeHeaders - previously prepared headers which were sent to server.
-   * &id:oatpp::web::protocol::http::Headers;.
+   * &id:avena::web::protocol::http::Headers;.
    * See &l:Handshaker::clientsideHandshake ();.
-   * @param serverResponse - &id:oatpp::web::protocol::http::incoming::Response;.
+   * @param serverResponse - &id:avena::web::protocol::http::incoming::Response;.
    * @return - one of:
    * <ul>
    *   <li>&l:Handshaker::STATUS_OK;</li>

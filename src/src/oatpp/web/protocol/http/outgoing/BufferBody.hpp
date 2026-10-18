@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,35 +30,35 @@
 #include "./Body.hpp"
 #include "oatpp/web/protocol/http/Http.hpp"
 
-namespace oatpp { namespace web { namespace protocol { namespace http { namespace outgoing {
+namespace avena { namespace web { namespace protocol { namespace http { namespace outgoing {
 
 /**
- * Implementation of &id:oatpp::web::protocol::http::outgoing::Body; class.
- * Implements functionality to use &id::oatpp::String; as data source for http body.
+ * Implementation of &id:avena::web::protocol::http::outgoing::Body; class.
+ * Implements functionality to use &id::avena::String; as data source for http body.
  */
-class BufferBody : public oatpp::base::Countable, public Body {
+class BufferBody : public avena::base::Countable, public Body {
 private:
-  oatpp::String m_buffer;
-  oatpp::data::share::StringKeyLabel m_contentType;
+  avena::String m_buffer;
+  avena::data::share::StringKeyLabel m_contentType;
   data::buffer::InlineReadData m_inlineData;
 public:
-  BufferBody(const oatpp::String& buffer, const data::share::StringKeyLabel& contentType);
+  BufferBody(const avena::String& buffer, const data::share::StringKeyLabel& contentType);
 public:
 
   /**
    * Create shared BufferBody.
-   * @param buffer - &id:oatpp::String;.
+   * @param buffer - &id:avena::String;.
    * @param contentType - type of the content.
    * @return - `std::shared_ptr` to BufferBody.
    */
-  static std::shared_ptr<BufferBody> createShared(const oatpp::String& buffer,
+  static std::shared_ptr<BufferBody> createShared(const avena::String& buffer,
                                                   const data::share::StringKeyLabel& contentType = data::share::StringKeyLabel());
 
   /**
    * Read operation callback.
    * @param buffer - pointer to buffer.
    * @param count - size of the buffer in bytes.
-   * @param action - async specific action. If action is NOT &id:oatpp::async::Action::TYPE_NONE;, then
+   * @param action - async specific action. If action is NOT &id:avena::async::Action::TYPE_NONE;, then
    * caller MUST return this action on coroutine iteration.
    * @return - actual number of bytes written to buffer. 0 - to indicate end-of-file.
    */
@@ -64,7 +66,7 @@ public:
 
   /**
    * Declare `Content-Length` header.
-   * @param headers - &id:oatpp::web::protocol::http::Headers;.
+   * @param headers - &id:avena::web::protocol::http::Headers;.
    */
   void declareHeaders(Headers& headers) override;
 

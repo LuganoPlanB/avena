@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/web/protocol/http/outgoing/Response.hpp"
 #include "oatpp/web/protocol/http/incoming/Request.hpp"
 
-namespace oatpp { namespace web { namespace server {
+namespace avena { namespace web { namespace server {
 
 /**
  * HTTP request handler.
@@ -38,52 +40,52 @@ class HttpRequestHandler {
 public:
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::Status;.
+   * Convenience typedef for &id:avena::web::protocol::http::Status;.
    */
-  typedef oatpp::web::protocol::http::Status Status;
+  typedef avena::web::protocol::http::Status Status;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::Header;.
+   * Convenience typedef for &id:avena::web::protocol::http::Header;.
    */
-  typedef oatpp::web::protocol::http::Header Header;
+  typedef avena::web::protocol::http::Header Header;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::Headers;.
+   * Convenience typedef for &id:avena::web::protocol::http::Headers;.
    */
-  typedef oatpp::web::protocol::http::Headers Headers;
+  typedef avena::web::protocol::http::Headers Headers;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::QueryParams;.
+   * Convenience typedef for &id:avena::web::protocol::http::QueryParams;.
    */
-  typedef oatpp::web::protocol::http::QueryParams QueryParams;
+  typedef avena::web::protocol::http::QueryParams QueryParams;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::incoming::Request;.
+   * Convenience typedef for &id:avena::web::protocol::http::incoming::Request;.
    */
-  typedef oatpp::web::protocol::http::incoming::Request IncomingRequest;
+  typedef avena::web::protocol::http::incoming::Request IncomingRequest;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::outgoing::Response;.
+   * Convenience typedef for &id:avena::web::protocol::http::outgoing::Response;.
    */
-  typedef oatpp::web::protocol::http::outgoing::Response OutgoingResponse;
+  typedef avena::web::protocol::http::outgoing::Response OutgoingResponse;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::outgoing::ResponseFactory;.
+   * Convenience typedef for &id:avena::web::protocol::http::outgoing::ResponseFactory;.
    */
-  typedef oatpp::web::protocol::http::outgoing::ResponseFactory ResponseFactory;
+  typedef avena::web::protocol::http::outgoing::ResponseFactory ResponseFactory;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::HttpError;.
+   * Convenience typedef for &id:avena::web::protocol::http::HttpError;.
    */
-  typedef oatpp::web::protocol::http::HttpError HttpError;
+  typedef avena::web::protocol::http::HttpError HttpError;
 
 public:
 
   /**
    * Handle incoming http request. <br>
    * *Implement this method.*
-   * @param request - incoming http request. &id:oatpp::web::protocol::http::incoming::Request;.
-   * @return - outgoing http response. &id:oatpp::web::protocol::http::outgoing::Response;.
+   * @param request - incoming http request. &id:avena::web::protocol::http::incoming::Request;.
+   * @return - outgoing http response. &id:avena::web::protocol::http::outgoing::Response;.
    */
   virtual std::shared_ptr<OutgoingResponse> handle(const std::shared_ptr<IncomingRequest>& request) {
     (void)request;
@@ -93,10 +95,10 @@ public:
   /**
    * Handle incoming http request in Asynchronous manner. <br>
    * *Implement this method.*
-   * @param request - &id:oatpp::web::protocol::http::incoming::Request;.
-   * @return - &id:oatpp::async::CoroutineStarterForResult; of &id:oatpp::web::protocol::http::outgoing::Response;.
+   * @param request - &id:avena::web::protocol::http::incoming::Request;.
+   * @return - &id:avena::async::CoroutineStarterForResult; of &id:avena::web::protocol::http::outgoing::Response;.
    */
-  virtual oatpp::async::CoroutineStarterForResult<const std::shared_ptr<OutgoingResponse>&>
+  virtual avena::async::CoroutineStarterForResult<const std::shared_ptr<OutgoingResponse>&>
   handleAsync(const std::shared_ptr<IncomingRequest>& request) {
     (void)request;
     throw HttpError(Status::CODE_501, "Asynchronous endpoint not implemented.", {});

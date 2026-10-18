@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -24,7 +26,7 @@
 
 #include "Socket.hpp"
 
-namespace oatpp { namespace network { namespace virtual_ {
+namespace avena { namespace network { namespace virtual_ {
 
 Socket::Socket(const std::shared_ptr<Pipe>& pipeIn, const std::shared_ptr<Pipe>& pipeOut)
   : m_pipeIn(pipeIn)
@@ -52,28 +54,28 @@ v_io_size Socket::write(const void *data, v_buff_size count, async::Action& acti
   return m_pipeOut->getWriter()->write(data, count, action);
 }
 
-void Socket::setOutputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Socket::setOutputStreamIOMode(avena::data::stream::IOMode ioMode) {
   m_pipeOut->getWriter()->setOutputStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode Socket::getOutputStreamIOMode() {
+avena::data::stream::IOMode Socket::getOutputStreamIOMode() {
   return m_pipeOut->getWriter()->getOutputStreamIOMode();
 }
 
-void Socket::setInputStreamIOMode(oatpp::data::stream::IOMode ioMode) {
+void Socket::setInputStreamIOMode(avena::data::stream::IOMode ioMode) {
   m_pipeIn->getReader()->setInputStreamIOMode(ioMode);
 }
 
-oatpp::data::stream::IOMode Socket::getInputStreamIOMode() {
+avena::data::stream::IOMode Socket::getInputStreamIOMode() {
   return m_pipeIn->getReader()->getInputStreamIOMode();
 }
 
-oatpp::data::stream::Context& Socket::getOutputStreamContext() {
+avena::data::stream::Context& Socket::getOutputStreamContext() {
   return m_pipeOut->getWriter()->getOutputStreamContext();
 }
 
 
-oatpp::data::stream::Context& Socket::getInputStreamContext() {
+avena::data::stream::Context& Socket::getInputStreamContext() {
   return m_pipeIn->getReader()->getInputStreamContext();
 }
 

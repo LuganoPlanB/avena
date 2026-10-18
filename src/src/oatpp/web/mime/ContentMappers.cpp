@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,9 +31,9 @@
 
 #include <algorithm>
 
-namespace oatpp::web::mime {
+namespace avena::web::mime {
 
-std::pair<oatpp::String, oatpp::String> ContentMappers::typeAndSubtype(const data::share::StringKeyLabelCI& contentType) const {
+std::pair<avena::String, avena::String> ContentMappers::typeAndSubtype(const data::share::StringKeyLabelCI& contentType) const {
 
   if(contentType == nullptr || contentType.getSize() == 0) return {};
 
@@ -61,7 +63,7 @@ void ContentMappers::putMapper(const std::shared_ptr<data::mapping::ObjectMapper
   m_mappers[mapper->getInfo().httpContentType] = mapper;
 }
 
-void ContentMappers::setDefaultMapper(const oatpp::String& contentType) {
+void ContentMappers::setDefaultMapper(const avena::String& contentType) {
   std::unique_lock<std::shared_mutex> lock(m_mutex);
   m_defaultMapper = m_mappers.at(contentType);
 }
@@ -75,7 +77,7 @@ void ContentMappers::setDefaultMapper(const std::shared_ptr<data::mapping::Objec
   }
 }
 
-std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::getMapper(const oatpp::String& contentType) const {
+std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::getMapper(const avena::String& contentType) const {
   std::shared_lock<std::shared_mutex> lock(m_mutex);
   auto it = m_mappers.find(contentType);
   if(it == m_mappers.end()) {
@@ -160,7 +162,7 @@ std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapper(const 
 
 }
 
-std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapperForContent(const oatpp::String& contentTypeHeader) const {
+std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapperForContent(const avena::String& contentTypeHeader) const {
 
   std::shared_lock<std::shared_mutex> lock(m_mutex);
 
@@ -179,7 +181,7 @@ std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapperForCont
 
 }
 
-std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapper(const oatpp::String& acceptHeader) const {
+std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapper(const avena::String& acceptHeader) const {
 
   std::shared_lock<std::shared_mutex> lock(m_mutex);
 
@@ -194,7 +196,7 @@ std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapper(const 
 
 }
 
-std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapper(const std::vector<oatpp::String>& acceptableContentTypes) const {
+std::shared_ptr<data::mapping::ObjectMapper> ContentMappers::selectMapper(const std::vector<avena::String>& acceptableContentTypes) const {
 
   std::shared_lock<std::shared_mutex> lock(m_mutex);
 

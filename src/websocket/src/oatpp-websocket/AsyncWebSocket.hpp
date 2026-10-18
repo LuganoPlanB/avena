@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -32,22 +34,22 @@
 #include "oatpp/provider/Provider.hpp"
 #include "oatpp/async/Coroutine.hpp"
 
-namespace oatpp { namespace websocket {
+namespace avena { namespace websocket {
 
 /**
  * Asynchronous WebSocket.
  */
-class AsyncWebSocket : public oatpp::base::Countable, public std::enable_shared_from_this<AsyncWebSocket> {
+class AsyncWebSocket : public avena::base::Countable, public std::enable_shared_from_this<AsyncWebSocket> {
 public:
   /**
-   * Convenience typedef for &id:oatpp::async::Action;.
+   * Convenience typedef for &id:avena::async::Action;.
    */
-  typedef oatpp::async::Action Action;
+  typedef avena::async::Action Action;
 
   /**
-   * Convenince typedef for &id:oatpp::async::CoroutineStarter;.
+   * Convenince typedef for &id:avena::async::CoroutineStarter;.
    */
-  typedef oatpp::async::CoroutineStarter CoroutineStarter;
+  typedef avena::async::CoroutineStarter CoroutineStarter;
 public:
 
   /**
@@ -56,19 +58,19 @@ public:
   class Listener {
   public:
     /**
-     * Convenience typedef for &id:oatpp::async::Action;.
+     * Convenience typedef for &id:avena::async::Action;.
      */
-    typedef oatpp::async::Action Action;
+    typedef avena::async::Action Action;
 
     /**
-     * Convenince typedef for &id:oatpp::async::CoroutineStarter;.
+     * Convenince typedef for &id:avena::async::CoroutineStarter;.
      */
-    typedef oatpp::async::CoroutineStarter CoroutineStarter;
+    typedef avena::async::CoroutineStarter CoroutineStarter;
 
     /**
-     * Convenience typedef for &id:oatpp::websocket::AsyncWebSocket;.
+     * Convenience typedef for &id:avena::websocket::AsyncWebSocket;.
      */
-    typedef oatpp::websocket::AsyncWebSocket AsyncWebSocket;
+    typedef avena::websocket::AsyncWebSocket AsyncWebSocket;
   public:
 
     /**
@@ -78,44 +80,44 @@ public:
 
     /**
      * Called when "ping" frame received
-     * @param socket - &id:oatpp::websocket::AsyncWebSocket;.
+     * @param socket - &id:avena::websocket::AsyncWebSocket;.
      * @param message - message received with the frame.
-     * @return - &id:oatpp::async::CoroutineStarter;.
+     * @return - &id:avena::async::CoroutineStarter;.
      * *To ignore this event return nullptr.*
      */
-    virtual CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) = 0;
+    virtual CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const avena::String& message) = 0;
 
     /**
      * Called when "pong" frame received
-     * @param socket - &id:oatpp::websocket::AsyncWebSocket;.
+     * @param socket - &id:avena::websocket::AsyncWebSocket;.
      * @param message - message received with the frame.
-     * @return - &id:oatpp::async::CoroutineStarter;. <br>
+     * @return - &id:avena::async::CoroutineStarter;. <br>
      * *To ignore this event return nullptr.*
      */
-    virtual CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) = 0;
+    virtual CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const avena::String& message) = 0;
 
     /**
      * Called when "close" frame received
-     * @param socket - &id:oatpp::websocket::AsyncWebSocket;.
+     * @param socket - &id:avena::websocket::AsyncWebSocket;.
      * @param code - code of the websocket connection close message.
-     * @param message - message text. &id:oatpp::String;.
-     * @return - &id:oatpp::async::CoroutineStarter;. <br>
+     * @param message - message text. &id:avena::String;.
+     * @return - &id:avena::async::CoroutineStarter;. <br>
      * *To ignore this event return nullptr.*
      */
-    virtual CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_uint16 code, const oatpp::String& message) = 0;
+    virtual CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_uint16 code, const avena::String& message) = 0;
 
     /**
      * Called when "text" or "binary" frame received. <br>
      * When all data of message is read, readMessage is called again with size == 0 to
      * indicate end of the message.
-     * @param socket - &id:oatpp::websocket::AsyncWebSocket;.
-     * @param opcode - &id:oatpp::websocket::Frame::OPCODE_TEXT; or &id:oatpp::websocket::Frame::OPCODE_BINARY;.
+     * @param socket - &id:avena::websocket::AsyncWebSocket;.
+     * @param opcode - &id:avena::websocket::Frame::OPCODE_TEXT; or &id:avena::websocket::Frame::OPCODE_BINARY;.
      * @param data - pointer to received data.
-     * @param size - data size. &id:oatpp::v_io_size;.
-     * @return - &id:oatpp::async::CoroutineStarter;. <br>
+     * @param size - data size. &id:avena::v_io_size;.
+     * @return - &id:avena::async::CoroutineStarter;. <br>
      * *To ignore this event return nullptr.*
      */
-    virtual CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) = 0;
+    virtual CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_uint8 opcode, p_char8 data, avena::v_io_size size) = 0;
     
   };
   
@@ -130,13 +132,13 @@ private:
    * if(shortMessageStream) - read message to shortMessageStream. Don't call listener
    */
   CoroutineStarter readPayloadAsync(const std::shared_ptr<Frame::Header>& frameHeader,
-                                    const std::shared_ptr<oatpp::data::stream::BufferOutputStream>& shortMessageStream);
+                                    const std::shared_ptr<avena::data::stream::BufferOutputStream>& shortMessageStream);
 
   CoroutineStarter handleFrameAsync(const std::shared_ptr<Frame::Header>& frameHeader);
   
 private:
   Config m_config;
-  provider::ResourceHandle<oatpp::data::stream::IOStream> m_connection;
+  provider::ResourceHandle<avena::data::stream::IOStream> m_connection;
   std::shared_ptr<Listener> m_listener;
   v_int32 m_lastOpcode;
   mutable bool m_listening;
@@ -144,17 +146,17 @@ public:
 
   /**
    * Constructor with Config.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
-   * @param config - &id:oatpp::websocket::Config;.
+   * @param connection - &id:avena::data::stream::IOStream;.
+   * @param config - &id:avena::websocket::Config;.
    */
-  AsyncWebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, const Config& config);
+  AsyncWebSocket(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, const Config& config);
 
   /**
    * Constructor.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
+   * @param connection - &id:avena::data::stream::IOStream;.
    * @param maskOutgoingMessages - for servers should be `false`. For clients should be `true`.
    */
-  AsyncWebSocket(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, bool maskOutgoingMessages);
+  AsyncWebSocket(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, bool maskOutgoingMessages);
 
   /**
    * Deleted copy-constructor.
@@ -166,35 +168,35 @@ public:
 
   /**
    * Create shared AsyncWebSocket with Config.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
-   * @param config - &id:oatpp::websocket::Config;.
+   * @param connection - &id:avena::data::stream::IOStream;.
+   * @param config - &id:avena::websocket::Config;.
    * @return - `std::shared_ptr` to AsyncWebSocket.
    */
-  static std::shared_ptr<AsyncWebSocket> createShared(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, const Config& config) {
+  static std::shared_ptr<AsyncWebSocket> createShared(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, const Config& config) {
     return std::make_shared<AsyncWebSocket>(connection, config);
   }
 
   /**
    * Create shared AsyncWebSocket.
-   * @param connection - &id:oatpp::data::stream::IOStream;.
+   * @param connection - &id:avena::data::stream::IOStream;.
    * @param maskOutgoingMessages - for servers should be `false`. For clients should be `true`.
    * @return - `std::shared_ptr` to AsyncWebSocket.
    */
-  static std::shared_ptr<AsyncWebSocket> createShared(const provider::ResourceHandle<oatpp::data::stream::IOStream>& connection, bool maskOutgoingMessages) {
+  static std::shared_ptr<AsyncWebSocket> createShared(const provider::ResourceHandle<avena::data::stream::IOStream>& connection, bool maskOutgoingMessages) {
     return std::make_shared<AsyncWebSocket>(connection, maskOutgoingMessages);
   }
 
   /**
    * Set WebSocket config.
-   * @param config - &id:oatpp::websocket::Config;.
+   * @param config - &id:avena::websocket::Config;.
    */
   void setConfig(const Config& config);
 
   /**
    * Get socket connection.
-   * @return - &id:oatpp::data::stream::IOStream;.
+   * @return - &id:avena::data::stream::IOStream;.
    */
-  provider::ResourceHandle<oatpp::data::stream::IOStream> getConnection() const {
+  provider::ResourceHandle<avena::data::stream::IOStream> getConnection() const {
     return m_connection;
   }
 
@@ -218,79 +220,79 @@ public:
    * Start listening Coroutine. <br>
    * Read incoming frames and call corresponding methods of listener.
    * See &l:AsyncWebSocket::setListener ();.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   CoroutineStarter listenAsync();
 
   /**
    * Send custom frame to peer.<br>
    * *Use this method if you know what you are doing.*
-   * @param frameHeader - &id:oatpp::websocket::Frame::Header;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param frameHeader - &id:avena::websocket::Frame::Header;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   CoroutineStarter writeFrameHeaderAsync(const std::shared_ptr<Frame::Header>& frameHeader);
 
   /**
    * Send default frame to peer with fin, opcode and messageSize set. <br>
    * *Use this method if you know what you are doing.*
-   * @param frameHeader - &id:oatpp::websocket::Frame::Header;.
+   * @param frameHeader - &id:avena::websocket::Frame::Header;.
    * @param fin - FIN bit.
-   * @param opcode - operation code. See &id:oatpp::websocket::Frame::Header;.
+   * @param opcode - operation code. See &id:avena::websocket::Frame::Header;.
    * @param messageSize - size of the coming message.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   CoroutineStarter sendFrameHeaderAsync(const std::shared_ptr<Frame::Header>& frameHeader, bool fin, v_uint8 opcode, v_int64 messageSize);
 
   /**
    * Send one frame message with custom fin and opcode.
    * @param fin - FIN bit.
-   * @param opcode - operation code. See &id:oatpp::websocket::Frame::Header;.
-   * @param message - message text. &id:oatpp::String;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param opcode - operation code. See &id:avena::websocket::Frame::Header;.
+   * @param message - message text. &id:avena::String;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  CoroutineStarter sendOneFrameAsync(bool fin, v_uint8 opcode, const oatpp::String& message);
+  CoroutineStarter sendOneFrameAsync(bool fin, v_uint8 opcode, const avena::String& message);
 
   /**
    * Send close frame.
    * @param code - code of the websocket connection close message.
-   * @param message - message text. &id:oatpp::String;.
-   * @return - &id:oatpp::async::Action;.
+   * @param message - message text. &id:avena::String;.
+   * @return - &id:avena::async::Action;.
    */
-  CoroutineStarter sendCloseAsync(v_uint16 code, const oatpp::String& message);
+  CoroutineStarter sendCloseAsync(v_uint16 code, const avena::String& message);
 
   /**
    * Send close frame without message.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
   CoroutineStarter sendCloseAsync();
 
   /**
    * Send ping frame.
-   * @param message - message text. &id:oatpp::String;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param message - message text. &id:avena::String;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  CoroutineStarter sendPingAsync(const oatpp::String& message);
+  CoroutineStarter sendPingAsync(const avena::String& message);
 
   /**
    * Send pong frame.
-   * @param message - message text. &id:oatpp::String;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param message - message text. &id:avena::String;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  CoroutineStarter sendPongAsync(const oatpp::String& message);
+  CoroutineStarter sendPongAsync(const avena::String& message);
 
   /**
    * Send one frame text message.
-   * @param message - message text. &id:oatpp::String;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param message - message text. &id:avena::String;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  CoroutineStarter sendOneFrameTextAsync(const oatpp::String& message);
+  CoroutineStarter sendOneFrameTextAsync(const avena::String& message);
 
   /**
    * Send one frame binary message.
-   * @param message - message text. &id:oatpp::String;.
-   * @return - &id:oatpp::async::CoroutineStarter;.
+   * @param message - message text. &id:avena::String;.
+   * @return - &id:avena::async::CoroutineStarter;.
    */
-  CoroutineStarter sendOneFrameBinaryAsync(const oatpp::String& message);
+  CoroutineStarter sendOneFrameBinaryAsync(const avena::String& message);
   
 };
   

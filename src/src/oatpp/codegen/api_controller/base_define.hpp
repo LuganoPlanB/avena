@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -71,24 +73,24 @@ const auto& OATPP_MACRO_FIRSTARG PARAM_LIST = __request;
 #define OATPP_MACRO_API_CONTROLLER_HEADER_1(TYPE, NAME) \
 const auto& __param_str_val_##NAME = __request->getHeader(#NAME); \
 if(!__param_str_val_##NAME){                            \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, "Missing HEADER parameter '" #NAME "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, "Missing HEADER parameter '" #NAME "'"); \
 } \
 bool __param_validation_check_##NAME; \
 const auto& NAME = ApiController::TypeInterpretation<TYPE>::fromString(#TYPE, __param_str_val_##NAME, __param_validation_check_##NAME); \
 if(!__param_validation_check_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, "Invalid HEADER parameter '" #NAME "'. Expected type is '" #TYPE "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, "Invalid HEADER parameter '" #NAME "'. Expected type is '" #TYPE "'"); \
 }
 
 #define OATPP_MACRO_API_CONTROLLER_HEADER_2(TYPE, NAME, QUALIFIER) \
 const auto& __param_str_val_##NAME = __request->getHeader(QUALIFIER); \
 if(!__param_str_val_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, oatpp::String("Missing HEADER parameter '") + QUALIFIER + "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, avena::String("Missing HEADER parameter '") + QUALIFIER + "'"); \
 } \
 bool __param_validation_check_##NAME; \
 const auto& NAME = ApiController::TypeInterpretation<TYPE>::fromString(#TYPE, __param_str_val_##NAME, __param_validation_check_##NAME); \
 if(!__param_validation_check_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, \
-                                              oatpp::String("Invalid HEADER parameter '") + \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, \
+                                              avena::String("Invalid HEADER parameter '") + \
                                               QUALIFIER + \
                                               "'. Expected type is '" #TYPE "'"); \
 }
@@ -113,25 +115,25 @@ OATPP_MACRO_API_CONTROLLER_MACRO_SELECTOR(OATPP_MACRO_API_CONTROLLER_HEADER_INFO
 #define OATPP_MACRO_API_CONTROLLER_PATH_1(TYPE, NAME) \
 const auto& __param_str_val_##NAME = __request->getPathVariable(#NAME); \
 if(!__param_str_val_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, "Missing PATH parameter '" #NAME "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, "Missing PATH parameter '" #NAME "'"); \
 } \
 bool __param_validation_check_##NAME; \
 const auto& NAME = ApiController::TypeInterpretation<TYPE>::fromString(#TYPE, __param_str_val_##NAME, __param_validation_check_##NAME); \
 if(!__param_validation_check_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, "Invalid PATH parameter '" #NAME "'. Expected type is '" #TYPE "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, "Invalid PATH parameter '" #NAME "'. Expected type is '" #TYPE "'"); \
 }
 
 #define OATPP_MACRO_API_CONTROLLER_PATH_2(TYPE, NAME, QUALIFIER) \
 const auto& __param_str_val_##NAME = __request->getPathVariable(QUALIFIER); \
 if(!__param_str_val_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, \
-                                              oatpp::String("Missing PATH parameter '") + QUALIFIER + "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, \
+                                              avena::String("Missing PATH parameter '") + QUALIFIER + "'"); \
 } \
 bool __param_validation_check_##NAME; \
 const auto NAME = ApiController::TypeInterpretation<TYPE>::fromString(#TYPE, __param_str_val_##NAME, __param_validation_check_##NAME); \
 if(!__param_validation_check_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, \
-                                              oatpp::String("Invalid PATH parameter '") + \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, \
+                                              avena::String("Invalid PATH parameter '") + \
                                               QUALIFIER + \
                                               "'. Expected type is '" #TYPE "'"); \
 }
@@ -162,25 +164,25 @@ const auto& OATPP_MACRO_FIRSTARG PARAM_LIST = __request->getQueryParameters();
 #define OATPP_MACRO_API_CONTROLLER_QUERY_1(TYPE, NAME) \
 const auto& __param_str_val_##NAME = __request->getQueryParameter(#NAME); \
 if(!__param_str_val_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, "Missing QUERY parameter '" #NAME "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, "Missing QUERY parameter '" #NAME "'"); \
 } \
 bool __param_validation_check_##NAME; \
 const auto& NAME = ApiController::TypeInterpretation<TYPE>::fromString(#TYPE, __param_str_val_##NAME, __param_validation_check_##NAME); \
 if(!__param_validation_check_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, "Invalid QUERY parameter '" #NAME "'. Expected type is '" #TYPE "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, "Invalid QUERY parameter '" #NAME "'. Expected type is '" #TYPE "'"); \
 }
 
 #define OATPP_MACRO_API_CONTROLLER_QUERY_2(TYPE, NAME, QUALIFIER) \
 const auto& __param_str_val_##NAME = __request->getQueryParameter(QUALIFIER); \
 if(!__param_str_val_##NAME) { \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, \
-                                              oatpp::String("Missing QUERY parameter '") + QUALIFIER + "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, \
+                                              avena::String("Missing QUERY parameter '") + QUALIFIER + "'"); \
 } \
 bool __param_validation_check_##NAME; \
 const auto& NAME = ApiController::TypeInterpretation<TYPE>::fromString(#TYPE, __param_str_val_##NAME, __param_validation_check_##NAME); \
 if(!__param_validation_check_##NAME){ \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, \
-                                              oatpp::String("Invalid QUERY parameter '") + \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, \
+                                              avena::String("Invalid QUERY parameter '") + \
                                               QUALIFIER + \
                                               "'. Expected type is '" #TYPE "'"); \
 }
@@ -192,8 +194,8 @@ if(__param_str_val_##NAME) { \
   bool __param_validation_check_##NAME; \
   NAME = ApiController::TypeInterpretation<TYPE>::fromString(#TYPE, __param_str_val_##NAME, __param_validation_check_##NAME); \
   if(!__param_validation_check_##NAME){ \
-    throw oatpp::web::protocol::http::HttpError(Status::CODE_400, \
-                                                oatpp::String("Invalid QUERY parameter '") + \
+    throw avena::web::protocol::http::HttpError(Status::CODE_400, \
+                                                avena::String("Invalid QUERY parameter '") + \
                                                 QUALIFIER + \
                                                 "'. Expected type is '" #TYPE "'"); \
   } \
@@ -227,7 +229,7 @@ const auto& OATPP_MACRO_FIRSTARG PARAM_LIST = __request->readBodyToString();
 #define OATPP_MACRO_API_CONTROLLER_BODY_STRING_INFO(TYPE, PARAM_LIST) \
 info->body.name = OATPP_MACRO_FIRSTARG_STR PARAM_LIST; \
 info->body.required = true; \
-info->body.type = oatpp::data::type::__class::String::getType(); \
+info->body.type = avena::data::type::__class::String::getType(); \
 if(getContentMappers()->getDefaultMapper()) { \
   info->bodyContentType = getContentMappers()->getDefaultMapper()->getInfo().httpContentType; \
 }
@@ -235,14 +237,14 @@ if(getContentMappers()->getDefaultMapper()) { \
 // BODY_DTO MACRO // ------------------------------------------------------
 
 #define OATPP_MACRO_API_CONTROLLER_BODY_DTO(TYPE, PARAM_LIST) \
-const auto& __bodyMapper = getContentMappers()->selectMapperForContent(__request->getHeader(oatpp::web::protocol::http::Header::CONTENT_TYPE)); \
+const auto& __bodyMapper = getContentMappers()->selectMapperForContent(__request->getHeader(avena::web::protocol::http::Header::CONTENT_TYPE)); \
 if(!__bodyMapper) { \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_500, "No suitable mapper found to deserialize the request body."); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_500, "No suitable mapper found to deserialize the request body."); \
 } \
 const auto& OATPP_MACRO_FIRSTARG PARAM_LIST = \
 __request->readBodyToDto<TYPE>(__bodyMapper.get()); \
 if(!OATPP_MACRO_FIRSTARG PARAM_LIST) { \
-  throw oatpp::web::protocol::http::HttpError(Status::CODE_400, "Missing valid body parameter '" OATPP_MACRO_FIRSTARG_STR PARAM_LIST "'"); \
+  throw avena::web::protocol::http::HttpError(Status::CODE_400, "Missing valid body parameter '" OATPP_MACRO_FIRSTARG_STR PARAM_LIST "'"); \
 }
 
 // __INFO
@@ -279,15 +281,15 @@ OATPP_MACRO_API_CONTROLLER_PARAM_INFO X
 
 #define ENDPOINT_INFO(NAME) \
 \
-std::shared_ptr<oatpp::web::server::api::Endpoint::Info> Z__ENDPOINT_CREATE_ADDITIONAL_INFO_##NAME() { \
+std::shared_ptr<avena::web::server::api::Endpoint::Info> Z__ENDPOINT_CREATE_ADDITIONAL_INFO_##NAME() { \
   auto info = Z__EDNPOINT_INFO_GET_INSTANCE_##NAME(); \
   Z__ENDPOINT_ADD_INFO_##NAME(info); \
   return info; \
 } \
 \
-const std::shared_ptr<oatpp::web::server::api::Endpoint::Info> Z__ENDPOINT_ADDITIONAL_INFO_##NAME = Z__ENDPOINT_CREATE_ADDITIONAL_INFO_##NAME(); \
+const std::shared_ptr<avena::web::server::api::Endpoint::Info> Z__ENDPOINT_ADDITIONAL_INFO_##NAME = Z__ENDPOINT_CREATE_ADDITIONAL_INFO_##NAME(); \
 \
-void Z__ENDPOINT_ADD_INFO_##NAME(const std::shared_ptr<oatpp::web::server::api::Endpoint::Info>& info)
+void Z__ENDPOINT_ADD_INFO_##NAME(const std::shared_ptr<avena::web::server::api::Endpoint::Info>& info)
 
 // ENDPOINT MACRO // ------------------------------------------------------
 
@@ -303,10 +305,10 @@ static typename std::shared_ptr<Handler<T>> Z__ENDPOINT_HANDLER_GET_INSTANCE_##N
   return handler; \
 } \
 \
-std::shared_ptr<oatpp::web::server::api::Endpoint::Info> Z__EDNPOINT_INFO_GET_INSTANCE_##NAME() { \
-  std::shared_ptr<oatpp::web::server::api::Endpoint::Info> info = getEndpointInfo(#NAME); \
+std::shared_ptr<avena::web::server::api::Endpoint::Info> Z__EDNPOINT_INFO_GET_INSTANCE_##NAME() { \
+  std::shared_ptr<avena::web::server::api::Endpoint::Info> info = getEndpointInfo(#NAME); \
   if(!info){ \
-    info = oatpp::web::server::api::Endpoint::Info::createShared(); \
+    info = avena::web::server::api::Endpoint::Info::createShared(); \
     setEndpointInfo(#NAME, info); \
   } \
   return info; \
@@ -325,7 +327,7 @@ EndpointInfoBuilder Z__CREATE_ENDPOINT_INFO_##NAME = [this](){ \
   return info; \
 }; \
 \
-const std::shared_ptr<oatpp::web::server::api::Endpoint> Z__ENDPOINT_##NAME = createEndpoint(m_endpoints, \
+const std::shared_ptr<avena::web::server::api::Endpoint> Z__ENDPOINT_##NAME = createEndpoint(m_endpoints, \
                                                         Z__ENDPOINT_HANDLER_GET_INSTANCE_##NAME(this), \
                                                         Z__CREATE_ENDPOINT_INFO_##NAME);
 
@@ -333,14 +335,14 @@ const std::shared_ptr<oatpp::web::server::api::Endpoint> Z__ENDPOINT_##NAME = cr
 OATPP_MACRO_API_CONTROLLER_ENDPOINT_DECL_DEFAULTS(NAME, METHOD, PATH) \
 OATPP_MACRO_API_CONTROLLER_ENDPOINT_DECL_0(NAME, METHOD, PATH) \
 \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> \
-Z__PROXY_METHOD_##NAME(const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& __request) \
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> \
+Z__PROXY_METHOD_##NAME(const std::shared_ptr<avena::web::protocol::http::incoming::Request>& __request) \
 { \
   (void)__request; \
   return NAME(); \
 } \
 \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> NAME()
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> NAME()
 
 ////////////////////
 
@@ -355,7 +357,7 @@ auto info = Z__EDNPOINT_INFO_GET_INSTANCE_##NAME(); \
   return info; \
 }; \
 \
-const std::shared_ptr<oatpp::web::server::api::Endpoint> Z__ENDPOINT_##NAME = createEndpoint(m_endpoints, \
+const std::shared_ptr<avena::web::server::api::Endpoint> Z__ENDPOINT_##NAME = createEndpoint(m_endpoints, \
                                                         Z__ENDPOINT_HANDLER_GET_INSTANCE_##NAME(this), \
                                                         Z__CREATE_ENDPOINT_INFO_##NAME);
 
@@ -363,8 +365,8 @@ const std::shared_ptr<oatpp::web::server::api::Endpoint> Z__ENDPOINT_##NAME = cr
 OATPP_MACRO_API_CONTROLLER_ENDPOINT_DECL_DEFAULTS(NAME, METHOD, PATH) \
 OATPP_MACRO_API_CONTROLLER_ENDPOINT_DECL_1(NAME, METHOD, PATH, __VA_ARGS__) \
 \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> \
-Z__PROXY_METHOD_##NAME(const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& __request) \
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> \
+Z__PROXY_METHOD_##NAME(const std::shared_ptr<avena::web::protocol::http::incoming::Request>& __request) \
 { \
   OATPP_MACRO_FOREACH(OATPP_MACRO_API_CONTROLLER_FOR_EACH_PARAM_PUT, __VA_ARGS__) \
   return NAME( \
@@ -376,7 +378,7 @@ Z__PROXY_METHOD_##NAME(const std::shared_ptr<oatpp::web::protocol::http::incomin
   ); \
 } \
 \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> NAME(\
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> NAME(\
   OATPP_MACRO_FOREACH_FIRST_AND_REST( \
     OATPP_MACRO_API_CONTROLLER_FOR_EACH_PARAM_DECL_FIRST, \
     OATPP_MACRO_API_CONTROLLER_FOR_EACH_PARAM_DECL_REST, \
@@ -393,11 +395,11 @@ OATPP_MACRO_EXPAND(OATPP_MACRO_API_CONTROLLER_ENDPOINT_0(NAME, METHOD, PATH))
 OATPP_MACRO_EXPAND(OATPP_MACRO_API_CONTROLLER_ENDPOINT_1(NAME, METHOD, PATH, __VA_ARGS__))
 
 /**
- * Codegen macro to be used in `oatpp::web::server::api::ApiController` to generate Endpoint.
+ * Codegen macro to be used in `avena::web::server::api::ApiController` to generate Endpoint.
  * @param METHOD - Http method ("GET", "POST", "PUT", etc.).
  * @param PATH - Path to endpoint (without host).
  * @param NAME - Name of the generated method.
- * @return - std::shared_ptr to &id:oatpp::web::protocol::http::outgoing::Response;.
+ * @return - std::shared_ptr to &id:avena::web::protocol::http::outgoing::Response;.
  */
 #define ENDPOINT(METHOD, PATH, ...) \
 OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_BINARY_SELECTOR(OATPP_MACRO_API_CONTROLLER_ENDPOINT_MACRO_, (__VA_ARGS__)) (METHOD, PATH, __VA_ARGS__))
@@ -407,36 +409,36 @@ OATPP_MACRO_EXPAND(OATPP_MACRO_MACRO_BINARY_SELECTOR(OATPP_MACRO_API_CONTROLLER_
  */
 #define ENDPOINT_INTERCEPTOR(ENDPOINT_NAME, NAME) \
 \
-Handler<oatpp::web::server::api::ApiController>::Method \
+Handler<avena::web::server::api::ApiController>::Method \
   Z__INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME = Z__INTERCEPTOR_METHOD_SET_##ENDPOINT_NAME ##_ ##NAME(this); \
 \
 template<class T> \
-Handler<oatpp::web::server::api::ApiController>::Method Z__INTERCEPTOR_METHOD_SET_##ENDPOINT_NAME ##_ ##NAME (T* controller) { \
-  return static_cast<Handler<oatpp::web::server::api::ApiController>::Method>( \
+Handler<avena::web::server::api::ApiController>::Method Z__INTERCEPTOR_METHOD_SET_##ENDPOINT_NAME ##_ ##NAME (T* controller) { \
+  return static_cast<Handler<avena::web::server::api::ApiController>::Method>( \
     Z__ENDPOINT_HANDLER_GET_INSTANCE_##ENDPOINT_NAME(controller)->setMethod(&T::Z__PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME) \
   ); \
 } \
 \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> \
-Z__PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME(const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& request) { \
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> \
+Z__PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME(const std::shared_ptr<avena::web::protocol::http::incoming::Request>& request) { \
   return Z__USER_PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME(this, request); \
 } \
 \
 template<class T> \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> \
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> \
 Z__USER_PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME( \
   T*, \
-  const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& request \
+  const std::shared_ptr<avena::web::protocol::http::incoming::Request>& request \
 ) { \
   auto intercepted = static_cast<typename Handler<T>::Method>(Z__INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME); \
   return Z__USER_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME <T> (intercepted, request); \
 } \
 \
 template<class T> \
-std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> \
+std::shared_ptr<avena::web::protocol::http::outgoing::Response> \
 Z__USER_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME( \
   typename Handler<T>::Method intercepted, \
-  const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& request \
+  const std::shared_ptr<avena::web::protocol::http::incoming::Request>& request \
 )
 
 // ENDPOINT ASYNC MACRO // ------------------------------------------------------
@@ -457,10 +459,10 @@ static typename std::shared_ptr<Handler<T>> Z__ENDPOINT_HANDLER_GET_INSTANCE_##N
   return handler; \
 } \
 \
-std::shared_ptr<oatpp::web::server::api::Endpoint::Info> Z__EDNPOINT_INFO_GET_INSTANCE_##NAME() { \
-  std::shared_ptr<oatpp::web::server::api::Endpoint::Info> info = getEndpointInfo(#NAME); \
+std::shared_ptr<avena::web::server::api::Endpoint::Info> Z__EDNPOINT_INFO_GET_INSTANCE_##NAME() { \
+  std::shared_ptr<avena::web::server::api::Endpoint::Info> info = getEndpointInfo(#NAME); \
   if(!info){ \
-    info = oatpp::web::server::api::Endpoint::Info::createShared(); \
+    info = avena::web::server::api::Endpoint::Info::createShared(); \
     setEndpointInfo(#NAME, info); \
   } \
   return info; \
@@ -483,23 +485,23 @@ EndpointInfoBuilder Z__CREATE_ENDPOINT_INFO_##NAME = [this](){ \
   return info; \
 }; \
 \
-const std::shared_ptr<oatpp::web::server::api::Endpoint> Z__ENDPOINT_##NAME = createEndpoint(m_endpoints, \
+const std::shared_ptr<avena::web::server::api::Endpoint> Z__ENDPOINT_##NAME = createEndpoint(m_endpoints, \
                                                                     Z__ENDPOINT_HANDLER_GET_INSTANCE_##NAME(this), \
                                                                     Z__CREATE_ENDPOINT_INFO_##NAME);
 
 /**
- * Codegen macro to be used in `oatpp::web::server::api::ApiController` to generate Asynchronous Endpoint.
+ * Codegen macro to be used in `avena::web::server::api::ApiController` to generate Asynchronous Endpoint.
  * @param METHOD - Http method ("GET", "POST", "PUT", etc.).
  * @param PATH - Path to endpoint (without host).
  * @param NAME - Name of the generated method.
- * @return - &id:oatpp::async::Action;.
+ * @return - &id:avena::async::Action;.
  */
 #define ENDPOINT_ASYNC(METHOD, PATH, NAME) \
 OATPP_MACRO_API_CONTROLLER_ENDPOINT_ASYNC_DECL_DEFAULTS(NAME, METHOD, PATH) \
 OATPP_MACRO_API_CONTROLLER_ENDPOINT_ASYNC_DECL(NAME, METHOD, PATH) \
 \
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::web::protocol::http::outgoing::Response>&> \
-Z__PROXY_METHOD_##NAME(const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& __request) \
+avena::async::CoroutineStarterForResult<const std::shared_ptr<avena::web::protocol::http::outgoing::Response>&> \
+Z__PROXY_METHOD_##NAME(const std::shared_ptr<avena::web::protocol::http::incoming::Request>& __request) \
 { \
   return NAME::startForResult(this, __request); \
 } \
@@ -524,34 +526,34 @@ public: \
  */
 #define ENDPOINT_INTERCEPTOR_ASYNC(ENDPOINT_NAME, NAME) \
 \
-Handler<oatpp::web::server::api::ApiController>::MethodAsync \
+Handler<avena::web::server::api::ApiController>::MethodAsync \
   Z__INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME = Z__INTERCEPTOR_METHOD_SET_##ENDPOINT_NAME ##_ ##NAME(this); \
 \
 template<class T> \
-Handler<oatpp::web::server::api::ApiController>::MethodAsync Z__INTERCEPTOR_METHOD_SET_##ENDPOINT_NAME ##_ ##NAME (T* controller) { \
-  return static_cast<Handler<oatpp::web::server::api::ApiController>::MethodAsync>( \
+Handler<avena::web::server::api::ApiController>::MethodAsync Z__INTERCEPTOR_METHOD_SET_##ENDPOINT_NAME ##_ ##NAME (T* controller) { \
+  return static_cast<Handler<avena::web::server::api::ApiController>::MethodAsync>( \
     Z__ENDPOINT_HANDLER_GET_INSTANCE_##ENDPOINT_NAME(controller)->setMethodAsync(&T::Z__PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME) \
   ); \
 } \
 \
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::web::protocol::http::outgoing::Response>&> \
-Z__PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME(const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& request) { \
+avena::async::CoroutineStarterForResult<const std::shared_ptr<avena::web::protocol::http::outgoing::Response>&> \
+Z__PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME(const std::shared_ptr<avena::web::protocol::http::incoming::Request>& request) { \
   return Z__USER_PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME(this, request); \
 } \
 \
 template<class T> \
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::web::protocol::http::outgoing::Response>&> \
+avena::async::CoroutineStarterForResult<const std::shared_ptr<avena::web::protocol::http::outgoing::Response>&> \
 Z__USER_PROXY_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME( \
   T*, \
-  const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& request \
+  const std::shared_ptr<avena::web::protocol::http::incoming::Request>& request \
 ) { \
   auto intercepted = static_cast<typename Handler<T>::MethodAsync>(Z__INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME); \
   return Z__USER_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME <T> (intercepted, request); \
 } \
 \
 template<class T> \
-oatpp::async::CoroutineStarterForResult<const std::shared_ptr<oatpp::web::protocol::http::outgoing::Response>&> \
+avena::async::CoroutineStarterForResult<const std::shared_ptr<avena::web::protocol::http::outgoing::Response>&> \
 Z__USER_INTERCEPTOR_METHOD_##ENDPOINT_NAME ##_ ##NAME( \
   typename Handler<T>::MethodAsync intercepted, \
-  const std::shared_ptr<oatpp::web::protocol::http::incoming::Request>& request \
+  const std::shared_ptr<avena::web::protocol::http::incoming::Request>& request \
 )

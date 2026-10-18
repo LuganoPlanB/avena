@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -28,11 +30,11 @@
 
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 
-namespace oatpp { namespace openssl { namespace server {
+namespace avena { namespace openssl { namespace server {
 
 void ConnectionProvider::ConnectionInvalidator::invalidate(const std::shared_ptr<data::stream::IOStream> &connection){
 
-  auto c = std::static_pointer_cast<oatpp::openssl::Connection>(connection);
+  auto c = std::static_pointer_cast<avena::openssl::Connection>(connection);
 
   /********************************************
    * WARNING!!!
@@ -51,7 +53,7 @@ void ConnectionProvider::ConnectionInvalidator::invalidate(const std::shared_ptr
 }
 
 ConnectionProvider::ConnectionProvider(const std::shared_ptr<Config>& config,
-                                       const std::shared_ptr<oatpp::network::ServerConnectionProvider>& streamProvider)
+                                       const std::shared_ptr<avena::network::ServerConnectionProvider>& streamProvider)
   : m_connectionInvalidator(std::make_shared<ConnectionInvalidator>())
   , m_config(config)
   , m_streamProvider(streamProvider)
@@ -65,7 +67,7 @@ ConnectionProvider::ConnectionProvider(const std::shared_ptr<Config>& config,
 }
 
 std::shared_ptr<ConnectionProvider> ConnectionProvider::createShared(const std::shared_ptr<Config>& config,
-                                                                     const std::shared_ptr<oatpp::network::ServerConnectionProvider>& streamProvider)
+                                                                     const std::shared_ptr<avena::network::ServerConnectionProvider>& streamProvider)
 {
   return std::shared_ptr<ConnectionProvider>(new ConnectionProvider(config, streamProvider));
 }
@@ -90,7 +92,7 @@ void ConnectionProvider::instantiateTLSServer() {
 
   m_ctx = SSL_CTX_new(method);
   if (!m_ctx) {
-    throw std::runtime_error("[oatpp::openssl::server::ConnectionProvider::instantiateTLSServer()]. Error. Can't create context.");
+    throw std::runtime_error("[avena::openssl::server::ConnectionProvider::instantiateTLSServer()]. Error. Can't create context.");
   }
 
   m_config->configureContext(m_ctx);

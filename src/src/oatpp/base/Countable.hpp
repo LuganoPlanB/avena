@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 
 #include <memory>
 
-namespace oatpp { namespace base{
+namespace avena { namespace base{
 
 /**
  * Class instantiations of which can be counted.
@@ -37,18 +39,18 @@ namespace oatpp { namespace base{
 class Countable {
 public:
   /**
-   * Constructor. Increment counter calling &id:oatpp::Environment::incObjects;.
+   * Constructor. Increment counter calling &id:avena::Environment::incObjects;.
    */
   Countable();
 
   /**
-   * Copy constructor. Increment counter calling &id:oatpp::Environment::incObjects;.
+   * Copy constructor. Increment counter calling &id:avena::Environment::incObjects;.
    * @param other
    */
   Countable(const Countable& other);
 
   /**
-   * Virtual destructor. Decrement counter calling &id:oatpp::Environment::decObjects;.
+   * Virtual destructor. Decrement counter calling &id:avena::Environment::decObjects;.
    */
   virtual ~Countable();
 

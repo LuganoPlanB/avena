@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Plan-B Foundation
+// Modified C++ namespace from oatpp to avena.
 /***************************************************************************
  *
  * Project         _____    __   ____   _      _
@@ -29,7 +31,7 @@
 #include "oatpp/web/protocol/http/outgoing/Response.hpp"
 #include "oatpp/web/protocol/http/Http.hpp"
 
-namespace oatpp { namespace web { namespace server { namespace interceptor {
+namespace avena { namespace web { namespace server { namespace interceptor {
 
 /**
  * ResponseInterceptor.
@@ -37,14 +39,14 @@ namespace oatpp { namespace web { namespace server { namespace interceptor {
 class ResponseInterceptor {
 public:
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::incoming::Request;.
+   * Convenience typedef for &id:avena::web::protocol::http::incoming::Request;.
    */
-  typedef oatpp::web::protocol::http::incoming::Request IncomingRequest;
+  typedef avena::web::protocol::http::incoming::Request IncomingRequest;
 
   /**
-   * Convenience typedef for &id:oatpp::web::protocol::http::outgoing::Response;.
+   * Convenience typedef for &id:avena::web::protocol::http::outgoing::Response;.
    */
-  typedef oatpp::web::protocol::http::outgoing::Response OutgoingResponse;
+  typedef avena::web::protocol::http::outgoing::Response OutgoingResponse;
 public:
 
   /**
@@ -65,7 +67,7 @@ public:
    *
    * @param request - the corresponding request.
    * @param response - response to the request
-   * @return - &id:oatpp::web::protocol::http::outgoing::Response;.
+   * @return - &id:avena::web::protocol::http::outgoing::Response;.
    */
   virtual std::shared_ptr<OutgoingResponse> intercept(const std::shared_ptr<IncomingRequest>& request,
                                                       const std::shared_ptr<OutgoingResponse>& response) = 0;
