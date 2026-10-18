@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Plan-B Foundation
+# Updated documentation classification after removing the obsolete README.
 path_classifiers:
   generated:
     - exclude: "src/*"  # don't tag oatpp sources as generated
@@ -9,8 +11,8 @@ path_classifiers:
     - exclude: "src/*"  # don't tag oatpp sources as test
     - test              # tag test folder only as test
   docs:
-    - README.md
-    - LICENSE.txt
+    - ../README.md
+    - LICENSE
 extraction:
   cpp:
 

@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Plan-B Foundation
+# Modified packaging documentation path for avena.
 #
 # Packaging
 # https://cmake.org/cmake/help/latest/module/CPack.html
@@ -12,7 +14,7 @@ set( CPACK_PACKAGE_VERSION ${OATPP_THIS_MODULE_VERSION} )
 set( CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME} )
 get_filename_component( oatpp_root_dir ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY )
 set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" )
-set( CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md" )
+set( CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_LIST_DIR}/../README.md" )
 
 set( CPACK_COMPONENT_Library_DISPLAY_NAME "oatpp Library" )
 set( CPACK_COMPONENT_Library_DESCRIPTION "The oatpp binary library." )
