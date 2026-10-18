@@ -1,6 +1,13 @@
 <!-- Copyright (C) 2026 Plan-B Foundation -->
 <!-- Updated C++ namespace examples for avena. -->
 
+> This component is maintained as part of avena. Use the `avena::` C++
+> namespace, public `<avena/...>` headers and the `avena::avena` CMake
+> target. Build and install from the repository root; see the
+> [avena usage instructions](../README.md). Upstream links below describe
+> oatpp; adapt their namespaces and include paths before using examples.
+
+
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://vshymanskyy.github.io/StandWithUkraine/)
 
 ---

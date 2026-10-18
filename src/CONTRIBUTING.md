@@ -1,4 +1,18 @@
-# Contributing to Oat++
+<!-- Copyright (C) 2026 Plan-B Foundation -->
+<!-- Added avena contribution and namespace guidance. -->
+
+# Contributing to avena
+
+For avena changes, follow [AGENTS.md](../AGENTS.md) and the root
+[build and test instructions](../README.md). Use `avena::` in C++ code,
+examples and API documentation, `<avena/...>` in public includes, and
+`avena::avena` when linking with CMake. Keep existing `OATPP_*` macro names;
+their expansions use `avena::`.
+
+Submit avena issues and pull requests to [LuganoPlanB/avena](https://github.com/LuganoPlanB/avena).
+The upstream contribution information below is retained for reference.
+
+## Upstream Oat++ contributions
 
 Thank you for your interest in the project, and for taking time to contribute.  
 

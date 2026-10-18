@@ -1,3 +1,12 @@
+<!-- Copyright (C) 2026 Plan-B Foundation -->
+<!-- Adapted usage guidance for avena. -->
+
+> This component is maintained as part of avena. Use the `avena::` C++
+> namespace, public `<avena/...>` headers and the `avena::avena` CMake
+> target. Build and install from the repository root; see the
+> [avena usage instructions](../../README.md). Upstream links below describe
+> oatpp; adapt their namespaces and include paths before using examples.
+
 # oatpp-websocket [![Build Status](https://dev.azure.com/lganzzzo/lganzzzo/_apis/build/status/oatpp.oatpp-websocket?branchName=master)](https://dev.azure.com/lganzzzo/lganzzzo/_build?definitionId=6&branchName=master)
 
 **oatpp-websocket** - extension for **oatpp** web framework.  

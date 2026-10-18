@@ -16,7 +16,8 @@ they identify the snapshot bases, not a claim that Conspire made no changes.
 | `src/openssl` (imported as `oatpp-openssl`) | https://github.com/oatpp/oatpp-openssl | `32c6ff8b59406470dbdff6dd65a21b671052abad` |
 
 Each component's original `LICENSE` and per-file notices are preserved.
-Inherited READMEs and CI files inside the component directories describe
+Inherited READMEs and release notes retain upstream context, with namespace
+examples and public includes adapted for avena. Component CI files describe
 upstream; the root README and `.github/workflows/ci.yml` govern avena.
 Git history starts at the snapshot import; upstream Git histories are not
 included. Consult the repositories above for earlier history.
@@ -43,5 +44,9 @@ The C++ namespace migration then renames definitions, qualified references,
 codegen and test helpers from `oatpp` to `avena`. It intentionally breaks the
 upstream C++ ABI and adds no compatibility namespace alias. Original copyright
 and license notices are preserved; modified sources carry Plan-B's 2026 notice.
-The upstream component CMake files and READMEs are retained as implementation
-history; only the root build defines the supported installation layout.
+The upstream component CMake files are retained as implementation history;
+only the root build defines the supported installation layout. Component
+READMEs point to that build and explain the `avena::` namespace. Historical
+release notes retain their original release context, with namespace references,
+examples and local heading links adapted for avena; older API names and
+optional extensions in those notes may not exist in the current build.

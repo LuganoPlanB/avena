@@ -70,6 +70,32 @@ The corresponding C++ names are `avena::Environment`,
 retain their existing names (for example `OATPP_CODEGEN_BEGIN`) and generate
 `avena::` references.
 
+For example, application code uses the installed headers and namespace:
+
+```cpp
+#include <avena/Environment.hpp>
+#include <avena/json/ObjectMapper.hpp>
+
+int main() {
+  avena::Environment::init();
+  bool valid = false;
+  {
+    avena::json::ObjectMapper mapper;
+    const auto json = mapper.writeToString(avena::String("hello"));
+    valid = json == "\"hello\"";
+  }
+  avena::Environment::destroy();
+  return valid ? 0 : 1;
+}
+```
+
+When migrating an oatpp application, change qualified names and `using`
+declarations to `avena::`, update public includes to `<avena/...>`, and link
+`avena::avena` (or `-lavena`). Rebuild all dependent C++ objects and libraries;
+there is no compatibility namespace alias. The adapted
+[release notes](src/changelog/1.4.0.md) use the same namespace, while preserving
+the context of upstream API changes.
+
 Pass the installation prefix in `CMAKE_PREFIX_PATH`. The same target is
 available when embedding avena with `add_subdirectory` (set BUILD_TESTING=OFF
 unless the parent wants the inherited suites). Validate installation with:
@@ -124,7 +150,8 @@ that contains the workflow also starts a release build.
 [`dyne/musl-action`](https://github.com/dyne/musl-action) supplies the x86-64
 musl compiler and its bundled LibreSSL 4.1.0 headers and static libraries.
 `scripts/build-musl-release.sh` uses only this Dyne toolchain for target code;
-it builds all three avena libraries and runs a fully static installed consumer.
+it builds the core and both extensions into `libavena.a` and runs a fully
+static installed consumer.
 CMake dependency lookup is restricted to the package and musl compiler roots.
 Release archives contain `<avena/...>` headers, one `libavena.a` (including
 LibreSSL), the avena CMake package, licenses and build information, plus a SHA-256
