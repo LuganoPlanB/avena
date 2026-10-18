@@ -48,9 +48,14 @@ common_cmake_args=(
 cmake -S "$source_dir" -B "$work_dir/build" -G Ninja \
   "${common_cmake_args[@]}" \
   -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR=lib \
-  -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DOATPP_LINK_TEST_LIBRARY=OFF
+  -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DAVENA_BUILD_TEST_SUPPORT=OFF
 cmake --build "$work_dir/build" --parallel 2
 cmake --install "$work_dir/build"
+
+# libavena.a now contains these archives; ship one library and one header root.
+rm -f "$prefix/lib/libssl.a" "$prefix/lib/libcrypto.a"
+rm -rf "$prefix/include/openssl"
+cmake -Dprefix="$prefix" -Dstatic=ON -P "$source_dir/tests/check-install.cmake"
 
 cmake -S "$source_dir/tests/consumer" -B "$work_dir/consumer" -G Ninja \
   "${common_cmake_args[@]}"

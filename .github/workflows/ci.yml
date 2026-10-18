@@ -24,20 +24,43 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install build dependencies
         run: sudo apt-get update && sudo apt-get install -y ninja-build libssl-dev openssl
+      - name: Set up Dyne static toolchain
+        if: matrix.shared == 'OFF'
+        uses: dyne/musl-action@d26fe56f7fe134a54e729d781ec687e847db34d3
+        with:
+          target_arch: x86_64
       - name: Configure
-        run: >-
-          cmake -S . -B build -G Ninja
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DBUILD_SHARED_LIBS=${{ matrix.shared }}
-      - name: Build all libraries and tests
+        env:
+          BUILD_TYPE: ${{ matrix.build_type }}
+          SHARED: ${{ matrix.shared }}
+        run: |
+          args=()
+          if [[ "$SHARED" == OFF ]]; then
+            args+=(-DCMAKE_TOOLCHAIN_FILE="$PWD/cmake/dyne-musl.cmake")
+          fi
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -DBUILD_SHARED_LIBS="$SHARED" "${args[@]}"
+      - name: Build unified library and tests
         run: cmake --build build --parallel 2
       - name: Run inherited suites
         run: ctest --test-dir build --output-on-failure --no-tests=error
       - name: Install
         run: cmake --install build --prefix "$PWD/install"
-      - name: Build and run installed consumer
+      - name: Check installed names and paths
+        env:
+          SHARED: ${{ matrix.shared }}
         run: |
-          cmake -S tests/consumer -B build/consumer -G Ninja -DCMAKE_PREFIX_PATH="$PWD/install"
+          static=ON
+          if [[ "$SHARED" == ON ]]; then static=OFF; fi
+          cmake -Dprefix="$PWD/install" -Dstatic="$static" -P tests/check-install.cmake
+      - name: Build and run installed consumer
+        env:
+          SHARED: ${{ matrix.shared }}
+        run: |
+          args=()
+          if [[ "$SHARED" == OFF ]]; then
+            args+=(-DCMAKE_TOOLCHAIN_FILE="$PWD/cmake/dyne-musl.cmake")
+          fi
+          cmake -S tests/consumer -B build/consumer -G Ninja -DCMAKE_PREFIX_PATH="$PWD/install" "${args[@]}"
           cmake --build build/consumer --parallel 2
           ctest --test-dir build/consumer --output-on-failure --no-tests=error
       - name: Preserve test logs
@@ -53,14 +76,13 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y ninja-build libssl-dev
-      - name: Build without test support
-        run: |
-          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DOATPP_LINK_TEST_LIBRARY=OFF
-          cmake --build build --parallel 2
-          cmake --install build --prefix "$PWD/install"
-      - name: Verify installed production libraries
-        run: |
-          cmake -S tests/consumer -B build/consumer -G Ninja -DCMAKE_PREFIX_PATH="$PWD/install"
-          cmake --build build/consumer --parallel 2
-          ctest --test-dir build/consumer --output-on-failure --no-tests=error
+      - run: sudo apt-get update && sudo apt-get install -y cmake ninja-build binutils
+      - uses: dyne/musl-action@d26fe56f7fe134a54e729d781ec687e847db34d3
+        id: musl
+        with:
+          target_arch: x86_64
+      - name: Build and verify the production release package
+        env:
+          CC: ${{ steps.musl.outputs.CC }}
+          CXX: ${{ steps.musl.outputs.CXX }}
+        run: bash scripts/build-musl-release.sh "$PWD" 1.4.0 "$PWD/build/release"

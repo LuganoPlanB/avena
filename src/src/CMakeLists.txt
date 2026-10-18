@@ -1,8 +1,12 @@
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Modified to compile components as objects for the unified avena library.
+
 
 #######################################################################################################
 ## oatpp
 
-add_library(oatpp
+add_library(oatpp ${AVENA_COMPONENT_LIBRARY_TYPE}
 		oatpp/async/ConditionVariable.cpp
 		oatpp/async/ConditionVariable.hpp
 		oatpp/async/Coroutine.cpp
@@ -355,7 +359,7 @@ target_include_directories(oatpp PUBLIC
 
 if(OATPP_LINK_TEST_LIBRARY)
 
-	add_library(oatpp-test
+	add_library(oatpp-test ${AVENA_COMPONENT_LIBRARY_TYPE}
 			oatpp-test/Checker.cpp
 			oatpp-test/Checker.hpp
 			oatpp-test/UnitTest.cpp
