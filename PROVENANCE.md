@@ -11,9 +11,9 @@ they identify the snapshot bases, not a claim that Conspire made no changes.
 
 | Directory | Upstream repository | Snapshot revision |
 | --- | --- | --- |
-| `oatpp` | https://github.com/oatpp/oatpp | `f83d648fd82dc222ef88aabbafb68efbd7d7bf50` |
-| `oatpp-websocket` | https://github.com/oatpp/oatpp-websocket | `e5b67adfd3105627ef700ac49308565c93c491f9` |
-| `oatpp-openssl` | https://github.com/oatpp/oatpp-openssl | `32c6ff8b59406470dbdff6dd65a21b671052abad` |
+| `src` (imported as `oatpp`) | https://github.com/oatpp/oatpp | `f83d648fd82dc222ef88aabbafb68efbd7d7bf50` |
+| `src/websocket` (imported as `oatpp-websocket`) | https://github.com/oatpp/oatpp-websocket | `e5b67adfd3105627ef700ac49308565c93c491f9` |
+| `src/openssl` (imported as `oatpp-openssl`) | https://github.com/oatpp/oatpp-openssl | `32c6ff8b59406470dbdff6dd65a21b671052abad` |
 
 Each component's original `LICENSE` and per-file notices are preserved.
 Inherited READMEs and CI files inside the component directories describe
@@ -28,10 +28,16 @@ omit the TLS certificate fixtures referenced by their tests; avena generates
 those in the build directory for `localhost` and `virtualhost`.
 
 Running the TLS suite exposed errors leaking between connections on an
-executor thread. `oatpp-openssl/src/oatpp-openssl/Connection.cpp` now clears
+executor thread. `src/openssl/src/oatpp-openssl/Connection.cpp` now clears
 the OpenSSL error queue before TLS operations, as required by
 [SSL_get_error](https://docs.openssl.org/1.1.1/man3/SSL_get_error/).
 `tests/tls-error-queue.cpp` reproduces incorrect read/write failure classification
 with an injected unrelated error. The async TLS test also retains a separate
 failure flag so subsequent successes cannot erase an error and stall the test.
-Public APIs are unchanged.
+The C++ namespaces and ABI remain unchanged. The subsequent avena packaging
+migration renames installed headers to `<avena/...>`, merges the core,
+extensions and TLS archives into `libavena.a`, and exports only the
+`avena::avena` CMake target. Public headers are generated from the original
+sources with include paths rewritten and both upstream and Plan-B notices.
+The upstream component CMake files and READMEs are retained as implementation
+history; only the root build defines the supported installation layout.

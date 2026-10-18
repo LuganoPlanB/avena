@@ -1,5 +1,9 @@
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Modified to compile components as objects for the unified avena library.
 
-add_library(${OATPP_THIS_MODULE_NAME}
+
+add_library(${OATPP_THIS_MODULE_NAME} ${AVENA_COMPONENT_LIBRARY_TYPE}
         oatpp-openssl/Config.cpp
         oatpp-openssl/Config.hpp
         oatpp-openssl/Connection.cpp
