@@ -1,4 +1,7 @@
 
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Modified to bound and serialize the inherited integration suite.
 add_executable(oatppAllTests
         oatpp/async/ConditionVariableTest.cpp
         oatpp/async/ConditionVariableTest.hpp
@@ -147,3 +150,4 @@ endif()
 target_include_directories(oatppAllTests PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_test(oatppAllTests oatppAllTests)
+set_tests_properties(oatppAllTests PROPERTIES TIMEOUT 900 RUN_SERIAL TRUE)

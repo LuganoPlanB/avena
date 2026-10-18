@@ -1,3 +1,7 @@
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Modified for the avena unified build.
+
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/src/oatpp/Environment.hpp" OATPP_VERSION_MACRO REGEX "#define OATPP_VERSION \"[0-9]+.[0-9]+.[0-9]+\"$")
@@ -132,7 +136,7 @@ if(OATPP_BUILD_TESTS)
 endif()
 
 
-include(cpack.cmake)
-
-# This must always be last!
-include( CPack )
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    include(cpack.cmake)
+    include(CPack)
+endif()

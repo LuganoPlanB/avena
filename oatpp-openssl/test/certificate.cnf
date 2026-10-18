@@ -1,0 +1,14 @@
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Test-only certificate for both inherited transports.
+[req]
+distinguished_name = subject
+x509_extensions = extensions
+prompt = no
+
+[subject]
+CN = localhost
+
+[extensions]
+basicConstraints = critical,CA:TRUE
+subjectAltName = DNS:localhost,DNS:virtualhost,IP:127.0.0.1

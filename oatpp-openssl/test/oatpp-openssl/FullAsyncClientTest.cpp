@@ -7,6 +7,8 @@
  *
  *
  * Copyright 2018-present, Leonid Stryzhevskyi <lganzzzo@gmail.com>
+ * Copyright (C) 2026 Plan-B Foundation
+ * Modified to preserve asynchronous failures independently of success counts.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +55,8 @@
 namespace oatpp { namespace test { namespace openssl {
 
 namespace {
+
+std::atomic<bool> requestFailed(false);
 
 typedef oatpp::web::protocol::http::incoming::Response IncomingResponse;
 
@@ -165,6 +169,7 @@ public:
   }
 
   Action handleError(Error* error) override {
+    requestFailed = true;
     SUCCESS_COUNTER = -2;
     if(error->is<oatpp::AsyncIOError>()) {
       auto e = static_cast<oatpp::AsyncIOError*>(error);
@@ -217,6 +222,7 @@ public:
   }
 
   Action handleError(Error* error) override {
+    requestFailed = true;
     SUCCESS_COUNTER = -2;
     if(error) {
       if(error->is<oatpp::AsyncIOError>()) {
@@ -249,6 +255,7 @@ void FullAsyncClientTest::onRun() {
 
     ClientCoroutine_getRootAsync::SUCCESS_COUNTER = 0;
     ClientCoroutine_echoBodyAsync::SUCCESS_COUNTER = 0;
+    requestFailed = false;
 
     v_int32 iterations = m_connectionsPerEndpoint;
 
@@ -257,10 +264,10 @@ void FullAsyncClientTest::onRun() {
       executor->execute<ClientCoroutine_echoBodyAsync>();
     }
 
-    while(
+    while(!requestFailed && (
       ClientCoroutine_getRootAsync::SUCCESS_COUNTER >= 0 ||
       ClientCoroutine_echoBodyAsync::SUCCESS_COUNTER >= 0
-    ) {
+    )) {
 
       OATPP_LOGd("Client", "Root={}, Body={}",
         ClientCoroutine_getRootAsync::SUCCESS_COUNTER.load(),
@@ -278,6 +285,7 @@ void FullAsyncClientTest::onRun() {
       }
     }
 
+    OATPP_ASSERT(!requestFailed);
     OATPP_ASSERT(ClientCoroutine_getRootAsync::SUCCESS_COUNTER == -1); // -1 is success, -2 error
     OATPP_ASSERT(ClientCoroutine_echoBodyAsync::SUCCESS_COUNTER == -1); // -1 is success, -2 error
 

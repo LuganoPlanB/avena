@@ -1,0 +1,13 @@
+avena
+Copyright (C) 2026 Plan-B Foundation
+
+This project is a fork of oatpp, oatpp-websocket and oatpp-openssl,
+imported from the Conspire source snapshots described in PROVENANCE.md.
+It retains the Apache License, Version 2.0.
+
+Upstream source files retain their original copyright and attribution notices,
+including Copyright 2018-present, Leonid Stryzhevskyi <lganzzzo@gmail.com>.
+Those notices remain authoritative for the corresponding files.
+
+Plan-B Foundation modifications are marked in the affected files. The import
+itself does not claim authorship of unchanged upstream code.

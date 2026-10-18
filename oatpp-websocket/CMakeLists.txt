@@ -1,3 +1,7 @@
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Modified for the avena unified build.
+
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 ###################################################################################################
@@ -40,7 +44,9 @@ set(OATPP_MODULES_LOCATION_CUSTOM CUSTOM)
 set(OATPP_EXTERNAL_SOURCE_GIT GIT)
 set(OATPP_EXTERNAL_SOURCE_URL URL)
 
-if(OATPP_MODULES_LOCATION STREQUAL OATPP_MODULES_LOCATION_INSTALLED)
+if(TARGET oatpp::oatpp)
+    message(STATUS "Using oatpp from the avena build")
+elseif(OATPP_MODULES_LOCATION STREQUAL OATPP_MODULES_LOCATION_INSTALLED)
 
     message("Finding oatpp in location=INSTALLED")
 

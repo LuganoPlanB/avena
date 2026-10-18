@@ -1,3 +1,7 @@
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Modified for the avena unified build.
+
 #######################################################################################
 ## Set module properties
 ## all oatpp modules should have the same installation procedure
@@ -39,13 +43,13 @@ message("\n#####################################################################
 
 include(GNUInstallDirs)
 
-set(OATPP_MODULE_NAME ${OATPP_THIS_MODULE_NAME} CACHE STRING "oatpp module name")
-set(OATPP_MODULE_VERSION "${OATPP_THIS_MODULE_VERSION}" CACHE STRING "oatpp module version")
+set(OATPP_MODULE_NAME ${OATPP_THIS_MODULE_NAME})
+set(OATPP_MODULE_VERSION "${OATPP_THIS_MODULE_VERSION}")
 set(OATPP_MODULE_LIBRARIES
         "${OATPP_THIS_MODULE_LIBRARIES}" ## list libraries to find when find_package is called
-        CACHE INTERNAL "oatpp module libraries"
+
 )
-set(OATPP_MODULE_LIBDIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING "lib folder name")
+set(OATPP_MODULE_LIBDIR ${CMAKE_INSTALL_LIBDIR})
 
 #######################################################################################
 ## calc directories to install (relative to this script)

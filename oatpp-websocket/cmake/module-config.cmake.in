@@ -1,4 +1,12 @@
+# Copyright (C) 2026 Plan-B Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Modified for the avena unified build.
+
 @PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(oatpp @OATPP_MODULE_VERSION@)
+
 
 if(NOT TARGET oatpp::@OATPP_MODULE_NAME@)
     include("${CMAKE_CURRENT_LIST_DIR}/@OATPP_MODULE_NAME@Targets.cmake")

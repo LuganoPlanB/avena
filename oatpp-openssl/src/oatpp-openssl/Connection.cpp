@@ -8,6 +8,8 @@
  *
  * Copyright 2018-present, Leonid Stryzhevskyi <lganzzzo@gmail.com>,
  * Matthias Haselmaier <mhaselmaier@gmail.com>
+ * Copyright (C) 2026 Plan-B Foundation
+ * Modified to isolate the OpenSSL error queue for each TLS operation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +27,7 @@
 
 #include "Connection.hpp"
 #include "ErrorStack.hpp"
+#include <openssl/err.h>
 
 namespace oatpp { namespace openssl {
 
@@ -54,6 +57,7 @@ void Connection::ConnectionContext::init() {
       m_connection->m_readAction = async::Action::createActionByType(async::Action::TYPE_NONE);
       m_connection->m_writeAction = async::Action::createActionByType(async::Action::TYPE_NONE);
 
+      ERR_clear_error();
       res = SSL_do_handshake(m_connection->m_ssl);
 
       if(!m_connection->m_readAction.isNone() || !m_connection->m_writeAction.isNone()) {
@@ -103,6 +107,7 @@ async::CoroutineStarter Connection::ConnectionContext::initAsync() {
       if(!m_connection->m_readAction.isNone()) return std::move(m_connection->m_readAction);
       if(!m_connection->m_writeAction.isNone()) return std::move(m_connection->m_writeAction);
 
+      ERR_clear_error();
       auto res = SSL_do_handshake(m_connection->m_ssl);
 
       if(!m_connection->m_readAction.isNone()) return std::move(m_connection->m_readAction);
@@ -293,6 +298,8 @@ Connection::~Connection(){
 oatpp::v_io_size Connection::write(const void* buff, v_buff_size count, async::Action& action) {
 
   m_writeAction = async::Action::createActionByType(async::Action::TYPE_NONE);
+  // SSL_get_error also inspects this executor thread's error queue.
+  ERR_clear_error();
   auto res = SSL_write(m_ssl, buff, count);
   if(!m_writeAction.isNone()) {
     action = std::move(m_writeAction);
@@ -315,6 +322,7 @@ oatpp::v_io_size Connection::write(const void* buff, v_buff_size count, async::A
 oatpp::v_io_size Connection::read(void *buff, v_buff_size count, async::Action& action){
 
   m_readAction = async::Action::createActionByType(async::Action::TYPE_NONE);
+  ERR_clear_error();
   auto res = SSL_read(m_ssl, buff, count);
   if(!m_readAction.isNone()) {
     action = std::move(m_readAction);

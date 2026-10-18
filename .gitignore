@@ -1,0 +1,4 @@
+# Copyright (C) 2026 Plan-B Foundation
+/build*/
+/install*/
+/CMakeUserPresets.json
